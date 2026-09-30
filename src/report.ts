@@ -8,10 +8,6 @@ export interface OptionMismatch {
   readonly staleValues: readonly string[];
 }
 
-export interface MissingGroup {
-  readonly tab: string;
-  readonly group: string;
-}
 
 export interface CoverageReport {
   readonly totalUiSettings: number;
@@ -23,8 +19,6 @@ export interface CoverageReport {
   readonly stalePaths: readonly string[];
   readonly optionMismatches: readonly OptionMismatch[];
   readonly sourceHashMismatches: readonly string[];
-  readonly missingTabs: readonly string[];
-  readonly missingGroups: readonly MissingGroup[];
 }
 
 function normalizeOptions(options: HostUiMetadata["options"]): Array<{
@@ -65,17 +59,10 @@ export function buildCoverageReport(host: HostMetadata, locale: LocalePack): Cov
   const partialPaths: string[] = [];
   const optionMismatches: OptionMismatch[] = [];
   const sourceHashMismatches: string[] = [];
-  const missingTabs = host.tabs.filter((tab) => locale.tabs[tab] === undefined);
-  const missingGroups: MissingGroup[] = [];
   let translatedSettings = 0;
   let completeSettings = 0;
   let totalUiSettings = 0;
 
-  for (const tab of host.tabs) {
-    for (const group of host.tabGroups[tab] ?? []) {
-      if (locale.groups[tab]?.[group] === undefined) missingGroups.push({ tab, group });
-    }
-  }
 
   for (const [path, definition] of Object.entries(host.schema)) {
     const ui = definition?.ui;
@@ -92,8 +79,6 @@ export function buildCoverageReport(host: HostMetadata, locale: LocalePack): Cov
     let complete =
       Boolean(translation.label) &&
       Boolean(translation.description) &&
-      locale.tabs[ui.tab] !== undefined &&
-      (ui.group === undefined || locale.groups[ui.tab]?.[ui.group] !== undefined) &&
       (ui.warning === undefined ? translation.warning === undefined : Boolean(translation.warning));
 
     const currentHash = computeSourceHash(ui);
@@ -129,7 +114,5 @@ export function buildCoverageReport(host: HostMetadata, locale: LocalePack): Cov
     stalePaths,
     optionMismatches,
     sourceHashMismatches,
-    missingTabs,
-    missingGroups,
   };
 }

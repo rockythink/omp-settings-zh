@@ -2,97 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.0.4",
-  "tabs": {
-    "appearance": "外观",
-    "model": "模型",
-    "interaction": "交互",
-    "context": "上下文",
-    "memory": "记忆",
-    "files": "文件",
-    "shell": "Shell",
-    "tools": "工具",
-    "tasks": "任务",
-    "providers": "提供商"
-  },
-  "groups": {
-    "appearance": {
-      "Theme": "主题",
-      "Status Line": "状态栏",
-      "Display": "显示",
-      "Images": "图像",
-      "Composer": "输入区"
-    },
-    "model": {
-      "Thinking": "思考",
-      "Sampling": "采样",
-      "Prompt": "提示词",
-      "Retry & Fallback": "重试与回退",
-      "Advisor": "Advisor",
-      "Prewalk": "Prewalk",
-      "Vision": "视觉"
-    },
-    "interaction": {
-      "Input": "输入",
-      "Approvals": "审批",
-      "Notifications": "通知",
-      "Speech": "语音",
-      "Collab": "协作",
-      "Magic Keywords": "Magic Keywords",
-      "Startup & Updates": "启动与更新",
-      "Power (macOS)": "电源（macOS）",
-      "Agent": "Agent",
-      "Git": "Git"
-    },
-    "context": {
-      "General": "常规",
-      "Compaction": "压缩",
-      "Rules (TTSR)": "规则（TTSR）",
-      "Experimental": "实验性"
-    },
-    "memory": {
-      "General": "常规",
-      "Auto-Learn": "自动学习",
-      "Mnemopi": "Mnemopi",
-      "Hindsight": "Hindsight"
-    },
-    "files": {
-      "Editing": "编辑",
-      "Reading": "读取",
-      "Read Summaries": "读取摘要",
-      "LSP": "LSP"
-    },
-    "shell": {
-      "Bash": "Bash",
-      "Eval & Runtimes": "Eval 与运行时"
-    },
-    "tools": {
-      "Available Tools": "可用工具",
-      "Todos": "待办",
-      "Grep & Browser": "Grep 与 Browser",
-      "Computer": "Computer",
-      "GitHub": "GitHub",
-      "Output Limits": "输出限制",
-      "Execution": "执行",
-      "Discovery & MCP": "发现与 MCP",
-      "Developer": "开发者",
-      "Extensions": "扩展"
-    },
-    "tasks": {
-      "Modes": "模式",
-      "Subagents": "子 Agent",
-      "Isolation": "隔离",
-      "Commands & Skills": "命令与 Skills"
-    },
-    "providers": {
-      "Services": "服务",
-      "Fireworks": "Fireworks",
-      "Tiny Model": "小型模型",
-      "Protocol": "协议",
-      "Timeouts": "超时",
-      "Privacy": "隐私"
-    }
-  },
+  "sourceOmpVersion": "18.4.4",
   "settings": {
     "autoResume": {
       "sourceHash": "0acb3a94cdc9ddbf65f3529da5f5779ebc8ef1b1c99b7d1c29f1731edacfd300",
@@ -100,9 +10,9 @@ export const zhCN = {
       "description": "自动恢复当前目录中最近的会话"
     },
     "power.sleepPrevention": {
-      "sourceHash": "5982e5a475f856ca91337764ad0406d6e0bf06391934f64557e86a8f69aa0c0d",
+      "sourceHash": "f5493aa7f9bdab68b1e4d5cbb745f6c3925423f42c5e68232ea23a2d3b2f51dd",
       "label": "阻止睡眠",
-      "description": "在活跃会话期间阻止 macOS 睡眠。各级别效果会累加，即包含所有更低级别的标志",
+      "description": "在活跃会话期间阻止系统睡眠。各级别效果会累加，即包含所有更低级别的标志",
       "options": {
         "off": {
           "label": "关闭",
@@ -110,15 +20,15 @@ export const zhCN = {
         },
         "idle": {
           "label": "阻止空闲睡眠",
-          "description": "会话打开期间保持系统唤醒（caffeinate -i）"
+          "description": "会话打开期间保持系统唤醒（macOS `caffeinate -i`）"
         },
         "display": {
           "label": "阻止显示器睡眠",
-          "description": "同时阻止显示器因空闲而睡眠（caffeinate -i -d）"
+          "description": "同时阻止显示器因空闲而睡眠（macOS `caffeinate -i -d`）"
         },
         "system": {
           "label": "阻止系统睡眠",
-          "description": "同时在使用交流电源时阻止所有系统睡眠，并声明用户处于活跃状态（caffeinate -i -d -s -u）"
+          "description": "同时在使用交流电源时阻止所有系统睡眠，并声明用户处于活跃状态（macOS `caffeinate -i -d -s -u`）"
         }
       }
     },
@@ -175,14 +85,14 @@ export const zhCN = {
       "description": "每个提供商 ID（例如 \"openai\" 或 \"anthropic\"）允许的最大并发 LLM 请求数，由使用此配置根目录的本地 OMP 进程共享；未列出的提供商不受限制"
     },
     "providers.openai-codex.codeMode": {
-      "sourceHash": "8304d12aad301fe50bdc7a5f70d6fa24e9276a36604fbdf772ead17c8aa51c10",
-      "label": "Codex 代码模式",
-      "description": "将 Codex 的 code_mode_only 模型（GPT-5.6）通过 eval 工具路由，以其作为程序化执行界面：直接工具界面缩减为 eval/ask/todo，其他所有会话工具都从 eval 单元格调用；行为与 codex-rs Code Mode 一致；'auto' 遵循模型目录标志"
+      "sourceHash": "596c36b70f679951fff0b98a161c980337a016fb0dcf16b81823d7f1d27d3343",
+      "label": "Codex Code Mode",
+      "description": "通过 `eval` 路由 Codex `code_mode_only` 模型（GPT-5.6）。直接工具为 `eval`、`ask`、`todo`、`yield`、`think`、`checkpoint` 和 `rewind`；其他会话工具通过 `eval` 单元调用。与 codex-rs Code Mode 保持一致。`auto` 遵循模型目录中的标记"
     },
     "providers.openai-codex.codeModeDirectTools": {
-      "sourceHash": "cb5d737af3cdae08304bd5ec3a990c692c1591b9537723c415a0ac75473924cc",
-      "label": "Codex 代码模式直接工具",
-      "description": "Codex 代码模式启用时，除 eval/ask/todo 外仍可直接调用的额外工具名称"
+      "sourceHash": "21ff26a401f3283facc95e858d5ed2e4962094e914d2725d1cf4465beba42a50",
+      "label": "Codex Code Mode 直接工具",
+      "description": "Codex Code Mode 的额外直接工具；标准直接工具为 `eval`、`ask`、`todo`、`yield`、`think`、`checkpoint` 和 `rewind`"
     },
     "modelRoleStorage": {
       "sourceHash": "559e85e5e98b03b3e4cea23294f68541afc94696dc64bf6325e9eed7b147b38b",
@@ -210,7 +120,7 @@ export const zhCN = {
       "description": "终端为浅色背景时使用的主题"
     },
     "symbolPreset": {
-      "sourceHash": "406967f19421dfb9af1350c7382e21a2c5987b2e7919b49af1179cbc69e4eb92",
+      "sourceHash": "6c56e0b5117629a70f88be080084aee62635f070a2a822ad5c7c5e20511ca116",
       "label": "符号预设",
       "description": "图标和符号使用的字形集（Unicode、Nerd Font 或 ASCII）",
       "options": {
@@ -220,7 +130,7 @@ export const zhCN = {
         },
         "nerd": {
           "label": "Nerd Font",
-          "description": "需要 Nerd Font"
+          "description": "需要 Nerd Font，或支持 Glyph Protocol 的终端（图标随终端数据传输）"
         },
         "ascii": {
           "label": "ASCII",
@@ -852,14 +762,15 @@ export const zhCN = {
       "description": "将 Mermaid 围栏代码块渲染为 ASCII 图表"
     },
     "tui.codexResetFireworks": {
-      "sourceHash": "150f764a7d40a4802168b27bf59d12a034537bbc7a30d9462045eb55a649adc1",
-      "label": "Codex 重置 Fireworks",
-      "description": "当 Codex 每周用量发生非计划重置，或新存入已保存的重置时，以覆盖顶部三分之一区域的 Fireworks 庆祝，并持续显示直至按下 Escape"
+      "sourceHash": "8329b2a0b8bd13f3f8b251d6c684678454d3a55100fa632c786bc85a44ac108d",
+      "label": "Codex 重置烟花",
+      "description": "当 Codex 每周用量发生非计划重置，或新存入已保存的重置机会时，在顶部三分之一区域显示烟花覆盖层庆祝，直至按下 {escape}",
+      "descriptionSource": "Celebrate unscheduled Codex weekly usage resets and newly banked saved resets with a top-third fireworks overlay that remains until {escape}"
     },
     "tui.titleState": {
-      "sourceHash": "e41e56d7808dedf42d616837f2f5c8bc62128b04393dfde7375f341bd3173351",
+      "sourceHash": "6e0c084b462e93a191bc78e133e22a80fbb13ce5f6328fef3fe6cc8bf33b0922",
       "label": "终端标题运行状态",
-      "description": "在终端标题的分隔符中显示 Agent 运行状态——工作时显示动态旋转指示器（Windows 上为静态的“:”），轮到你操作时显示“>”，Agent 等待你操作时显示“!”"
+      "description": "在终端标题的分隔符中显示智能体运行状态：工作时显示动态旋转指示器（WSL 下为静态的 `:`），轮到你操作时显示 `>`，智能体等待你操作时显示 `!`"
     },
     "tui.hyperlinks": {
       "sourceHash": "17abb4d9a27ec0a03cf1f312514bafaea2a6d968900a58a510c0efa0702bdea8",
@@ -906,9 +817,9 @@ export const zhCN = {
       "description": "在助手消息中显示每轮的 token 用量"
     },
     "display.cacheMissMarker": {
-      "sourceHash": "c0983564d684a41f527fec15db91fc2787d805478403175150b6e4745a28c55c",
+      "sourceHash": "7f30aab5c9c647abfea2a3786bad1dec56f5622f0e0d3fb31eeac61b6d08a9f7",
       "label": "缓存未命中标记",
-      "description": "当某轮助手请求未命中提示词缓存时，在该轮上方显示分隔线"
+      "description": "当某轮助手请求未命中提示词缓存时，在该轮之后显示分隔线"
     },
     "display.collapseCompacted": {
       "sourceHash": "3d1a8035908cf0f4bd1fa97382c6c9d20e0cf5f54a472c975b8c379c163c98f3",
@@ -1258,13 +1169,13 @@ export const zhCN = {
       }
     },
     "tier.openai": {
-      "sourceHash": "d9270ea08a0c3af916cf7c4fe4eb35a131788630417a47dbb827400580a9df05",
+      "sourceHash": "02b486b4e7c98a2fbb784ec5e8d578036eacceabd47bc83daeb981ebf953eb44",
       "label": "服务层级 — OpenAI",
       "description": "OpenAI / OpenAI-Codex 请求以及通过 OpenRouter 路由的 OpenAI 系列模型所用的处理层级（`none` = 省略），以 `service_tier` 发送",
       "options": {
         "none": {
           "label": "无",
-          "description": "省略 service_tier（标准处理）"
+          "description": "省略 `service_tier`（标准处理）"
         },
         "auto": {
           "label": "自动",
@@ -1285,6 +1196,10 @@ export const zhCN = {
         "priority": {
           "label": "Priority",
           "description": "速度更快、成本更高（高级请求）"
+        },
+        "ultrafast": {
+          "label": "Ultrafast",
+          "description": "延迟最低的服务；适用于拥有 OpenAI API 预览访问权限的请求，或声明支持此层级的 Codex 模型"
         }
       }
     },
@@ -1323,9 +1238,9 @@ export const zhCN = {
       }
     },
     "tier.subagent": {
-      "sourceHash": "71d729b19e0a181732ce4378597ccbe96e15412cbcfb1530ce534738596a5a97",
+      "sourceHash": "79e696bc56bca837867ea7bb588cd2694b1b50c03b11564d8b87ff40061efad6",
       "label": "服务层级 — 子智能体",
-      "description": "生成的任务/Eval 子智能体所用的服务层级。继承 = 与主智能体当前各模型系列的实时层级一致（会跟随 /fast）；选择具体值后，会将其应用于子智能体模型所属的系列",
+      "description": "通过 `task` / `eval` 创建的子智能体所用的服务层级。继承 = 与主智能体当前各模型系列的实时层级一致（跟随 `/fast`）；选择具体值后，将其应用于子智能体模型所属的系列",
       "options": {
         "inherit": {
           "label": "继承",
@@ -1353,14 +1268,18 @@ export const zhCN = {
         },
         "priority": {
           "label": "Priority",
-          "description": "在生成模型所支持的每个系列上使用 Priority"
+          "description": "在所创建模型支持的每个系列上使用 Priority"
+        },
+        "ultrafast": {
+          "label": "Ultrafast",
+          "description": "Ultrafast 服务（OpenAI 系列，可用时）"
         }
       }
     },
     "tier.advisor": {
-      "sourceHash": "2602dff21fbb6e6aca134fb191a29abf48d0d778bf3b51ac6b00ebd085a184bc",
+      "sourceHash": "cf18d10f3a9525bcb09f1b35bc178c8c2b8b2b149c58212c59f7160cd6693410",
       "label": "服务层级 — Advisor",
-      "description": "Advisor 模型所用的服务层级。无 = 标准处理；继承 = 与主智能体当前各模型系列的实时层级一致；选择具体值后，会将其应用于 Advisor 模型所属的系列",
+      "description": "Advisor 模型所用的服务层级。无 = 标准处理；继承 = 与主智能体当前各模型系列的实时层级一致；选择具体值后，将其应用于 Advisor 模型所属的系列",
       "options": {
         "inherit": {
           "label": "继承",
@@ -1388,7 +1307,11 @@ export const zhCN = {
         },
         "priority": {
           "label": "Priority",
-          "description": "在生成模型所支持的每个系列上使用 Priority"
+          "description": "在所创建模型支持的每个系列上使用 Priority"
+        },
+        "ultrafast": {
+          "label": "Ultrafast",
+          "description": "Ultrafast 服务（OpenAI 系列，可用时）"
         }
       }
     },
@@ -1415,9 +1338,9 @@ export const zhCN = {
       }
     },
     "retry.maxDelayMs": {
-      "sourceHash": "252e3f27ca0eab3fe21c55cfff7d5b89c02031ef02ab6171b9ebcfad146e55ea",
+      "sourceHash": "2419687df9ba8e1133e7797d3b2cdaf73c5657bbe9b0b574c7f340329bcb71af",
       "label": "最大重试延迟",
-      "description": "两次重试之间的最长等待时间，单位为 ms。当提供商要求等待的时间超过此值，且凭据或模型回退均未成功时，请求会快速失败，而不是休眠等待（例如 Anthropic 长达 3 小时的速率限制窗口）"
+      "description": "两次重试之间的最长等待时间，单位为 ms。当提供商要求等待的时间超过此值，且凭据或模型回退均未成功时，请求会快速失败，而不是休眠等待（例如 Anthropic 长达 3 小时的速率限制窗口）。设为 0 可取消上限，让会话等待提供商声明的配额重置后自动恢复"
     },
     "retry.modelFallback": {
       "sourceHash": "3decae223a3b1229a676877586502fa56424b2f5d819d686e6531976e7e266d2",
@@ -1476,9 +1399,9 @@ export const zhCN = {
       }
     },
     "retry.fallbackChains": {
-      "sourceHash": "51dba54d3e0507e9994d9680e3ea6e4b740e2e30967c342b64b8fac343db859e",
+      "sourceHash": "b5b1d50a5e01ed5490faa0549b40cfe828a5c636b80df5bac54b60f604a7330a",
       "label": "重试回退链",
-      "description": "将模型角色、模型选择器（\"provider/model-id\"）或提供商通配符（\"provider/*\"）映射到有序回退选择器的 JSON 对象，例如 {\"default\":[\"openai/gpt-4o-mini\"],\"google-antigravity/*\":[\"google/*\",\"google-vertex/*\"]}。只要对应模型/提供商处于活动状态，模型相关键就会生效，不受角色影响；\"provider/*\" 条目会保留失败模型的 id，仅替换提供商。带 id 前缀的通配符（\"openrouter/google/*\"）会为失败模型的裸 id 重新添加前缀（google-antigravity/gemini-x -> openrouter/google/gemini-x）；作为键使用时，仅匹配该前缀下属于该提供商的 id"
+      "description": "将模型角色、模型选择器（`provider/model-id`）或提供商通配符（`provider/*`）映射到有序回退选择器的 JSON 对象，例如 `{\"default\":[\"openai/gpt-4o-mini\"],\"google-antigravity/*\":[\"google/*\",\"google-vertex/*\"]}`。只要对应模型/提供商处于活动状态，模型相关键就会生效，不受角色影响；`provider/*` 条目会保留失败模型的 id，仅替换提供商。带 id 前缀的通配符（`openrouter/google/*`）会为失败模型的裸 id 重新添加前缀（`google-antigravity/gemini-x -> openrouter/google/gemini-x`）；作为键使用时，仅匹配该前缀下属于该提供商的 id。回退条目可带有显式思考强度后缀（`provider/model:low`、`:high`、`:max`、`:off`）；不带后缀的条目继承失败轮次的思考强度，`provider/*` 条目始终继承"
     },
     "retry.fallbackRevertPolicy": {
       "sourceHash": "fd3ba2e96202fb1c31c06bc11270ed09ccca1608e53e09f49e7da24ff5072739",
@@ -1496,9 +1419,9 @@ export const zhCN = {
       }
     },
     "providers.anthropic.serverSideFallback": {
-      "sourceHash": "54cdbbd1f6e487b0c8d8a934338c599548e0afc580e8a49ba92e664ed031746d",
+      "sourceHash": "0492267aa35076367d9c4228e3b10e2605c0a66a5f439b4c4237a7f1995baf9e",
       "label": "Anthropic 服务端回退 (Fable 5)",
-      "description": "当 Claude Fable 5 / Mythos 5 请求被 Anthropic 的安全分类器拦截时，在服务端通过 Claude Opus 4.8 重试（Anthropic `server-side-fallback-2026-06-01` beta）。此功能需选择启用——保持关闭可保留所有请求在回退功能推出前的行为"
+      "description": "当 Claude Fable 5 / Mythos 5 请求被 Anthropic 的安全分类器拦截时，在服务端通过 Claude Opus 5 重试（Anthropic `server-side-fallback-2026-06-01` beta）。此功能需选择启用，保持关闭可保留所有请求在回退功能推出前的行为"
     },
     "steeringMode": {
       "sourceHash": "1dbd6d37fcad0666abb98b6393f8199fde7ea5d3377e8ec377484b2ab290e7bd",
@@ -1535,9 +1458,10 @@ export const zhCN = {
       }
     },
     "doubleEscapeAction": {
-      "sourceHash": "063c901595bbe734b02e39bda9a44e611fbb78a23ff2eb201f327af8f486100a",
-      "label": "双击 Escape 操作",
-      "description": "编辑器为空时按两次 Escape 执行的操作"
+      "sourceHash": "bf62ae1d989377d39cf71589da7bb5cd11cc8d111f63ca83064bc4f6121e5042",
+      "label": "连按两次 Esc 操作",
+      "description": "编辑器为空时按两次 {escape} 执行的操作：打开会话记录回退选择器、打开会话树，或不执行任何操作",
+      "descriptionSource": "What pressing {escape} twice with an empty editor does: open the transcript rewind selector, open the session tree, or nothing"
     },
     "treeFilterMode": {
       "sourceHash": "336e6236bf92b823de458c000efb6bf5ff53b42bda4a88818954ecc7fa90a7c4",
@@ -1575,9 +1499,32 @@ export const zhCN = {
       "description": "使用当前启用的 macOS 词典标记提示词中拼写错误的单词"
     },
     "spelling.autocomplete": {
-      "sourceHash": "d9b55815ecd31b7ccc75a178e35a03644d86e49938bd81c1892277ec39fca31f",
-      "label": "单词自动补全（macOS）",
-      "description": "以内联提示显示 macOS 词典中的单词补全建议，可按 Tab 接受"
+      "sourceHash": "cd82abb4ef038e97570a35036c16cdfa38c8b57605b684134715edfecd74f127",
+      "label": "单词自动补全",
+      "description": "以内联提示显示预测的单词补全：按 {accept} 接受并附加空格，按 {right} 接受但不附加空格",
+      "options": {
+        "off": {
+          "label": "关闭",
+          "description": "不补全单词"
+        },
+        "auto": {
+          "label": "自动",
+          "description": "N-gram（无需下载）"
+        },
+        "ngram": {
+          "label": "N-gram",
+          "description": "从提示词历史中学习你的词汇"
+        },
+        "smollm": {
+          "label": "SmolLM",
+          "description": "结合 N-gram 的小型本地语言模型（首次使用时下载权重）"
+        },
+        "apple": {
+          "label": "Apple",
+          "description": "使用 macOS 词典补全"
+        }
+      },
+      "descriptionSource": "Show predicted word completions as inline hints: {accept} accepts with a space, {right} without"
     },
     "spelling.autocorrect": {
       "sourceHash": "4a5b6e53dd344a0b69d7a078e42dd7023a91562c2f08d28110930e293d40ba38",
@@ -1683,9 +1630,9 @@ export const zhCN = {
       }
     },
     "magicKeywords.enabled": {
-      "sourceHash": "95c0f42ce8cf830ffc39f09a8d0536b74420f36e4ffb5905e1b08d4eed429009",
+      "sourceHash": "562eae89d3d791c42d050ed4dea84bd066df129f1601b6694b67d16621afffac",
       "label": "魔法关键词",
-      "description": "为单独使用的 ultrathink、orchestrate 和 workflowz 关键词启用隐藏提示"
+      "description": "为单独使用的 `ultrathink`、`orchestrate`、`workflowz`、`jevify` 关键词启用隐藏提示"
     },
     "magicKeywords.ultrathink": {
       "sourceHash": "051af7cad7887495172556e13ba4c799c5076cb3788219af399bd1d485699a45",
@@ -1811,29 +1758,6 @@ export const zhCN = {
       "label": "语音转文本",
       "description": "启用通过麦克风进行语音转文本输入"
     },
-    "stt.modelName": {
-      "sourceHash": "2172b45dcb10266c3528ca772fb50c86ccbed6d0108d14176b3ef5d1827f61e8",
-      "label": "语音模型",
-      "description": "本地设备端语音模型。Parakeet TDT v3（sherpa-onnx）是默认 SoTA；Whisper base/small/large-v3-turbo 各档（transformers.js）以模型大小换取多语言覆盖。首次使用时下载",
-      "options": {
-        "fast": {
-          "label": "快速（Whisper base）",
-          "description": "Whisper base，多语言。体积最小、速度最快；准确率最低。最适合资源有限的机器"
-        },
-        "balanced": {
-          "label": "均衡（Whisper small）",
-          "description": "Whisper small，多语言。比快速档更准确，对 CPU/RAM 的需求仍较低"
-        },
-        "turbo": {
-          "label": "Turbo（Whisper large-v3）",
-          "description": "Whisper large-v3-turbo，支持 99 种语言。语言覆盖最广；下载量大，速度较慢"
-        },
-        "parakeet": {
-          "label": "Parakeet TDT v3 (SoTA)",
-          "description": "NVIDIA Parakeet TDT 0.6B v3，支持 25 种语言。位居 Open ASR Leaderboard 榜首——准确率最佳，解码速度快得多。默认选项"
-        }
-      }
-    },
     "stt.submitTrigger": {
       "sourceHash": "f2fb4135bcfb40707ba420acb23431bc4f94da1f0fb66a56e9f6a3fb61a71912",
       "label": "语音转文本提交触发方式",
@@ -1863,9 +1787,9 @@ export const zhCN = {
       "description": "上下文溢出时改用上下文窗口更大的模型，而不是进行压缩"
     },
     "extendedContext": {
-      "sourceHash": "d4e145bcc70245c2c0eef52148ecb119dce538968c0be49648634a33e2ec48ac",
+      "sourceHash": "871bf725950ada3db805571e5a2f509029a0946896dde3a2fd13bc02ca4fd53e",
       "label": "扩展上下文",
-      "description": "在超过阈值后会额外计费的模型上使用高级长上下文窗口（例如 GPT-5.6 1M 的输入超过 272K 时按 2 倍计费）；关闭后会将其限制在标准定价窗口内"
+      "description": "在支持的模型上使用更大的上下文窗口，可能按更高价格计费；关闭后使用默认窗口或标准定价窗口"
     },
     "compaction.enabled": {
       "sourceHash": "4ac5ffc1935d44f855f3dafe2451e8b3fab68feda0bdb05960fe6194239e8b71",
@@ -1873,18 +1797,18 @@ export const zhCN = {
       "description": "上下文过大时自动进行压缩"
     },
     "compaction.midTurnEnabled": {
-      "sourceHash": "30a9f300a23209f2285c33fa018705a6a59626ade7ffee0ca065a4c4ace2f755",
+      "sourceHash": "a04902e65ad02a62589daa613d4e1e2c0bf1bf9149e904aeabffda54d9bffc35",
       "label": "轮次中压缩",
-      "description": "在轮次中安全的工具循环边界处、发起下一次提供商请求前检查阈值"
+      "description": "在轮次中安全的工具循环边界处、发起下一次提供商请求前检查阈值；子代理始终检查，因为其整个任务都在一个轮次内完成"
     },
     "compaction.methodOrder": {
-      "sourceHash": "1c15c2ea4638a3ca487e2cd5ebfd37eca50599c49d98cf038218d4b97f515a73",
+      "sourceHash": "a620bcc8781ba133237d86dd9301a2e98210dbc2451e51b19066638faa02715c",
       "label": "压缩方法顺序",
       "description": "自动维护上下文时首选的回退顺序；方法不可用或失败时会转到下一个选项",
       "options": {
         "remote": {
-          "label": "OpenAI 服务器压缩",
-          "description": "当前路由支持时，使用提供商原生的 OpenAI 兼容服务器压缩"
+          "label": "服务器压缩",
+          "description": "当前路由支持时，使用提供商原生的服务器压缩（OpenAI Responses compact、Anthropic compaction beta）"
         },
         "snapcompact": {
           "label": "Snapcompact",
@@ -1964,17 +1888,17 @@ export const zhCN = {
       }
     },
     "compaction.thresholdTokens": {
-      "sourceHash": "9c130d23e8202e79841e683de3ac0f4657ed07929a27b96512e940d2086fd7a0",
+      "sourceHash": "bda8820a3ecfeebba826c104afb1d736c0ad747430e5ff6daab74305426e1dd2",
       "label": "压缩 token 限制",
       "description": "用于上下文维护的固定 token 限制；设置后会覆盖百分比阈值",
       "options": {
         "25000": {
           "label": "25K token",
-          "description": "200K 窗口的四分之一"
+          "description": "200K 窗口的八分之一"
         },
         "50000": {
           "label": "50K token",
-          "description": "200K 窗口的一半"
+          "description": "200K 窗口的四分之一"
         },
         "100000": {
           "label": "100K token",
@@ -1990,11 +1914,11 @@ export const zhCN = {
         },
         "300000": {
           "label": "300K token",
-          "description": "大上下文窗口"
+          "description": "大型上下文窗口"
         },
         "500000": {
           "label": "500K token",
-          "description": "超大上下文窗口"
+          "description": "超大型上下文窗口"
         },
         "default": {
           "label": "默认",
@@ -2116,13 +2040,13 @@ export const zhCN = {
       "description": "实验性功能：将较大的历史工具结果渲染为高密度 PNG 图像而非文本（仅限视觉模型）；可减少累积的读取和搜索输出所占用的 token"
     },
     "tools.format": {
-      "sourceHash": "27f604bfe5381514feafc276b05ebe2aaf874977e54b222561e29e7ee0ecccd8",
+      "sourceHash": "e9fbb3f0e902e4d0e0568947251244fb69bd53f8ec90d24e0ea65e55d8ddae90",
       "label": "工具调用模式",
-      "description": "控制工具如何向模型提供；自动模式使用提供商原生工具调用，除非所选模型被标记为不支持，此时会回退到 GLM 自有方言；原生模式强制使用提供商原生工具，其他值强制使用对应名称的自有方言；会话开始时生效",
+      "description": "控制向模型提供工具的方式。自动模式使用提供商原生工具调用，除非所选模型被标记为不支持，此时回退到由 OMP 实现的 GLM 工具调用格式。原生模式强制使用提供商原生工具；其他值强制使用对应的 OMP 工具调用格式",
       "options": {
         "auto": {
           "label": "自动",
-          "description": "除非已知模型不支持，否则使用原生工具调用"
+          "description": "使用原生工具调用，除非已知模型不支持"
         },
         "native": {
           "label": "原生",
@@ -2158,19 +2082,19 @@ export const zhCN = {
         },
         "qwen3": {
           "label": "Qwen3",
-          "description": "使用 Qwen3 自有方言"
+          "description": "使用由 OMP 实现的 Qwen3 工具调用格式"
         },
         "gemini": {
           "label": "Gemini",
-          "description": "使用 Gemini 自有方言"
+          "description": "使用由 OMP 实现的 Gemini 工具调用格式"
         },
         "gemma": {
           "label": "Gemma",
-          "description": "使用 Gemma 自有方言"
+          "description": "使用由 OMP 实现的 Gemma 工具调用格式"
         },
         "minimax": {
           "label": "MiniMax",
-          "description": "使用 MiniMax 自有方言"
+          "description": "使用由 OMP 实现的 MiniMax 工具调用格式"
         }
       }
     },
@@ -2259,9 +2183,9 @@ export const zhCN = {
       "description": "离开分支时提示生成摘要"
     },
     "memory.backend": {
-      "sourceHash": "2cd24fee740802505c8ad86bdeca273e02d0e56a9ef534494568d3fe796c3fd1",
+      "sourceHash": "ad3a03ccc4288854806fc03aedfde6090f15626d0cbda4e6b6037ecc7dbae794",
       "label": "记忆后端",
-      "description": "关闭、本地摘要流程、Mnemopi SQLite 或 Hindsight 远程记忆",
+      "description": "关闭，或使用本地摘要流程、Mnemopi SQLite、Hindsight 远程记忆或 Sharpshooter",
       "options": {
         "off": {
           "label": "关闭",
@@ -2269,15 +2193,19 @@ export const zhCN = {
         },
         "local": {
           "label": "本地",
-          "description": "本地 rollout 摘要流程（memory_summary.md）"
+          "description": "本地执行轨迹摘要流程（`memory_summary.md`）"
         },
         "hindsight": {
           "label": "Hindsight",
-          "description": "对 Hindsight 远程记忆服务进行向量化"
+          "description": "Vectorize Hindsight 远程记忆服务"
         },
         "mnemopi": {
           "label": "Mnemopi",
-          "description": "基于本地 SQLite 的召回和保留后端，可选使用嵌入"
+          "description": "本地 SQLite 召回与存储后端，可选用嵌入向量"
+        },
+        "sharpshooter": {
+          "label": "Sharpshooter",
+          "description": "遇到任务阻力时触发的项目决策文件（架构、产品、风格），在后台整合"
         }
       }
     },
@@ -2346,14 +2274,14 @@ export const zhCN = {
       "description": "将已完成的对话轮次保留到本地 Mnemopi 记忆中"
     },
     "mnemopi.polyphonicRecall": {
-      "sourceHash": "d926bd4f741917f6a1fe113ac4118e51baede845112ab260a223ba1045e52e0a",
-      "label": "Mnemopi 复调召回",
-      "description": "启用 4 路召回（向量、图、事实、时序），并使用倒数排名融合进行合并"
+      "sourceHash": "8ac38b0da889747adc40a8a366a63467e8ac068724ed1516bdf4b801f3b1b6ad",
+      "label": "Mnemopi 多路召回",
+      "description": "融合图谱、事实、向量和时间维度的召回，让关联记忆无需关键词匹配也能呈现"
     },
     "mnemopi.enhancedRecall": {
-      "sourceHash": "28121c2ceab3a6f0f9abba5a273ef625fdb761fff6eecba5c94652fb3638d226",
+      "sourceHash": "7ac3d3e453675f88dc8344a713b187a96a686301ac46c3d96ae25e4a76564d70",
       "label": "Mnemopi 增强召回",
-      "description": "为重复和相似的召回查询启用分层查询结果缓存"
+      "description": "缓存选项完全相同的重复或相似查询的召回结果；任何记忆写入都会清空缓存"
     },
     "mnemopi.proactiveLinking": {
       "sourceHash": "7032d04806166d2ad7926f40688a2ca0a66cd76c76250a6bb398310d09e85934",
@@ -2768,16 +2696,6 @@ export const zhCN = {
       "label": "JavaScript Eval 后端",
       "description": "允许 Eval 工具将 JavaScript 单元发送到进程内运行时"
     },
-    "eval.rb": {
-      "sourceHash": "cbb62cf2a373a9e31155f0be2a46bdcd9c98e85cf350eab94665bc5302c8eaff",
-      "label": "Ruby Eval 后端",
-      "description": "允许 Eval 工具将 Ruby 单元发送到持久运行的 Ruby 内核"
-    },
-    "eval.jl": {
-      "sourceHash": "20b1df9219dd8d506b46323c69afe6a7f6fc561521667eae7810264a61682a00",
-      "label": "Julia Eval 后端",
-      "description": "允许 Eval 工具将 Julia 单元发送到持久运行的 Julia 内核"
-    },
     "eval.autoBackground.enabled": {
       "sourceHash": "d0713760429801c3e288d9352e75b925d8d1242388ca38c19a6670d00f3dc032",
       "label": "Eval 自动转入后台",
@@ -2792,16 +2710,6 @@ export const zhCN = {
       "sourceHash": "a29d689afcc75e70919d2ac226090eb23562e9bae59e3048819c7a675242e41e",
       "label": "Python 解释器",
       "description": "可选：指定确切 Python 可执行文件的路径。设置后将跳过 Python 运行时的自动发现"
-    },
-    "ruby.interpreter": {
-      "sourceHash": "3610fe2264feca47ce3370e61c53b540e62fbe0869156d9705ab8aef233d0c39",
-      "label": "Ruby 解释器",
-      "description": "可选：指定确切 Ruby 可执行文件的路径。设置后将跳过 Ruby 运行时的自动发现"
-    },
-    "julia.interpreter": {
-      "sourceHash": "14fec31d7d3a3d427d001983989d7fd35d6d1e1048b2dbb21b121fd0df3cb703",
-      "label": "Julia 解释器",
-      "description": "可选：指定确切 Julia 可执行文件的路径。设置后将跳过 Julia 运行时的自动发现"
     },
     "tools.approval": {
       "sourceHash": "b86dd87ee8c3c134840f82e8b8f6625564d6a277cb2d55b52552e55cc810f1d2",
@@ -2948,9 +2856,9 @@ export const zhCN = {
       "description": "启用 debug 工具以进行基于 DAP 的调试"
     },
     "launch.enabled": {
-      "sourceHash": "a415c06abd547a6688edbb35c836e9420e4bf58e6dcbef316b2ff5fa699a91fc",
-      "label": "Launch",
-      "description": "启用 launch 工具以监管共享的长期运行项目进程"
+      "sourceHash": "75cfda658a15a8badb661db7297d11f909074bfe2dcf1aba3793be01fde8c9b3",
+      "label": "服务",
+      "description": "为共享的长期运行项目进程启用具名 bash 服务和 `proc://` 监管"
     },
     "speechgen.enabled": {
       "sourceHash": "6a2cb3bbb0ac88e5ad4e09b5edb942c301e6751119f23f74958db1270a145c6b",
@@ -2962,26 +2870,10 @@ export const zhCN = {
       "label": "生成图像",
       "description": "启用 generate_image 工具（文本生成图像和编辑）；tools.xdev 开启时，此工具会作为 xd:// 设备提供"
     },
-    "inspect_image.mode": {
-      "sourceHash": "6b6c2666202a9a0725938457eb054d55f464199699a35e5596347bf74659049a",
-      "label": "检查图像",
-      "description": "控制 inspect_image 工具，将图像理解委托给支持视觉能力的模型；'auto' 仅在当前模型不支持原生图像输入时提供该工具；'on' 始终提供；'off' 从不提供",
-      "options": {
-        "auto": {
-          "label": "自动（仅用于不支持视觉的模型）"
-        },
-        "on": {
-          "label": "开启"
-        },
-        "off": {
-          "label": "关闭"
-        }
-      }
-    },
     "computer.enabled": {
-      "sourceHash": "b9aeb3144becc0cb83634f83417be48d2fb7f21e68dcc7142fb1950e9afc1fdf",
+      "sourceHash": "1700affcd921c7cf3f0ebb93ec01369b1ecebc8a2932ac54d4db784ae5af025e",
       "label": "计算机",
-      "description": "启用可编程的宿主机桌面控制工具（截图、输入、辅助功能）"
+      "description": "启用可脚本化的宿主桌面 `eval` 预置接口（截图、输入、辅助功能）"
     },
     "computer.display": {
       "sourceHash": "14af977285f7a02466d758697e30a16b5a46a926260fb40d3c033689371f2fc2",
@@ -2997,28 +2889,6 @@ export const zhCN = {
       "sourceHash": "8e7a2ef0f3e68b6ac14a285b89c594229783a34b3d068dda590539a16c62ac01",
       "label": "计算机截图高度",
       "description": "合成截图的最大高度（像素）"
-    },
-    "inspect_image.timeoutMs": {
-      "sourceHash": "47cbe1f7ee0817ec017252a2922f527a63d78973ee84aad7f48f8188f96d6496",
-      "label": "inspect_image 超时",
-      "description": "inspect_image 视觉模型调用的单次请求超时时间，单位为毫秒。提供商停滞时将快速失败并返回超时错误，而不会一直阻塞到手动中止。设为 0 可禁用超时",
-      "options": {
-        "0": {
-          "label": "已禁用"
-        },
-        "60000": {
-          "label": "1 分钟"
-        },
-        "120000": {
-          "label": "2 分钟"
-        },
-        "180000": {
-          "label": "3 分钟"
-        },
-        "300000": {
-          "label": "5 分钟"
-        }
-      }
     },
     "checkpoint.enabled": {
       "sourceHash": "c1ac2ea7e3b16f73d3847d4ca6e298385ce96356f8554060bb11e766649c187c",
@@ -3071,9 +2941,9 @@ export const zhCN = {
       "description": "启用 ask 工具以交互方式向用户提问"
     },
     "browser.enabled": {
-      "sourceHash": "2f1cc72798340b637dca1a79bff9f73ab96c60e32bf229bcc36fe04f17092882",
+      "sourceHash": "9a40a3d49291aca625cad9b74b5cefdf7a8226e527286f22819835830e252129",
       "label": "浏览器",
-      "description": "启用 browser 工具，以使用 puppeteer 对 Chromium 进行脚本化自动操作"
+      "description": "启用浏览器 `eval` 预置接口，以脚本方式自动化 Chromium（Puppeteer）"
     },
     "browser.cdpUrl": {
       "sourceHash": "941af626f521a3da139ff1a08a75fe114ac545c1435070096810f16a01a404ce",
@@ -3081,9 +2951,9 @@ export const zhCN = {
       "description": "默认的 HTTP CDP 发现端点（例如 http://127.0.0.1:9222），用于连接现有浏览器，而非启动浏览器。工具调用中显式指定的 app.cdp_url 或 app.path 优先"
     },
     "browser.relay": {
-      "sourceHash": "6a166cbe632ac28e037750b4bd7958e2962d65bb7623a87a0d69530fe74e64ad",
-      "label": "浏览器 Relay",
-      "description": "通过 omp browser relay 驱动你自己的 Chrome 标签页。只需安装一次扩展（`omp browser-relay install`）；browser 工具需要时，relay 服务器会自动启动。优先级高于浏览器 CDP URL；可设置 PI_BROWSER_RELAY=0 或 PI_BROWSER_RELAY=1 覆盖此设置"
+      "sourceHash": "e511bad991ea61d39fbf1eaf2bad8df691c4083d87cc335fe951c481b5765988",
+      "label": "Browser Relay",
+      "description": "通过 omp Browser Relay 操作自己的 Chrome 页签。只需安装一次扩展（`omp browser-relay install`）；浏览器预置接口需要中继服务时会自动启动。优先于浏览器 CDP URL；设置 `PI_BROWSER_RELAY=0` 或 `PI_BROWSER_RELAY=1` 可覆盖此设置"
     },
     "browser.relayUrl": {
       "sourceHash": "6b961b3c49b9ab178a7ee5aa2b8811ea5ee3726af557a0eb72020d573f234c27",
@@ -3145,58 +3015,10 @@ export const zhCN = {
       "label": "异步执行",
       "description": "启用异步 Bash 命令和后台任务执行"
     },
-    "async.pollWaitDuration": {
-      "sourceHash": "ea3cd10851a0547388cf4a5085941c8ce689f61d30f08a4a8bbef6587398a9b4",
-      "label": "最长轮询时间",
-      "description": "一次 `hub` wait 在返回当前状态前监视后台任务的时长。固定值每次都会等待指定时长。`smart` 会自适应调整：从 5s 开始，每次连续 wait 都会延长（最多 5m）；停止 wait 约一分钟后重置为 5s",
-      "options": {
-        "5s": {
-          "label": "5 秒"
-        },
-        "10s": {
-          "label": "10 秒"
-        },
-        "30s": {
-          "label": "30 秒"
-        },
-        "1m": {
-          "label": "1 分钟"
-        },
-        "5m": {
-          "label": "5 分钟"
-        },
-        "smart": {
-          "label": "智能",
-          "description": "默认 — 从 5s 到 5m 自适应延长，停止轮询后重置"
-        }
-      }
-    },
-    "irc.timeoutMs": {
-      "sourceHash": "766818c41528eac8abe3f86a6dc616789af67dfc60e978e6f03fc8784b69bc27",
-      "label": "IRC 超时",
-      "description": "hub 消息等待（以及 send await:true）的默认超时时间，单位为毫秒；0 表示禁用超时",
-      "options": {
-        "0": {
-          "label": "已禁用"
-        },
-        "30000": {
-          "label": "30 秒"
-        },
-        "60000": {
-          "label": "1 分钟"
-        },
-        "120000": {
-          "label": "2 分钟"
-        },
-        "300000": {
-          "label": "5 分钟"
-        }
-      }
-    },
     "tools.xdev": {
-      "sourceHash": "5b018ccbad6b0a1ab910f0436dcf0c329ee89d074ccd0468d54c95b0961b2031",
-      "label": "xd:// 工具",
-      "description": "将不常用但可发现的工具挂载到 xd:// 设备 URL 下，通过 read/write 驱动，而不是在每次请求中都附带其 schema。未获准使用 write 工具的会话会跳过挂载，并在顶层公开所有工具。禁用后会在顶层公开所有已启用的工具"
+      "sourceHash": "967e3918eb22bfdbe19aa8626b6592ee3414bd6d3bc7443f0e8e40d7d774340a",
+      "label": "`xd://` 工具",
+      "description": "将很少使用、可通过发现机制查找的工具挂载到 `xd://` 设备 URL，通过 `read`/`write` 操作，而不是在每次请求中发送其 schema。若会话的显式工具列表授予 `read` 但不包含 `write`，则通过仅供设备使用的 `write` 通道挂载设备（文件系统写入仍被拒绝）。关闭后，将所有已启用工具直接暴露在顶层"
     },
     "tools.xdevDocs": {
       "sourceHash": "fc6e5da19feb97bd9399025f7981b9f82f188ba78c7584ca7067dce60849414f",
@@ -3272,53 +3094,6 @@ export const zhCN = {
       "label": "重新规划时刷新标题",
       "description": "在 todo init 重新规划后刷新生成的会话标题，除非标题由用户设置"
     },
-    "task.isolation.mode": {
-      "sourceHash": "049542c2c0c90873daf472563d1d83128d93bd83d4b21aa8c6f3c3fbce28022b",
-      "label": "隔离模式",
-      "description": "子代理使用的隔离后端。选择“自动”时，原生 PAL 会选取最佳可用后端（依次为支持 CoW 的文件系统、overlayfs/ProjFS，再回退到 Git worktree 或递归复制）",
-      "options": {
-        "none": {
-          "label": "无",
-          "description": "不使用隔离"
-        },
-        "auto": {
-          "label": "自动",
-          "description": "让 PAL 选取最佳可用后端"
-        },
-        "apfs": {
-          "label": "APFS",
-          "description": "macOS clonefile reflink（APFS）"
-        },
-        "btrfs": {
-          "label": "btrfs",
-          "description": "btrfs 子卷快照"
-        },
-        "zfs": {
-          "label": "ZFS",
-          "description": "ZFS 快照和克隆"
-        },
-        "reflink": {
-          "label": "Reflink",
-          "description": "Linux FICLONE 逐文件 reflink"
-        },
-        "overlayfs": {
-          "label": "Overlayfs",
-          "description": "Linux 内核 overlay（回退到 fuse-overlayfs）"
-        },
-        "projfs": {
-          "label": "ProjFS",
-          "description": "Windows Projected File System"
-        },
-        "block-clone": {
-          "label": "块克隆",
-          "description": "Windows FSCTL_DUPLICATE_EXTENTS_TO_FILE（NTFS/ReFS）"
-        },
-        "rcopy": {
-          "label": "递归复制",
-          "description": "优先使用 Git worktree，否则递归复制"
-        }
-      }
-    },
     "task.isolation.apply": {
       "sourceHash": "29b0ef82b835bcb7152164aa0d30db8cb8a91bf456bf4c507491fb94d1e5a9a3",
       "label": "应用隔离更改",
@@ -3360,21 +3135,21 @@ export const zhCN = {
       "description": "代理管理的 worktree 的基础目录——任务隔离副本、`github` PR 检出和 `omp worktree` 清理均位于此处。未设置时使用 ~/.omp/wt。必须是绝对路径或以 ~ 开头的相对路径；其他相对路径会被忽略。环境变量 OMP_WORKTREE_DIR 的优先级更高"
     },
     "task.eager": {
-      "sourceHash": "f8b67a58f5e4d8bd2c760a807d9b77c06a9f79be071a1ee1349ba65d36c548e8",
+      "sourceHash": "bb8fdeff73b831ee5a5ed25b4aa5696b2565a6c6c7a27ac6c5a196e1c2b367c7",
       "label": "优先委派任务",
       "description": "推动将工作委派给子代理的强度",
       "options": {
         "default": {
           "label": "默认",
-          "description": "由模型决定何时委派"
+          "description": "使用所选模型的策略；部分模型要求明确提出委派请求"
         },
         "preferred": {
           "label": "优先",
-          "description": "向系统提示词添加委派指导"
+          "description": "在系统提示词中加入委派指引"
         },
         "always": {
           "label": "始终",
-          "description": "添加提示词指导，并在首轮提醒进行委派"
+          "description": "提供提示词指引，并在首个轮次提醒委派"
         }
       }
     },
@@ -3604,204 +3379,6 @@ export const zhCN = {
       "label": "Ollama Cloud 最大并发数",
       "description": "每个进程允许同时运行的 Ollama Cloud 子代理数量上限；设为 0 可禁用此提供商专属限制"
     },
-    "providers.webSearchOrder": {
-      "sourceHash": "36d63ca68e9b9f88d60a224b9fa8e407d397050fd0002d1e088c644d82edbc8f",
-      "label": "网页搜索提供商顺序",
-      "description": "web_search 工具使用提供商的优先顺序；未列出的提供商随后仍按默认顺序使用",
-      "options": {
-        "perplexity": {
-          "label": "Perplexity",
-          "description": "配置后使用身份验证；显式选择时可回退到匿名搜索"
-        },
-        "gemini": {
-          "label": "Gemini",
-          "description": "通过 Gemini 使用 Google Search grounding（使用 google-gemini-cli 或 google-antigravity OAuth）"
-        },
-        "anthropic": {
-          "label": "Anthropic",
-          "description": "Claude 原生 web_search 工具（使用 Anthropic OAuth 或 ANTHROPIC_API_KEY）"
-        },
-        "codex": {
-          "label": "OpenAI",
-          "description": "OpenAI 原生 web_search（通过 /login openai-codex 使用 ChatGPT OAuth）"
-        },
-        "xai": {
-          "label": "xAI",
-          "description": "通过 xAI Responses API 使用 Grok 网页搜索（通过 /login xai-oauth 使用 SuperGrok/X Premium+ OAuth，或使用 XAI_API_KEY）"
-        },
-        "zai": {
-          "label": "Z.AI",
-          "description": "调用 Z.AI webSearchPrime MCP"
-        },
-        "exa": {
-          "label": "Exa",
-          "description": "通过 /login exa 或 EXA_API_KEY 使用 API；显式选择时可通过 MCP 进行无密钥回退"
-        },
-        "tinyfish": {
-          "label": "TinyFish",
-          "description": "需要 TINYFISH_API_KEY"
-        },
-        "jina": {
-          "label": "Jina",
-          "description": "需要 JINA_API_KEY"
-        },
-        "kagi": {
-          "label": "Kagi",
-          "description": "需要 KAGI_API_KEY 和 Kagi Search API beta 访问权限"
-        },
-        "tavily": {
-          "label": "Tavily",
-          "description": "需要 TAVILY_API_KEY"
-        },
-        "firecrawl": {
-          "label": "Firecrawl",
-          "description": "设置 FIRECRAWL_API_KEY 后使用 Firecrawl API；否则回退到无密钥模式"
-        },
-        "brave": {
-          "label": "Brave",
-          "description": "需要 BRAVE_API_KEY"
-        },
-        "kimi": {
-          "label": "Kimi",
-          "description": "Kimi Code 搜索（需要通过 KIMI_SEARCH_API_KEY/MOONSHOT_SEARCH_API_KEY 或 /login kimi-code 提供 Kimi Code Console 密钥；不能使用 MOONSHOT_API_KEY）"
-        },
-        "parallel": {
-          "label": "Parallel",
-          "description": "需要 PARALLEL_API_KEY"
-        },
-        "synthetic": {
-          "label": "Synthetic",
-          "description": "需要 SYNTHETIC_API_KEY"
-        },
-        "searxng": {
-          "label": "SearXNG",
-          "description": "需要 SEARXNG_ENDPOINT 或 searxng.endpoint"
-        },
-        "startpage": {
-          "label": "Startpage",
-          "description": "无需凭据即可抓取 Startpage（由 Google 支持）的结果；可能触发机器人验证"
-        },
-        "duckduckgo": {
-          "label": "DuckDuckGo",
-          "description": "无需凭据的尽力而为回退；在数据中心或共享出口 IP 上可能触发机器人验证"
-        },
-        "ecosia": {
-          "label": "Ecosia",
-          "description": "无需凭据，通过浏览器抓取 Ecosia（由 Google 支持）的结果"
-        },
-        "google": {
-          "label": "Google",
-          "description": "无需凭据、由浏览器支持的回退；速度较慢，并可能触发机器人验证"
-        },
-        "mojeek": {
-          "label": "Mojeek",
-          "description": "无需凭据，通过浏览器抓取 Mojeek 独立索引中的结果"
-        },
-        "public": {
-          "label": "Public Web",
-          "description": "并行查询所有无需凭据的搜索引擎，并合并去重后的结果"
-        }
-      }
-    },
-    "providers.webSearchExclude": {
-      "sourceHash": "711d3026a206272e3c05ab9632cde61380f6ff319727420a071ac8393c078112",
-      "label": "排除的网页搜索提供商",
-      "description": "web_search 绝不使用的提供商，即使作为回退也不使用",
-      "options": {
-        "perplexity": {
-          "label": "Perplexity",
-          "description": "配置后使用身份验证；显式选择时可回退到匿名搜索"
-        },
-        "gemini": {
-          "label": "Gemini",
-          "description": "通过 Gemini 使用 Google Search grounding（使用 google-gemini-cli 或 google-antigravity OAuth）"
-        },
-        "anthropic": {
-          "label": "Anthropic",
-          "description": "Claude 原生 web_search 工具（使用 Anthropic OAuth 或 ANTHROPIC_API_KEY）"
-        },
-        "codex": {
-          "label": "OpenAI",
-          "description": "OpenAI 原生 web_search（通过 /login openai-codex 使用 ChatGPT OAuth）"
-        },
-        "xai": {
-          "label": "xAI",
-          "description": "通过 xAI Responses API 使用 Grok 网页搜索（通过 /login xai-oauth 使用 SuperGrok/X Premium+ OAuth，或使用 XAI_API_KEY）"
-        },
-        "zai": {
-          "label": "Z.AI",
-          "description": "调用 Z.AI webSearchPrime MCP"
-        },
-        "exa": {
-          "label": "Exa",
-          "description": "通过 /login exa 或 EXA_API_KEY 使用 API；显式选择时可通过 MCP 进行无密钥回退"
-        },
-        "tinyfish": {
-          "label": "TinyFish",
-          "description": "需要 TINYFISH_API_KEY"
-        },
-        "jina": {
-          "label": "Jina",
-          "description": "需要 JINA_API_KEY"
-        },
-        "kagi": {
-          "label": "Kagi",
-          "description": "需要 KAGI_API_KEY 和 Kagi Search API beta 访问权限"
-        },
-        "tavily": {
-          "label": "Tavily",
-          "description": "需要 TAVILY_API_KEY"
-        },
-        "firecrawl": {
-          "label": "Firecrawl",
-          "description": "设置 FIRECRAWL_API_KEY 后使用 Firecrawl API；否则回退到无密钥模式"
-        },
-        "brave": {
-          "label": "Brave",
-          "description": "需要 BRAVE_API_KEY"
-        },
-        "kimi": {
-          "label": "Kimi",
-          "description": "Kimi Code 搜索（需要通过 KIMI_SEARCH_API_KEY/MOONSHOT_SEARCH_API_KEY 或 /login kimi-code 提供 Kimi Code Console 密钥；不能使用 MOONSHOT_API_KEY）"
-        },
-        "parallel": {
-          "label": "Parallel",
-          "description": "需要 PARALLEL_API_KEY"
-        },
-        "synthetic": {
-          "label": "Synthetic",
-          "description": "需要 SYNTHETIC_API_KEY"
-        },
-        "searxng": {
-          "label": "SearXNG",
-          "description": "需要 SEARXNG_ENDPOINT 或 searxng.endpoint"
-        },
-        "startpage": {
-          "label": "Startpage",
-          "description": "无需凭据即可抓取 Startpage（由 Google 支持）的结果；可能触发机器人验证"
-        },
-        "duckduckgo": {
-          "label": "DuckDuckGo",
-          "description": "无需凭据的尽力而为回退；在数据中心或共享出口 IP 上可能触发机器人验证"
-        },
-        "ecosia": {
-          "label": "Ecosia",
-          "description": "无需凭据，通过浏览器抓取 Ecosia（由 Google 支持）的结果"
-        },
-        "google": {
-          "label": "Google",
-          "description": "无需凭据、由浏览器支持的回退；速度较慢，并可能触发机器人验证"
-        },
-        "mojeek": {
-          "label": "Mojeek",
-          "description": "无需凭据，通过浏览器抓取 Mojeek 独立索引中的结果"
-        },
-        "public": {
-          "label": "Public Web",
-          "description": "并行查询所有无需凭据的搜索引擎，并合并去重后的结果"
-        }
-      }
-    },
     "providers.webSearchTimeoutSeconds": {
       "sourceHash": "71c8ac2e307eceb1741a498527d96c6313bed518f7cb610f0c2f3c38462dab6e",
       "label": "网页搜索超时",
@@ -3824,11 +3401,6 @@ export const zhCN = {
         }
       }
     },
-    "providers.webSearchGeminiModel": {
-      "sourceHash": "e986ee48f70bd212e42429be37820e6716fe3bcefedc440f4ae87dddba010a4a",
-      "label": "Gemini web_search 模型",
-      "description": "用于 Gemini Google Search grounding 的模型 ID，默认为 gemini-2.5-flash"
-    },
     "providers.antigravityEndpoint": {
       "sourceHash": "1e318646b30303f15f8c7f45adfa8f5b50d2e143440a4b6889bd81832ef3a8b6",
       "label": "Antigravity 端点模式",
@@ -3845,37 +3417,6 @@ export const zhCN = {
         "sandbox": {
           "label": "仅 Sandbox",
           "description": "强制仅使用 sandbox 端点"
-        }
-      }
-    },
-    "providers.imageOrder": {
-      "sourceHash": "90a0169f0cc48a80b722ce4fa3ab1eb40a5e737cdaafa51a4ea4bdf0f1e1a43f",
-      "label": "图像提供商顺序",
-      "description": "图像生成提供商的优先顺序；未列出的提供商将遵循当前会话提供商和内置顺序",
-      "options": {
-        "openai": {
-          "label": "OpenAI",
-          "description": "使用 OPENAI_API_KEY（gpt-image-2）或当前 GPT 模型；回退到已连接的 Codex 订阅"
-        },
-        "openai-codex": {
-          "label": "OpenAI Codex (ChatGPT)",
-          "description": "使用已连接的 Codex / ChatGPT 订阅，无需 OPENAI_API_KEY"
-        },
-        "antigravity": {
-          "label": "Antigravity",
-          "description": "需要 google-antigravity OAuth"
-        },
-        "xai": {
-          "label": "xAI Grok Imagine",
-          "description": "需要 xAI Grok OAuth 或 XAI_API_KEY"
-        },
-        "gemini": {
-          "label": "Gemini",
-          "description": "需要 GEMINI_API_KEY"
-        },
-        "openrouter": {
-          "label": "OpenRouter",
-          "description": "需要 OPENROUTER_API_KEY"
         }
       }
     },
@@ -3925,36 +3466,6 @@ export const zhCN = {
         },
         "vale": {
           "label": "Vale"
-        }
-      }
-    },
-    "providers.tts": {
-      "sourceHash": "c69feb4b954f95e45ecd25848391f66bc66a0a70d1c566a38b05df802c0b8553",
-      "label": "TTS 提供商",
-      "description": "tts 工具使用的后端：本地端侧神经 TTS（Kokoro-82M）或 xAI Grok Voice",
-      "options": {
-        "auto": {
-          "label": "自动",
-          "description": "优先使用本地端侧 TTS；存在凭据时，将 .mp3 输出路由到 xAI"
-        },
-        "local": {
-          "label": "本地",
-          "description": "端侧神经 TTS（Kokoro-82M）；输出格式为 WAV/PCM16"
-        },
-        "xai": {
-          "label": "xAI Grok Voice",
-          "description": "需要 xAI Grok OAuth 或 XAI_API_KEY；支持 MP3 或 WAV"
-        }
-      }
-    },
-    "tts.localModel": {
-      "sourceHash": "36cf2c8974530fc93834f42aa9a9d1dff6e9949e943c71591d6790cf1ccce39d",
-      "label": "本地 TTS 模型",
-      "description": "本地 TTS 后端使用的端侧神经 TTS 模型（Kokoro-82M）",
-      "options": {
-        "kokoro": {
-          "label": "Kokoro-82M",
-          "description": "Kokoro-82M 神经 TTS，具备 SoTA 端侧质量，支持多音色且完全在本地运行"
         }
       }
     },
@@ -4070,41 +3581,10 @@ export const zhCN = {
         }
       }
     },
-    "providers.tinyModel": {
-      "sourceHash": "af45f635f8b1f39292f713da104d517d7cd907ff041feef9d0949557c5d57f6e",
-      "label": "小型模型",
-      "description": "会话标题模型：默认使用在线模型（/models 中的 TINY 角色，否则为 @smol），也可使用本地端侧模型",
-      "options": {
-        "online": {
-          "label": "在线（TINY 角色，否则 @smol）",
-          "description": "在线生成标题：已分配时使用 TINY 模型角色（在 /models 中设置），否则使用在线回退（先使用 commit 角色，再使用 @smol）；无需下载本地模型，也不进行端侧推理"
-        },
-        "lfm2-350m": {
-          "label": "LFM2 350M",
-          "description": "推荐的本地模型；速度与质量最均衡，缓存占用约 212 MB"
-        },
-        "qwen3-0.6b": {
-          "label": "Qwen3 0.6B",
-          "description": "最稳健的本地选项；首次加载较慢，缓存占用约 500 MB"
-        },
-        "gemma-270m": {
-          "label": "Gemma 270M",
-          "description": "可用的最小本地选项；质量较低，缓存占用最小"
-        },
-        "qwen2.5-0.5b": {
-          "label": "Qwen2.5 0.5B",
-          "description": "均衡的本地回退；质量和缓存占用适中"
-        },
-        "lfm2-700m": {
-          "label": "LFM2 700M",
-          "description": "质量最高的本地选项；比 LFM2 350M 更大、更慢"
-        }
-      }
-    },
     "providers.tinyModelDevice": {
-      "sourceHash": "a4e269dc5d6ee1f0f841474aed5761b8dbfdd90a8a632672b9a92bb913f4a1eb",
-      "label": "小型模型设备",
-      "description": "本地小型模型（标题 + 记忆）使用的 ONNX 执行提供程序；默认仅使用 CPU 推理；环境变量 PI_TINY_DEVICE 会覆盖此设置",
+      "sourceHash": "edcd3a6a11491078f10d16183da918649be9597b9354a4b8b80731538df2086b",
+      "label": "微型模型设备",
+      "description": "本地微型模型（标题与记忆）的推理后端：使用 ONNX 执行提供商，或选择 `mlx` 下载 MLX 权重并通过 mlx-lm 在 Apple silicon 上运行。默认仅使用 CPU 进行 ONNX 推理。环境变量 `PI_TINY_DEVICE` 会覆盖此设置",
       "options": {
         "default": {
           "label": "默认",
@@ -4112,15 +3592,19 @@ export const zhCN = {
         },
         "gpu": {
           "label": "GPU",
-          "description": "加速执行提供程序（WebGPU/Metal、CUDA 或 DirectML）"
+          "description": "使用加速提供商（WebGPU/Metal、CUDA 或 DirectML）"
         },
         "cpu": {
           "label": "CPU",
           "description": "仅使用 CPU 推理"
         },
+        "mlx": {
+          "label": "MLX",
+          "description": "通过 mlx-lm 使用 Apple silicon GPU（Python 子进程；macOS arm64）"
+        },
         "metal": {
           "label": "Metal",
-          "description": "Apple GPU 的 WebGPU 别名"
+          "description": "MLX 的别名"
         },
         "webgpu": {
           "label": "WebGPU",
@@ -4140,7 +3624,7 @@ export const zhCN = {
         },
         "auto": {
           "label": "自动",
-          "description": "由 ONNX Runtime 选择提供程序"
+          "description": "让 ONNX Runtime 选择提供商"
         },
         "wasm": {
           "label": "WASM",
@@ -4165,13 +3649,13 @@ export const zhCN = {
       }
     },
     "providers.tinyModelDtype": {
-      "sourceHash": "5261b1e5b5909d0b3ef1d5f71273bab0c8e09a5a15ec28316bbb9b22ee19c4a7",
-      "label": "小型模型精度",
-      "description": "本地小型模型使用的 ONNX 量化/精度；默认使用各模型随附的 dtype（q4）；较低精度速度更快，较高精度更忠实；环境变量 PI_TINY_DTYPE 会覆盖此设置",
+      "sourceHash": "b9f502c582012830474d5c7b38be3891178129c048dbc6cb0393e2efdee9166b",
+      "label": "微型模型精度",
+      "description": "本地微型模型的 ONNX 量化与精度。默认使用各模型自带的数据类型（q4）；较低精度更快，较高精度更忠实于原始模型。MLX 后端忽略此设置（其仓库已预先量化为 4 位）。环境变量 `PI_TINY_DTYPE` 会覆盖此设置",
       "options": {
         "default": {
           "label": "默认",
-          "description": "各模型随附的 dtype（目前为 q4）"
+          "description": "各模型自带的数据类型（目前为 q4）"
         },
         "q4": {
           "label": "q4",
@@ -4179,7 +3663,7 @@ export const zhCN = {
         },
         "q4f16": {
           "label": "q4f16",
-          "description": "4 位权重和 fp16 激活值"
+          "description": "4 位权重与 fp16 激活值"
         },
         "q8": {
           "label": "q8",
@@ -4187,7 +3671,7 @@ export const zhCN = {
         },
         "fp16": {
           "label": "fp16",
-          "description": "16 位浮点；保真度更高、体积更大"
+          "description": "16 位浮点数；保真度更高、体积更大"
         },
         "fp32": {
           "label": "fp32",
@@ -4203,7 +3687,7 @@ export const zhCN = {
         },
         "bnb4": {
           "label": "bnb4",
-          "description": "bitsandbytes 4 位"
+          "description": "bitsandbytes 4 位量化"
         },
         "q2": {
           "label": "q2",
@@ -4211,7 +3695,7 @@ export const zhCN = {
         },
         "q2f16": {
           "label": "q2f16",
-          "description": "2 位权重和 fp16 激活值"
+          "description": "2 位权重与 fp16 激活值"
         },
         "q1": {
           "label": "q1",
@@ -4219,73 +3703,11 @@ export const zhCN = {
         },
         "q1f16": {
           "label": "q1f16",
-          "description": "1 位权重和 fp16 激活值"
+          "description": "1 位权重与 fp16 激活值"
         },
         "auto": {
           "label": "自动",
-          "description": "由 transformers.js 根据设备选择"
-        }
-      }
-    },
-    "providers.memoryModel": {
-      "sourceHash": "335dc4298ae902660a108040ace262a3f331a9dbd60d7b6d2f52191f404debe1",
-      "label": "记忆模型",
-      "description": "Mnemopi 用于事实提取和整合的 LLM：默认使用在线模型（/models 中的 TINY 角色，否则使用 smol/remote），也可使用本地设备端模型",
-      "options": {
-        "online": {
-          "label": "在线（TINY 角色，否则 @smol）",
-          "description": "使用在线模型：若已设置，则使用 /models 中的 TINY 角色，否则使用 @smol。不下载本地模型，也不在设备端推理"
-        },
-        "qwen3-1.7b": {
-          "label": "Qwen3 1.7B",
-          "description": "已禁用本地推理：onnxruntime-node 无法运行此 ONNX 导出中的 RotaryEmbedding 缓存更新"
-        },
-        "llama3.2:3b": {
-          "label": "Llama 3.2 3B",
-          "description": "用于本地记忆/分类器任务的较大 Llama 3.2 选项；可能质量更高，但磁盘、RAM 和延迟成本也更高"
-        },
-        "gemma-3-1b": {
-          "label": "Gemma 3 1B",
-          "description": "整合和去重效果最佳；占用更少，但提取时会混入闲聊内容"
-        },
-        "qwen2.5-1.5b": {
-          "label": "Qwen2.5 1.5B",
-          "description": "提取粒度最佳（原子事实）；整合能力较弱"
-        },
-        "lfm2-1.2b": {
-          "label": "LFM2 1.2B",
-          "description": "加载最快；综合表现稳健，但提取标签的噪声略多"
-        }
-      }
-    },
-    "providers.autoThinkingModel": {
-      "sourceHash": "d63d8eb9ef9f4e952292c5f182a6cfbc7f13e73ec566b6ed7b1d2d77aa437aa5",
-      "label": "自动思考模型",
-      "description": "用于 `auto` 思考级别的难度分类器：默认使用在线模型（/models 中的 TINY 角色，否则使用 smol），也可使用本地设备端模型",
-      "options": {
-        "online": {
-          "label": "在线（TINY 角色，否则 @smol）",
-          "description": "使用 TINY 角色模型（在 /models 中设置）或 @smol 在线判断提示词难度；无需本地下载或设备端推理"
-        },
-        "qwen3-1.7b": {
-          "label": "Qwen3 1.7B",
-          "description": "已禁用本地推理：onnxruntime-node 无法运行此 ONNX 导出中的 RotaryEmbedding 缓存更新"
-        },
-        "llama3.2:3b": {
-          "label": "Llama 3.2 3B",
-          "description": "用于本地记忆/分类器任务的较大 Llama 3.2 选项；可能质量更高，但磁盘、RAM 和延迟成本也更高"
-        },
-        "gemma-3-1b": {
-          "label": "Gemma 3 1B",
-          "description": "整合和去重效果最佳；占用更少，但提取时会混入闲聊内容"
-        },
-        "qwen2.5-1.5b": {
-          "label": "Qwen2.5 1.5B",
-          "description": "提取粒度最佳（原子事实）；整合能力较弱"
-        },
-        "lfm2-1.2b": {
-          "label": "LFM2 1.2B",
-          "description": "加载最快；综合表现稳健，但提取标签的噪声略多"
+          "description": "让 transformers.js 根据设备选择"
         }
       }
     },
@@ -4320,37 +3742,6 @@ export const zhCN = {
         "smart": {
           "label": "Smart",
           "description": "Mechanical + 使用小模型对仅文本停止进行分类"
-        }
-      }
-    },
-    "providers.unexpectedStopModel": {
-      "sourceHash": "b7338b417d08cce906e786e7a51de24b352d3f20fac7debbb5c57d70161c1239",
-      "label": "意外停止模型",
-      "description": "用于 Smart 意外停止检测的分类器：默认使用在线模型（/models 中的 TINY 角色，否则为 smol），也可使用本地端侧模型",
-      "options": {
-        "online": {
-          "label": "在线（TINY 角色，否则 @smol）",
-          "description": "使用在线模型：若已设置，则使用 /models 中的 TINY 角色，否则使用 @smol。不下载本地模型，也不在设备端推理"
-        },
-        "qwen3-1.7b": {
-          "label": "Qwen3 1.7B",
-          "description": "已禁用本地推理：onnxruntime-node 无法运行此 ONNX 导出中的 RotaryEmbedding 缓存更新"
-        },
-        "llama3.2:3b": {
-          "label": "Llama 3.2 3B",
-          "description": "用于本地记忆/分类器任务的较大 Llama 3.2 选项；可能质量更高，但磁盘、RAM 和延迟成本也更高"
-        },
-        "gemma-3-1b": {
-          "label": "Gemma 3 1B",
-          "description": "整合和去重效果最佳；占用更少，但提取时会混入闲聊内容"
-        },
-        "qwen2.5-1.5b": {
-          "label": "Qwen2.5 1.5B",
-          "description": "提取粒度最佳（原子事实）；整合能力较弱"
-        },
-        "lfm2-1.2b": {
-          "label": "LFM2 1.2B",
-          "description": "加载最快；综合表现稳健，但提取标签的噪声略多"
         }
       }
     },
@@ -4393,25 +3784,25 @@ export const zhCN = {
       }
     },
     "providers.cacheRetention": {
-      "sourceHash": "0ee0512c854116d102b186956782e7b78c7c2aa1968ef643a299784bd7bb39b9",
-      "label": "提示词缓存保留期限",
-      "description": "传递给支持此设置的提供商的提示词缓存保留期限（Anthropic、Bedrock、OpenRouter、OpenAI）",
+      "sourceHash": "445590c5156229532581a6ce9a557ab741e165c1bf27a8f61cc2788d4a93af39",
+      "label": "提示词缓存保留时间",
+      "description": "向支持此功能的提供商（Anthropic、Bedrock、OpenRouter、OpenAI）传递提示词缓存保留时间",
       "options": {
         "auto": {
           "label": "自动",
-          "description": "使用提供商默认设置——Anthropic 使用 5m 缓存条目，并在空闲时通过 keep-alive 刷新维持热状态；PI_CACHE_RETENTION 仍然适用"
+          "description": "采用提供商默认值：Anthropic OAuth 订阅者会话默认为 1 小时，API 密钥默认为 5 分钟；`PI_CACHE_RETENTION` 仍然生效"
         },
         "short": {
-          "label": "短（5m）",
-          "description": "缓存写入成本最低；空闲时，Anthropic 会通过受限的 keep-alive 刷新维持条目热状态"
+          "label": "短期（5 分钟）",
+          "description": "缓存写入费用最低；配合缓存保温，可在空闲时让短期条目保持有效"
         },
         "long": {
-          "label": "长（1h）",
-          "description": "提供商支持时使用 1h TTL；写入成本更高，不发送 keep-alive 刷新请求"
+          "label": "长期（1 小时）",
+          "description": "提供商支持时使用 1 小时 TTL；写入费用更高，仅在运行期间保温"
         },
         "none": {
           "label": "关闭",
-          "description": "禁用提示词缓存和缓存亲和性路由"
+          "description": "禁用提示词缓存和缓存亲和路由"
         }
       }
     },
@@ -4491,16 +3882,16 @@ export const zhCN = {
       }
     },
     "providers.fetch": {
-      "sourceHash": "675959ef4a06f43b25f17005278b9b56ae8e4ecffdae1e50abdda1b805aefa11",
-      "label": "Fetch 提供商",
-      "description": "fetch/read URL 工具的读取后端优先级",
+      "sourceHash": "b3f53bda97066dd97cc06e42194e06da96f6060bc5b50e0bff173a0b575066a0",
+      "label": "网页读取提供商",
+      "description": "`fetch`/`read` URL 工具的网页读取后端优先级",
       "options": {
         "auto": {
           "label": "自动",
-          "description": "优先级：native > trafilatura > lynx > parallel > jina"
+          "description": "优先级：native > trafilatura > lynx > parallel > firecrawl > jina"
         },
         "native": {
-          "label": "Native",
+          "label": "原生",
           "description": "进程内 HTML→Markdown 转换器（始终可用）"
         },
         "trafilatura": {
@@ -4509,15 +3900,19 @@ export const zhCN = {
         },
         "lynx": {
           "label": "Lynx",
-          "description": "需要 lynx 系统包"
+          "description": "需要 `lynx` 系统软件包"
         },
         "parallel": {
           "label": "Parallel",
-          "description": "需要 PARALLEL_API_KEY"
+          "description": "需要 `PARALLEL_API_KEY`"
+        },
+        "firecrawl": {
+          "label": "Firecrawl",
+          "description": "需要 `FIRECRAWL_API_KEY`"
         },
         "jina": {
           "label": "Jina",
-          "description": "使用 r.jina.ai 读取器（JINA_API_KEY 可选）"
+          "description": "使用 r.jina.ai 网页读取服务（`JINA_API_KEY` 可选）"
         }
       }
     },
@@ -4603,6 +3998,553 @@ export const zhCN = {
       "sourceHash": "0052808da5e30bce03ee74bfce70aeb4d07528a7ad6c1d8e7cb30f0e1301d2c4",
       "label": "自动 QA 推送端点",
       "description": "接收自动 QA JSON 报告的完整 URL（默认 https://qa.omp.sh/v1/grievances）"
+    },
+    "composer.tokenRate": {
+      "sourceHash": "ab82c5efedfd6a27a06bfbd0a887aa528687853951a212eba3d071fc23188b01",
+      "label": "生成速率",
+      "description": "在工作状态行中显示实时生成速率（tok/s），紧邻会话标题右侧。根据流式增量估算，并在每条消息完成时按提供商计费的输出 token 数校正"
+    },
+    "tui.reactions": {
+      "sourceHash": "049f992873a3508b160cc0f291f7b5ac0e9879ef704f83cfc486d8aa8f569ec8",
+      "label": "智能体回应表情",
+      "description": "允许智能体在其消息气泡上用表情徽标回应你的消息"
+    },
+    "tui.titleSpinner": {
+      "sourceHash": "5d6af659ad89599e4bb2d1b8d4b0d44307156238d8772c75e505861bfefeaf69",
+      "label": "终端标题旋转指示器",
+      "description": "终端标题中工作状态旋转指示器所用的字形集：盲文轮转、月相盈亏、单点循环或兼容 ASCII 的线条",
+      "options": {
+        "braille": {
+          "label": "盲文",
+          "description": "经典的 ⠋⠙⠹ 轮转（默认）"
+        },
+        "pulse": {
+          "label": "脉动",
+          "description": "月相从 ○◑● 逐渐填满，再逐渐变空"
+        },
+        "dots": {
+          "label": "圆点",
+          "description": "单个盲文圆点循环切换"
+        },
+        "line": {
+          "label": "线条",
+          "description": "使用 ASCII 字符 `- \\ | /`，适用于不含盲文字形的字体"
+        }
+      }
+    },
+    "tui.mouse": {
+      "sourceHash": "fdc0edf9b46864674950977c195887b450e0b3bd2256f48efaca086c5cdd80d5",
+      "label": "鼠标点击聚焦",
+      "description": "在主会话中捕获鼠标点击，使实时子 Agent 卡片和 HUD 行可通过点击聚焦，并在悬停时高亮目标。开启后，原生文本选择改为 {shift}+拖动，滚轮滚动改为 {shift}+滚轮",
+      "descriptionSource": "Capture mouse clicks in the main session so live subagent cards and HUD rows focus on click, with a hover highlight on the target. Native text selection becomes {shift}+drag and wheel scroll becomes {shift}+wheel while on"
+    },
+    "display.pinnedAgents": {
+      "sourceHash": "01fb7f1651c02d82ca1765bf78b136248dd7cb94fe686af3beb2451d8bf3c16c",
+      "label": "固定智能体列表",
+      "description": "在编辑器上方固定显示运行中的智能体跳转列表（`off` 隐藏；`collapsed` 显示少量行及展开控件；`full` 显示全部）",
+      "options": {
+        "off": {
+          "label": "关闭",
+          "description": "隐藏固定跳转列表"
+        },
+        "collapsed": {
+          "label": "折叠",
+          "description": "显示少量行及展开控件"
+        },
+        "full": {
+          "label": "完整",
+          "description": "始终列出所有运行中的智能体"
+        }
+      }
+    },
+    "display.showTurnTime": {
+      "sourceHash": "2054d1659068a18833574ff26edd6727a0f6996ad12a3f44b34f0e60f6d53756",
+      "label": "显示轮次耗时",
+      "description": "在助手消息的用量行中显示从提示词提交到交还控制权的总耗时（包括工具调用）"
+    },
+    "skillful": {
+      "sourceHash": "ec1baf2583370639bf534118f525772373881dfc98f9b19a54ea336c632add50",
+      "label": "在提示词中列出技能",
+      "description": "在系统提示词中列出可用技能；关闭可节省上下文，并可通过 `/skillful` 在每个会话中切换"
+    },
+    "retry.waitForUsageReset": {
+      "sourceHash": "4376f324f6b9672db734407b622bd1b156069b03b2ff3957965e235000457c29",
+      "label": "等待用量重置",
+      "description": "当提供商报告用量已耗尽并给出重置时间（任意提供商的 5 小时或每周配额窗口）时，等待至重置，而不是因超出 retry.maxDelayMs 立即失败。可按 {escape} 中止等待，但等待也会阻塞子 Agent，因此无人值守运行时请保持关闭",
+      "descriptionSource": "When a provider reports usage-limit exhaustion with a reset time (5-hour or weekly quota windows on any provider), sleep until the reset instead of failing fast past retry.maxDelayMs. Waits are abortable ({escape}) but also hold subagents, so leave off for unattended runs."
+    },
+    "advisor.maxNotesPerUpdate": {
+      "sourceHash": "a3988ae01c34e684bf1cde5fa038e3c3cdde022e2dad0184f2c2128f08b9b926",
+      "label": "Advisor 每次更新建议上限",
+      "description": "每次 Advisor 提示词更新最多接受的非阻塞性建议条数（1–32；界面提供 1–5 的快捷选项），阻塞性问题不受此限制",
+      "options": {
+        "1": {
+          "label": "1 条建议",
+          "description": "严格防止建议刷屏"
+        },
+        "2": {
+          "label": "2 条建议"
+        },
+        "3": {
+          "label": "3 条建议"
+        },
+        "4": {
+          "label": "4 条建议",
+          "description": "默认"
+        },
+        "5": {
+          "label": "5 条建议"
+        }
+      }
+    },
+    "advisor.evictStaleResults": {
+      "sourceHash": "195ccd837d8a7ab853c49e5534d9b077ffef0deb23a767e30787d81fd43aaf21",
+      "label": "Advisor 清除旧结果",
+      "description": "每次审查前，将 Advisor 较早审查中的 `read` / `grep` / `glob` 输出替换为简短占位内容，保留最新一次审查"
+    },
+    "tui.vimMode": {
+      "sourceHash": "413d6571d0bb45b34f715368db19f20e9c37d865aa005652a91ab63ab6158508",
+      "label": "Vim 编辑模式",
+      "description": "以模式切换方式编辑提示词。{escape} 退出插入模式；普通模式支持 hjkl、0、$、^、w、b、e、gg、G、计数、x/D/C、dd/yy、p 和 u；操作符可配合移动或文本对象（diw、ca(、dap）；v/V 开始可视选择，y 复制，d 删除",
+      "descriptionSource": "Modal prompt editing. {escape} leaves Insert mode; Normal mode has hjkl, 0, $, ^, w, b, e, gg, G, counts, x/D/C, dd/yy, p and u; operators take motions or text objects (diw, ca(, dap); v/V start a Visual selection that y copies and d deletes"
+    },
+    "tui.vimModeDisplay": {
+      "sourceHash": "9e287fe697790e65d7be3dfc6989cc52196cbb31654d01c350f70612f0dce4a6",
+      "label": "Vim 模式指示器",
+      "description": "当前 Vim 模式在状态栏中的显示方式",
+      "options": {
+        "text": {
+          "label": "文本",
+          "description": "完整模式名称：NORMAL、INSERT、VISUAL、V-LINE"
+        },
+        "icon": {
+          "label": "图标",
+          "description": "每个模式使用一个紧凑字形"
+        },
+        "none": {
+          "label": "隐藏",
+          "description": "不在状态栏中显示模式"
+        }
+      }
+    },
+    "loop.conditionTimeoutMs": {
+      "sourceHash": "0f388024842816ed0a08e04b3e9d723c3494745bb165cc2fe730ce50045daf7f",
+      "label": "循环条件超时 (ms)",
+      "description": "等待 `/loop --while` / `--until` 条件命令的最长时间，超时后将其视为故障并停止循环。设为 0 可无限等待",
+      "options": {
+        "0": {
+          "label": "不限"
+        },
+        "10000": {
+          "label": "10 秒"
+        },
+        "30000": {
+          "label": "30 秒"
+        },
+        "120000": {
+          "label": "2 分钟"
+        }
+      }
+    },
+    "composer.recallClearedDrafts": {
+      "sourceHash": "d54a0ff8733b42c4f6431da178b244d9fd182fa2871c172ff4fa7e6b12f81024",
+      "label": "找回已清空草稿",
+      "description": "将用 {clear} 清除的草稿保留在本地 {history} 历史中，直至退出；关闭后仅影响后续清除的草稿",
+      "descriptionSource": "Keep drafts cleared with {clear} in local {history} history until exit; disabling affects future clears"
+    },
+    "input.bareExitOnEmptySession": {
+      "sourceHash": "5143902fd8155a85a4ed148162454b47424ba5dea9c1dc56c962e5e1e245d60f",
+      "label": "空会话直接退出",
+      "description": "在首条消息之前提交仅含 `exit`、`quit` 或 `q` 的输入（不区分大小写），直接退出而不是向模型发送提示词"
+    },
+    "input.bareSlashCommands": {
+      "sourceHash": "22ff29c8955034cd6668a5cd1ec342c44a01b7aa5207916dfa0e9a05e5e187ef",
+      "label": "省略斜杠执行命令",
+      "description": "提交仅含命令名称、不带开头 `/` 的输入（例如 `model`、`compact`），即可执行对应斜杠命令；会话已有消息时，需按两次 Enter 确认"
+    },
+    "magicKeywords.jevify": {
+      "sourceHash": "13d2e210aba3b4ad7c58860a5092298775bfeb1090b0c63cf7df540e70db332a",
+      "label": "Jevify 关键词",
+      "description": "允许单独使用的 `jevify` 追加其隐藏的批量判定分类提示"
+    },
+    "skills.registryUrl": {
+      "sourceHash": "200d719bfb211f0a94c1b7ab1091c503171445d23ea07ea7d1dd872ea03c0fe5",
+      "label": "技能注册服务",
+      "description": "`omp skill` 用于安装、搜索和发布技能的 Skillshare 注册服务（`https://host[:port]`）"
+    },
+    "collab.autoStart": {
+      "sourceHash": "31c607b239cb23c1135ac9d295cb748b09d91961d17b32c446cfdde10480733a",
+      "label": "自动启动",
+      "description": "每个交互式会话启动时，通过 `collab.relayUrl` 托管并发布到本地注册表（`omp collab list`）；切换会话时更换房间",
+      "options": {
+        "off": {
+          "label": "关闭",
+          "description": "仅在运行 `/collab` 时共享"
+        },
+        "view": {
+          "label": "查看",
+          "description": "自动托管；注册表提供仅供查看的链接（`omp collab link --view`）"
+        },
+        "control": {
+          "label": "控制",
+          "description": "自动托管；注册表提供可向会话发送提示词的控制链接"
+        }
+      }
+    },
+    "stream.serverUrl": {
+      "sourceHash": "e10882886e0fe7cf46f0fadb98eeff1582720fb830505b2794c0922e50a80583",
+      "label": "直播服务器",
+      "description": "`omp stream` 使用的直播服务器（`https://host[:port]`）；观众可在 `<base>/<your Stencil username>` 观看，其中后者为你的 Stencil 用户名"
+    },
+    "stream.redactPatterns": {
+      "sourceHash": "7f4b864bed280004a737464a6a4474cd7ec9623a2b20aef26f78d19f4f6c0ed3",
+      "label": "额外脱敏模式",
+      "description": "除 `env/secrets.yml` 中的值和内置凭据格式外，对每一行直播内容应用的额外脱敏正则表达式"
+    },
+    "compaction.experimentalContextManagement": {
+      "sourceHash": "5c17f992bba9bbeb54b5da3f247078e2c611710e68bb0cba5a9021f8b69f19d0",
+      "label": "笔记支持的上下文窗口（实验性）",
+      "description": "跨上下文窗口保留持久笔记和可搜索的原始历史记录"
+    },
+    "sharpshooter.model": {
+      "sourceHash": "3013b8f5bec1695adf5e27718283ad929533280958a8d82488de34574f7e5631",
+      "label": "Sharpshooter 模型",
+      "description": "用于提取与整合的模型选择器；留空时使用 `smol` 角色"
+    },
+    "ttsr.judge": {
+      "sourceHash": "38f231f5e83342a5b0840ce2b9b2011fb10c0193156bd94639f5d1fd354ef323",
+      "label": "模型判定规则",
+      "description": "针对已完成的回复、推理和工具调用，向 `judge` 模型角色询问每条 `question` 规则的问题；回答为肯定时，将该规则作为警告注入",
+      "options": {
+        "auto": {
+          "label": "自动",
+          "description": "仅当 `judge` 角色解析为原生 TypeSafe jev 模型时进行判定"
+        },
+        "on": {
+          "label": "开启",
+          "description": "始终进行判定，无论 `judge` 角色解析为哪个模型"
+        },
+        "off": {
+          "label": "关闭",
+          "description": "从不进行判定；问题规则保持不生效"
+        }
+      }
+    },
+    "providers.openaiLiveSteering": {
+      "sourceHash": "bcd975ff6d66fcbddc9ba9f1b653f212c50d1d5eb56dfe96ee295c00a1c042ad",
+      "label": "OpenAI 实时引导",
+      "description": "通过 Codex WebSocket，将 GPT-6 回复流式输出期间输入的消息直接送入该回复，而不是等待下一个工具边界"
+    },
+    "providers.cacheWarming": {
+      "sourceHash": "92adf61f240c5286461b82e98d2369cd0d6cc9c9656ae09b4c6f936e160699a8",
+      "label": "缓存保温",
+      "description": "在提示词缓存条目即将过期前，以 1 token 的输出额度重新发送上一次请求",
+      "options": {
+        "off": {
+          "label": "关闭",
+          "description": "禁用缓存保温"
+        },
+        "streaming": {
+          "label": "流式输出期间",
+          "description": "在工具长时间执行时保护高成本前缀；代理结束运行后停止"
+        },
+        "idle": {
+          "label": "空闲期间",
+          "description": "预期节省仍高于成本下限时，也在两次运行之间刷新 5 分钟缓存条目"
+        }
+      }
+    },
+    "claudeResets.autoRedeem": {
+      "sourceHash": "0c206e1a18fc62c4b293935ec3c40a2c8d47efd5ca1e3c6193bad12558bc3c47",
+      "label": "Claude 自动兑换重置",
+      "description": "自动消耗符合条件的 Claude Cedar 或 Juniper 重置次数。Cedar 仅用于其覆盖的额度限制；Juniper 仅能解除单独的 5 小时限额阻断。`unset` 在首次消耗前询问，`yes` 无需询问直接消耗，`no` 禁用限额阻断恢复和到期前利用",
+      "options": {
+        "unset": {
+          "label": "未设置",
+          "description": "实时检查是否符合条件，再在首次消耗 Claude 重置次数前询问"
+        },
+        "yes": {
+          "label": "是",
+          "description": "无需询问，直接消耗符合条件的 Claude 重置次数"
+        },
+        "no": {
+          "label": "否",
+          "description": "不执行 Claude 重置自动兑换检查"
+        }
+      }
+    },
+    "claudeResets.minBlockedMinutes": {
+      "sourceHash": "92d5083c31169533e3c215dffcfe0d8ce1d2c015544ae2e8bbb2abd4215cfee2",
+      "label": "Claude 自动兑换最短阻断时间",
+      "description": "仅当自然解除阻断的时间（已耗尽且受覆盖的各额度窗口中最晚的重置时间）至少还相隔所设分钟数时，才自动兑换；仅重置 5 小时限额的次数绝不用于每周限额或特定模型限额造成的阻断"
+    },
+    "claudeResets.keepCredits": {
+      "sourceHash": "affcbc0c1c263f4a8b8793d4638650bbdfb9e473fc13f7337ac1bcb4044c2b8f",
+      "label": "Claude 自动兑换保留次数",
+      "description": "至少保留所设数量的 Claude 重置次数（0 允许自动消耗最后一次符合条件的重置）；此保留数量也适用于到期前利用"
+    },
+    "claudeResets.salvageHorizonHours": {
+      "sourceHash": "d496deb3471422497fb60b9f039e4791849dcb718aacb66ec3233bf6e8a12463",
+      "label": "Claude 重置到期利用窗口",
+      "description": "仅当服务器选定的 Cedar 重置将在所设小时数以内到期、其覆盖的额度窗口中有值得恢复的已用额度，且该授权允许提前使用或某个覆盖窗口已耗尽时，才使用该重置（0 禁用到期前利用）"
+    },
+    "telemetry.otlpExportEnabled": {
+      "sourceHash": "b640daf01d74fa616c91990ca9ea7af48cbef704785407fee931fe8ce63c3414",
+      "label": "OTLP 遥测导出",
+      "description": "允许 OMP 使用 `OTEL_*` 端点导出追踪、日志和指标；更改在下次启动时生效"
+    },
+    "edit.recoverInlineEdits": {
+      "sourceHash": "7343fa4d37e7952d3cb004d9456212f1aec27cb82f678f4d9cfaf881301f75b8",
+      "label": "恢复行内编辑内容",
+      "description": "将模型以纯文本输出的编辑内容转换为 `edit` 工具调用并执行"
+    },
+    "find.enabled": {
+      "sourceHash": "6fc3e245cd77c42237646dbb5321a24d90aa9bd9c4e3037f3ef9c50a29371f99",
+      "label": "find（语义 grep）",
+      "description": "启用 `find` 工具：使用自然语言搜索文件和行范围，由 `judge` 模型角色进行判定。自动模式仅当 `judge` 角色解析为原生 TypeSafe jev 模型时启用",
+      "options": {
+        "auto": {
+          "label": "自动",
+          "description": "当 `judge` 角色解析为原生 TypeSafe jev 模型时启用"
+        },
+        "on": {
+          "label": "开启",
+          "description": "始终启用，无论 `judge` 角色解析为哪个模型"
+        },
+        "off": {
+          "label": "关闭",
+          "description": "禁用 `find` 工具"
+        }
+      }
+    },
+    "images.questionTimeoutMs": {
+      "sourceHash": "addb2c58be4eb11390500602f75075398a60ffae7ff3fe3c1ac5546ddb46b078",
+      "label": "图像问答超时",
+      "description": "`read` 的 `?q=` 图像问答所调用的视觉模型的单次请求超时时间，单位为毫秒。提供商无响应时会尽快返回超时错误，而不是一直阻塞到手动中止。设为 0 可禁用超时",
+      "options": {
+        "0": {
+          "label": "禁用"
+        },
+        "60000": {
+          "label": "1 分钟"
+        },
+        "120000": {
+          "label": "2 分钟"
+        },
+        "180000": {
+          "label": "3 分钟"
+        },
+        "300000": {
+          "label": "5 分钟"
+        }
+      }
+    },
+    "tools.speculativeExecution.enabled": {
+      "sourceHash": "1f12be3843248d818e2a96881948136db49be31aae37d0bcc45ebc68dc1eacfa",
+      "label": "实验性推测执行",
+      "description": "启用首批可安全丢弃结果的操作：通过直接 `read` 调用和嵌套 `eval` 执行已验证的本地读取。网络请求、提供商生成和实际文件系统写入不在此基础范围内"
+    },
+    "tools.speculativeExecution.maxInFlight": {
+      "sourceHash": "769d65e3ef81d91c0623a45f5fdc1d04d31c52d58649715cdf5f5a6b4ddd6728",
+      "label": "推测执行并发数",
+      "description": "正常分派前允许运行的已验证本地读取的最大数量",
+      "options": {
+        "1": {
+          "label": "1 个操作"
+        },
+        "2": {
+          "label": "2 个操作"
+        },
+        "3": {
+          "label": "3 个操作"
+        },
+        "4": {
+          "label": "4 个操作"
+        }
+      }
+    },
+    "bash.allowCompoundCommands": {
+      "sourceHash": "1fde7f22fa33d2b89f13823aeb39413637be5d60710e95e7adb3846cb99f147a",
+      "label": "允许复合命令",
+      "description": "按命令逐一评估字面的 `&&` 命令链；未匹配的命令使用常规 bash 审批策略和模式"
+    },
+    "eval.autoProvision": {
+      "sourceHash": "3b6718dd13b8f1f01c6e6ec661df0a47a82a9326ea61a7c1a3fb0d130afed24b",
+      "label": "Eval 环境配置",
+      "description": "首次安装时自动创建受管理的 JavaScript eval 包环境"
+    },
+    "eval.tools.enabled": {
+      "sourceHash": "2e96c57ce727cdfeecb7574f8168793d3190c77d0081cfca527e44e7a7b98653",
+      "label": "Eval 定义工具",
+      "description": "允许 `eval` 单元定义工具（Python 中使用 `@tool`，JS 中使用 `tool(fn)`），供 `task`、`agent()` 和 `workpool()` 子代理调用"
+    },
+    "eval.workpool.freshAgents": {
+      "sourceHash": "5cf133fe8c2932fdb481d45a2c847a85f873d1801ee92d569999a3f5ed589482",
+      "label": "Workpool 使用新子代理",
+      "description": "为每个 `workpool` 条目启动新的子代理，而不是复用工作代理或批量处理排队条目"
+    },
+    "task.isolation.enabled": {
+      "sourceHash": "961516429072948ae8177dacbf8f2e54c09d5487d2882af0b03161abcd0481bc",
+      "label": "隔离子代理",
+      "description": "在当前检出目录的隔离副本中运行子代理，之后整合其更改"
+    },
+    "isolation.backend": {
+      "sourceHash": "a72b13a07a5e5f80c984f1d49464f393abad0fc62bee9bef516e11b314ab1003",
+      "label": "隔离后端",
+      "description": "用于子代理隔离和工作树克隆的后端",
+      "options": {
+        "auto": {
+          "label": "自动",
+          "description": "让 PAL 选择可用的最佳后端"
+        },
+        "apfs": {
+          "label": "APFS",
+          "description": "macOS `clonefile` 写时复制克隆（APFS）"
+        },
+        "btrfs": {
+          "label": "btrfs",
+          "description": "btrfs 子卷快照"
+        },
+        "zfs": {
+          "label": "ZFS",
+          "description": "ZFS 快照与克隆"
+        },
+        "reflink": {
+          "label": "Reflink",
+          "description": "Linux `FICLONE` 逐文件写时复制克隆"
+        },
+        "overlayfs": {
+          "label": "Overlayfs",
+          "description": "Linux 内核覆盖文件系统（或回退到 fuse-overlayfs）"
+        },
+        "projfs": {
+          "label": "ProjFS",
+          "description": "Windows 投影文件系统"
+        },
+        "block-clone": {
+          "label": "块克隆",
+          "description": "Windows `FSCTL_DUPLICATE_EXTENTS_TO_FILE`（NTFS/ReFS）"
+        },
+        "rcopy": {
+          "label": "递归复制",
+          "description": "可用时使用 `git worktree`，否则递归复制"
+        }
+      }
+    },
+    "worktree.clone": {
+      "sourceHash": "d8a9c9137dafe7fff714dbf7a5e96ebbc085844fae59f395fab97797c66cbe54",
+      "label": "将检出目录克隆到工作树",
+      "description": "通过 `github pr_checkout` 或 bash 中的 `git worktree add` 创建新工作树时，先对当前检出目录进行写时复制克隆，以保留被忽略的构建产物（`node_modules`、`target`）；文件系统不支持克隆时回退到普通检出"
+    },
+    "worktree.cleanSource": {
+      "sourceHash": "4d35f684560894da43ae06091cb785ce2eabf253f82d0ebd7457653fdbb05f69",
+      "label": "`/wt` 后清理源检出目录",
+      "description": "通过 `/wt` 创建工作树时，在迁移更改后重置原检出目录中已跟踪文件的更改，并删除未跟踪文件"
+    },
+    "task.speculativeLaunch": {
+      "sourceHash": "4d56c27d953d31f2b1a7b43d273f225333924f9ed1ec72e5f7b45b3ae5542de5",
+      "label": "推测启动任务",
+      "description": "每个 `tasks[]` 条目完成流式传输后立即启动对应的批次子代理，而不是等待整个 `task` 调用完成。若最终调用未通过校验、被阻止或参数发生变化，则中止已启动的代理。要求 `task` 审批自动允许，且没有扩展工具生命周期处理器"
+    },
+    "plan.autosave": {
+      "sourceHash": "147992d843174000afa0bd4e2a4e72a874047e4de252f5b65bfdfae69c5b5e13",
+      "label": "自动保存计划",
+      "description": "计划模式完成时，自动将已批准的计划保存到磁盘"
+    },
+    "plan.autosaveDir": {
+      "sourceHash": "251c61a6727af91357e6c9d81d63f8426f6246c83344a7632e8a5b39a21eb7ea",
+      "label": "自动保存目录",
+      "description": "自动保存计划的目录；支持 `~`、绝对路径和相对于当前工作目录的路径。留空时使用 `<project>/.omp/plans/`"
+    },
+    "browser.tern": {
+      "sourceHash": "d47907979a3e419cc7b0946a0e51675354af6c0f07826bc46399dc1085d6c544",
+      "label": "Tern 浏览器",
+      "description": "在 Tern 面板内，将浏览器页签作为画中画置于 omp 面板上方（原生网页视图），而不是使用无头 Chromium；没有可承载的 Tern 窗口时回退到 Chromium。显式 `app` 选项、Browser Relay 和浏览器 CDP URL 优先；`headed:false` 或 `app.tern:false` 可让单次打开不使用此模式。设置 `PI_BROWSER_TERN=0` 或 `PI_BROWSER_TERN=1` 可覆盖此设置"
+    },
+    "browser.freezeOnTurnEnd": {
+      "sourceHash": "4277a2304699c39a135dfc0706b3e20347f6ffec2d72f737b055432131d1ea00",
+      "label": "轮次结束后冻结浏览器页签",
+      "description": "轮次结束时冻结 OMP 管理的无头浏览器页签，避免动画页面在空闲时持续消耗 CPU/GPU。下次使用时自动解冻；打开时传入 `persist:true` 可让该页签不参与冻结"
+    },
+    "browser.idleCloseSec": {
+      "sourceHash": "20a877089331e6c8fc135da9a6214ea29ea256e191d577e72e61ba05c28e7ed8",
+      "label": "浏览器空闲关闭超时",
+      "description": "关闭空闲超过所设秒数的 OMP 管理的无头浏览器页签和 Tern 浏览器画中画（0 表示从不关闭，但会话释放时仍会回收）。绝不影响通过 Relay、CDP 或独立启动的浏览器，也不影响其他会话的页签",
+      "options": {
+        "0": {
+          "label": "从不"
+        },
+        "900": {
+          "label": "15 分钟"
+        },
+        "1800": {
+          "label": "30 分钟"
+        },
+        "3600": {
+          "label": "1 小时"
+        }
+      }
+    },
+    "ida.enabled": {
+      "sourceHash": "70576a37ddc515257ce4f0609e32d041823236d0ca47ac51e0e044d7efaba4a3",
+      "label": "IDA Pro",
+      "description": "在 IDA Pro（idalib）中打开通过 `read` 读取的可执行文件，并启用 `ida` 工具；未找到 IDA 安装时不生效"
+    },
+    "ida.python": {
+      "sourceHash": "67c1e283db95d8cf4e481715ca889b359cf70d687dae4424069b70f3d9977950",
+      "label": "IDA Python",
+      "description": "能够导入 `ida_domain` 和 `idapro` 的 Python 解释器；留空时自动检测"
+    },
+    "ida.installDir": {
+      "sourceHash": "354c0fea904e32644cb70ca8e9c3d37c42424c7ff385b54f26933f7f4c091ef8",
+      "label": "IDA 安装目录",
+      "description": "包含 `libidalib` 的目录，会导出为 `IDADIR`；留空时自动检测（`$IDADIR`、`ida-config.json`、标准安装路径）"
+    },
+    "ida.maxOpen": {
+      "sourceHash": "42a8cc47af6a062c4622f0d32f03d86cdc8c434642fd439868d6581fb24b4c3d",
+      "label": "IDA 最大打开数据库数",
+      "description": "每个项目同时打开的 IDA 数据库数量上限（`omp ps` 中的 `omp.ida.*` 守护进程）；再打开一个时，会保存并关闭空闲数据库中最久未使用的那个",
+      "options": {
+        "2": {
+          "label": "2"
+        },
+        "4": {
+          "label": "4"
+        },
+        "8": {
+          "label": "8"
+        },
+        "16": {
+          "label": "16"
+        }
+      }
+    },
+    "ida.idleCloseSec": {
+      "sourceHash": "a33319946dd3f20f344ee6e2d120b547d568a042e55cda96304c5506006c66eb",
+      "label": "IDA 空闲关闭超时",
+      "description": "保存并关闭空闲超过所设秒数的 IDA 数据库（0 表示从不关闭）；重新打开时会重置 `exec` 命名空间",
+      "options": {
+        "0": {
+          "label": "从不"
+        },
+        "300": {
+          "label": "5 分钟"
+        },
+        "900": {
+          "label": "15 分钟"
+        },
+        "1800": {
+          "label": "30 分钟"
+        },
+        "3600": {
+          "label": "1 小时"
+        }
+      }
+    },
+    "mcp.startupTimeoutMs": {
+      "sourceHash": "036eb918786f257149807dd371cd723429f05617777ea62ee84e5e863d5ca4de",
+      "label": "MCP 启动等待时间",
+      "description": "等待首次 MCP 工具发现的时长，单位为毫秒；0 表示一直等待连接完成建立或失败"
     }
   }
 } satisfies LocalePack;

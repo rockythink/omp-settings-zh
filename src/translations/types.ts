@@ -8,6 +8,8 @@ export interface SettingTranslation {
   readonly sourceHash: string;
   readonly label?: string;
   readonly description?: string;
+  /** Official English template used to capture live key hints from its original getter. */
+  readonly descriptionSource?: string;
   readonly warning?: string;
   readonly options?: Readonly<Record<string, OptionTranslation>>;
 }
@@ -15,7 +17,5 @@ export interface SettingTranslation {
 export interface LocalePack {
   readonly locale: "zh-CN";
   readonly sourceOmpVersion: string;
-  readonly tabs: Readonly<Record<string, string>>;
-  readonly groups: Readonly<Record<string, Readonly<Record<string, string>>>>;
   readonly settings: Readonly<Record<string, SettingTranslation>>;
 }

@@ -17,24 +17,10 @@ describe("checkHostCompatibility", () => {
     if (!result.compatible) expect(result.reason).toContain("19.0.0");
   });
 
-  test("rejects malformed tab metadata", () => {
+  test("rejects malformed setting metadata", () => {
     const host = createFakeHost();
-    host.tabMetadata.interaction = undefined as never;
-
-    const result = checkHostCompatibility(host);
-
-    expect(result.compatible).toBeFalse();
-    if (!result.compatible) expect(result.reason).toContain("interaction");
-  });
-
-  test("rejects a missing derived definition for a panel-supported setting", () => {
-    const host = createFakeHost();
-    host.derivedDefinitions.splice(0, 1);
-
-    const result = checkHostCompatibility(host);
-
-    expect(result.compatible).toBeFalse();
-    if (!result.compatible) expect(result.reason).toContain("autoResume");
+    host.schema.autoResume!.ui!.label = 42 as never;
+    expect(checkHostCompatibility(host).compatible).toBeFalse();
   });
 
   test("allows number and array settings intentionally excluded from the panel", () => {

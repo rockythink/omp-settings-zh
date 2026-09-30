@@ -2,14 +2,7 @@ import type { HostMetadata } from "../../src/compatibility";
 
 export function createFakeHost(): HostMetadata {
   return {
-    version: "18.0.4",
-    tabs: ["interaction"],
-    tabMetadata: {
-      interaction: { label: "Interaction", icon: "tab.interaction" },
-    },
-    tabGroups: {
-      interaction: ["Startup & Updates", "Power (macOS)"],
-    },
+    version: "18.4.4",
     schema: {
       autoResume: {
         type: "boolean",
@@ -62,50 +55,5 @@ export function createFakeHost(): HostMetadata {
         },
       },
     },
-    derivedDefinitions: [
-      {
-        path: "autoResume",
-        type: "boolean",
-        tab: "interaction",
-        group: "Startup & Updates",
-        label: "Auto Resume",
-        description: "Automatically resume the most recent session in the current directory",
-      },
-      {
-        path: "power.sleepPrevention",
-        type: "submenu",
-        tab: "interaction",
-        group: "Power (macOS)",
-        label: "Sleep Prevention",
-        description:
-          "Prevent macOS sleep during active sessions. Each level is cumulative — it adds the flags of all lower levels.",
-        options: [
-          { value: "off", label: "Off", description: "Do not prevent any sleep" },
-          {
-            value: "idle",
-            label: "Prevent Idle Sleep",
-            description: "Keep the system awake while a session is open (caffeinate -i)",
-          },
-          {
-            value: "display",
-            label: "Prevent Display Sleep",
-            description: "Also keep the display from idle-sleeping (caffeinate -i -d)",
-          },
-          {
-            value: "system",
-            label: "Prevent System Sleep",
-            description:
-              "Also block all system sleep on AC and declare the user active (caffeinate -i -d -s -u)",
-          },
-        ],
-      },
-      {
-        path: "unlistedSetting",
-        type: "boolean",
-        tab: "interaction",
-        label: "Upstream Addition",
-        description: "An untranslated upstream setting",
-      },
-    ],
   };
 }

@@ -1,24 +1,16 @@
-import { VERSION } from "@oh-my-pi/pi-coding-agent";
-import {
-  SETTINGS_SCHEMA,
-  SETTING_TABS,
-  TAB_GROUPS,
-  TAB_METADATA,
-} from "@oh-my-pi/pi-coding-agent/config/settings-schema";
-import { getAllSettingDefs } from "@oh-my-pi/pi-coding-agent/modes/components/settings-defs";
-import type { HostMetadata } from "./compatibility";
+import type { HostMetadata, HostSettingDefinition } from "./compatibility";
 
-/**
- * The only boundary that knows OMP's unstable settings metadata exports.
- * Every returned collection is the host-owned live object, not a copy.
- */
-export function getHostMetadata(): HostMetadata {
-  return {
-    version: VERSION,
-    tabs: SETTING_TABS,
-    tabMetadata: TAB_METADATA,
-    tabGroups: TAB_GROUPS,
-    schema: SETTINGS_SCHEMA,
-    derivedDefinitions: getAllSettingDefs(),
-  } as unknown as HostMetadata;
+/** Only import surfaces shared by OMP's compiled host, inside the caller's failure boundary. */
+export async function getHostMetadata(): Promise<HostMetadata> {
+  const [{ VERSION }, { orderedSettings }] = await Promise.all([
+    import("@oh-my-pi/pi-coding-agent"),
+    import("@oh-my-pi/pi-coding-agent/config/all-settings"),
+  ]);
+  const schema: HostMetadata["schema"] = {};
+  for (const setting of orderedSettings()) {
+    if (Object.hasOwn(schema, setting.id)) throw new Error("设置路径重复：" + setting.id);
+    // Retain live registry definitions; the native panel builds fresh rows on each open.
+    schema[setting.id] = setting.definition as unknown as HostSettingDefinition;
+  }
+  return { version: VERSION, schema };
 }

@@ -8,23 +8,18 @@ describe("applyTranslations", () => {
     const host = createFakeHost();
     const originalDefault = host.schema["power.sleepPrevention"]!.default;
     const originalValues = host.schema["power.sleepPrevention"]!.values;
+    const originalGroup = host.schema.autoResume!.ui!.group;
 
     const result = applyTranslations(host, minimalLocale);
 
     expect(result.status).toBe("applied");
-    expect(host.tabMetadata.interaction!.label).toBe("交互");
-    expect(host.tabGroups.interaction).toEqual(["启动与更新", "电源（macOS）"]);
     expect(host.schema.autoResume!.ui!.label).toBe("自动恢复");
-    expect(host.schema.autoResume!.ui!.group).toBe("启动与更新");
-    expect(host.derivedDefinitions[0]!.label).toBe("自动恢复");
-    expect(host.derivedDefinitions[0]!.group).toBe("启动与更新");
+    expect(host.schema.autoResume!.ui!.group).toBe(originalGroup);
     const translatedOptions = host.schema["power.sleepPrevention"]!.ui!.options;
     expect(Array.isArray(translatedOptions)).toBeTrue();
     if (!Array.isArray(translatedOptions)) throw new Error("expected static schema options");
     expect(translatedOptions[1]!.label).toBe("防止空闲睡眠");
-    expect(host.derivedDefinitions[1]!.options![1]!.label).toBe("防止空闲睡眠");
     expect(host.schema.unlistedSetting!.ui!.label).toBe("Upstream Addition");
-    expect(host.derivedDefinitions[2]!.label).toBe("Upstream Addition");
     expect(host.schema["power.sleepPrevention"]!.default).toBe(originalDefault);
     expect(host.schema["power.sleepPrevention"]!.values).toBe(originalValues);
   });
@@ -49,10 +44,7 @@ describe("applyTranslations", () => {
     const result = applyTranslations(host, minimalLocale);
 
     expect(result.status).toBe("skipped");
-    expect(host.tabMetadata).toEqual(before.tabMetadata);
-    expect(host.tabGroups).toEqual(before.tabGroups);
     expect(host.schema).toEqual(before.schema);
-    expect(host.derivedDefinitions).toEqual(before.derivedDefinitions);
   });
 
   test("rolls back every successful write after an apply-time exception", () => {
@@ -72,10 +64,7 @@ describe("applyTranslations", () => {
     const result = applyTranslations(host, minimalLocale);
 
     expect(result.status).toBe("rolled-back");
-    expect(host.tabMetadata).toEqual(before.tabMetadata);
-    expect(host.tabGroups).toEqual(before.tabGroups);
     expect(host.schema).toEqual(before.schema);
-    expect(host.derivedDefinitions).toEqual(before.derivedDefinitions);
   });
 
   test("ignores stale paths and removed option values without guessing", () => {
@@ -90,7 +79,6 @@ describe("applyTranslations", () => {
     const remainingOptions = host.schema["power.sleepPrevention"]!.ui!.options;
     if (!Array.isArray(remainingOptions)) throw new Error("expected static schema options");
     remainingOptions.length = 3;
-    host.derivedDefinitions[1]!.options!.length = 3;
 
     const result = applyTranslations(host, locale);
 

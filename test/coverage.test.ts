@@ -6,10 +6,9 @@ import { createFakeHost } from "./fixtures/fake-host";
 import { minimalLocale } from "./fixtures/minimal-locale";
 
 describe("coverage and drift reporting", () => {
-  test("the OMP 18.0.4 locale has complete P0 coverage", () => {
-    const report = buildCoverageReport(getHostMetadata(), zhCN);
+  test("the locale covers every current upstream UI setting", async () => {
+    const report = buildCoverageReport(await getHostMetadata(), zhCN);
 
-    expect(report.totalUiSettings).toBe(355);
     expect(report.translatedSettings).toBe(report.totalUiSettings);
     expect(report.completeSettings).toBe(report.totalUiSettings);
     expect(report.partialSettings).toBe(0);
@@ -17,17 +16,8 @@ describe("coverage and drift reporting", () => {
     expect(report.stalePaths).toEqual([]);
     expect(report.optionMismatches).toEqual([]);
     expect(report.sourceHashMismatches).toEqual([]);
-    expect(report.missingTabs).toEqual([]);
-    expect(report.missingGroups).toEqual([]);
   });
 
-  test("keeps product and technical names restrained instead of forcing full Chinese", () => {
-    expect(zhCN.settings["advisor.enabled"]?.label).toContain("Advisor");
-    expect(zhCN.settings["prewalk.enabled"]?.label).toContain("Prewalk");
-    expect(zhCN.settings["compaction.methodOrder"]?.options?.snapcompact?.label).toBe("Snapcompact");
-    expect(zhCN.settings["compaction.methodOrder"]?.options?.shake?.label).toBe("Shake");
-    expect(zhCN.settings["update.channel"]?.options?.canary?.label).toBe("Canary");
-  });
 
   test("reports upstream additions as English fallback", () => {
     const report = buildCoverageReport(createFakeHost(), minimalLocale);

@@ -1,93 +1,82 @@
 # omp-settings-zh
 
-让官方 [Oh My Pi（OMP）](https://github.com/can1357/oh-my-pi) 的原生 `/settings` 面板显示简体中文。无需中文分支，不替换官方二进制，不改变设置行为。
+让官方 [Oh My Pi（OMP）](https://github.com/can1357/oh-my-pi) 的原生 `/settings` 设置项显示简体中文，并可在运行中切回原版。无需中文分支，不替换官方二进制，不改变设置行为。
 
-- 当前版本：`0.1.0`
-- 已验证宿主：OMP `18.0.4`
-- 运行时：离线，无网络请求和遥测
-- 翻译来源：仅依据 OMP 18.0.4 官方英文 `SETTINGS_SCHEMA`，由本项目使用自己的 LLM 能力独立生成和复核
+- 当前源码版本：`0.2.0`
+- 已验证宿主：OMP `18.4.4`（官方编译版与宿主源码元数据）
+- 翻译覆盖：391/391 项含 UI 元数据的设置名称、说明、风险警告和静态选项
+- 运行时：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
 
-## 设计边界
+## 兼容范围与限制
 
-插件只在 Extension 初始化阶段覆盖官方设置显示元数据：页签、分组、设置名称、说明、风险警告和静态选项文案。内置 `/settings` 命令、`SettingsSelectorComponent`、设置路径、类型、默认值、当前值、选项 `value`、条件显示和保存逻辑均由官方 OMP 继续负责。
+| 插件 | 已验证 OMP | 声明的宿主范围 |
+|---|---|---|
+| 0.2.0 | 18.4.4 | >=18.4.4 <19 |
 
-采用克制翻译：普通界面词、行为说明和风险信息使用中文；Advisor、Prewalk、Mnemopi、Snapcompact、MCP、LSP、API、URL、工具名、模型名和提供商名等保留更清楚的英文形式。
+声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
-插件不会：
+**0.2.0 保留官方页签、分组标题、面板标题和操作提示。** OMP 18.4.4 编译版未暴露页签/分组的共享模块；从磁盘导入会得到与原生面板不同的副本。因此当前版本只翻译设置项，不修改分组标识、排序或面板实现。这不是 OMP 全局汉化。
 
-- 汉化 OMP 其他 TUI、CLI 帮助、提示词或错误消息；
-- 注册或覆盖 `/settings`；
-- 读取当前配置值或凭据；
-- 写入 `config.yml`；
-- 在线翻译、调用 LLM 或发送遥测；
-- 打包或修改 OMP 二进制。
+Advisor、Prewalk、Mnemopi、Snapcompact、MCP、LSP、API、工具名、模型名和提供商名等保留更清楚的英文形式。动态快捷键说明沿用宿主 getter 的实际键位图标；切回原版会恢复原始属性描述符。
 
 ## 安装
 
-要求官方 OMP `>=18.0.4 <19`：
+要求官方 OMP `>=18.4.4 <19`：
 
 ```sh
 omp plugin install github:rockythink/omp-settings-zh
 ```
 
-重新启动 OMP，然后照常输入：
+安装后重新启动 OMP，然后照常输入 `/settings`。启动默认应用中文，正常应用时保持安静。
+
+## 运行中切换语言
 
 ```text
-/settings
+/settings-language       # 打开原版 / 简体中文选择器
+/settings-language zh    # 挂载中文显示元数据
+/settings-language en    # 撤销汉化，恢复宿主原始文案
 ```
 
-插件正常应用时保持安静。关键内部接口不兼容或应用失败时，插件会失败关闭：保留完整官方英文界面，并显示一次兼容性警告。
+无需重启；切换后重新打开 `/settings` 即可。这两个模式只影响设置文案，不控制模型回复语言。选择保留在当前进程内，下次启动默认中文，不写入用户配置。
+
+这里的热插拔指**汉化效果即时挂载和撤销**。OMP 的原生插件安装、禁用、卸载和 `/reload-plugins` 生命周期不由本插件改写；在当前 OMP 中不能把禁用或 `/reload-plugins` 当作已加载 Extension 的即时卸载。想立即恢复原版，先执行 `/settings-language en`，再按需禁用或卸载插件。
 
 ## 管理
 
 ```sh
-# 查看插件
 omp plugin list --json
-
-# 诊断
 omp plugin doctor omp-settings-zh --json
-
-# 禁用、重新启用
+omp plugin install github:rockythink/omp-settings-zh --force
 omp plugin disable omp-settings-zh
 omp plugin enable omp-settings-zh
-
-# 卸载
 omp plugin uninstall omp-settings-zh
 ```
 
-禁用或卸载后，下一次启动恢复官方英文设置；用户配置无需迁移。
+升级、启用或禁用后重新启动 OMP，以加载新的 Extension 状态。卸载无需迁移或清理用户设置。
+
+GitHub 安装的插件使用上面的强制安装命令更新。OMP 18.4.4 的 `plugin upgrade` 接收 `name@marketplace`，不适用于此 GitHub/npm 安装方式。
 
 ## 开发与验证
 
 ```sh
-bun install
+bun install --frozen-lockfile
 bun run check
 omp plugin link . --scope project
 ```
 
-检查契约：
+- `bun test`：应用、英文回退、恢复、动态说明和原生面板行为契约。
+- `bun run typecheck`：TypeScript 类型检查。
+- `bun run coverage:check`：设置项翻译完整性。
+- `bun run drift:check`：设置路径、选项值和英文原文哈希漂移。
+- `bun run smoke`：真实宿主元数据的三轮应用/撤销、原生面板派生、行为元数据不变和零网络请求检查。
 
-- `bun test`：单元测试和 OMP 18.0.4 宿主契约测试；
-- `bun run typecheck`：TypeScript 类型检查；
-- `bun run coverage:check`：P0 翻译完整性；
-- `bun run drift:check`：路径、选项值和英文原文哈希漂移；
-- `bun run smoke`：真实宿主元数据初始化、行为元数据不变和零网络请求冒烟检查；
-- `bun run check`：执行以上全部自动检查。
-
-影响设置面板的改动还必须在真实 OMP 中打开 `/settings`，验证中文搜索、设置编辑、禁用后的英文回退。自动检查不能代替真实 TUI 验证。
+面板或宿主适配变化还必须在**实际使用的官方编译版**中验证加载、中文搜索、设置编辑和同进程语言切换。源码模式通过不代表编译版共享对象可用。
 
 ## 翻译贡献
 
-翻译必须绑定稳定标识：页签 ID、`tab id + upstream group`、完整 setting path，以及 `setting path + option value`。禁止按英文字符串全局替换。
+翻译按完整 setting path 和 option value 绑定，禁止按英文字符串全局替换；活动译文仅依据目标 OMP 的官方英文元数据独立生成与复核。
 
-详见：
-
-- [项目上下文](CONTEXT.md)
-- [产品需求](docs/PRD.md)
-- [技术设计](docs/TECHNICAL-DESIGN.md)
-- [翻译规范](docs/TRANSLATION-GUIDE.md)
-- [贡献指南](CONTRIBUTING.md)
-- [第三方声明](THIRD_PARTY_NOTICES.md)
+详见 [项目上下文](CONTEXT.md)、[产品需求](docs/PRD.md)、[技术设计](docs/TECHNICAL-DESIGN.md)、[翻译规范](docs/TRANSLATION-GUIDE.md)、[贡献指南](CONTRIBUTING.md) 和 [第三方声明](THIRD_PARTY_NOTICES.md)。
 
 ## 与上游的关系
 

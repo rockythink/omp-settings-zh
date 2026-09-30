@@ -7,10 +7,8 @@ import { minimalLocale } from "./fixtures/minimal-locale";
 test("conflicting translations for a shared host option fail before any write", () => {
   const host = createFakeHost();
   const sleepDefinition = host.schema["power.sleepPrevention"]!;
-  const sleepDerived = host.derivedDefinitions[1]!;
   const sharedSchemaOptions = sleepDefinition.ui?.options;
-  const sharedDerivedOptions = sleepDerived.options;
-  if (!Array.isArray(sharedSchemaOptions) || !sharedDerivedOptions) {
+  if (!Array.isArray(sharedSchemaOptions)) {
     throw new Error("expected shared static options");
   }
   host.schema.sharedSleepSetting = {
@@ -24,15 +22,6 @@ test("conflicting translations for a shared host option fail before any write", 
       options: sharedSchemaOptions,
     },
   };
-  host.derivedDefinitions.push({
-    path: "sharedSleepSetting",
-    type: "submenu",
-    tab: "interaction",
-    group: "Power (macOS)",
-    label: "Shared sleep setting",
-    description: "Uses the same option metadata objects",
-    options: sharedDerivedOptions,
-  });
   const locale = structuredClone(minimalLocale) as LocalePack;
   Object.assign(locale.settings, {
     sharedSleepSetting: {
