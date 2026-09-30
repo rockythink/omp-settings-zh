@@ -1499,7 +1499,7 @@ export const zhCN = {
       "description": "使用当前启用的 macOS 词典标记提示词中拼写错误的单词"
     },
     "spelling.autocomplete": {
-      "sourceHash": "cd82abb4ef038e97570a35036c16cdfa38c8b57605b684134715edfecd74f127",
+      "sourceHash": "92ab6f253a374842dd155f6f479483e660deb62d7d650589d67e72db674e7561",
       "label": "单词自动补全",
       "description": "以内联提示显示预测的单词补全：按 {accept} 接受并附加空格，按 {right} 接受但不附加空格",
       "options": {
@@ -1518,13 +1518,39 @@ export const zhCN = {
         "smollm": {
           "label": "SmolLM",
           "description": "结合 N-gram 的小型本地语言模型（首次使用时下载权重）"
-        },
-        "apple": {
-          "label": "Apple",
-          "description": "使用 macOS 词典补全"
         }
       },
-      "descriptionSource": "Show predicted word completions as inline hints: {accept} accepts with a space, {right} without"
+      "descriptionSource": "Show predicted word completions as inline hints: {accept} accepts with a space, {right} without",
+      "byPlatform": {
+        "darwin": {
+          "sourceHash": "cd82abb4ef038e97570a35036c16cdfa38c8b57605b684134715edfecd74f127",
+          "label": "单词自动补全",
+          "description": "以内联提示显示预测的单词补全：按 {accept} 接受并附加空格，按 {right} 接受但不附加空格",
+          "options": {
+            "off": {
+              "label": "关闭",
+              "description": "不补全单词"
+            },
+            "auto": {
+              "label": "自动",
+              "description": "N-gram（无需下载）"
+            },
+            "ngram": {
+              "label": "N-gram",
+              "description": "从提示词历史中学习你的词汇"
+            },
+            "smollm": {
+              "label": "SmolLM",
+              "description": "结合 N-gram 的小型本地语言模型（首次使用时下载权重）"
+            },
+            "apple": {
+              "label": "Apple",
+              "description": "使用 macOS 词典补全"
+            }
+          },
+          "descriptionSource": "Show predicted word completions as inline hints: {accept} accepts with a space, {right} without"
+        }
+      }
     },
     "spelling.autocorrect": {
       "sourceHash": "4a5b6e53dd344a0b69d7a078e42dd7023a91562c2f08d28110930e293d40ba38",

@@ -1,5 +1,6 @@
 import { checkHostCompatibility, type HostMetadata, type HostOption } from "./compatibility";
 import type { LocalePack, OptionTranslation, SettingTranslation } from "./translations/types";
+import { getSettingTranslation } from "./translations/resolve";
 
 interface Mutation {
   readonly target: object;
@@ -77,7 +78,9 @@ function buildMutationPlan(host: HostMetadata, locale: LocalePack): MutationPlan
   const pendingMutations: Mutation[] = [];
 
 
-  for (const [path, translation] of Object.entries(locale.settings)) {
+  for (const path of Object.keys(locale.settings)) {
+    const translation = getSettingTranslation(locale, path, host.platform);
+    if (!translation) continue;
     const schemaDefinition = host.schema[path];
     const ui = schemaDefinition?.ui;
     if (!ui) continue;

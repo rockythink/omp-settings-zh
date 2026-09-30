@@ -12,5 +12,5 @@ export async function getHostMetadata(): Promise<HostMetadata> {
     // Retain live registry definitions; the native panel builds fresh rows on each open.
     schema[setting.id] = setting.definition as unknown as HostSettingDefinition;
   }
-  return { version: VERSION, schema };
+  return { version: VERSION, platform: process.platform, schema };
 }

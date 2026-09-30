@@ -20,6 +20,7 @@
 - `@oh-my-pi/pi-coding-agent/config/all-settings` 的 `orderedSettings()`。
 
 每个设置由领域模块调用 `config/registry.register()` 注册。适配器按 `setting.id` 建立索引，保存原始 `setting.definition` 引用，不复制 UI、不读取当前配置值。重复 ID 视为宿主错误。
+宿主接口同时记录 `process.platform`，使翻译应用与漂移报告使用相同的平台身份。
 
 原生 `config/settings-ui.createSettingsHost()` 每次打开面板从注册表读取 UI；TUI 的 `getAllSettingDefs(entries)` 按 entries 身份缓存派生定义。插件不维护或修改这些缓存，只要求切换后重新打开面板。
 
@@ -28,6 +29,8 @@
 `LocalePack` 包含 `locale`、`sourceOmpVersion` 和按完整 setting path 索引的 `settings`。静态选项按原始 `value` 匹配。
 
 每条设置保存官方英文元数据的 SHA-256 `sourceHash`。开发检查将页签 ID、分组标识、名称、说明、警告和静态选项一并纳入原文哈希；这里只检测分组移动，不翻译分组。
+
+有平台限定选项的设置可提供 `byPlatform` 完整数据变体，每个变体独立绑定原文哈希和选项译文。`translations/resolve.ts` 按宿主平台返回匹配变体，未指定平台使用基础记录，不复制整个词典。应用和报告复用同一选择逻辑；不能忽略平台外选项或放宽真正的删除/原文变更检查。当前单词补全基础记录面向非 macOS，Darwin 变体包含官方 Apple 词典选项。
 
 动态说明使用纯数据模板：中文 `description` 和官方英文 `descriptionSource` 共享具名占位符（例如 `{escape}`）。应用时保存原始 getter，读取其当前返回值并按英文模板捕获实际键位图标，再插入中文模板。不导入另一份 TUI 键位格式器，不复制宿主按键逻辑。
 

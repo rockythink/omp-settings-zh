@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import type { HostMetadata, HostOption, HostUiMetadata } from "./compatibility";
 import type { LocalePack } from "./translations/types";
+import { getSettingTranslation } from "./translations/resolve";
 
 export interface OptionMismatch {
   readonly path: string;
@@ -69,7 +70,7 @@ export function buildCoverageReport(host: HostMetadata, locale: LocalePack): Cov
     if (!ui) continue;
     totalUiSettings += 1;
 
-    const translation = locale.settings[path];
+    const translation = getSettingTranslation(locale, path, host.platform);
     if (!translation) {
       untranslatedPaths.push(path);
       continue;

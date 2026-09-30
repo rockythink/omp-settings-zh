@@ -23,6 +23,7 @@ export interface HostSettingDefinition {
 
 export interface HostMetadata {
   version: string;
+  platform: string;
   schema: Record<string, HostSettingDefinition | undefined>;
 }
 

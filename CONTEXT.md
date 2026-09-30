@@ -20,6 +20,7 @@
 - 原生 `config/settings-ui.ts` 每次打开面板从注册表生成 entries，TUI 再生成派生定义。
 - 编译版没有暴露 TUI 页签/分组模块的共享实例；从磁盘导入副本无法汉化真实页签。保持原始 group 可避免排序与分区错误。
 - 部分说明是可配置的只读 getter，键位图标随符号预设变化；中文模板必须保留这种动态行为，撤销时恢复原始描述符。
+- 单词补全的 Apple 词典选项仅出现在 macOS；`byPlatform` 分别绑定平台原文哈希与选项集合，应用和报告共用选择逻辑。
 - `/reload-plugins` 不等价于卸载已加载 Extension。立即撤销汉化用 `/settings-language en`。
 
 ## 实现不变量
