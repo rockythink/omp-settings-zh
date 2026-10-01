@@ -3,7 +3,7 @@ import type { HostMetadata, HostSettingDefinition } from "./compatibility";
 /** Only import surfaces shared by OMP's compiled host, inside the caller's failure boundary. */
 export async function getHostMetadata(): Promise<HostMetadata> {
   const [{ VERSION }, { orderedSettings }] = await Promise.all([
-    import("@oh-my-pi/pi-coding-agent"),
+    import("@oh-my-pi/pi-utils"),
     import("@oh-my-pi/pi-coding-agent/config/all-settings"),
   ]);
   const schema: HostMetadata["schema"] = {};

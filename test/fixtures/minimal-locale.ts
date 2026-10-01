@@ -2,7 +2,7 @@ import type { LocalePack } from "../../src/translations/types";
 
 export const minimalLocale: LocalePack = {
   locale: "zh-CN",
-  sourceOmpVersion: "18.4.4",
+  sourceOmpVersion: "18.4.6",
   settings: {
     autoResume: {
       sourceHash: "0acb3a94cdc9ddbf65f3529da5f5779ebc8ef1b1c99b7d1c29f1731edacfd300",

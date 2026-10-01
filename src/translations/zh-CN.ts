@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.4.4",
+  "sourceOmpVersion": "18.4.6",
   "settings": {
     "autoResume": {
       "sourceHash": "0acb3a94cdc9ddbf65f3529da5f5779ebc8ef1b1c99b7d1c29f1731edacfd300",
@@ -747,9 +747,9 @@ export const zhCN = {
       }
     },
     "terminal.showProgress": {
-      "sourceHash": "97ee8987d7737dbb9a63c3b1f0d5072f1101bd69b53d93d0ba0f99dfd085f612",
+      "sourceHash": "b4f580d92d54db9a568da23af4f079ace787311d87580e3770512fca60269074",
       "label": "终端原生进度",
-      "description": "Agent 或上下文维护运行时，发出 OSC 9;4 不确定进度指示"
+      "description": "Agent 或上下文维护运行期间，发送 OSC 9;4 不确定进度信号（在 Tern 中始终开启）"
     },
     "tui.textSizing": {
       "sourceHash": "cfe538cd9220b87286e586f3b1296a39a81525cee9ea21c58a4dccba9f18b803",
@@ -4571,6 +4571,16 @@ export const zhCN = {
       "sourceHash": "036eb918786f257149807dd371cd723429f05617777ea62ee84e5e863d5ca4de",
       "label": "MCP 启动等待时间",
       "description": "等待首次 MCP 工具发现的时长，单位为毫秒；0 表示一直等待连接完成建立或失败"
+    },
+    "display.subagentLivePreview": {
+      "sourceHash": "e3d8dfcbb7365e3fea84f9af7aca32c2a7802c566b198cbc4d89626c83b6d011",
+      "label": "子 Agent 实时预览",
+      "description": "在每个固定显示的子 Agent 行下方，展示其当前或最近一次工具调用"
+    },
+    "ratchet.enabled": {
+      "sourceHash": "1379f22f005a4b32982187246a60be28feff0466870b97897124dedae0a92450",
+      "label": "Ratchet",
+      "description": "启用 Ratchet 的 Eval／爬山优化 prelude；/ratchet 会为当前会话开启此功能"
     }
   }
 } satisfies LocalePack;

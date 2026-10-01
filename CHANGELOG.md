@@ -1,6 +1,20 @@
 # Changelog
 
-本项目遵循 [Semantic Versioning](https://semver.org/)。
+从 18.4.6 起，版本号对齐目标 OMP 稳定版；保留历史版本，不修改已发布标签。
+
+## [18.4.6] - 2026-10-01
+
+### Added
+
+- `display.subagentLivePreview` 子 Agent 实时预览设置译文
+- `ratchet.enabled` Ratchet 功能说明译文
+
+### Changed
+
+- `terminal.showProgress` 说明同步上下文维护期间进度与 Tern 始终开启的行为
+- 翻译覆盖更新为 393/393，翻译来源与宿主开发依赖升级至 OMP 18.4.6
+- `VERSION` 从原始官方 `pi-utils` 导出读取，不再加载仅为版本号所需的整个 coding-agent SDK；不修改上游源码或吞掉导入异常
+- 运行时依赖声明为 `>=18.4.6 <19`；新增版本对齐发布约定，无设置变更仍须通过兼容验证
 
 ## [0.2.0] - 2026-10-01
 
