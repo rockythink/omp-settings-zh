@@ -2,9 +2,9 @@
 
 让官方 [Oh My Pi（OMP）](https://github.com/can1357/oh-my-pi) 的原生 `/settings` 设置项显示简体中文，并可在运行中切回原版。无需中文分支，不替换官方二进制，不改变设置行为。
 
-- 当前源码版本：`18.4.6`（版本号与目标 OMP 稳定版对齐）
-- 已验证宿主：OMP `18.4.6`（官方编译版与宿主源码元数据）
-- 翻译覆盖：393/393 项含 UI 元数据的设置名称、说明、风险警告和静态选项
+- 当前源码版本：`18.5.0`（版本号与目标 OMP 稳定版对齐）
+- 已验证宿主：OMP `18.5.0`（官方编译版与宿主源码元数据）
+- 翻译覆盖：397/397 项含 UI 元数据的设置名称、说明、风险警告和静态选项
 - 运行时：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
 
 ## 兼容范围与限制
@@ -13,6 +13,7 @@
 |---|---|---|
 | 0.2.0 | 18.4.4 | >=18.4.4 <19 |
 | 18.4.6 | 18.4.6 | >=18.4.6 <19 |
+| 18.5.0 | 18.5.0 | >=18.5.0 <19 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -24,7 +25,7 @@ Advisor、Prewalk、Mnemopi、Snapcompact、MCP、LSP、API、工具名、模型
 
 ## 安装
 
-要求官方 OMP `>=18.4.6 <19`：
+要求官方 OMP `>=18.5.0 <19`：
 
 ```sh
 omp plugin install github:rockythink/omp-settings-zh
@@ -49,7 +50,7 @@ omp plugin install github:rockythink/omp-settings-zh
 ```sh
 omp plugin list --json
 omp plugin doctor omp-settings-zh --json
-omp plugin install github:rockythink/omp-settings-zh --force
+omp plugin upgrade omp-settings-zh
 omp plugin disable omp-settings-zh
 omp plugin enable omp-settings-zh
 omp plugin uninstall omp-settings-zh
@@ -57,7 +58,9 @@ omp plugin uninstall omp-settings-zh
 
 升级、启用或禁用后重新启动 OMP，以加载新的 Extension 状态。卸载无需迁移或清理用户设置。
 
-GitHub 安装的插件使用上面的强制安装命令更新。OMP 18.4.4 的 `plugin upgrade` 接收 `name@marketplace`，不适用于此 GitHub/npm 安装方式。
+当前 OMP 支持按插件名更新 GitHub/npm 安装的插件：`omp plugin upgrade omp-settings-zh`。GitHub 插件重新解析安装时记录的分支或标签；固定标签不会自动跳到新标签。也可以使用 `omp plugin install github:rockythink/omp-settings-zh --force` 重新安装仓库默认分支。npm 插件更新到最新发布版本，本地 link 插件直接使用源目录文件，无需 upgrade。
+
+`omp plugin upgrade` 不带插件名时仅更新 marketplace 插件，不会遍历 GitHub/npm 插件。当前实现的 upgrade 不处理 `--dry-run`，不要用它预览更新；需要预览重新安装时使用 `omp plugin install github:rockythink/omp-settings-zh --force --dry-run`。
 
 ## 开发与验证
 

@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.4.6",
+  "sourceOmpVersion": "18.5.0",
   "settings": {
     "autoResume": {
       "sourceHash": "0acb3a94cdc9ddbf65f3529da5f5779ebc8ef1b1c99b7d1c29f1731edacfd300",
@@ -42,36 +42,58 @@ export const zhCN = {
       "label": "启用 Prewalk",
       "description": "先使用当前模型启动，然后在规划提示的待办列表生成后，于首次编辑/写入时切换到快速/低成本模型（默认为“smol”角色）——由高能力模型制定计划、确认待办事项并开始实现，然后再交接。每个会话可通过 --prewalk / --no-prewalk 覆盖此设置"
     },
+    "advisor.reviewMode": {
+      "sourceHash": "7eda663e2a7c50ef6748c64ab5f729f4f182f67c2a93bc48acc947e019531606",
+      "label": "Advisor 审查模式",
+      "description": "没有 WATCHDOG.yml 名单时使用的默认 Advisor 审查时机：turn 审查主 Agent 的每个轮次，agent-end 仅审查最终交付",
+      "options": {
+        "turn": {
+          "label": "每轮",
+          "description": "审查主 Agent 的每次更新（每轮工具调用）"
+        },
+        "agent-end": {
+          "label": "Agent 结束时",
+          "description": "仅在最终交付时审查（每次运行一次）"
+        }
+      }
+    },
+    "advisor.reviewInterval": {
+      "sourceHash": "2abdec54b8ab1860dd6d61bdea9b0c9594f21437152669986b26ef4983d9bcbe",
+      "label": "Advisor 审查间隔",
+      "description": "没有 WATCHDOG.yml 名单时使用的默认 Advisor 审查间隔：每隔 N 次符合条件的主 Agent 更新审查一次。1 表示每次更新都审查；跳过的更新会随下一次计划审查一并发送",
+      "options": {
+        "1": {
+          "label": "每次符合条件的更新",
+          "description": "默认"
+        },
+        "2": { "label": "每 2 次" },
+        "3": { "label": "每 3 次" },
+        "5": { "label": "每 5 次" },
+        "10": { "label": "每 10 次" }
+      }
+    },
     "advisor.syncBacklog": {
-      "sourceHash": "165701896fc41f459ee7b994a82a7c71e213a02d8075b563ec1dcf521f03b7de",
+      "sourceHash": "e5b6185961e85f501c572e1eb444d59b972f082b5ab5395ca50b91b088d11ef4",
       "label": "Advisor 同步积压阈值",
-      "description": "如果 Advisor 落后达到此轮数，主 agent 最多暂停 30 秒。关闭后禁用追赶延迟"
+      "description": "暂停主 Agent，直至 Advisor 积压低于阈值。数字阈值最多等待 30 秒；strict 会等待所有计划审查完成且不设时间上限。off 禁用追赶延迟；中止、失败或销毁会解除等待"
     },
     "advisor.immuneTurns": {
-      "sourceHash": "f54d6bf6fd6f4d76613f298768f6c5ce6720f18f0a5a6ff65800e8b0170ddd10",
-      "label": "Advisor 免打扰轮数",
-      "description": "Advisor 的疑虑或阻断问题造成中断后，在接下来的这些主轮次中以不中断方式传递后续疑虑或阻断问题",
+      "sourceHash": "1cfb4f6fcdac275833f66f6ff80772aabd9e1b96302b010a33b9a6a5317539a1",
+      "label": "Advisor 免打扰步数",
+      "description": "Advisor 的疑虑或阻断问题造成中断后，在接下来的这些主 Agent 步骤中以不中断方式传递后续疑虑或阻断问题",
       "options": {
         "0": {
-          "label": "0 轮",
+          "label": "0 步",
           "description": "允许每个疑虑或阻断问题触发中断"
         },
-        "1": {
-          "label": "1 轮"
-        },
-        "2": {
-          "label": "2 轮"
-        },
+        "1": { "label": "1 步" },
+        "2": { "label": "2 步" },
         "3": {
-          "label": "3 轮",
-          "description": "默认值"
+          "label": "3 步",
+          "description": "默认"
         },
-        "4": {
-          "label": "4 轮"
-        },
-        "5": {
-          "label": "5 轮"
-        }
+        "4": { "label": "4 步" },
+        "5": { "label": "5 步" }
       }
     },
     "git.enabled": {
@@ -101,7 +123,7 @@ export const zhCN = {
       "options": {
         "global": {
           "label": "全局",
-          "description": "将角色模型保存在当前配置文件的配置中（当前行为）"
+          "description": "将角色对应的模型保存在当前启用的 profile 配置中（当前行为）"
         },
         "project": {
           "label": "按项目",
@@ -233,7 +255,7 @@ export const zhCN = {
         },
         "annotated": {
           "label": "带标记",
-          "description": "除百分比外，还在推测边界和自动压缩边界处显示刻度"
+          "description": "除百分比外，还在推测式压缩和自动压缩的阈值处显示刻度"
         },
         "embedded": {
           "label": "嵌入",
@@ -497,7 +519,7 @@ export const zhCN = {
       "options": {
         "imgur": {
           "label": "Imgur",
-          "description": "上传需要 Imgur access token 或 client ID"
+          "description": "上传需要 Imgur 访问令牌或客户端 ID"
         },
         "imageshack": {
           "label": "ImageShack",
@@ -505,39 +527,39 @@ export const zhCN = {
         },
         "flickr": {
           "label": "Flickr",
-          "description": "image-host"
+          "description": "图像托管"
         },
         "chevereto": {
           "label": "Chevereto",
-          "description": "self-hosted"
+          "description": "自行托管"
         },
         "vgyme": {
           "label": "vgy.me",
-          "description": "image-host"
+          "description": "图像托管"
         },
         "dropbox": {
           "label": "Dropbox",
-          "description": "cloud-files"
+          "description": "云端文件存储"
         },
         "ftp": {
           "label": "FTP / FTPS / SFTP",
-          "description": "file-transfer"
+          "description": "文件传输"
         },
         "onedrive": {
           "label": "OneDrive",
-          "description": "cloud-files"
+          "description": "云端文件存储"
         },
         "google-drive": {
           "label": "Google Drive",
-          "description": "cloud-files"
+          "description": "云端文件存储"
         },
         "puush": {
-          "label": "puush-compatible endpoint",
+          "label": "puush 兼容端点",
           "description": "公共服务已停止，需要替代端点"
         },
         "box": {
           "label": "Box",
-          "description": "cloud-files"
+          "description": "云端文件存储"
         },
         "amazon-s3": {
           "label": "Amazon S3",
@@ -545,34 +567,34 @@ export const zhCN = {
         },
         "google-cloud-storage": {
           "label": "Google Cloud Storage",
-          "description": "object-storage"
+          "description": "对象存储"
         },
         "azure-storage": {
           "label": "Azure Blob Storage",
-          "description": "object-storage"
+          "description": "对象存储"
         },
         "backblaze-b2": {
           "label": "Backblaze B2",
-          "description": "配置原生 B2 application keys 或 S3-compatible access keys"
+          "description": "配置原生 B2 应用密钥或兼容 S3 的访问密钥，两者任选其一"
         },
         "owncloud": {
           "label": "ownCloud / Nextcloud",
           "description": "webdav"
         },
         "mediafire": {
-          "label": "MediaFire-compatible endpoint",
+          "label": "MediaFire 兼容端点",
           "description": "公共 API 已弃用，需要替代端点"
         },
         "sendspace": {
-          "label": "SendSpace-compatible endpoint",
-          "description": "公共 discovery API 已弃用，需要替代端点"
+          "label": "SendSpace 兼容端点",
+          "description": "公共发现 API 已弃用，需要替代端点"
         },
         "localhostr": {
-          "label": "Hostr-compatible endpoint",
+          "label": "Hostr 兼容端点",
           "description": "公共服务已离线，需要替代端点"
         },
         "lambda": {
-          "label": "Lambda-compatible endpoint",
+          "label": "Lambda 兼容端点",
           "description": "公共服务已离线，需要替代端点"
         },
         "pomf": {
@@ -585,31 +607,31 @@ export const zhCN = {
         },
         "seafile": {
           "label": "Seafile",
-          "description": "cloud-files"
+          "description": "云端文件存储"
         },
         "s-ul": {
           "label": "s-ul",
-          "description": "file-host"
+          "description": "文件托管"
         },
         "lobfile": {
-          "label": "LobFile-compatible endpoint",
+          "label": "LobFile 兼容端点",
           "description": "公共服务已离线，需要替代端点"
         },
         "transfer-sh": {
-          "label": "transfer.sh-compatible endpoint",
+          "label": "transfer.sh 兼容端点",
           "description": "已停止的公共端点被阻止，需要自行托管的替代端点"
         },
         "plik": {
           "label": "Plik",
-          "description": "self-hosted"
+          "description": "自行托管"
         },
         "shared-folder": {
           "label": "共享文件夹",
-          "description": "filesystem"
+          "description": "文件系统"
         },
         "catbox": {
           "label": "Catbox",
-          "description": "anonymous-host"
+          "description": "匿名托管"
         },
         "litterbox": {
           "label": "Litterbox",
@@ -625,7 +647,7 @@ export const zhCN = {
         },
         "discord": {
           "label": "Discord",
-          "description": "messaging"
+          "description": "消息服务"
         },
         "provider-files": {
           "label": "模型提供商文件",
@@ -633,35 +655,35 @@ export const zhCN = {
         },
         "direct": {
           "label": "直接公共 URL",
-          "description": "local-serving"
+          "description": "由本地提供服务"
         },
         "cloudflared": {
-          "label": "Cloudflare quick tunnel",
-          "description": "tunnel"
+          "label": "Cloudflare 快速隧道",
+          "description": "隧道"
         },
         "ngrok": {
           "label": "ngrok",
-          "description": "tunnel"
+          "description": "隧道"
         },
         "tailscale": {
           "label": "Tailscale Funnel",
-          "description": "tunnel"
+          "description": "隧道"
         },
         "ssh": {
           "label": "SSH 反向隧道",
-          "description": "tunnel"
+          "description": "隧道"
         },
         "command": {
           "label": "上传命令",
-          "description": "external-command"
+          "description": "外部命令"
         },
         "localhost-run": {
           "label": "localhost.run",
-          "description": "tunnel"
+          "description": "隧道"
         },
         "pinggy": {
           "label": "Pinggy",
-          "description": "tunnel"
+          "description": "隧道"
         },
         "devtunnel": {
           "label": "Microsoft dev tunnel",
@@ -673,11 +695,11 @@ export const zhCN = {
         },
         "bore": {
           "label": "bore",
-          "description": "tunnel"
+          "description": "隧道"
         },
         "named-cloudflared": {
-          "label": "Named Cloudflare Tunnel",
-          "description": "tunnel"
+          "label": "命名 Cloudflare 隧道",
+          "description": "隧道"
         },
         "r2": {
           "label": "Cloudflare R2",
@@ -833,8 +855,8 @@ export const zhCN = {
     },
     "tui.imeSafeCursor": {
       "sourceHash": "d3e85d1d405645db7c5b1f7f6512ac911b0d06d42898dfb3c4103802d8b97767",
-      "label": "IME 安全的提示词布局",
-      "description": "将提示词区域的底部边框移至单独一行，防止 macOS IME 预编辑文本将其挤开"
+      "label": "兼容 IME 的输入区布局",
+      "description": "将输入区的底部边框移至单独一行，防止 macOS IME 预编辑文本将其挤开"
     },
     "defaultThinkingLevel": {
       "sourceHash": "9111eae304b11e100774dadf9c50ee39d2815e005c4507f102a9d1c3ba4ceeb9",
@@ -1268,7 +1290,7 @@ export const zhCN = {
         },
         "priority": {
           "label": "Priority",
-          "description": "在所创建模型支持的每个系列上使用 Priority"
+          "description": "对所创建模型所属的系列使用 Priority，前提是该系列支持此服务层级"
         },
         "ultrafast": {
           "label": "Ultrafast",
@@ -1307,7 +1329,7 @@ export const zhCN = {
         },
         "priority": {
           "label": "Priority",
-          "description": "在所创建模型支持的每个系列上使用 Priority"
+          "description": "对所创建模型所属的系列使用 Priority，前提是该系列支持此服务层级"
         },
         "ultrafast": {
           "label": "Ultrafast",
@@ -1393,7 +1415,7 @@ export const zhCN = {
           "description": "始终选择下一个符合条件的已配置回退项"
         },
         "fail-closed": {
-          "label": "失败时关闭",
+          "label": "停止请求，不使用预留配额或回退",
           "description": "不使用预留配额，也不选择回退项"
         }
       }
@@ -1471,7 +1493,7 @@ export const zhCN = {
     "autocompleteMaxVisible": {
       "sourceHash": "955fde1d01067112cbdf5905f7ab30991108197b3de6b91b3e79701722e99063",
       "label": "自动补全项目数",
-      "description": "自动补下拉列表中最多显示的项目数（3–20）",
+      "description": "自动补全下拉列表中最多显示的项目数（3–20）",
       "options": {
         "3": {
           "label": "3 项"
@@ -1770,7 +1792,7 @@ export const zhCN = {
         },
         "gist": {
           "label": "GitHub Gist",
-          "description": "推送到私密 Gist（需要已认证的 gh），并回退到分享服务器"
+          "description": "推送到不公开列出的 Gist（需要已认证的 gh）；失败时回退到分享服务器"
         }
       }
     },
@@ -2609,8 +2631,8 @@ export const zhCN = {
     },
     "read.summarize.minBodyLines": {
       "sourceHash": "58f6f70e234c3c9e2fffb2cb2b46437efb3257d2ea89a3afa4cba55603f33cf7",
-      "label": "读取摘要正文行数",
-      "description": "读取摘要折叠多行正文或字面量前所需的最小长度"
+      "label": "读取摘要代码体折叠阈值",
+      "description": "读取摘要中，多行代码体或字面量达到多少行时才会被折叠"
     },
     "read.summarize.minCommentLines": {
       "sourceHash": "d9657d7b5dd2244951e3b7601b9fee350561926b8433ae5f14a78e277f6082eb",
@@ -3049,7 +3071,7 @@ export const zhCN = {
     "tools.xdevDocs": {
       "sourceHash": "fc6e5da19feb97bd9399025f7981b9f82f188ba78c7584ca7067dce60849414f",
       "label": "xd:// 提示词文档",
-      "description": "选择要内联到系统提示词中的已挂载设备文档和 schema。Built-ins Only 会保持核心工具内联，而 MCP 和扩展工具则按需获取",
+      "description": "选择要内联到系统提示词中的已挂载设备文档和 schema。“仅内置设备”会保持核心工具内联，而 MCP 和扩展工具则按需获取",
       "options": {
         "inline": {
           "label": "所有设备",
@@ -3068,7 +3090,7 @@ export const zhCN = {
     "tools.xdevInlineDevices": {
       "sourceHash": "0279fc44afe81a76385f0de3555d15690d7477cf369022522bab6be5bd0cb847",
       "label": "xd:// 内联设备",
-      "description": "当 xd:// 提示词文档设为 Built-ins Only 时，内联名称匹配这些 glob 模式的动态设备（例如 mcp__context_mode_*）。Catalog Only 会忽略此设置"
+      "description": "当“xd:// 提示词文档”设为“仅内置设备”时，内联名称匹配这些 glob 模式的动态设备文档和 schema（例如 mcp__context_mode_*）。“仅目录”会忽略此设置"
     },
     "mcp.enableProjectConfig": {
       "sourceHash": "29afcf86b9eacf7a9970e2d5dffaa82de8e08bbf810fa65e3cf04db6e300acfe",
@@ -3111,9 +3133,9 @@ export const zhCN = {
       "description": "在状态栏的目标指示器旁显示 token 预算"
     },
     "goal.continuationModes": {
-      "sourceHash": "986e2f556e94fb7817a9e4d5c5af5197527abcb8babc3634323825a367df1c13",
+      "sourceHash": "f682c90f561a3724b25a7789afdf1a511a4bce73f977c9821d69365bed71c45b",
       "label": "目标续接模式",
-      "description": "允许活跃目标在轮次之间自动继续的运行模式"
+      "description": "允许活跃目标在轮次之间自动继续的运行模式（\"interactive\"、\"rpc\"）"
     },
     "title.refreshOnReplan": {
       "sourceHash": "c4d0ddfc9508070a1c0e61aa121c283a51f4b54655631b3b778b67bb19d2181f",
@@ -4033,7 +4055,7 @@ export const zhCN = {
     "tui.reactions": {
       "sourceHash": "049f992873a3508b160cc0f291f7b5ac0e9879ef704f83cfc486d8aa8f569ec8",
       "label": "智能体回应表情",
-      "description": "允许智能体在其消息气泡上用表情徽标回应你的消息"
+      "description": "邀请智能体在你的消息气泡上添加表情徽标，以回应这条消息"
     },
     "tui.titleSpinner": {
       "sourceHash": "5d6af659ad89599e4bb2d1b8d4b0d44307156238d8772c75e505861bfefeaf69",
@@ -4100,7 +4122,7 @@ export const zhCN = {
       "descriptionSource": "When a provider reports usage-limit exhaustion with a reset time (5-hour or weekly quota windows on any provider), sleep until the reset instead of failing fast past retry.maxDelayMs. Waits are abortable ({escape}) but also hold subagents, so leave off for unattended runs."
     },
     "advisor.maxNotesPerUpdate": {
-      "sourceHash": "a3988ae01c34e684bf1cde5fa038e3c3cdde022e2dad0184f2c2128f08b9b926",
+      "sourceHash": "1acd05877cd50725142ce37bb4cb20d05aa80cc68608d884aabea28b254cea98",
       "label": "Advisor 每次更新建议上限",
       "description": "每次 Advisor 提示词更新最多接受的非阻塞性建议条数（1–32；界面提供 1–5 的快捷选项），阻塞性问题不受此限制",
       "options": {
@@ -4108,19 +4130,13 @@ export const zhCN = {
           "label": "1 条建议",
           "description": "严格防止建议刷屏"
         },
-        "2": {
-          "label": "2 条建议"
-        },
-        "3": {
-          "label": "3 条建议"
-        },
+        "2": { "label": "2 条建议" },
+        "3": { "label": "3 条建议" },
         "4": {
           "label": "4 条建议",
-          "description": "默认"
+          "description": "适用于前沿推理模型；默认"
         },
-        "5": {
-          "label": "5 条建议"
-        }
+        "5": { "label": "5 条建议" }
       }
     },
     "advisor.evictStaleResults": {
@@ -4225,7 +4241,7 @@ export const zhCN = {
     "stream.redactPatterns": {
       "sourceHash": "7f4b864bed280004a737464a6a4474cd7ec9623a2b20aef26f78d19f4f6c0ed3",
       "label": "额外脱敏模式",
-      "description": "除 `env/secrets.yml` 中的值和内置凭据格式外，对每一行直播内容应用的额外脱敏正则表达式"
+      "description": "除环境变量、`secrets.yml` 中的值和内置凭据格式外，还会对每一行直播内容中匹配这些额外正则表达式的内容进行脱敏"
     },
     "compaction.experimentalContextManagement": {
       "sourceHash": "5c17f992bba9bbeb54b5da3f247078e2c611710e68bb0cba5a9021f8b69f19d0",
@@ -4271,7 +4287,7 @@ export const zhCN = {
           "description": "禁用缓存保温"
         },
         "streaming": {
-          "label": "流式输出期间",
+          "label": "运行期间",
           "description": "在工具长时间执行时保护高成本前缀；代理结束运行后停止"
         },
         "idle": {
@@ -4581,6 +4597,30 @@ export const zhCN = {
       "sourceHash": "1379f22f005a4b32982187246a60be28feff0466870b97897124dedae0a92450",
       "label": "Ratchet",
       "description": "启用 Ratchet 的 Eval／爬山优化 prelude；/ratchet 会为当前会话开启此功能"
+    },
+    "tools.artifactMaxBytes": {
+      "sourceHash": "16b9b61fb913835334c7fb96d510931109a069d9471883c0949c676e73b6715a",
+      "label": "Artifact 文件上限（MB）",
+      "description": "为流式工具输出（bash、Python、JS eval）保存的 artifact 文件最大大小。超出上限时保留开头（最多 3 MB）和最近的剩余内容，并在两者之间插入截断提示；0 表示不限制",
+      "options": {
+        "0": {
+          "label": "不限制",
+          "description": "保存完整输出"
+        },
+        "4": { "label": "4 MB" },
+        "16": {
+          "label": "16 MB",
+          "description": "默认"
+        },
+        "64": { "label": "64 MB" },
+        "256": { "label": "256 MB" },
+        "1024": { "label": "1 GB" }
+      }
+    },
+    "task.completionProbe": {
+      "sourceHash": "ab0ab9a8f42b5887eb815035a739eb7e9e522b4903b28eec8434f1c8d0b0a75b",
+      "label": "子 Agent 完成度探测",
+      "description": "通过类似 /btw 的缓存旁路请求，让工作中的子 Agent 估算任务完成度：分别在再过 2、5、10、30 分钟后询问，此后每小时询问一次。估算结果显示在 wait 和 task 视图的子 Agent 旁。仅询问交互式会话中由主 Agent 创建的子 Agent；print、RPC、ACP 和 SDK 运行不会探测"
     }
   }
 } satisfies LocalePack;

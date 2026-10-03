@@ -2,6 +2,19 @@
 
 从 18.4.6 起，版本号对齐目标 OMP 稳定版；保留历史版本，不修改已发布标签。
 
+## [18.5.0] - 2026-10-03
+
+### Added
+
+- 新增 `advisor.reviewMode`、`advisor.reviewInterval`、`tools.artifactMaxBytes` 和 `task.completionProbe` 设置译文
+
+### Changed
+
+- 适配 OMP 18.5.0，翻译覆盖更新为 397/397
+- 同步 Advisor 积压、免打扰步骤、建议上限与目标续接模式的上游语义变化
+- 全量复核既有译文，修正输入区、服务层级、Gist 回退、读取摘要、xd://、回应表情、脱敏和缓存保温等语义误译
+- 文档改用当前 OMP 支持的 `omp plugin upgrade omp-settings-zh` 更新命令
+
 ## [18.4.6] - 2026-10-01
 
 ### Added
