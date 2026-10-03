@@ -2,8 +2,13 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.5.0",
+  "sourceOmpVersion": "18.5.1",
   "settings": {
+    "archive.enabled": {
+      "sourceHash": "49a6eda3b78dc5bb8c78a1e13eac1fe8c4d40dcd9e54650a271af74416883467",
+      "label": "Archive",
+      "description": "在 eval 中启用只读 archive 预置能力：浏览提示词历史、最近项目、过往会话和会话回顾"
+    },
     "autoResume": {
       "sourceHash": "0acb3a94cdc9ddbf65f3529da5f5779ebc8ef1b1c99b7d1c29f1731edacfd300",
       "label": "自动恢复",

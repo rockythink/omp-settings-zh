@@ -17,7 +17,7 @@
 - 枚举和配置值，如 `stable`、`canary`；
 - 工具名，如 `read`、`edit`、`lsp`；
 - 模型和提供商名称；
-- OMP 功能名和产品化名称，如 Advisor、Prewalk、Mnemopi、Hindsight、Snapcompact、Shake；
+- OMP 功能名和产品化名称，如 Advisor、Prewalk、Mnemopi、Hindsight、Snapcompact、Shake、Archive；Archive 是 Agent 的只读历史浏览能力，不译为归档操作，说明中的 archive 和 eval 标识保留原文；
 - 协议和技术缩写，如 MCP、LSP、DAP、TTS、STT、RPC；
 - 环境变量、文件名、路径、URL；
 - 代码标识符和正则表达式；
@@ -170,7 +170,7 @@
 
 活动翻译只以目标版本 OMP 官方设置注册表的英文显示元数据为语义来源：
 
-1. 从锁定的 `@oh-my-pi/pi-coding-agent@18.5.0` 设置注册表提取设置路径、英文文案和静态选项；
+1. 从锁定的 `@oh-my-pi/pi-coding-agent@18.5.1` 设置注册表提取设置路径、英文文案和静态选项；
 2. 使用本项目自己的 LLM 能力按本规范生成初稿，不输入或复用第三方中文译文；
 3. 按设置路径和选项 `value` 校验完整性；
 4. 用英文原文哈希标记待复核的上游语义变化；
