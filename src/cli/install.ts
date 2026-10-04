@@ -184,9 +184,16 @@ async function accountShell(): Promise<string> {
   if (process.env.SHELL) return process.env.SHELL;
   const account = userInfo();
   if (account.shell && account.shell !== "unknown") return account.shell;
-  // GUI-launched Bun may omit SHELL and report "unknown"; query the real account.
+  // Bun can omit account names with USER/LOGNAME absent; resolve the real UID.
+  let username = account.username;
+  if (process.platform === "darwin" && (!username || username === "unknown")) {
+    const identity = Bun.spawn(["/usr/bin/id", "-nu", String(account.uid)], { stdin: "ignore", stdout: "pipe", stderr: "pipe" });
+    const [code, stdout, stderr] = await Promise.all([identity.exited, new Response(identity.stdout).text(), new Response(identity.stderr).text()]);
+    if (code !== 0 || !stdout.trim()) throw new Error("无法读取账户名称：" + stderr.trim());
+    username = stdout.trim();
+  }
   const command = process.platform === "darwin"
-    ? ["/usr/bin/dscl", ".", "-read", `/Users/${account.username}`, "UserShell"]
+    ? ["/usr/bin/dscl", ".", "-read", "/Users/" + username, "UserShell"]
     : ["getent", "passwd", String(account.uid)];
   const child = Bun.spawn(command, { stdin: "ignore", stdout: "pipe", stderr: "pipe" });
   const [code, stdout, stderr] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);

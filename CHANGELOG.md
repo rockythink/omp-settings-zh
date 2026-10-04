@@ -10,6 +10,7 @@
 - Stats 表头复用后重新判定现有单元格的 UI／数据身份；保留模型、提供商、工具、项目名、路径、正文、错误、数值与 API 原文
 - 补齐追踪 Minimap 固定无障碍标签、类型徽标、错误标记，以及 React 拆分的分页／范围／耗时固定片段；未知文案与 canvas 像素继续保留英文
 - Commands 静态门禁仅允许 switch／loop 的已知键位变化，周围原文仍须匹配，其余命令严格比对；运行时 effort 继续保留宿主真实键位
+- 修复无 SHELL／USER／LOGNAME 环境中 Bun 报告 unknown 账户名时的默认安装失败：macOS 按真实 UID 读取账户名及登录 shell，不查询系统 unknown 账户，也不猜测 shell
 
 ### Baseline
 

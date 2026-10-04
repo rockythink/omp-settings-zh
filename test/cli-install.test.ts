@@ -138,11 +138,13 @@ test("lifecycle API can be imported from another entry and returns status withou
   } finally { await rm(f.home, { recursive: true, force: true }); }
 });
 
-test("GUI extension loads install successfully when SHELL is absent", async () => {
+test("GUI extension loads use the real account when shell and account environment names are absent", async () => {
   const f = await fixture("zsh");
   try {
     const env: NodeJS.ProcessEnv = { ...f.env };
     delete env.SHELL;
+    delete env.USER;
+    delete env.LOGNAME;
     const child = Bun.spawn([process.execPath, installer, "install", "--bun", process.execPath], { env, stdout: "pipe", stderr: "pipe" });
     const [code, stdout, stderr] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);
     if (code !== 0) throw new Error(stdout + stderr);
