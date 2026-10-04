@@ -39,8 +39,9 @@ export function buildSlashCommandReport(sources: readonly CommandSource[], local
       incompleteCommands.push(source.name);
       complete = false;
     }
-    // Reuse the runtime matcher, but registry text cannot contain a synthetic argument prefix.
-    if (staticText(source.description, entry)?.prefix !== "") {
+    // Registry drift permits dynamic key hints only for switch/loop, not runtime effort glyphs.
+    // Reject synthetic argument prefixes even when the runtime display matcher accepts them.
+    if (source.name === "switch" || source.name === "loop" ? staticText(source.description, entry)?.prefix !== "" : source.description !== entry.en) {
       sourceMismatches.push(source.name);
       complete = false;
     }

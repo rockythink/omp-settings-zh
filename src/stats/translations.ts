@@ -473,6 +473,10 @@ export const statsZh: Record<string, string> = {
 	error: "错误",
 	// Fixed JSX fragments whose adjacent values are kept as separate data nodes.
 	"Showing the latest": "显示最新",
+	"failures in": "次失败，时间范围",
+	"; older ones are not loaded.": "；更早的记录尚未加载。",
+	elapsed: "已用时",
+	of: "/",
 	"requests, back to": "次请求，最早为",
 	". Older requests in": "。更早的请求位于",
 	"are not loaded.": "尚未加载。",

@@ -6,7 +6,7 @@
 
 `src/translations/slash-commands.ts` 保存 OMP 18.6.0 官方 `BUILTIN_SLASH_COMMAND_DEFS` 的 85 条英文说明与别名，作为显示匹配来源；中文译文独立生成与复核。动态状态依据对应官方生成逻辑适配，保留宿主实际快捷键及模型、路径、目标等数据，不复制命令实现。
 
-`src/stats/translations.ts` 的英文键与模板来自官方 `@oh-my-pi/omp-stats@18.6.0` Web 源码；中文译文独立生成，不复制第三方中文分支。18.6.0 是译文审阅基线，不是固定运行时：启动器执行实际官方 OMP，使用 Bun 预加载在其原服务注入页面脚本，不重新分发 Stats 实现或二进制。
+`src/stats/translations.ts` 的英文键与模板来自官方 `@oh-my-pi/omp-stats@18.6.0` Web 源码；中文译文独立生成，不复制第三方中文分支。18.6.4 补充的拆分固定片段依据 ErrorsRoute、Table 与 FrustrationRoute，追踪白名单依据 Minimap、SpanDrawer 与 TranscriptList，未复制业务实现。18.6.0 是译文审阅基线，不是固定运行时：启动器执行实际官方 OMP，使用 Bun 预加载在其原服务注入页面脚本，不重新分发 Stats 实现或二进制。
 
 ## Oh My Pi
 

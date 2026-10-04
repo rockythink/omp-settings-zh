@@ -67,7 +67,7 @@
 `src/translations/slash-commands.ts` 保存 OMP 18.6.0 的 85 条官方英文与独立中文译文及别名。仅在顶层斜杠补全中匹配命令标识和官方原文；`switch`、`loop` 与 `effort` 只允许快捷键占位变化，保留宿主实际键位。翻译 `description`、`nativeDetail` 和 `state`，保留参数提示、值、标签、图标和排序。同步、异步及 partial 结果共用处理，实时状态按每次宿主结果更新。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
-开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；复用 `src/slash-autocomplete.ts` 的 `staticText`，不建立第二套键位匹配规则。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
+开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
 
 ## Stats Web 显示适配
 
@@ -75,7 +75,7 @@
 - `src/cli/install.ts` 在独立目录生成启动器、私有安装状态与可撤销的 zsh/Bash PATH 块。记录实际写出的 wrapper，以允许未来代码升级但拒绝覆盖用户改动；稳定的逻辑包路径不绑定 Git 缓存。非 Stats、JSON、摘要和帮助直接 exec 原 OMP；只有本插件的原生 uninstall 经 main 预检所有权、执行原命令并清理自己的 PATH，dry-run 不清理。
 - `main.ts` / `run.ts` 运行实际官方 `omp stats`，不导入固定 Stats 包。Web 预先构建 browser.ts 并生成私有 CJS，以合并的 `BUN_OPTIONS --preload` 加载；原 argv、cwd、Profile、stdio、port/host、浏览器打开和独立 judge 保持。没有额外代理、打开器替换或第二个 URL；信号与守护清理子进程和临时文件。
 - `src/stats/preload.ts` 生成自包含启动 Hook，包装 `Bun.serve(options.fetch)`，先执行原 handler；只有成功 HTML 且有官方 Stats 身份标记才注入 `/__omp-settings-zh.js`，同一监听器提供脚本。非 Stats 服务、API/SSE、拒绝/错误、方法、Host/Origin 与 CORS 行为保持。身份头不是授权；修改后的 HTML/脚本 no-store，不保留失效长度或 ETag。Bun 不可靠解析预加载的引号/空格路径，使用安全字符的私有临时路径；不改用户其它预加载参数。
-- `browser.ts` 使用官方 DOM 类白名单与数据区域排除规则，译文来自 translations.ts；只修改文本节点和显示属性。WeakMap 记录原文，MutationObserver 跟随异步渲染/节点复用，切回 English 恢复。
+- `browser.ts` 使用官方 DOM 类白名单与数据区域排除规则，译文来自 translations.ts；只修改文本节点和显示属性。WeakMap 记录原文，MutationObserver 跟随异步渲染/节点复用，切回 English 恢复。自有写入在 observer 断开期间完成；`mutations.ts` 在处理外部整批写入前失效对应来源，即使真实数据与上次中文显示相同也不恢复旧英文。表头变化重扫整表，stat 标签／chart 模式变化重扫其邻接区域；追踪 Minimap 仅翻译固定 aria-label，canvas 像素不改。
 - localStorage key 为 `omp-settings-zh.stats.language`，首次默认中文；同 origin 跨刷新、路由和服务重启保留，地址改变则使用新 origin 的偏好。未知文案、API 原文、数据标识、错误与 canvas 保留。
 - `/settings-language` 与网页语言独立；会话 `/stats` 保留官方行为。同数据目录下 `/stats` 与 `omp stats` 均扫描多个项目和会话，区别在独立 CLI 与会话绑定的 judge / 费用上下文，不是统计范围。
 
@@ -92,7 +92,7 @@
 
 ## 7. 发布边界
 
-从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增补丁号并注明实际宿主，已用编号不得复用。当前版本为 18.6.3，开发依赖锁定 18.6.0，宿主范围为 `>=18.6.0 <19`。同主版本不保证内部结构稳定；Settings 保留预检，Commands 核验原文/别名、动态生成逻辑与公共补全接口，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼容。
+从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增补丁号并注明实际宿主，已用编号不得复用。当前版本为 18.6.4，开发依赖锁定 18.6.0，宿主范围为 `>=18.6.0 <19`。同主版本不保证内部结构稳定；Settings 保留预检，Commands 核验原文/别名、动态生成逻辑与公共补全接口，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼容。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

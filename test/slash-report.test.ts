@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import { buildSlashCommandReport, hasSlashCommandDrift } from "../scripts/slash-report";
+import { slashCommandTranslations } from "../src/translations/slash-commands";
 
 const locale = [
   { name: "new", en: "Start a new session", zh: "开始新会话" },
@@ -29,14 +30,32 @@ test("changed descriptions, aliases and missing Chinese text independently inval
   expect(hasSlashCommandDrift(report)).toBe(true);
 });
 
-test("dynamic key glyphs are compatible but prose changes and synthetic hints are not", () => {
-  const translation = { name: "switch", en: "Switch model for this session (same as Option+P); accepts fuzzy ids, provider/id, @role, :level", zh: "切换模型（同 Option+P）" };
-  const source = { name: "switch", description: translation.en.replace("Option+P", "⌥P") };
-  expect(hasSlashCommandDrift(buildSlashCommandReport([source], [translation]))).toBe(false);
-  source.description += "; changed behavior";
-  expect(buildSlashCommandReport([source], [translation]).sourceMismatches).toEqual(["switch"]);
-  source.description = "[custom] - " + translation.en;
-  expect(buildSlashCommandReport([source], [translation]).sourceMismatches).toEqual(["switch"]);
+test("switch and loop dynamic key glyphs are compatible but surrounding prose and synthetic hints are not", () => {
+  for (const name of ["switch", "loop"]) {
+    const translation = slashCommandTranslations.find(entry => entry.name === name)!;
+    const source = { name, description: translation.en.replace(name === "switch" ? "Option+P" : "Esc", name === "switch" ? "⌥P" : "⎋") };
+    expect(hasSlashCommandDrift(buildSlashCommandReport([source], [translation]))).toBe(false);
+    for (const description of ["changed behavior; " + source.description, source.description + "; changed behavior", "[custom] - " + source.description]) {
+      const report = buildSlashCommandReport([{ ...source, description }], [translation]);
+      expect(report.sourceMismatches).toEqual([name]);
+      expect(hasSlashCommandDrift(report)).toBe(true);
+    }
+  }
+});
+
+test("effort and every other static registry description reject altered keys as consumer-visible source drift", () => {
+  for (const translation of slashCommandTranslations) {
+    if (translation.name === "switch" || translation.name === "loop") continue;
+    const source: { name: string; aliases?: readonly string[]; description: string } = {
+      name: translation.name, ...("aliases" in translation ? { aliases: translation.aliases } : {}), description: translation.en,
+    };
+    expect(hasSlashCommandDrift(buildSlashCommandReport([source], [translation]))).toBe(false);
+    source.description = translation.name === "effort" ? translation.en.replace("Shift+Tab", "⇧⇥") : translation.en + " (⌘K)";
+    const report = buildSlashCommandReport([source], [translation]);
+    expect(report.sourceMismatches).toEqual([translation.name]);
+    expect(report.completeCommands).toBe(0);
+    expect(hasSlashCommandDrift(report)).toBe(true);
+  }
 });
 
 test("command/alias collisions and duplicate translations cannot be hidden by map replacement", () => {

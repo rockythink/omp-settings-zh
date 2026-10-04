@@ -158,3 +158,36 @@ test("GUI extension loads install successfully when SHELL is absent", async () =
     expect(await Bun.file(f.wrapper).exists()).toBe(false);
   } finally { await rm(f.home, { recursive: true, force: true }); }
 });
+
+test("native uninstall dry-run retains launcher files and bypasses destructive ownership preflight", async () => {
+  const f = await fixture("zsh");
+  try {
+    await writeFile(f.omp, '#!/bin/sh\nprintf "<%s>\\n" "$@"\nexit 0\n', { mode: 0o755 });
+    expect((await f.invoke(["install", "--bun", process.execPath])).code).toBe(0);
+    const statePath = join(f.home, ".local/share/omp-settings-zh/state.json");
+    const state = await readFile(statePath, "utf8");
+    const wrapper = await readFile(f.wrapper, "utf8");
+    const invokeLauncher = async (args: string[]) => {
+      const child = Bun.spawn([f.wrapper, ...args], { env: f.env, stdout: "pipe", stderr: "pipe" });
+      const [code, stdout, stderr] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);
+      return { code, stdout, stderr };
+    };
+    const rc = join(f.home, ".zshrc");
+    const originalRc = await readFile(rc, "utf8");
+    const changedRc = originalRc.replace("export PATH=", "export PATH=user-change:");
+    await writeFile(rc, changedRc);
+    for (const flag of ["--dry-run", "--help", "-h"]) {
+      const result = await invokeLauncher(["plugin", "uninstall", "--scope", "user", "omp-settings-zh", flag]);
+      expect(result.code).toBe(0);
+      expect(result.stdout).toContain(`<${flag}>`);
+      expect(await readFile(statePath, "utf8")).toBe(state);
+      expect(await readFile(f.wrapper, "utf8")).toBe(wrapper);
+      expect(await readFile(rc, "utf8")).toBe(changedRc);
+    }
+    expect((await invokeLauncher(["plugin", "uninstall", "omp-settings-zh"])).code).toBe(1);
+    await writeFile(rc, originalRc);
+    expect((await invokeLauncher(["plugin", "uninstall", "--scope=user", "omp-settings-zh"])).code).toBe(0);
+    expect(await Bun.file(f.wrapper).exists()).toBe(false);
+    expect(await Bun.file(statePath).exists()).toBe(false);
+  } finally { await rm(f.home, { recursive: true, force: true }); }
+});

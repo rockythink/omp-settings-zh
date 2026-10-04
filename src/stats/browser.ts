@@ -1,6 +1,7 @@
 /// <reference lib="dom" />
 
 import { statsPatterns, statsZh } from "./translations";
+import { invalidateExternalWrites } from "./mutations";
 
 // Served by the official Stats listener; follows the DOM as React renders.
 (() => {
@@ -83,6 +84,8 @@ import { statsPatterns, statsZh } from "./translations";
 			if (["When", "Started", "Last seen", "Last used"].includes(column)) return true;
 			if (column === "Status" && parent.matches(".badge, .cell-primary")) return true;
 		}
+		// SpanDrawer puts its fixed kind badge inside the otherwise data-only subtitle.
+		if (parent.matches(".drawer-subtitle > .row > .badge")) return true;
 		if (parent.closest(excluded)) return false;
 		// The trace page reuses PageHeader for a session title and cwd, not UI prose.
 		if (parent.closest(".traces-view .page-title, .traces-view .page-description")) return false;
@@ -108,13 +111,14 @@ import { statsPatterns, statsZh } from "./translations";
 		if (parent.matches(".row, .row > .num") && cardTitle(parent) === "Token mix") return true;
 		if (parent.matches(".frustration-quote > .micro, .frustration-progress-head > .num, .frustration-progress-meta > span, .frustration-progress-meta > span > .num, .frustration-judge > p.muted, .frustration-judge > p.micro.dim, .modal-body > p.micro.dim")) return true;
 		if (parent.matches(".card-title > .badge")) return true;
+		if (parent.matches(".traces-row-meta > .tone-bad")) return true;
 		if (parent.matches(".costs-components + p") && cardTitle(parent) === "Where it went") return true;
 		return false;
 	}
 
 	function safeAttribute(element: Element, name: string): boolean {
 		// Canvas pixels stay untouched; only its fixed accessibility instructions are DOM text.
-		if (element.matches(".traces-canvas")) return name === "aria-label";
+		if (element.matches(".traces-canvas, .traces-minimap")) return name === "aria-label";
 		if (element.closest(excluded)) return false;
 		if (name === "placeholder") return element.matches(".search input, input.input");
 		if (element.matches(".stat")) return !Object.hasOwn(dataStatLabels, statLabel(element));
@@ -257,6 +261,7 @@ import { statsPatterns, statsZh } from "./translations";
 	});
 
 	function applyMutations(records: MutationRecord[]): void {
+		invalidateExternalWrites(records, texts, attributes);
 		const roots = new Set<Node>();
 		for (const record of records) {
 			const element = record.target.nodeType === Node.ELEMENT_NODE ? record.target as Element : record.target.parentElement;
@@ -274,6 +279,11 @@ import { statsPatterns, statsZh } from "./translations";
 			if (element?.closest(".stat-label")) {
 				const stat = element.closest(".stat");
 				if (stat) roots.add(stat);
+			}
+			// A reused table header changes whether the existing cells contain UI or data.
+			if (element?.closest("th")) {
+				const table = element.closest("table");
+				if (table) roots.add(table);
 			}
 			if (element?.closest(".card-title, .card-actions .segmented")) {
 				const card = element.closest(".card");
