@@ -34,7 +34,7 @@ const states: Record<string, string> = {
   none: "无", "none available": "无可用工具", unavailable: "不可用",
 };
 const goalStates: Record<string, string> = { active: "进行中", paused: "已暂停", "budget-limited": "预算受限", complete: "已完成", dropped: "已放弃" };
-const keySources: Record<string, string> = { switch: "Option+P", loop: "Esc" };
+const keySources: Record<string, string> = { switch: "Option+P", loop: "Esc", effort: "Shift+Tab" };
 
 export function staticText(text: string | undefined, entry: Translation): { prefix: string; translated: string } | undefined {
   if (text === undefined) return;
@@ -98,7 +98,7 @@ function translateItem(item: Item): Item {
   let description = item.description;
   let nativeDetail = item.nativeDetail;
   let state = item.state;
-  // Official text must match outside the two dynamic key-hint placeholders.
+  // Official text must match outside the known dynamic key-hint placeholders.
   const staticDetail = staticText(nativeDetail, entry);
   description = staticText(description, entry)?.translated ?? description;
   if (staticDetail) nativeDetail = staticDetail.translated;

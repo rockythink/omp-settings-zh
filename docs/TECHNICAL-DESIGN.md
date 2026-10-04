@@ -64,7 +64,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存 OMP 18.6.0 的 85 条官方英文与独立中文译文及别名。仅在顶层斜杠补全中匹配命令标识和官方原文；`switch` 与 `loop` 只允许快捷键占位变化，保留宿主实际键位。翻译 `description`、`nativeDetail` 和 `state`，保留参数提示、值、标签、图标和排序。同步、异步及 partial 结果共用处理，实时状态按每次宿主结果更新。
+`src/translations/slash-commands.ts` 保存 OMP 18.6.0 的 85 条官方英文与独立中文译文及别名。仅在顶层斜杠补全中匹配命令标识和官方原文；`switch`、`loop` 与 `effort` 只允许快捷键占位变化，保留宿主实际键位。翻译 `description`、`nativeDetail` 和 `state`，保留参数提示、值、标签、图标和排序。同步、异步及 partial 结果共用处理，实时状态按每次宿主结果更新。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；复用 `src/slash-autocomplete.ts` 的 `staticText`，不建立第二套键位匹配规则。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
