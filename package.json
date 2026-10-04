@@ -1,7 +1,7 @@
 {
   "name": "omp-settings-zh",
-  "version": "18.6.0",
-  "description": "Simplified Chinese settings localization for official Oh My Pi — no fork, no binary patch.",
+  "version": "18.6.1",
+  "description": "Chinese settings localization and a bilingual Stats dashboard for official Oh My Pi — no fork or binary patch.",
   "type": "module",
   "license": "MIT",
   "private": true,
@@ -44,6 +44,9 @@
   "peerDependencies": {
     "@oh-my-pi/pi-coding-agent": ">=18.6.0 <19",
     "@oh-my-pi/pi-utils": ">=18.6.0 <19"
+  },
+  "dependencies": {
+    "@oh-my-pi/omp-stats": "18.6.0"
   },
   "devDependencies": {
     "@oh-my-pi/pi-coding-agent": "18.6.0",
