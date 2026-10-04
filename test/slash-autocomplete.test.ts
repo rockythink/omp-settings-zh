@@ -11,6 +11,7 @@ import { cfgComputerEnabled } from "@oh-my-pi/pi-coding-agent/tools/settings";
 import { cfgBrowserEnabled, cfgBrowserHeadless } from "@oh-my-pi/pi-coding-agent/tools/browser/settings";
 import { cfgModelPresets } from "@oh-my-pi/pi-coding-agent/config/model-settings";
 import { localizeSlashAutocomplete } from "../src/slash-autocomplete";
+import { slashCommandTranslations } from "../src/translations/slash-commands";
 
 const planDescription = "Toggle plan mode (agent plans before executing)";
 
@@ -318,9 +319,9 @@ test("all official commands and aliases preserve ranking and completion in both 
 
 test("known shortcuts may vary but changed surrounding prose and third-party descriptions remain English", async () => {
   for (const name of ["switch", "loop", "effort"]) {
-    const command = BUILTIN_SLASH_COMMAND_DEFS.find(command => command.name === name)!;
+    const command = slashCommandTranslations.find(command => command.name === name)!;
     const key = name === "switch" ? "Option+P" : name === "loop" ? "Esc" : "Shift+Tab";
-    const base = command.description!;
+    const base = command.en;
     for (const description of [base.replace(key, "CustomKey"), "Changed " + base, base + " Changed", base.replace(key, "CustomKey") + " Changed"]) {
       const native = new CombinedAutocompleteProvider([{ name, description, getAutocompleteDescription: () => name === "switch" ? "Model: provider/id" : name === "loop" ? "Loop: off" : "Thinking: high" }]);
       const provider = localizeSlashAutocomplete(native, () => true);
