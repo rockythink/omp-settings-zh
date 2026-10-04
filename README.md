@@ -1,12 +1,12 @@
 # omp-settings-zh
 
-让官方 [Oh My Pi（OMP）](https://github.com/can1357/oh-my-pi) 的原生 `/settings` 设置项显示简体中文，并通过 `/stats-zh` 打开可中英文切换的官方 Stats 网页。无需中文分支，不替换官方二进制，不改变设置或统计计算行为。
+让官方 [Oh My Pi（OMP）](https://github.com/can1357/oh-my-pi) 的原生 `/settings` 显示简体中文，并让直接运行 `omp stats` 打开的网页支持中文 / English。设置使用 Extension；Stats 使用可撤销的本地 PATH 启动器，仍运行实际安装的官方 CLI。不分叉、不替换官方二进制，不改变设置与统计计算。
 
-- 当前源码版本：`18.6.1`（插件增量版本；宿主基线仍为 OMP 18.6.0）
+- 当前版本：`18.6.2`（实际宿主基线为 OMP 18.6.0）
 - 已验证宿主：OMP `18.6.0`（官方编译版与宿主源码元数据）
 - 翻译覆盖：398/398 项含 UI 元数据的设置名称、说明、风险警告和静态选项
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
-- Stats：仅按需启动本地回环服务；由固定版本的官方 Stats 包读取会话和统计数据，保留其原有付费评估行为
+- Stats：官方 CLI 负责数据、API、评估与计算；启动器通过 Bun 预加载在同一服务注入语言脚本，不另起代理或固定另一份 Stats 运行时
 
 ## 兼容范围与限制
 
@@ -18,6 +18,7 @@
 | 18.5.1 | 18.5.1 | >=18.5.1 <19 |
 | 18.6.0 | 18.6.0 | >=18.6.0 <19 |
 | 18.6.1 | 18.6.0 | >=18.6.0 <19 |
+| 18.6.2 | 18.6.0 | >=18.6.0 <19 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -37,6 +38,10 @@ omp plugin install github:rockythink/omp-settings-zh
 
 安装后重新启动 OMP，然后照常输入 `/settings`。启动默认应用中文，正常应用时保持安静。
 
+Stats 翻译随插件默认安装，不需要另行启用，也没有独立启用命令。正常 GitHub/npm 安装验证时自动生成可撤销 PATH 启动器；重新打开终端即可直接运行 `omp stats`。本地 link 的首次扩展加载同样自动安装。要求 macOS/Linux、zsh 或 Bash，且 Bun 符合项目 engines；GUI 启动缺少 `SHELL` 时读取实际账户的登录 shell，不猜测默认值。
+
+`command -v omp` 应指向 `~/.local/share/omp-settings-zh/bin/omp`；原官方可执行文件不变。安装器只维护自己的 PATH 块，重复加载幂等，不覆盖其他工具的同名文件。已有终端不会继承子进程修改的 PATH，因此需要新终端，但不需要 Stats 开关或安装命令。
+
 ## 运行中切换语言
 
 ```text
@@ -51,18 +56,21 @@ omp plugin install github:rockythink/omp-settings-zh
 
 ## Stats 网页语言切换
 
-```text
-/stats-zh         # 启动或复用本地 Stats 服务并打开网页
-/stats-zh stop    # 关闭插件启动的网页服务与统计工作进程
+```sh
+omp stats                 # 官方统计服务 + 默认中文的网页
+omp stats --json          # 官方原始 JSON，直接透传
+omp stats --summary       # 官方终端摘要，直接透传
 ```
 
-网页顶部提供 **中文 / English** 按钮，默认中文，切换即时生效。选择保存在该网页地址的浏览器 localStorage 中，刷新与路由切换保留；关闭服务后重新启动会分配新端口，默认中文。网页语言与 `/settings-language` 相互独立。
+网页顶部提供 **中文 / English** 按钮，切换即时生效。首次默认中文，选择保存在该网页 origin 的 localStorage 中，刷新与路由切换保留；同 host/port 重启也保留，换地址则使用该地址自己的偏好。网页语言与 `/settings-language` 相互独立。
 
-OMP 18.6.0 的 `omp stats` 独立启动、不加载插件；因此原命令和原始网页仍保持英文。`/stats-zh` 使用固定的 `@oh-my-pi/omp-stats@18.6.0` 官方包和额外本地显示代理，不修改官方安装文件或复制统计计算。两项服务只监听 `127.0.0.1`，退出主会话自动关闭。
+启动器保留原始 argv、cwd、Profile、stdio 与官方 CLI 的独立评估上下文；非 Stats、JSON、摘要和帮助直接执行原 OMP。Web 模式先构建本地翻译脚本，通过 `BUN_OPTIONS --preload` 包装该子进程的 `Bun.serve` 页面响应：仅在官方 Stats HTML 注入同源脚本，在同一个监听器提供 JS，API 与 SSE 保持原处理器。**只有原官方 Stats 服务，原 `--port` / `-p`、`--host`、浏览器打开动作和 URL 均不变**；默认地址 `http://127.0.0.1:3847` 直接显示语言按钮，不再输出第二个代理地址。现有 `BUN_OPTIONS` 保留；Ctrl+C/正常退出清理子进程与私有预加载文件。
 
-译文仅覆盖已识别的界面标题、导航、说明、控件、空态和显示属性。模型、提供商、工具与项目名称、路径、请求和会话正文、原始错误、统计数值及 API 返回内容保留原文；未知文案与 canvas 内绘制的文字也保留原文，不宣称完整 Web 汉化。Frustration 的评估和费用确认继续使用官方流程，语言按钮不会发起评估。
+会话里的 `/stats` 不被接管，仍为官方入口。与终端 `omp stats` 使用相同 Profile / Agent 数据目录时，两者都汇总该目录内的多个项目与会话，不是全局与单会话的区别；`/stats` 的付费评估绑定当前会话，而 CLI 使用独立上下文。`/trace` 是当前会话的追踪深链接。
 
-首次启动可能由官方 Stats 包构建网页资源，需要可用的 Bun（符合项目 engines）。启动失败会显示错误；浏览器未能自动打开时可复制命令输出的本地 URL。
+译文仅覆盖已识别的界面标题、导航、说明、控件、空态和显示属性。模型、提供商、工具与项目名称、路径、请求和会话正文、原始错误、统计数值及 API 返回内容保留原文；未知文案与 canvas 文字也保留原文，不宣称完整 Web 汉化。Frustration 的评估和费用确认继续使用官方流程，语言按钮不会发起评估。
+
+这是 Bun 启动期 Hook，而非 OMP 正式 Locale 接口；只对新启动的 CLI 生效，不热注入已运行的服务。OMP/Bun 升级必须重新验证真实编译版。浏览器未能自动打开时使用原 CLI 输出的 URL；绝对路径执行原 OMP 会绕过启动器，保持原版行为。
 
 ## 管理
 
@@ -75,7 +83,7 @@ omp plugin enable omp-settings-zh
 omp plugin uninstall omp-settings-zh
 ```
 
-升级、启用或禁用后重新启动 OMP，以加载新的 Extension 状态。卸载无需迁移或清理用户设置。
+升级、启用或禁用后重新启动 OMP，以加载新的 Extension 状态。`/settings-language` 只控制设置文案；Stats 默认中文，只在网页内切换中文 / English，没有独立命令开关。禁用 Extension 不撤销已有 CLI 启动器。通过前置 PATH 的正常 `omp plugin uninstall omp-settings-zh` 卸载时，先预检受管文件，官方卸载成功后自动清理启动器和 PATH 块；`--dry-run` 不清理。撤销仅影响本插件创建的内容，不迁移用户设置。
 
 当前 OMP 支持按插件名更新 GitHub/npm 安装的插件：`omp plugin upgrade omp-settings-zh`。GitHub 插件重新解析安装时记录的分支或标签；固定标签不会自动跳到新标签。也可以使用 `omp plugin install github:rockythink/omp-settings-zh --force` 重新安装仓库默认分支。npm 插件更新到最新发布版本，本地 link 插件直接使用源目录文件，无需 upgrade。
 
@@ -89,7 +97,7 @@ bun run check
 omp plugin link . --scope project
 ```
 
-- `bun test`：设置应用、英文回退、恢复、动态说明和原生面板契约；Stats 回环代理的同源安全边界与 SSE 流式透传。
+- `bun test`：设置可逆性与原生面板契约；单服务预加载的服务隔离、原授权/错误状态、SSE 流式与启动器安装/卸载边界。
 - `bun run typecheck`：TypeScript 类型检查。
 - `bun run coverage:check`：设置项翻译完整性。
 - `bun run drift:check`：设置路径、选项值和英文原文哈希漂移。

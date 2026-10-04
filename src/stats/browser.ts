@@ -2,7 +2,7 @@
 
 import { statsPatterns, statsZh } from "./translations";
 
-// Bundled by the loopback proxy; adapts the DOM once it is ready and as React renders.
+// Served by the official Stats listener; follows the DOM as React renders.
 (() => {
 	const controlId = "omp-stats-language";
 	const styleId = "omp-stats-language-style";

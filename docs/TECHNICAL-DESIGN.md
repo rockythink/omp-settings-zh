@@ -62,12 +62,13 @@
 
 ## Stats Web 显示适配
 
-- `src/stats/dashboard.ts` 按需构建本插件浏览器脚本，并以宿主可执行文件的 Bun 模式启动 `worker.ts`。不在编译宿主内加载另一份 Stats 单例；工作进程移除仅描述父二进制的构建标志，继承官方 Profile 环境。
-- `worker.ts` 使用固定依赖 `@oh-my-pi/omp-stats@18.6.0` 的 `startServer(0, "127.0.0.1")`，惰性调用官方 `openStandaloneJudge`，保留 Frustration 费用流程；正常退出释放 judge、数据库和服务。父进程 stdin 断开也退出，避免遗留监听器。
-- `proxy.ts` 在另一个回环临时端口透传同源 API、资源和 SSE，仅向 HTML head 注入本地语言脚本。拒绝跨域请求、非本机 Host 与缺失 `X-Omp-Stats-Action: 1` 的 POST；不提供 CORS，不伪装官方 dashboard 身份头，不缓存修改后的页面。
-- `browser.ts` 使用官方 DOM 类白名单与数据区域排除规则，译文来自 `translations.ts`。只修改文本节点和显示属性，WeakMap 保存英文与已渲染文本，MutationObserver 增量跟随异步界面变化并处理 React 复用节点；切回 English 恢复原文。
-- 浏览器 localStorage 独立 key 为 `omp-settings-zh.stats.language`，仅属于当前服务 origin；默认中文，新端口不继承旧地址选择。未知文案、API 原文、模型/提供商/工具/项目标识、原始错误与 canvas 文字保留。
-- 主会话串行启动/关闭，重复 `/stats-zh` 复用地址；子会话无权启动或关闭。工作进程存活判断同时检查退出码和信号码，避免将被信号终止的进程继续视为可用。`/settings-language` 不影响网页。
+- `src/index.ts` 异步 ExtensionFactory 默认等待 `installLauncher()`：官方 GitHub/npm 安装验证会 await factory，每次扩展加载也幂等维护。无 Stats 启用命令；本地 link 在首次扩展加载时自动接入。
+- `src/cli/install.ts` 在独立目录生成启动器、私有安装状态与可撤销的 zsh/Bash PATH 块。记录实际写出的 wrapper，以允许未来代码升级但拒绝覆盖用户改动；稳定的逻辑包路径不绑定 Git 缓存。非 Stats、JSON、摘要和帮助直接 exec 原 OMP；只有本插件的原生 uninstall 经 main 预检所有权、执行原命令并清理自己的 PATH，dry-run 不清理。
+- `main.ts` / `run.ts` 运行实际官方 `omp stats`，不导入固定 Stats 包。Web 预先构建 browser.ts 并生成私有 CJS，以合并的 `BUN_OPTIONS --preload` 加载；原 argv、cwd、Profile、stdio、port/host、浏览器打开和独立 judge 保持。没有额外代理、打开器替换或第二个 URL；信号与守护清理子进程和临时文件。
+- `src/stats/preload.ts` 生成自包含启动 Hook，包装 `Bun.serve(options.fetch)`，先执行原 handler；只有成功 HTML 且有官方 Stats 身份标记才注入 `/__omp-settings-zh.js`，同一监听器提供脚本。非 Stats 服务、API/SSE、拒绝/错误、方法、Host/Origin 与 CORS 行为保持。身份头不是授权；修改后的 HTML/脚本 no-store，不保留失效长度或 ETag。Bun 不可靠解析预加载的引号/空格路径，使用安全字符的私有临时路径；不改用户其它预加载参数。
+- `browser.ts` 使用官方 DOM 类白名单与数据区域排除规则，译文来自 translations.ts；只修改文本节点和显示属性。WeakMap 记录原文，MutationObserver 跟随异步渲染/节点复用，切回 English 恢复。
+- localStorage key 为 `omp-settings-zh.stats.language`，首次默认中文；同 origin 跨刷新、路由和服务重启保留，地址改变则使用新 origin 的偏好。未知文案、API 原文、数据标识、错误与 canvas 保留。
+- `/settings-language` 与网页语言独立；会话 `/stats` 保留官方行为。同数据目录下 `/stats` 与 `omp stats` 均扫描多个项目和会话，区别在独立 CLI 与会话绑定的 judge / 费用上下文，不是统计范围。
 
 ## 6. 检查与真实验证
 
@@ -77,13 +78,13 @@
 - 覆盖/漂移：`bun run coverage:check`、`bun run drift:check`。
 - 冒烟：`bun run smoke` 对真实宿主进行三轮应用/撤销，检查原始 UI 恢复和零网络请求。
 - 发布前：实际运行官方编译版，检查插件加载、中文搜索、原生编辑、语言选择器和同进程原版恢复。源码契约不能替代这一步。
-- Stats：回环真实服务测试同源操作头、跨域/DNS 重绑定拒绝和未结束的 SSE 透传；真实编译版与浏览器验证中英文、路由、刷新、原始数据、窄屏、正常关闭及进程异常退出。不得在普通汉化验证中运行付费评估。
+- Stats：真实编译版验证 BUN_OPTIONS 预加载、现有参数合并与安全临时路径；从新 shell 直接 `omp stats` 确认仅原服务一个监听器，测试语言/路由/刷新/同地址重启、原 API/SSE、原授权/静态请求行为、JSON/summary、port/host、退出及默认安装/卸载。不使用源码运行代替编译版，也不触发付费评估。
 
 ## 7. 发布边界
 
-从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件功能或修复递增补丁号并注明实际宿主，已用编号不得复用。当前插件为 18.6.1，开发依赖锁定 18.6.0，宿主声明范围为 `>=18.6.0 <19`。只有已运行检查的宿主可列入验证表；主版本变化默认失败关闭。同主版本不保证内部结构稳定，必须保留预检与真实界面验证。
+从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增补丁号并注明实际宿主，已用编号不得复用。当前版本为 18.6.2，开发依赖锁定 18.6.0，宿主范围为 `>=18.6.0 <19`。同主版本不保证内部结构稳定；Settings 保留预检，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼容。
 
-每次适配先更新开发依赖，检查路径/原文/选项差异，独立复核翻译，运行自动检查和实际编译版，再更新 README、CHANGELOG 与第三方来源说明。定时巡检不属于此次改动。
+每次适配先更新开发依赖，检查路径/原文/选项差异，独立复核翻译，运行自动检查和实际编译版，再更新 README、CHANGELOG 与第三方来源说明。定时巡检使用现有 Orca 外部任务；本次仅同步单服务验证合同，不新增仓库调度器、修改计划或扩大发布授权。
 
 上游没有设置变更时复用现有实现和译文，仍检查导入边界、行为契约、原文哈希及实际编译版，再发布对齐版本与兼容说明。有变更则先补译或复核。旧版本与标签不重写；自动检查或实际验证失败不得发布。
 
