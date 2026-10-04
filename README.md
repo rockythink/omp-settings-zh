@@ -1,6 +1,6 @@
 # omp-settings-zh
 
-让官方 [Oh My Pi（OMP）](https://github.com/can1357/oh-my-pi) 的原生 `/settings` 显示简体中文，并让直接运行 `omp stats` 打开的网页支持中文 / English。设置使用 Extension；Stats 使用可撤销的本地 PATH 启动器，仍运行实际安装的官方 CLI。不分叉、不替换官方二进制，不改变设置与统计计算。
+让官方 [Oh My Pi（OMP）](https://github.com/can1357/oh-my-pi) 的原生 `/settings` 和内置斜杠命令补全说明显示简体中文，并让直接运行 `omp stats` 打开的网页支持中文 / English。设置与补全使用 Extension；Stats 使用可撤销的本地 PATH 启动器，仍运行实际安装的官方 CLI。不分叉、不替换官方二进制，不改变设置、命令执行与统计计算。
 
 ## 界面预览
 
@@ -22,6 +22,7 @@
 - 已验证宿主：OMP `18.6.0`（官方编译版与宿主源码元数据）
 - 翻译覆盖：398/398 项含 UI 元数据的设置名称、说明、风险警告和静态选项
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
+- 工作区未发布增量：85 个内置斜杠命令及别名的补全说明、实时状态和技能数量；命令名、参数提示、模型 ID、排序与插入行为不变。第三方说明、参数／文件补全和未知原文保持原样
 - Stats：官方 CLI 负责数据、API、评估与计算；启动器通过 Bun 预加载在同一服务注入语言脚本，不另起代理或固定另一份 Stats 运行时
 
 ## 兼容范围与限制
@@ -66,7 +67,7 @@ Stats 翻译随插件默认安装，不需要另行启用，也没有独立启�
 /settings-language en    # 撤销汉化，恢复宿主原始文案
 ```
 
-无需重启；切换后重新打开 `/settings` 即可。这两个模式只影响设置文案，不控制模型回复语言。选择保留在当前进程内，下次启动默认中文，不写入用户配置。
+无需重启；切换后重新打开 `/settings` 或补全列表即可。这两个模式影响设置和内置命令补全文案，不控制模型回复语言。选择保留在当前进程内，下次启动默认中文，不写入用户配置。
 
 这里的热插拔指**汉化效果即时挂载和撤销**。OMP 的原生插件安装、禁用、卸载和 `/reload-plugins` 生命周期不由本插件改写；在当前 OMP 中不能把禁用或 `/reload-plugins` 当作已加载 Extension 的即时卸载。想立即恢复原版，先执行 `/settings-language en`，再按需禁用或卸载插件。
 
@@ -99,7 +100,7 @@ omp plugin enable omp-settings-zh
 omp plugin uninstall omp-settings-zh
 ```
 
-升级、启用或禁用后重新启动 OMP，以加载新的 Extension 状态。`/settings-language` 只控制设置文案；Stats 默认中文，只在网页内切换中文 / English，没有独立命令开关。禁用 Extension 不撤销已有 CLI 启动器。通过前置 PATH 的正常 `omp plugin uninstall omp-settings-zh` 卸载时，先预检受管文件，官方卸载成功后自动清理启动器和 PATH 块；`--dry-run` 不清理。撤销仅影响本插件创建的内容，不迁移用户设置。
+升级、启用或禁用后重新启动 OMP，以加载新的 Extension 状态。`/settings-language` 控制设置与内置命令补全文案；Stats 默认中文，只在网页内切换中文 / English，没有独立命令开关。禁用 Extension 不撤销已有 CLI 启动器。通过前置 PATH 的正常 `omp plugin uninstall omp-settings-zh` 卸载时，先预检受管文件，官方卸载成功后自动清理启动器和 PATH 块；`--dry-run` 不清理。撤销仅影响本插件创建的内容，不迁移用户设置。
 
 当前 OMP 支持按插件名更新 GitHub/npm 安装的插件：`omp plugin upgrade omp-settings-zh`。GitHub 插件重新解析安装时记录的分支或标签；固定标签不会自动跳到新标签。也可以使用 `omp plugin install github:rockythink/omp-settings-zh --force` 重新安装仓库默认分支。npm 插件更新到最新发布版本，本地 link 插件直接使用源目录文件，无需 upgrade。
 
@@ -117,9 +118,11 @@ omp plugin link . --scope project
 - `bun run typecheck`：TypeScript 类型检查。
 - `bun run coverage:check`：设置项翻译完整性。
 - `bun run drift:check`：设置路径、选项值和英文原文哈希漂移。
+- `bun run commands:check`：全量内置命令覆盖、新增/删除、原文、别名及标识冲突门禁；已纳入 `bun run check`。复用运行时的原文匹配规则，仅允许已知动态快捷键占位变化。
 - `bun run smoke`：真实宿主元数据的三轮应用/撤销、原生面板派生、行为元数据不变和零网络请求检查。
 
 面板或宿主适配变化还必须在**实际使用的官方编译版**中验证加载、中文搜索、设置编辑和同进程语言切换。源码模式通过不代表编译版共享对象可用。
+命令补全适配须另在真实编译版验证 `/` 列表、别名、动态状态/键位、中英文往返及 Tab/Enter 插入和执行。静态命令门禁只检查锁定开发依赖，不代替升级后的宿主注册表、动态模板源码审查或实际 UI 验证。Stats 也需独立完成实际官方 CLI 与浏览器验证。
 
 ## 翻译贡献
 

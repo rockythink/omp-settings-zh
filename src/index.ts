@@ -5,6 +5,7 @@ import { getHostMetadata } from "./host-adapter";
 import type { HostMetadata } from "./compatibility";
 import { zhCN } from "./translations/zh-CN";
 import { installLauncher } from "./cli/install";
+import { localizeSlashAutocomplete } from "./slash-autocomplete";
 
 const extension: ExtensionFactory = async (pi) => {
   await installLauncher();
@@ -12,6 +13,7 @@ const extension: ExtensionFactory = async (pi) => {
   let active: Extract<ApplyTranslationsResult, { status: "applied" }> | undefined;
   let restoreError: string | undefined;
   let transition = Promise.resolve<string | undefined>(undefined);
+  let autocompleteRegistered = false;
 
   const changeLanguage = async (language: "en" | "zh"): Promise<string | undefined> => {
     if (language === "en") {
@@ -45,12 +47,16 @@ const extension: ExtensionFactory = async (pi) => {
   pi.on("session_start", async (_event, context) => {
     // Child sessions share the registry; they must not own or undo the parent's localization.
     if (context.agent.kind !== "main") return;
+    if (!autocompleteRegistered) {
+      context.ui.addAutocompleteProvider(current => localizeSlashAutocomplete(current, () => !!active));
+      autocompleteRegistered = true;
+    }
     const reason = await setLanguage("zh");
     if (reason) context.ui.notify("omp-settings-zh 设置汉化失败：" + reason, "warning");
   });
 
   pi.registerCommand("settings-language", {
-    description: "切换 /settings 显示语言：zh（中文）或 en（原版）",
+    description: "切换设置与内置命令补全的显示语言：zh（中文）或 en（原版）",
     handler: async (args, context) => {
       if (context.agent.kind !== "main") {
         context.ui.notify("设置语言由主会话管理。", "warning");
@@ -72,7 +78,7 @@ const extension: ExtensionFactory = async (pi) => {
       const reason = await setLanguage(language);
       context.ui.notify(reason
         ? "设置语言切换失败：" + reason
-        : "设置已切换为" + (language === "zh" ? "中文" : "原版") + "，重新打开 /settings 即可。",
+        : "设置与命令补全已切换为" + (language === "zh" ? "中文" : "原版") + "，重新打开 /settings 或补全列表即可。",
         reason ? "warning" : "info");
     },
   });

@@ -6,6 +6,8 @@
 
 `18.6.2` 面向 OMP 18.6.0：398 项设置文案、兼容预检、原子应用与恢复、动态快捷键说明、`/settings-language`，以及直接 `omp stats` 的网页语言按钮。Stats 随插件默认安装可撤销 PATH 启动器，无独立启用命令；运行实际官方 CLI，在原监听器注入脚本，保留 argv、数据、API、计算及 CLI 评估。设置有独立命令开关，网页仅在界面内切换中文 / English。开始贡献前请阅读：
 
+未发布增量还覆盖 85 个内置斜杠命令及别名的补全说明、实时状态与技能数量，跟随 `/settings-language`；不翻译参数／文件补全和第三方说明。贡献这部分时按命令标识匹配官方原文，并保留动态宿主键位与原补全行为。
+
 - [产品需求](docs/PRD.md)
 - [技术设计](docs/TECHNICAL-DESIGN.md)
 - [翻译规范](docs/TRANSLATION-GUIDE.md)
@@ -46,6 +48,7 @@
 - `bun run typecheck`：TypeScript 类型检查；
 - `bun run coverage:check`：翻译覆盖检查；
 - `bun run drift:check`：上游 Schema 漂移检查；
+- `bun run commands:check`：全量内置命令译文完整性、新增/删除、英文/别名漂移及标识冲突检查；使用补全运行时相同的静态原文匹配规则。
 - `bun run smoke`：插件加载冒烟检查，不代替真实交互式 TUI 验证；
 - `bun run check`：执行全部自动检查。
 
@@ -57,6 +60,7 @@
 4. 按 `docs/TRANSLATION-GUIDE.md` 逐条复核翻译数据。
 5. 更新对应英文原文哈希。
 6. 运行 `bun run coverage:check` 和 `bun run drift:check`。
+   命令译文贡献另运行 `bun run commands:check`；动态状态/接口变化须单独审查对应官方生成逻辑并运行行为回归，不能用静态门禁代替。升级先对齐开发依赖与实际宿主，随后按真实编译版门禁验证。
 7. 在 PR 中列出涉及的设置路径和关键术语决策。
 
 翻译 PR 不应夹带运行逻辑重构。
@@ -86,6 +90,7 @@
 - 上游 Schema 漂移报告。
 
 影响设置面板的改动必须在真实官方编译版打开 `/settings`，检查搜索、编辑和 `/settings-language` 原版/中文切换。源码元数据检查成功不能证明编译宿主共享对象可用。
+补全适配改动必须在真实官方编译版检查 `/` 列表、动态模型／计划状态、中文／原版往返，以及 Tab／Enter 插入与实际命令执行。
 
 ## Pull Request 要求
 

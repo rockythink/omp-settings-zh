@@ -7,7 +7,7 @@ import { join } from "node:path";
 
 type Context = {
   agent: { kind: "main" | "sub" };
-  ui: { notify: (message: string) => void; select: () => Promise<undefined> };
+  ui: { notify: (message: string) => void; select: () => Promise<undefined>; addAutocompleteProvider: () => void };
 };
 type Handler = (event: unknown, context: Context) => void | Promise<void>;
 type Command = (args: string, context: Context) => void | Promise<void>;
@@ -40,7 +40,7 @@ if (process.env.OMP_SETTINGS_ZH_LIFECYCLE_CHILD !== "1") {
     on: (name: string, handler: Handler) => events.set(name, handler),
     registerCommand: (name: string, options: { handler: Command }) => commands.set(name, options.handler),
   } as never);
-  const main: Context = { agent: { kind: "main" }, ui: { notify: () => {}, select: async () => undefined } };
+  const main: Context = { agent: { kind: "main" }, ui: { notify: () => {}, select: async () => undefined, addAutocompleteProvider: () => {} } };
   const child: Context = { ...main, agent: { kind: "sub" } };
   const start = events.get("session_start")!;
   const stop = events.get("session_shutdown")!;

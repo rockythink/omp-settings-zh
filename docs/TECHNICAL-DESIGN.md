@@ -60,6 +60,15 @@
 
 子会话共享设置注册表，因此不能应用、撤销或改变主会话语言。主会话 `session_shutdown` 负责撤销其修改；子会话关闭不触碰这些对象。插件不注册同名 `settings` 命令。
 
+## 内置命令补全显示适配
+
+`src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
+
+`src/translations/slash-commands.ts` 保存 OMP 18.6.0 的 85 条官方英文与独立中文译文及别名。仅在顶层斜杠补全中匹配命令标识和官方原文；`switch` 与 `loop` 只允许快捷键占位变化，保留宿主实际键位。翻译 `description`、`nativeDetail` 和 `state`，保留参数提示、值、标签、图标和排序。同步、异步及 partial 结果共用处理，实时状态按每次宿主结果更新。
+
+显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
+开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；复用 `src/slash-autocomplete.ts` 的 `staticText`，不建立第二套键位匹配规则。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
+
 ## Stats Web 显示适配
 
 - `src/index.ts` 异步 ExtensionFactory 默认等待 `installLauncher()`：官方 GitHub/npm 安装验证会 await factory，每次扩展加载也幂等维护。无 Stats 启用命令；本地 link 在首次扩展加载时自动接入。
@@ -75,16 +84,17 @@
 - 类型检查：`bun run typecheck`。
 - 单元/行为测试：翻译、未收录项回退、结构拒绝、原子回滚、共享对象冲突、可逆恢复、动态 getter。
 - 宿主契约：用真实 `createSettingsHost()` 和 `getAllSettingDefs()` 证明新面板随语言变化，且控件类型、分组、默认值、条件和选项值不变。
-- 覆盖/漂移：`bun run coverage:check`、`bun run drift:check`。
+- 设置覆盖/漂移：`bun run coverage:check`、`bun run drift:check`；命令完整覆盖/漂移：`bun run commands:check`，三者均纳入 `bun run check`。
 - 冒烟：`bun run smoke` 对真实宿主进行三轮应用/撤销，检查原始 UI 恢复和零网络请求。
 - 发布前：实际运行官方编译版，检查插件加载、中文搜索、原生编辑、语言选择器和同进程原版恢复。源码契约不能替代这一步。
+- Commands：实际官方编译版检查顶层补全及别名、动态状态/键位、中英文恢复、参数/文件/第三方边界与 Tab/Enter 插入和原命令执行；静态门禁不能代替动态模板和交互证明。
 - Stats：真实编译版验证 BUN_OPTIONS 预加载、现有参数合并与安全临时路径；从新 shell 直接 `omp stats` 确认仅原服务一个监听器，测试语言/路由/刷新/同地址重启、原 API/SSE、原授权/静态请求行为、JSON/summary、port/host、退出及默认安装/卸载。不使用源码运行代替编译版，也不触发付费评估。
 
 ## 7. 发布边界
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增补丁号并注明实际宿主，已用编号不得复用。当前版本为 18.6.2，开发依赖锁定 18.6.0，宿主范围为 `>=18.6.0 <19`。同主版本不保证内部结构稳定；Settings 保留预检，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼容。
 
-每次适配先更新开发依赖，检查路径/原文/选项差异，独立复核翻译，运行自动检查和实际编译版，再更新 README、CHANGELOG 与第三方来源说明。定时巡检使用现有 Orca 外部任务；本次仅同步单服务验证合同，不新增仓库调度器、修改计划或扩大发布授权。
+每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 
 上游没有设置变更时复用现有实现和译文，仍检查导入边界、行为契约、原文哈希及实际编译版，再发布对齐版本与兼容说明。有变更则先补译或复核。旧版本与标签不重写；自动检查或实际验证失败不得发布。
 

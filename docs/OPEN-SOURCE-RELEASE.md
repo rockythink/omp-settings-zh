@@ -11,7 +11,7 @@
 
 建议仓库描述：
 
-> Chinese settings localization and a bilingual Stats dashboard for official Oh My Pi — no fork or binary patch.
+> Chinese settings and slash-command autocomplete localization, plus a bilingual Stats dashboard for official Oh My Pi — no fork or binary patch.
 
 建议 Topics：
 
@@ -70,6 +70,9 @@
 12. 更新第三方来源的固定版本和许可证；
 13. 从干净目录按 README 重走安装流程；
 14. 正常安装验证 Stats 默认接入、无独立启用命令；新 shell 直接运行实际编译版 `omp stats`，确认原 host/port 仅一个监听器并在原 URL 显示语言按钮。验证中文/English、刷新/路由/同地址重启、API/SSE、原静态/授权规则、窄屏、已有 BUN_OPTIONS 合并、临时路径空格处理、JSON/summary、退出、默认安装幂等/原生卸载/dry-run与稳定包路径，不触发付费评估。
+15. `bun run commands:check` 全量覆盖通过，新增/删除、静态英文/别名漂移、空译文及标识冲突为零；先核对锁定开发依赖与实际宿主一致。动态状态模板、快捷键占位及公共补全接口须从目标官方源码独立审查并通过行为回归。
+16. 真实官方编译版验证 `/` 顶层列表、别名、计划/模型/循环实时状态和动态键位；同进程 `/settings-language en/zh` 切换后重新打开列表，Tab/Enter 接受补全并执行无外部副作用的原生命令；参数/文件/第三方说明、模型 ID、原值/排序/插入/执行保持不变，不发送模型请求。
+17. Settings、Commands、Stats 独立报告各自上游变化、适用覆盖/漂移、实际验证证据与英文回退范围；任一部分未通过不得发布，不以设置或静态命令覆盖证明 Stats/动态补全已完成。
 
 任一门禁失败不得发布。
 
