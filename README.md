@@ -2,6 +2,22 @@
 
 让官方 [Oh My Pi（OMP）](https://github.com/can1357/oh-my-pi) 的原生 `/settings` 显示简体中文，并让直接运行 `omp stats` 打开的网页支持中文 / English。设置使用 Extension；Stats 使用可撤销的本地 PATH 启动器，仍运行实际安装的官方 CLI。不分叉、不替换官方二进制，不改变设置与统计计算。
 
+## 界面预览
+
+### 原生设置面板
+
+设置名称与说明显示中文；官方页签、分组、控件和设置值保持不变。
+
+![原生 Settings 中文设置面板](docs/images/settings-zh.png)
+
+### Stats 网页
+
+直接运行 `omp stats`，在原服务地址使用中文 / English 切换。截图中的“API 等价费用”是估算，不是实际账单。
+
+![Stats 中文概览与网页语言切换](docs/images/stats-zh.png)
+
+## 当前版本
+
 - 当前版本：`18.6.2`（实际宿主基线为 OMP 18.6.0）
 - 已验证宿主：OMP `18.6.0`（官方编译版与宿主源码元数据）
 - 翻译覆盖：398/398 项含 UI 元数据的设置名称、说明、风险警告和静态选项
@@ -27,20 +43,6 @@
 **设置面板保留官方页签、分组标题、面板标题和操作提示。** 设置汉化不修改分组标识、排序或面板实现。从磁盘导入 UI 副本不能证明已修改编译宿主的共享对象；18.4.4 适配时已实测发现这种差异。
 
 Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、工具名、模型名和提供商名等保留更清楚的英文形式。Archive 指 Agent 在 eval 中浏览提示词历史、项目、会话和回顾的只读能力，不是压缩包或归档操作。动态快捷键说明沿用宿主 getter 的实际键位图标；切回原版会恢复原始属性描述符。
-
-## 界面预览
-
-### 原生设置面板
-
-设置名称与说明显示中文；官方页签、分组、控件和设置值保持不变。
-
-![原生 Settings 中文设置面板](docs/images/settings-zh.png)
-
-### Stats 网页
-
-直接运行 `omp stats`，在原服务地址使用中文 / English 切换。截图中的“API 等价费用”是估算，不是实际账单。
-
-![Stats 中文概览与网页语言切换](docs/images/stats-zh.png)
 
 ## 安装
 
