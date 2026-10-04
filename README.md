@@ -28,6 +28,20 @@
 
 Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、工具名、模型名和提供商名等保留更清楚的英文形式。Archive 指 Agent 在 eval 中浏览提示词历史、项目、会话和回顾的只读能力，不是压缩包或归档操作。动态快捷键说明沿用宿主 getter 的实际键位图标；切回原版会恢复原始属性描述符。
 
+## 界面预览
+
+### 原生设置面板
+
+设置名称与说明显示中文；官方页签、分组、控件和设置值保持不变。
+
+![原生 Settings 中文设置面板](docs/images/settings-zh.png)
+
+### Stats 网页
+
+直接运行 `omp stats`，在原服务地址使用中文 / English 切换。截图中的“API 等价费用”是估算，不是实际账单。
+
+![Stats 中文概览与网页语言切换](docs/images/stats-zh.png)
+
 ## 安装
 
 要求官方 OMP `>=18.6.0 <19`：
