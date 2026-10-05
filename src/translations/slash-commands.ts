@@ -1,4 +1,4 @@
-/* Display-only translations verified against OMP 18.6.0. */
+/* Display-only translations verified against OMP 18.6.1. */
 export const slashCommandTranslations = [
   {
     "name": "security",

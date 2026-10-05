@@ -67,6 +67,10 @@ if [ "\${1-}" = plugin ] && [ "\${2-}" = uninstall ]; then
     fi
   done
 fi
+if [ "\${1-}" = update ]; then
+  # Official update selects its replacement target from PATH, not process.execPath.
+  export PATH=${quote(dirname(state.omp))}:"$PATH"
+fi
 if [ "\${1-}" != stats ]; then
   ${direct}
 fi

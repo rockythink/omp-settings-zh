@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.6.0",
+  "sourceOmpVersion": "18.6.1",
   "settings": {
     "archive.enabled": {
       "sourceHash": "49a6eda3b78dc5bb8c78a1e13eac1fe8c4d40dcd9e54650a271af74416883467",

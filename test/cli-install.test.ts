@@ -161,6 +161,26 @@ test("GUI extension loads use the real account when shell and account environmen
   } finally { await rm(f.home, { recursive: true, force: true }); }
 });
 
+test("official updates replace the selected official binary without replacing the PATH launcher", async () => {
+  const f = await fixture("zsh");
+  try {
+    await writeFile(f.omp, "#!/bin/sh\nif [ \"$1\" = update ]; then\n  target=$(command -v omp)\n  printf \"updated-official-binary\\n\" > \"$target\"\n  printf \"%s\\n\" \"$target\"\nfi\n", { mode: 0o755 });
+    expect((await f.invoke(["install", "--bun", process.execPath])).code).toBe(0);
+    const launcher = await readFile(f.wrapper, "utf8");
+    const child = Bun.spawn([f.wrapper, "update"], {
+      env: { ...f.env, PATH: `${join(f.home, ".local/share/omp-settings-zh/bin")}:${f.env.PATH}` },
+      stdout: "pipe", stderr: "pipe",
+    });
+    const [code, stdout, stderr] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);
+    if (code !== 0) throw new Error(stderr);
+    expect(stdout.trim()).toBe(f.omp);
+    expect(await readFile(f.omp, "utf8")).toBe("updated-official-binary\n");
+    expect(await readFile(f.wrapper, "utf8")).toBe(launcher);
+    expect((await f.invoke(["uninstall"])).code).toBe(0);
+  } finally { await rm(f.home, { recursive: true, force: true }); }
+});
+
+
 test("native uninstall dry-run retains launcher files and bypasses destructive ownership preflight", async () => {
   const f = await fixture("zsh");
   try {

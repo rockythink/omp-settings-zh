@@ -31,11 +31,11 @@ for (const platform of ["darwin", "linux"]) {
     expect(report.sourceHashMismatches).toEqual([]);
     const result = applyTranslations(host, locale);
     if (result.status !== "applied") throw new Error(result.reason);
-    expect(options.map(option => option.value)).toEqual(values);
-    expect(options.find(option => option.value === "auto")?.label).toBe("自动");
-    expect(options.some(option => option.value === "apple")).toBe(platform === "darwin");
+    const displayed = ui.options as HostOption[];
+    expect(displayed.map(option => option.value)).toEqual(values);
+    expect(displayed.some(option => option.value === "apple")).toBe(platform === "darwin");
     expect(result.restore()).toEqual([]);
-    expect(options.find(option => option.value === "auto")?.label).toBe("Auto");
+    expect(ui.options).toBe(options);
   });
 }
 

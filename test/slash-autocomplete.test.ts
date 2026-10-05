@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import { CombinedAutocompleteProvider, type AutocompleteProvider } from "@oh-my-pi/pi-tui";
+import { buildModel } from "@oh-my-pi/pi-catalog/build";
 import { BUILTIN_SLASH_COMMAND_DEFS, buildTuiBuiltinSlashCommands } from "@oh-my-pi/pi-coding-agent/slash-commands/builtin-registry";
 import type { TuiSlashCommandRuntime } from "@oh-my-pi/pi-coding-agent/slash-commands/types";
 import { Settings } from "@oh-my-pi/pi-coding-agent/config/settings";
@@ -9,7 +10,7 @@ import { cfgSkillful } from "@oh-my-pi/pi-coding-agent/session/settings";
 import { cfgExtendedContext } from "@oh-my-pi/pi-coding-agent/session/context-settings";
 import { cfgComputerEnabled } from "@oh-my-pi/pi-coding-agent/tools/settings";
 import { cfgBrowserEnabled, cfgBrowserHeadless } from "@oh-my-pi/pi-coding-agent/tools/browser/settings";
-import { cfgModelPresets } from "@oh-my-pi/pi-coding-agent/config/model-settings";
+import { cfgCycleOrder, cfgModelPresets, cfgModelRoles } from "@oh-my-pi/pi-coding-agent/config/model-settings";
 import { localizeSlashAutocomplete } from "../src/slash-autocomplete";
 import { slashCommandTranslations } from "../src/translations/slash-commands";
 
@@ -56,6 +57,52 @@ test("command aliases translate but arguments, unknown commands and third-party 
   expect(skills!.items[0]!.description).toBe("My custom skill");
   const root = await provider.getSuggestions(["/"], 0, 1);
   expect(root!.items.find(item => item.value === "skill:")!.description).toBe("1 项技能");
+});
+
+test("official switch role order, picker-ranked models and thinking suffixes pass through in both languages", async () => {
+  const settings = Settings.isolated();
+  const models = ["alpha", "beta", "outside"].map((provider, index) => buildModel({
+    provider, id: "model-1", name: ["Open settings menu", "Start a new session", "Outside scope"][index]!,
+    api: "openai-completions", baseUrl: "http://127.0.0.1/v1", reasoning: true, input: ["text"],
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }, contextWindow: 200000, maxTokens: 8192,
+  }));
+  cfgModelRoles.override(settings, { default: "beta/model-1", smol: "alpha/model-1", plan: "beta/model-1" });
+  cfgCycleOrder.override(settings, ["smol", "default"]);
+  const session = {
+    scopedModels: models.slice(0, 2).map(model => ({ model })),
+    modelRegistry: { getError: () => undefined, getAvailable: () => models, getAll: () => models },
+  };
+  const command = buildTuiBuiltinSlashCommands({ ctx: { settings, session } } as unknown as TuiSlashCommandRuntime)
+    .find(command => command.name === "switch")!;
+  const native = new CombinedAutocompleteProvider([command]);
+  let chinese = true;
+  const provider = localizeSlashAutocomplete(native, () => chinese);
+  const check = async (query: string, values: string[]) => {
+    const text = "/switch " + query;
+    const original = (await native.getSuggestions([text], 0, text.length))!;
+    expect(original.items.map(item => item.value)).toEqual(values);
+    for (const language of [true, false]) {
+      chinese = language;
+      const result = (await provider.getSuggestions([text], 0, text.length))!;
+      expect(result).toEqual(original);
+      expect(provider.trySyncSlashCompletion!(text)).toBeNull();
+      for (let index = 0; index < result.items.length; index++) {
+        expect(provider.applyCompletion([text], 0, text.length, result.items[index]!, result.prefix))
+          .toEqual(native.applyCompletion([text], 0, text.length, original.items[index]!, original.prefix));
+      }
+    }
+    return original;
+  };
+  await check("@", ["@smol ", "@default ", "@plan "]);
+  await check("@SM:high", ["@smol:high "]);
+  const modelResult = await check("mdl:high", ["beta/model-1:high ", "alpha/model-1:high "]);
+  expect(modelResult.items.map(item => item.description)).toEqual(["Start a new session", "Open settings menu"]);
+  // The official cache must notice live scope changes; localization must not retain old candidates.
+  session.scopedModels = [{ model: models[2]! }];
+  await check("mdl:low", ["outside/model-1:low "]);
+  session.scopedModels = [];
+  const available = await provider.getSuggestions(["/switch mdl"], 0, 11);
+  expect(available!.items.map(item => item.value).sort()).toEqual(["alpha/model-1 ", "beta/model-1 ", "outside/model-1 "]);
 });
 
 test("key glyph changes in official descriptions preserve the key and do not disable live translation", async () => {

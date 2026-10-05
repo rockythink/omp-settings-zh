@@ -1,5 +1,5 @@
 /**
- * Display-only copy from @oh-my-pi/omp-stats 18.6.0. Apply only to known UI
+ * Display-only copy from @oh-my-pi/omp-stats 18.6.1 (client unchanged since 18.6.0). Apply only to known UI
  * text/attributes, never journal payloads, identifiers, or arbitrary data cells.
  * Protocol names, command names, currencies, and brands remain unchanged.
  */

@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现版本：18.6.3
-- 验证基线：OMP 18.6.0
+- 实现版本：18.6.5
+- 验证基线：OMP 18.6.1
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -52,6 +52,8 @@
 
 撤销恢复原始 getter 或数据属性，并删除原来不存在的属性。重复撤销不重复写入；另一扩展后续改成不同文案时，不覆盖其编辑。恢复被宿主拒绝时必须明确提示错误，不宣称已经恢复。
 
+静态选项数组可能引用命令补全也读取的思考元数据。仅复制有显示变化的选项（保留原型/属性描述符）并挂载到该设置的 `ui.options`，不改共享原选项。选项字段先逆序恢复；显示数组成员/描述符仍由插件拥有时才恢复原数组，后续外部编辑、属性新增、成员替换或追加均保留。预检仍覆盖数组属性及显示字段可写性，失败关闭。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -64,7 +66,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存 OMP 18.6.0 的 85 条官方英文与独立中文译文及别名。仅在顶层斜杠补全中匹配命令标识和官方原文；`switch`、`loop` 与 `effort` 只允许快捷键占位变化，保留宿主实际键位。翻译 `description`、`nativeDetail` 和 `state`，保留参数提示、值、标签、图标和排序。同步、异步及 partial 结果共用处理，实时状态按每次宿主结果更新。
+`src/translations/slash-commands.ts` 保存 OMP 18.6.1 的 85 条官方英文与独立中文译文及别名。注册表/动态模板相对 18.6.0 未变；上游 `/switch` 参数候选的筛选/排序变化直接由原 provider 透传。仅在顶层斜杠补全中匹配命令标识和官方原文；`switch`、`loop` 与 `effort` 只允许快捷键占位变化，保留宿主实际键位。翻译 `description`、`nativeDetail` 和 `state`，保留参数提示、值、标签、图标和排序。同步、异步及 partial 结果共用处理，实时状态按每次宿主结果更新。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -73,6 +75,7 @@
 
 - `src/index.ts` 异步 ExtensionFactory 默认等待 `installLauncher()`：官方 GitHub/npm 安装验证会 await factory，每次扩展加载也幂等维护。无 Stats 启用命令；本地 link 在首次扩展加载时自动接入。
 - `src/cli/install.ts` 在独立目录生成启动器、私有安装状态与可撤销的 zsh/Bash PATH 块。记录实际写出的 wrapper，以允许未来代码升级但拒绝覆盖用户改动；稳定的逻辑包路径不绑定 Git 缓存。无 SHELL 时读取账户登录 shell；macOS 的 Bun 在 USER／LOGNAME 缺失时会报告 unknown 名称，此时用 id 按真实 UID 解析后查询 dscl，Linux 按 UID 查询 getent，不猜测 shell。非 Stats、JSON、摘要和帮助直接 exec 原 OMP；只有本插件的原生 uninstall 经 main 预检所有权、执行原命令并清理自己的 PATH，dry-run 不清理。
+- 官方 `update` 按 PATH 中 `omp` 的位置选择二进制替换目标；启动器只在透传 update 前将已记录官方二进制目录置于 PATH 最前，再 exec 原二进制，保留 argv/stdio。不得将受管 wrapper 作为官方更新目标。
 - `main.ts` / `run.ts` 运行实际官方 `omp stats`，不导入固定 Stats 包。Web 预先构建 browser.ts 并生成私有 CJS，以合并的 `BUN_OPTIONS --preload` 加载；原 argv、cwd、Profile、stdio、port/host、浏览器打开和独立 judge 保持。没有额外代理、打开器替换或第二个 URL；信号与守护清理子进程和临时文件。
 - `src/stats/preload.ts` 生成自包含启动 Hook，包装 `Bun.serve(options.fetch)`，先执行原 handler；只有成功 HTML 且有官方 Stats 身份标记才注入 `/__omp-settings-zh.js`，同一监听器提供脚本。非 Stats 服务、API/SSE、拒绝/错误、方法、Host/Origin 与 CORS 行为保持。身份头不是授权；修改后的 HTML/脚本 no-store，不保留失效长度或 ETag。Bun 不可靠解析预加载的引号/空格路径，使用安全字符的私有临时路径；不改用户其它预加载参数。
 - `browser.ts` 使用官方 DOM 类白名单与数据区域排除规则，译文来自 translations.ts；只修改文本节点和显示属性。WeakMap 记录原文，MutationObserver 跟随异步渲染/节点复用，切回 English 恢复。自有写入在 observer 断开期间完成；`mutations.ts` 在处理外部整批写入前失效对应来源，即使真实数据与上次中文显示相同也不恢复旧英文。表头变化重扫整表，stat 标签／chart 模式变化重扫其邻接区域；追踪 Minimap 仅翻译固定 aria-label，canvas 像素不改。
@@ -92,7 +95,7 @@
 
 ## 7. 发布边界
 
-从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增补丁号并注明实际宿主，已用编号不得复用。当前版本为 18.6.4，开发依赖锁定 18.6.0，宿主范围为 `>=18.6.0 <19`。同主版本不保证内部结构稳定；Settings 保留预检，Commands 核验原文/别名、动态生成逻辑与公共补全接口，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼容。
+从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增补丁号并注明实际宿主，已用编号不得复用。当前版本为 18.6.5，开发依赖锁定 18.6.1，宿主范围为 `>=18.6.1 <19`。同主版本不保证内部结构稳定；Settings 保留预检，Commands 核验原文/别名、动态生成逻辑与公共补全接口，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼容。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

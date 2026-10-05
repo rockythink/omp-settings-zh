@@ -1,4 +1,4 @@
-import { checkHostCompatibility, type HostMetadata, type HostOption } from "./compatibility";
+import { checkHostCompatibility, type HostMetadata, type HostOption, type HostUiMetadata } from "./compatibility";
 import type { LocalePack, OptionTranslation, SettingTranslation } from "./translations/types";
 import { getSettingTranslation } from "./translations/resolve";
 
@@ -10,6 +10,7 @@ interface Mutation {
   readonly getter: (() => string) | undefined;
   readonly value: unknown;
   readonly location: string;
+  readonly restoreCheck: (() => boolean) | undefined;
 }
 
 type MutationPlan =
@@ -35,10 +36,11 @@ function queueMutation(
   value: unknown,
   location: string,
   getter?: () => string,
+  restoreCheck?: () => boolean,
 ): void {
   const previous = Reflect.get(target, key);
   if (!getter && Object.is(previous, value)) return;
-  mutations.push({ target, key, previous, value, location, originalDescriptor: Object.getOwnPropertyDescriptor(target, key), getter });
+  mutations.push({ target, key, previous, value, location, originalDescriptor: Object.getOwnPropertyDescriptor(target, key), getter, restoreCheck });
 }
 
 function queueTextFields(
@@ -63,15 +65,45 @@ function queueTextFields(
 
 function queueOptions(
   mutations: Mutation[],
-  options: readonly HostOption[] | undefined,
+  ui: HostUiMetadata,
   translations: Readonly<Record<string, OptionTranslation>> | undefined,
   location: string,
 ): void {
-  if (!options || !translations) return;
-  for (const option of options) {
+  const options = ui.options;
+  if (!Array.isArray(options) || !translations) return;
+  const fields: Mutation[] = [];
+  const copies = new Map<number, { option: HostOption; descriptors: PropertyDescriptorMap }>();
+  const localized = options.map((option, index) => {
     const translation = translations[option.value];
-    if (translation) queueTextFields(mutations, option, translation, `${location}.${option.value}`);
-  }
+    if (!translation || (translation.label === undefined || translation.label === option.label)
+      && (translation.description === undefined || translation.description === option.description)) return option;
+    // UI options can alias metadata also consumed by command argument completions.
+    const descriptors = Object.getOwnPropertyDescriptors(option);
+    const copy: HostOption = Object.create(Object.getPrototypeOf(option), descriptors);
+    copies.set(index, { option: copy, descriptors });
+    queueTextFields(fields, copy, translation, `${location}.${option.value}`);
+    return copy;
+  });
+  if (!copies.size) return;
+  // Restore fields first; only discard the display array if no later edit remains.
+  queueMutation(mutations, ui, "options", localized, location, undefined, () =>
+    localized.length === options.length && localized.every((option, index) => {
+      const copy = copies.get(index);
+      return copy ? option === copy.option && matchesDescriptors(option, copy.descriptors) : option === options[index];
+    }));
+  mutations.push(...fields);
+}
+
+function matchesDescriptors(target: object, expected: PropertyDescriptorMap): boolean {
+  const keys = Reflect.ownKeys(target);
+  if (keys.length !== Reflect.ownKeys(expected).length) return false;
+  return keys.every(key => {
+    const actual = Object.getOwnPropertyDescriptor(target, key)!;
+    const original: PropertyDescriptor | undefined = Reflect.get(expected, key);
+    return original !== undefined && actual.configurable === original.configurable
+      && actual.enumerable === original.enumerable && actual.writable === original.writable
+      && Object.is(actual.value, original.value) && actual.get === original.get && actual.set === original.set;
+  });
 }
 
 function buildMutationPlan(host: HostMetadata, locale: LocalePack): MutationPlan {
@@ -87,7 +119,7 @@ function buildMutationPlan(host: HostMetadata, locale: LocalePack): MutationPlan
 
     queueTextFields(pendingMutations, ui, translation, `schema.${path}.ui`);
     if (Array.isArray(ui.options)) {
-      queueOptions(pendingMutations, ui.options, translation.options, `schema.${path}.ui.options`);
+      queueOptions(pendingMutations, ui, translation.options, `schema.${path}.ui.options`);
     }
 
   }
@@ -168,6 +200,7 @@ function restoreMutations(mutations: readonly Mutation[], lastIndex: number, own
     try {
       // Do not overwrite a later edit made by another extension.
       if (ownedOnly && !isApplied(mutation)) continue;
+      if (ownedOnly && mutation.restoreCheck && !mutation.restoreCheck()) continue;
       const descriptor = mutation.originalDescriptor;
       const redefined = mutation.getter || descriptor && !("value" in descriptor) && !descriptor.set;
       const restored = redefined && descriptor
