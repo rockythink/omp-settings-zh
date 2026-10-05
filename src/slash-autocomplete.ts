@@ -56,6 +56,8 @@ export function staticText(text: string | undefined, entry: Translation): { pref
 }
 
 function translateState(command: string, state: string): string {
+  // Effort selectors are official configuration values, including the literal `off`.
+  if (command === "effort" && state !== "model default") return state;
   if (Object.hasOwn(states, state)) return states[state]!;
   if (command === "goal") {
     const match = /^(active|paused|budget-limited|complete|dropped) (\(.*\))$/.exec(state);

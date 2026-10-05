@@ -28,7 +28,7 @@ import { invalidateExternalWrites } from "./mutations";
 	const excluded = [
 		`#${controlId}`, "script", "style", "pre", "code", "textarea", "[contenteditable]",
 		".mono", ".cell-primary", ".cell-secondary", ".kv-value", ".code-block",
-		".error-state-message", ".errors-signature", ".errors-message", ".errors-example",
+		".error-state-message", ".errors-signature", ".errors-filter", ".errors-message", ".errors-example",
 		".request-drawer-error-text", ".drawer-title", ".drawer-subtitle",
 		".traces-title", ".traces-row-label", ".traces-row-detail", ".traces-row-track",
 		".traces-gutter-track", ".traces-gutter-model", ".traces-tooltip", ".providers-account",

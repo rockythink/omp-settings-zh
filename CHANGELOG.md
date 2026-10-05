@@ -2,6 +2,28 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.6.6] - 2026-10-06
+
+### Fixed
+
+- Commands `/effort` 实时状态保留 `off`、`auto`、`minimal` 等官方选择器字面量；仅标签汉化，不把 `off` 误作普通开关状态“关闭”，参数说明、值、排序与执行保持原 provider
+- Stats Errors 页选中错误特征后，筛选按钮的可见正文与 `title` tooltip 均保持原始错误数据；译文键同名的错误特征不再被 UI 词典翻译
+
+### Baseline
+
+- `omp update` 前后均为官方 OMP 18.6.1；coding-agent、pi-utils 与独立检查的 omp-stats 最新稳定版均为 18.6.1
+- Settings 398 项注册表、原文哈希、选项和动态 getter 无漂移；Commands 85 条定义、93 个命令名/别名、27 个动态回调及公共补全接口无上游漂移；Stats 18.6.1 client/server 与 npm 源码逐文件对应，较 18.6.0 仅包版本变化
+- Settings、Commands 与 Stats 译文变化均为 0，不重复改译
+
+### Verified
+
+- 冻结安装和完整门禁：57 测试／2317 断言通过；Settings 398/398、Schema 漂移 0，Commands 85/85、93 个命令名/别名及新增/删除/原文漂移 0；1747 项显示元数据变更、三轮中英文恢复、零设置网络请求
+- 新启动官方 18.6.1 编译版：顶层中文补全、`effort` 的 `off` 原值及英文往返、Tab/Enter 执行原生 `/settings`、中文搜索和隔离枚举编辑通过；未发送模型请求
+- 实际官方 Stats：两项目两请求覆盖十一导航页、请求抽屉、追踪时间线/canvas、键盘路由、390px 窄屏、中文/English、刷新与同 origin 重启；错误特征 `Requests` 的正文与 tooltip 在双语下均保持原文，API 响应不变
+- 新 shell PATH 入口运行实际官方 CLI，原 host/port 仅一个监听器；已有用户 preload 与插件 preload 同时生效，TMPDIR 含空格时使用安全私有路径；JSON/summary/非 Stats 直通，Ctrl+C 返回 0 并清理临时目录
+- 原静态跨 Origin/Host 允许与无 CORS 保持，judge GET 为 405、无操作头 POST 为 403；没有发送付费评估请求或点击费用确认
+- 干净 HOME 从 GitHub main 安装 18.6.6，plugin doctor 全绿；新 shell 启动器、Stats 中英文切换、dry-run 不删除、标准卸载移除插件与自有 PATH 启动器并恢复官方 OMP 入口通过
+
 ## [18.6.5] - 2026-10-05
 
 ### Fixed

@@ -256,7 +256,7 @@ test("official live callbacks cover every state family without changing matching
   cfgModelPresets.override(settings, { demo: { modelRoles: {} }, other: { modelRoles: {} } });
   await check("modelpreset", "2 saved", "已保存 2 项");
   await check("effort", "model default", "模型默认");
-  for (const value of ["auto", "minimal", "low", "medium", "high", "xhigh", "max"]) {
+  for (const value of ["off", "auto", "minimal", "low", "medium", "high", "xhigh", "max"]) {
     effort = value; await check("effort", value, value);
   }
   await check("advisor", "off", "关闭"); advisors.configured = true;
