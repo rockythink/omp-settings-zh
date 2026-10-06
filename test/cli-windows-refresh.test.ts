@@ -152,6 +152,6 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
     expect(await Bun.file(cancelled.pending.file).exists()).toBe(false);
   } finally {
     for (const child of children) if (child.exitCode === null) { child.stdin.end(); child.kill(); await child.exited; }
-    await rm(home, { recursive: true, force: true });
+    await rm(home, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
   }
 }, 120_000);
