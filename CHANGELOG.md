@@ -2,7 +2,7 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
-## [18.6.7] - Unreleased
+## [18.6.7] - 2026-10-06
 
 ### Baseline
 
@@ -16,7 +16,14 @@
 
 ### Verification boundary
 
-- 发布仍须分别完成三部分真实官方编译版交互、当前提交 macOS／Linux CI、干净 GitHub 安装和卸载；工作区的 Windows 待发布工作独立保留，不纳入本次适配提交
+- 独立发布候选 frozen install 与完整 check：56 测试、2100 断言通过；Settings 400/400、Schema 漂移 0；Commands 85/85、93 个标识和原文／别名漂移 0；1751 项显示元数据变更、三轮语言恢复、零设置网络请求
+- 新启动官方 macOS OMP 18.6.3：Settings 中文搜索、原生 bool／枚举编辑与恢复、原版语言恢复、新 Muse Code 隐私说明通过；Commands 顶层列表、Tab／Enter 原生执行、models／quit 别名、effort 的 off 字面量和 plan／loop 实时状态、Unicode／ASCII 显示通过，未发送模型请求
+- 真实官方 Stats：11 页中英文往返、六个时间范围快捷键、费用拆分、请求／工具抽屉与会话追踪、错误筛选原始数据、390px 语言控件、同址刷新／重启偏好保留通过；官方费用估算与双语确认只查看并取消，未执行评估
+- Window utilization 账户名 Requests／Other (3)／请求 在真实官方页面的同构 DOM 边界探针中保持正文与 title，复用节点和语言往返不误译，Exhausted／Total 固定标签仍翻译；实际订阅账户窗口未接入，不以探针冒充实账户验证
+- 与未注入官方服务的六类 JSON 逐字节相等；HTML 除单个同源 script 外保持，HEAD／SSE 与原方法／action header 拒绝行为保持；官方身份标记不是授权，未添加跨 Origin／Host 拦截
+- 发布候选保持 argv／cwd／已有 BUN_OPTIONS；官方进程单 listener、预加载目录 0700／文件 0600；SIGINT、启动器 SIGKILL、父进程退出和真实非法端口启动失败均退出并清理自有预加载
+- 干净含空格／中文 HOME 从 GitHub main 安装 18.6.7，doctor 四项全绿；编译宿主默认加载 400 项中文元数据，稳定包路径、新 shell 的 Stats 中英文／刷新、原 JSON／summary、dry-run 保留与标准卸载通过，恢复官方 OMP 入口且二进制 SHA-256 不变
+- 最终发布提交仍须独立通过 macOS／Linux CI 才打标签。工作区已有 Windows 待发布改动不纳入本次提交，未验证原生 Windows；Tern 专有展开思考块条件已核对，未进行 Tern 实界面验证。原生页签／分组／硬编码操作提示、第三方命令／参数／文件说明、未知 Stats 文案与 canvas 保持官方原文
 
 
 ## [18.6.6] - 2026-10-06
