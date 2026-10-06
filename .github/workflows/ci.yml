@@ -23,6 +23,9 @@ jobs:
         with:
           bun-version: 1.4.0
       - run: bun install --frozen-lockfile
+      - name: Diagnose native maintenance streams
+        if: runner.os == 'Windows'
+        run: bun run scripts/probe-windows-maintenance.ts
       - run: bun run check
       - name: Verify the official Windows executable
         if: runner.os == 'Windows'
