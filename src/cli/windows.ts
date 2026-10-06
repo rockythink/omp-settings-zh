@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { lstat, mkdir, readFile, realpath, rmdir, unlink, writeFile, mkdtemp, rm } from "node:fs/promises";
+import { copyFile, lstat, mkdir, readFile, realpath, rmdir, unlink, writeFile, mkdtemp, rm } from "node:fs/promises";
 import { dirname, join, resolve, win32 } from "node:path";
 import { tmpdir } from "node:os";
 import type { LauncherInstallOptions } from "./install";
@@ -95,7 +95,7 @@ export function windowsUserPathStore(): WindowsPathStore {
     async replace(before, after) {
       const payload = Buffer.from(JSON.stringify({ before, after })).toString("base64");
       await runPowerShell(`$p=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${payload}'))|ConvertFrom-Json;
-Add-Type -TypeDefinition 'using System; using System.Runtime.InteropServices; public static class OmpEnvironment { [DllImport("user32.dll", CharSet=CharSet.Unicode, SetLastError=true)] public static extern IntPtr SendMessageTimeout(IntPtr h, uint m, UIntPtr w, string l, uint f, uint t, out UIntPtr r); }';
+& ([ScriptBlock]::Create([IO.File]::ReadAllText('${join(dirname(import.meta.path), "windows-native.ps1").replace(/'/g, "''")}'))) -Source 'using System; using System.Runtime.InteropServices; public static class OmpEnvironment { [DllImport("user32.dll", CharSet=CharSet.Unicode, SetLastError=true)] public static extern IntPtr SendMessageTimeout(IntPtr h, uint m, UIntPtr w, string l, uint f, uint t, out UIntPtr r); }';
 $m=[Threading.Mutex]::new($false,'Local\\omp-settings-zh-UserPath-'+[Security.Principal.WindowsIdentity]::GetCurrent().User.Value);
 $locked=$false;try {try{$locked=$m.WaitOne(30000)}catch [Threading.AbandonedMutexException]{$locked=$true};if(!$locked){throw 'User PATH lock timeout'};
 ${readRegistry}
@@ -154,9 +154,18 @@ async function compileLauncher(config: Pick<WindowsState, "bun" | "main" | "omp"
   const temporary = await mkdtemp(join(tmpdir(), "omp-zh-build-"));
   try {
     const outfile = join(temporary, "omp.exe");
-    const child = Bun.spawn([config.bun, "build", join(dirname(import.meta.path), "windows-launcher.ts"), "--compile", "--outfile", outfile,
+    // Bun 1.4.0 widens UTF-8 bytes instead of decoding them before CopyFileW
+    // copies the compiler template. Keep that argument ASCII and relative;
+    // the selected runtime, cwd and embedded launcher paths remain Unicode.
+    let template = config.bun;
+    if (process.platform === "win32" && /[^\x00-\x7f]/.test(template)) {
+      template = "compiler.exe";
+      await copyFile(config.bun, join(temporary, template));
+    }
+    const child = Bun.spawn([config.bun, "build", join(dirname(import.meta.path), "windows-launcher.ts"), "--compile", "--outfile", "omp.exe",
+      "--compile-executable-path", template,
       "--no-compile-autoload-dotenv", "--no-compile-autoload-bunfig", "--no-compile-autoload-tsconfig", "--no-compile-autoload-package-json",
-      "--define=OMP_WINDOWS_LAUNCHER_CONFIG=" + JSON.stringify(config)], { cwd: dirname(import.meta.path), stdin: "ignore", stdout: "pipe", stderr: "pipe" });
+      "--define=OMP_WINDOWS_LAUNCHER_CONFIG=" + JSON.stringify(config)], { cwd: temporary, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
     const [code, out, err] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);
     if (code !== 0) throw new Error("编译 Windows 启动器失败：" + out + err);
     return await readFile(outfile);

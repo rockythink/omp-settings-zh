@@ -79,6 +79,7 @@
 - Windows 分流到 `src/cli/windows.ts`：USERPROFILE/HOME 与 LOCALAPPDATA 定位独立用户目录；仅选择真正 PE `.exe`，拒绝受管启动器及其链接／副本；`windows-launcher.ts` 编译薄 exe，数组方式调用真正 Bun/main，不使用 CMD `%*` 或改变执行策略。用户级 PATH 的原始注册表类型和占位符保持，比较后写入与回滚不覆盖并发编辑；状态／可执行文件所有权校验先于写入，测试显式注入 PATH 存储，不触碰真实 HKCU。机器级 PATH 或已有 alias 的优先级不接管。
 - Windows 薄 exe 的编译自动加载配置关闭；安装状态记录启动器源码摘要与所选 Bun 版本，无变化复用编译结果，代码／Bun 更新时重建。薄 exe 自身消费继承的 Ctrl+C 并等待官方子链退出，不能先退出后由守护强杀官方处理器。运行中 exe 若锁定，卸载清理助手必须确认受管进程路径、完成启动握手，等待退出后重新校验摘要再删除；失败可见，不能覆盖替换后的文件。
 - 正在运行的自有 exe 刷新先写受管 staged exe／pending 状态，清理助手完成 READY 握手与父进程路径验证，再等待退出；命名 mutex、state 独占锁与摘要校验保护替换和提交，失败恢复旧 exe／状态并保留可重试更新。相同 pending 幂等；卸载取消 pending，等待中的助手不得复活文件。
+- Windows Bun 编译器的非 ASCII self-exe 路径使用私有相对 ASCII template 绕过上游宽字符复制缺陷；真正运行 Bun 的配置绝对路径不变，不使用 8dot3。PowerShell 5 原生类型由共享 `windows-native.ps1` 直接调用 Framework C# 编译器并内存加载，保留中文 TEMP／TMP，退出即清理自有编译目录，不改执行策略；避免 CodeDom 的 ANSI 环境转换破坏用户路径。
 - 官方 `update` 按 PATH 中 `omp` 的位置选择二进制替换目标；两类启动器都只在 update 子进程前将已记录官方二进制目录置于 PATH 最前，保留 argv/stdio，不将受管启动器作为更新目标。
 - `main.ts` / `run.ts` 运行实际官方 `omp stats`，不导入固定 Stats 包。Web 预先构建 browser.ts 并生成私有 CJS，以合并的 `BUN_OPTIONS --preload` 加载；原 argv、cwd、Profile、stdio、port/host、浏览器打开和独立 judge 保持。没有额外代理、打开器替换或第二个 URL；信号与守护清理子进程和临时文件。
 - `src/stats/preload.ts` 生成自包含启动 Hook，包装 `Bun.serve(options.fetch)`，先执行原 handler；只有成功 HTML 且有官方 Stats 身份标记才注入 `/__omp-settings-zh.js`，同一监听器提供脚本。非 Stats 服务、API/SSE、拒绝/错误、方法、Host/Origin 与 CORS 保持。身份头不是授权；修改后的 HTML/脚本 no-store，不保留失效长度或 ETag。Bun 不可靠解析 BUN_OPTIONS 中的引号／空格路径，因此用短 base64 data URL 只编码 `require(绝对预加载文件名)`；不编码浏览器大包、不改 cwd、不依赖 8dot3，不改用户其它预加载参数。

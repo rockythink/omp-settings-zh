@@ -1,7 +1,8 @@
 $ErrorActionPreference = 'Stop'
 # An isolated console is essential: broadcasting Ctrl+C in the test runner's
 # console would interrupt unrelated tests. No shell parses the child argv.
-Add-Type @'
+# Shared native compilation also exercises the User PATH updater's loader.
+$source = @'
 using System;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -26,6 +27,10 @@ public static class StatsConsoleTest {
   [DllImport("kernel32.dll")] public static extern bool CloseHandle(IntPtr handle);
 }
 '@
+# Load only the trusted repository helper as source, without changing execution
+# policy or the Unicode environment inherited by the isolated console child.
+$nativeLoader = Join-Path $PSScriptRoot '../../src/cli/windows-native.ps1'
+& ([ScriptBlock]::Create([IO.File]::ReadAllText($nativeLoader))) -Source $source
 $startup = New-Object StatsConsoleTest+StartupInfo
 $startup.cb = [Runtime.InteropServices.Marshal]::SizeOf($startup)
 $child = New-Object StatsConsoleTest+ProcessInfo
@@ -36,6 +41,11 @@ if (-not [StatsConsoleTest]::CreateProcessW($env.OMP_RUNNER_TEST_BUN, $command, 
 try {
   $deadline = [DateTime]::UtcNow.AddSeconds(20)
   while (-not (Test-Path -LiteralPath $env.OMP_RUNNER_TEST_READY_FILE)) {
+    if ([StatsConsoleTest]::WaitForSingleObject($child.process, 0) -eq 0) {
+      $earlyCode = [uint32]0
+      [StatsConsoleTest]::GetExitCodeProcess($child.process, [ref]$earlyCode) | Out-Null
+      throw "Launcher exited before Stats became ready: $earlyCode"
+    }
     if ([DateTime]::UtcNow -gt $deadline) { throw 'Stats did not become ready' }
     Start-Sleep -Milliseconds 50
   }

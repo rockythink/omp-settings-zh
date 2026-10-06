@@ -38,6 +38,7 @@ if (process.env.OMP_SETTINGS_ZH_LIFECYCLE_CHILD !== "1") {
   if (process.platform === "win32") {
     // Keep the real Windows file/launcher lifecycle; isolate only persistent HKCU PATH.
     const windows = await import("../src/cli/windows");
+    const manageWindowsLauncher = windows.manageWindowsLauncher;
     let path: UserPath = { value: null, kind: "String" };
     const store: WindowsPathStore = {
       async read() { return { ...path }; },
@@ -49,7 +50,7 @@ if (process.env.OMP_SETTINGS_ZH_LIFECYCLE_CHILD !== "1") {
     mock.module("../src/cli/windows", () => ({
       ...windows,
       manageWindowsLauncher: (command: "install" | "uninstall", options: LauncherInstallOptions, entry: string, checkOnly = false) =>
-        windows.manageWindowsLauncher(command, options, entry, checkOnly, store),
+        manageWindowsLauncher(command, options, entry, checkOnly, store),
     }));
   }
   const { default: extension } = await import("../src/index");
