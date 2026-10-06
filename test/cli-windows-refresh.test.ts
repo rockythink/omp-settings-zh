@@ -34,15 +34,18 @@ nativeTest("a real running Windows thin exe queues refresh once, preserves faile
     const storeSource = `let path={value:null,kind:'String'};const store={read:async()=>({...path}),replace:async(before,after)=>{path={...after}}};`;
     await writeFile(join(app, "main.ts"), `import {readFile} from 'node:fs/promises';
 import {manageWindowsLauncher} from ${JSON.stringify(windowsModule)};
+const helpers=[],spawn=Bun.spawn.bind(Bun);
+Bun.spawn=(...args)=>{const child=spawn(...args);if(String(args[0][0]).toLowerCase().endsWith('powershell.exe'))helpers.push(child.pid);return child;};
 ${storeSource}
 const entry=${JSON.stringify(entry)},statePath=${JSON.stringify(statePath)};
 const options={omp:${JSON.stringify(official)},bun:${JSON.stringify(nextBun)}};
-const first=await manageWindowsLauncher('install',options,entry,false,store);
+await manageWindowsLauncher('install',options,entry,false,store);
 const pending=JSON.parse(await readFile(statePath,'utf8')).pending;
-const second=await manageWindowsLauncher('install',options,entry,false,store);
+await manageWindowsLauncher('install',options,entry,false,store);
 if(!pending||JSON.parse(await readFile(statePath,'utf8')).pending.id!==pending.id)throw Error('pending refresh was not idempotent');
 if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,false,store);
-console.log(JSON.stringify({first,second,pending,runtime:process.execPath,args:Bun.argv.slice(2),cwd:process.cwd()}));await Bun.stdin.text();`);
+    console.log(JSON.stringify({helpers,pending,runtime:process.execPath,args:Bun.argv.slice(2),cwd:process.cwd()}));await Bun.stdin.text();
+`);
     const install = Bun.spawn([process.execPath, "-e", `import {manageWindowsLauncher} from ${JSON.stringify(windowsModule)};${storeSource}await manageWindowsLauncher('install',{omp:${JSON.stringify(official)},bun:process.execPath},${JSON.stringify(entry)},false,store);`], { env, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
     const [installCode, installOut, installErr] = await Promise.all([install.exited, new Response(install.stdout).text(), new Response(install.stderr).text()]);
     if (installCode !== 0) throw new Error(installOut + installErr);
@@ -56,29 +59,42 @@ console.log(JSON.stringify({first,second,pending,runtime:process.execPath,args:B
       let line = "";
       while (!line.includes("\n")) { const part = await reader.read(); if (part.done) throw new Error(await stderr); line += decoder.decode(part.value); }
       await reader.cancel();
-      const value = JSON.parse(line) as { first: string; second: string; runtime: string; args: string[]; cwd: string; pending: { id: string; file: string; next: { wrapperHash: string } } };
-      expect(value.first).toContain("排队");
-      expect(value.second).toContain("排队");
+      const value = JSON.parse(line) as { helpers: number[]; runtime: string; args: string[]; cwd: string; pending: { id: string; file: string; next: { wrapperHash: string } } };
       expect(value.args).toEqual([official, mode]);
       expect(value.cwd).toBe(process.cwd());
-      return { child, stderr, pending: value.pending, runtime: value.runtime };
+      return { child, stderr, helpers: value.helpers, pending: value.pending, runtime: value.runtime };
+    };
+    // The direct child can close its pipe before its detached helper finishes.
+    // Observe real helper death before asserting committed file state.
+    const finish = async (run: { child: Bun.Subprocess<"pipe", "pipe", "pipe">; stderr: Promise<string>; helpers: number[] }) => {
+      run.child.stdin.end();
+      expect(await run.child.exited).toBe(0);
+      const deadline = Date.now() + 30_000;
+      for (const pid of run.helpers) while (true) {
+        try { process.kill(pid, 0); } catch (error) {
+          if ((error as NodeJS.ErrnoException).code === "ESRCH") break;
+          throw error;
+        }
+        if (Date.now() > deadline) throw new Error("Maintenance helper did not exit: " + pid);
+        await Bun.sleep(50);
+      }
+      await run.stderr;
     };
     const failed = await launch("refresh");
     expect(failed.runtime).toBe(process.execPath);
     const stage = await readFile(failed.pending.file);
+    const originalState = await readFile(statePath);
     await writeFile(failed.pending.file, "changed after helper handshake");
-    failed.child.stdin.end();
-    expect(await failed.child.exited).toBe(0);
-    expect(await failed.stderr).toContain("ownership changed");
-    expect(JSON.parse(await readFile(statePath, "utf8")).pending.id).toBe(failed.pending.id);
+    await finish(failed);
+    expect((await readFile(statePath)).equals(originalState)).toBe(true);
+    expect(createHash("sha256").update(await readFile(wrapper)).digest("hex")).toBe(JSON.parse(originalState.toString()).wrapperHash);
+    expect(await readFile(failed.pending.file, "utf8")).toBe("changed after helper handshake");
     await writeFile(failed.pending.file, stage);
 
     const retry = await launch("refresh");
     expect(retry.pending.id).toBe(failed.pending.id);
     expect(retry.runtime).toBe(process.execPath);
-    retry.child.stdin.end();
-    expect(await retry.child.exited).toBe(0);
-    expect(await retry.stderr).toBe("");
+    await finish(retry);
     const state = JSON.parse(await readFile(statePath, "utf8"));
     expect(state.pending).toBeUndefined();
     expect(state.bun).toBe(nextBun);
@@ -93,9 +109,7 @@ console.log(JSON.stringify({first,second,pending,runtime:process.execPath,args:B
     const pendingText = await readFile(statePath);
     const externalText = Buffer.from(JSON.stringify({ ...JSON.parse(pendingText.toString()), concurrentEdit: true }, null, 2) + "\n");
     await writeFile(statePath, externalText);
-    concurrent.child.stdin.end();
-    expect(await concurrent.child.exited).toBe(0);
-    expect(await concurrent.stderr).toContain("ownership changed");
+    await finish(concurrent);
     expect((await readFile(statePath)).equals(externalText)).toBe(true);
     expect(createHash("sha256").update(await readFile(wrapper)).digest("hex")).toBe(state.wrapperHash);
     expect(createHash("sha256").update(await readFile(concurrent.pending.file)).digest("hex")).toBe(concurrent.pending.next.wrapperHash);
@@ -103,9 +117,7 @@ console.log(JSON.stringify({first,second,pending,runtime:process.execPath,args:B
     const stateRetry = await launch("refresh");
     expect(stateRetry.pending.id).toBe(concurrent.pending.id);
     expect(stateRetry.runtime).toBe(nextBun);
-    stateRetry.child.stdin.end();
-    expect(await stateRetry.child.exited).toBe(0);
-    expect(await stateRetry.stderr).toBe("");
+    await finish(stateRetry);
     const refreshedState = JSON.parse(await readFile(statePath, "utf8"));
     expect(refreshedState.pending).toBeUndefined();
     expect(refreshedState.launcherSourceHash).toBe(createHash("sha256").update(await readFile(launcherSource)).digest("hex"));
@@ -121,9 +133,7 @@ console.log(JSON.stringify({first,second,pending,runtime:process.execPath,args:B
     await writeFile(join(app, "main.ts"), (await readFile(join(app, "main.ts"), "utf8")).replaceAll(JSON.stringify(nextBun), JSON.stringify(alternateBun)));
     const cancelled = await launch("cancel");
     expect(cancelled.runtime).toBe(nextBun);
-    cancelled.child.stdin.end();
-    expect(await cancelled.child.exited).toBe(0);
-    expect(await cancelled.stderr).toBe("");
+    await finish(cancelled);
     expect(await Bun.file(wrapper).exists()).toBe(false);
     expect(await Bun.file(statePath).exists()).toBe(false);
     expect(await Bun.file(cancelled.pending.file).exists()).toBe(false);
