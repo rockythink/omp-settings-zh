@@ -104,8 +104,14 @@ import { invalidateExternalWrites } from "./mutations";
 		}
 		if (parent.closest(".legend-item")) return fixedChart(parent);
 		if (parent.matches(".chart-tooltip-label")) {
-			return parent.closest(".chart-tooltip-total") !== null || fixedChart(parent) ||
-				["Peak burn hours", "Window utilization", "Frustration by model version"].includes(cardTitle(parent));
+			if (parent.closest(".chart-tooltip-total")) return true;
+			const title = cardTitle(parent);
+			if (title === "Window utilization") {
+				// Series labels are account names; only the official exhaustion annotation is UI.
+				return parent.matches(".chart-tooltip-label.tone-bad") && sourceText(parent) === "Exhausted";
+			}
+			return fixedChart(parent) ||
+				["Peak burn hours", "Frustration by model version"].includes(title);
 		}
 		if (parent.matches(".costs-component-row > span:not(.num), .card-footer, .card-footer > span")) return true;
 		if (parent.matches(".row, .row > .num") && cardTitle(parent) === "Token mix") return true;

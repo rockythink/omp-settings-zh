@@ -1,4 +1,4 @@
-/* Display-only translations verified against OMP 18.6.1. */
+/* Display-only translations verified against OMP 18.6.3; copy and aliases unchanged since 18.6.1. */
 export const slashCommandTranslations = [
   {
     "name": "security",

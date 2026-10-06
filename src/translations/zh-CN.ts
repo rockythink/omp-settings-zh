@@ -2,8 +2,18 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.6.1",
+  "sourceOmpVersion": "18.6.3",
   "settings": {
+    "expandThinkingBlocks": {
+      "sourceHash": "ff0f00499f3fe3b369f6751f4993be866998e6b06a90384bd0dfa908f577ded2",
+      "label": "保持思考块展开",
+      "description": "思考结束后保持思考块展开，不在轮次结束时折叠"
+    },
+    "providers.muse-code.storeResponses": {
+      "sourceHash": "f755c8db46c1d1959dfd7406f56422b7145c6c65eb3df59fe5d009bcb07342a2",
+      "label": "Muse Code 响应存储",
+      "description": "将 Muse Code 结果存储在 Meta 服务器上，使连接中断的轮次可以恢复而非重新运行。启用存储的运行会将提示词和输出保留在 Meta 端"
+    },
     "archive.enabled": {
       "sourceHash": "49a6eda3b78dc5bb8c78a1e13eac1fe8c4d40dcd9e54650a271af74416883467",
       "label": "Archive",
@@ -279,9 +289,9 @@ export const zhCN = {
       "description": "状态栏使用终端默认背景，而非主题的 `statusLineBg`。将移除 Powerline 末端封口，因为它们需要对比色填充才能与周围终端衔接"
     },
     "statusLine.compactThinkingLevel": {
-      "sourceHash": "e0a244746eda55072d4fe4c3a75f3238565ccf3857190875d8aef6b58d323927",
+      "sourceHash": "d6bcd3d11e4d2ce2eba1cc7b75e5bc9c4589d1fe5bb1a174cfcd37d977ba285e",
       "label": "紧凑显示思考级别",
-      "description": "将思考级别显示为模型名称上的单个图标，而非单独的 ` · <level>` 后缀"
+      "description": "将思考级别显示为模型名称上的单个图标，而非单独的 ` · <level>` 后缀；在 Tern 输入框中，显示为模型标签上的图标而非独立标签（点击图标可循环切换级别）"
     },
     "tools.artifactSpillThreshold": {
       "sourceHash": "7157deeeac05a4e657beeac07058f166739ab692f27309e7738f1e657f40b20f",
@@ -2929,19 +2939,19 @@ export const zhCN = {
       "description": "启用可脚本化的宿主桌面 `eval` 预置接口（截图、输入、辅助功能）"
     },
     "computer.display": {
-      "sourceHash": "14af977285f7a02466d758697e30a16b5a46a926260fb40d3c033689371f2fc2",
+      "sourceHash": "f42b63e05ca3ced233cf1a9e544f364dfa655c64aa6425c7e05b37b6019e1448",
       "label": "计算机显示器",
-      "description": "合成所有显示器，或选择原生显示器 ID"
+      "description": "选择活动窗口所在显示器（active）、所有显示器（all），或原生显示器 ID"
     },
     "computer.maxWidth": {
-      "sourceHash": "8383e8e3add55068a4da3a01af53a7b798068674d0deb77595f42de58fd88613",
+      "sourceHash": "ff889e5dda1bc35ab41a3de01847aaf718c25eb387c8c520338863d9a133354b",
       "label": "计算机截图宽度",
-      "description": "合成截图的最大宽度（像素）"
+      "description": "截图的最大宽度（像素）"
     },
     "computer.maxHeight": {
-      "sourceHash": "8e7a2ef0f3e68b6ac14a285b89c594229783a34b3d068dda590539a16c62ac01",
+      "sourceHash": "3fda41698ce87415bfb563a37b35c631e53d20d0d14f96acb966dcf6d4b92c9f",
       "label": "计算机截图高度",
-      "description": "合成截图的最大高度（像素）"
+      "description": "截图的最大高度（像素）"
     },
     "checkpoint.enabled": {
       "sourceHash": "c1ac2ea7e3b16f73d3847d4ca6e298385ce96356f8554060bb11e766649c187c",
@@ -4053,9 +4063,9 @@ export const zhCN = {
       "description": "接收自动 QA JSON 报告的完整 URL（默认 https://qa.omp.sh/v1/grievances）"
     },
     "composer.tokenRate": {
-      "sourceHash": "ab82c5efedfd6a27a06bfbd0a887aa528687853951a212eba3d071fc23188b01",
+      "sourceHash": "6f7ca805d3fcd878c1d7098b3c63be4aa5973289e7b18f8fdbf4a9c8c0eee093",
       "label": "生成速率",
-      "description": "在工作状态行中显示实时生成速率（tok/s），紧邻会话标题右侧。根据流式增量估算，并在每条消息完成时按提供商计费的输出 token 数校正"
+      "description": "显示实时生成速率（tok/s）：位于工作状态行的会话标题旁，或原生输入框栏的思考级别后，后者会在轮次之间保留最后一次读数。根据流式增量估算，并在每条消息完成时按提供商计费的输出 token 数校正"
     },
     "tui.reactions": {
       "sourceHash": "049f992873a3508b160cc0f291f7b5ac0e9879ef704f83cfc486d8aa8f569ec8",

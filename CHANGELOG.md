@@ -2,6 +2,23 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.6.7] - Unreleased
+
+### Baseline
+
+- 官方 `omp update` 从 18.6.1 升级至 18.6.3，校验发布资产 SHA-256；开发依赖锁定 coding-agent／pi-utils 18.6.3，支持范围 `>=18.6.3 <19`
+- Settings 全量 400 项：新增保持思考块展开与 Muse Code 响应存储，更新生成速率、紧凑思考级别、显示器与截图尺寸 5 项说明和原文哈希；保持宿主默认值、条件和 Meta 端提示词／输出存储风险
+- Commands 85 条定义／93 个标识、27 个动态回调及补全接口无漂移；Stats 89 个源码文件无漂移，复核后保留未变译文
+
+### Fixed
+
+- Stats Window utilization 图表 tooltip 的普通 series 标签保持原始账户名称，防止 Requests／Other (3) 等译文同名数据误译；仅明确的 Exhausted 注记与 total 固定标签翻译
+
+### Verification boundary
+
+- 发布仍须分别完成三部分真实官方编译版交互、当前提交 macOS／Linux CI、干净 GitHub 安装和卸载；工作区的 Windows 待发布工作独立保留，不纳入本次适配提交
+
+
 ## [18.6.6] - 2026-10-06
 
 ### Fixed
