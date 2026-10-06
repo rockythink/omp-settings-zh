@@ -37,7 +37,7 @@ nativeTest("a real running Windows thin exe queues refresh once, preserves faile
 import {manageWindowsLauncher} from ${JSON.stringify(windowsModule)};
 const helpers=[],spawn=Bun.spawn.bind(Bun);
 Bun.spawn=(command,options)=>{
-  if(!String(command[0]).toLowerCase().endsWith('powershell.exe'))return spawn(command,options);
+  if(!options?.detached)return spawn(command,options);
   const file=${JSON.stringify(home)}+'/helper-'+process.pid+'-'+helpers.length+'.log';
   const child=spawn(command,{...options,stderr:Bun.file(file)});helpers.push({pid:child.pid,file});return child;
 };
@@ -92,7 +92,6 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
         await Bun.sleep(50);
       }
       await run.stderr;
-      for (const helper of run.helpers) console.error(await readFile(helper.file, "utf8"));
     };
     const failed = await launch("refresh");
     expect(failed.runtime).toBe(process.execPath);

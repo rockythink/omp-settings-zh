@@ -173,7 +173,14 @@ async function compileLauncher(config: Pick<WindowsState, "bun" | "main" | "omp"
 }
 async function startOwnedWindowsHelper(script: string): Promise<void> {
   const bootstrap = "$r=[IO.StreamReader]::new([Console]::OpenStandardInput(),[Text.UTF8Encoding]::new($false));try{$s=$r.ReadToEnd()}finally{$r.Dispose()}; & ([ScriptBlock]::Create($s))";
-  const child = Bun.spawn(powershellArgs(bootstrap), { detached: true, stdin: new TextEncoder().encode(script), stdout: "pipe", stderr: "inherit" });
+  // Detached Windows PowerShell 5 exits before running its command. A detached
+  // Bun owns the ordinary PowerShell child and stays alive until maintenance ends.
+  const worker = "const script=await Bun.stdin.text();const child=Bun.spawn(" + JSON.stringify(powershellArgs(bootstrap)) +
+    ",{stdin:new TextEncoder().encode(script),stdout:'pipe',stderr:'inherit'});for await(const bytes of child.stdout){process.stdout.write(bytes)}process.exit(await child.exited)";
+  const child = Bun.spawn([process.execPath, "--no-env-file", "--no-compile-autoload-bunfig", "-e", worker], {
+    detached: true, cwd: win32.parse(process.execPath).root, env: { ...process.env, BUN_OPTIONS: "" },
+    stdin: new TextEncoder().encode(script), stdout: "pipe", stderr: "inherit",
+  });
   const reader = child.stdout.getReader();
   const decoder = new TextDecoder();
   let timer: Timer | undefined;
