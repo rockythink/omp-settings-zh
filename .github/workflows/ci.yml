@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
@@ -23,3 +24,16 @@ jobs:
           bun-version: 1.4.0
       - run: bun install --frozen-lockfile
       - run: bun run check
+      - name: Verify the official Windows executable
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $asset = "omp-windows-x64.exe"
+          $base = "https://github.com/can1357/oh-my-pi/releases/download/v18.6.1"
+          $binary = Join-Path $env:RUNNER_TEMP "official-omp.exe"
+          Invoke-WebRequest "$base/$asset" -OutFile $binary
+          $checksums = (Invoke-WebRequest "$base/SHA256SUMS.txt").Content
+          $expected = ($checksums -split "`n" | Where-Object { (($_.Trim() -split '\s+')[-1]).TrimStart('*') -eq $asset }) -split '\s+' | Select-Object -First 1
+          if (!$expected -or (Get-FileHash $binary -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expected.ToLowerInvariant()) { throw "Official OMP checksum mismatch" }
+          bun run scripts/smoke-cli.ts $binary
+          if ($LASTEXITCODE -ne 0) { throw "Native Windows smoke failed" }

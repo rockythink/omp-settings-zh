@@ -37,7 +37,7 @@
 
 最低开发环境：
 
-- macOS 或 Linux；
+- macOS、Linux，或用于原生 Windows 回归的 Windows（PowerShell/CMD；尚待当前代码的原生验证）；
 - Bun 1.4.0 或更新版本；
 - 官方 OMP 18.6.1 或 README 兼容表中明确已验证的版本；
 - Git。
@@ -51,6 +51,7 @@
 - `bun run commands:check`：全量内置命令译文完整性、新增/删除、英文/别名漂移及标识冲突检查；使用补全运行时相同的静态原文匹配规则。
 - `bun run smoke`：插件加载冒烟检查，不代替真实交互式 TUI 验证；
 - `bun run check`：执行全部自动检查。
+- `bun run scripts/smoke-cli.ts <官方 omp 可执行文件>`：真实编译宿主的隔离 CLI 冒烟；Windows 会实际修改并撤销一个临时启动器的用户 PATH 条目，应在独占的测试账户／CI 中执行，不与其它用户 PATH 写入并发。
 
 ## 翻译贡献流程
 

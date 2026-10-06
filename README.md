@@ -47,6 +47,22 @@
 
 从 18.4.6 起，宿主适配发布以目标 OMP 稳定版编号为基线；同一宿主基线上的独立功能或修复递增插件补丁号，不代表上游出现同号版本。已用编号不复用，实际宿主以兼容表为准。上游无设置变更时复用已有译文，但仍验证接口、完整检查和实际编译版；变化需先补译或复核，检查失败不发布。历史版本和标签不覆盖。
 
+### 未发布：原生 Windows 适配
+
+工作区已加入 Windows 安装、卸载与 Stats 运行路径，并纳入 `windows-latest` CI。发布版仍为 18.6.6；本轮尚无原生 Windows 实机／CI 成功证据，不能将 macOS 回归或跨平台逻辑测试当作 Windows 已验证。
+
+- 使用真正的官方 `omp.exe` 与 `bun.exe`，无需 WSL、Bash、管理员权限或修改 PowerShell 执行策略。安装时本地编译薄 `omp.exe` 启动器，PowerShell/CMD 都通过可执行文件传递参数，不经过批处理脚本重解析。
+- 启动器位于 `%LOCALAPPDATA%\omp-settings-zh\bin\omp.exe`；缺少 `LOCALAPPDATA` 时使用 `%USERPROFILE%\AppData\Local`。只维护用户级 PATH，保留无关条目、环境变量占位符和后续修改；不修改机器级 PATH。
+- 安装后退出并重新打开终端应用。PowerShell 用 `(Get-Command omp).Source`，CMD 用 `where omp` 检查实际入口；已有别名或机器级 PATH 中的官方 OMP 可能优先于用户 PATH。此时可直接运行下面的完整路径，不要修改官方可执行文件。
+
+```powershell
+& "$env:LOCALAPPDATA\omp-settings-zh\bin\omp.exe" stats
+```
+
+- 插件源码或 Bun 版本变化时重建薄 exe；若自有启动器仍在运行，更新暂存并在该进程退出后按所有权校验替换。失败可见、可重试；卸载取消待更新，不在卸载后重新创建启动器。
+- 正常 `omp plugin uninstall omp-settings-zh` 撤销自有 PATH 和启动器；dry-run 不改动。Windows 正在运行的启动器若被系统锁定，只在父进程退出后按所有权校验清理；被用户修改的文件不得覆盖或删除。
+- Stats 保留官方端口、数据、浏览器打开、JSON/summary 和退出状态；预加载支持空格、反斜线和中文路径，异常退出的独立守护不继承凭据。
+
 **设置面板保留官方页签、分组标题、面板标题和操作提示。** 设置汉化不修改分组标识、排序或面板实现。从磁盘导入 UI 副本不能证明已修改编译宿主的共享对象；18.4.4 适配时已实测发现这种差异。
 
 Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、工具名、模型名和提供商名等保留更清楚的英文形式。Archive 指 Agent 在 eval 中浏览提示词历史、项目、会话和回顾的只读能力，不是压缩包或归档操作。动态快捷键说明沿用宿主 getter 的实际键位图标；切回原版会恢复原始属性描述符。

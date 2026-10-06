@@ -1,9 +1,10 @@
-import { expect, test } from "bun:test";
-import extension from "../src/index";
+import { expect, mock, test } from "bun:test";
 import { getHostMetadata } from "../src/host-adapter";
-import { mkdtemp, mkdir, rm, symlink } from "node:fs/promises";
+import { copyFile, mkdtemp, mkdir, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { delimiter, join } from "node:path";
+import type { UserPath, WindowsPathStore } from "../src/cli/windows";
+import type { LauncherInstallOptions } from "../src/cli/install";
 
 type Context = {
   agent: { kind: "main" | "sub" };
@@ -19,18 +20,39 @@ if (process.env.OMP_SETTINGS_ZH_LIFECYCLE_CHILD !== "1") {
       const bin = join(home, "bin");
       await mkdir(bin);
       // Settings assertions never invoke CLI Stats; isolate its installation boundary.
-      await symlink("/usr/bin/true", join(bin, "omp"));
+      if (process.platform === "win32") await copyFile(process.execPath, join(bin, "omp.exe"));
+      else await symlink("/usr/bin/true", join(bin, "omp"));
+      const env: NodeJS.ProcessEnv = { ...process.env, HOME: home, USERPROFILE: home, LOCALAPPDATA: join(home, "AppData", "Local"),
+        ZDOTDIR: home, SHELL: "/bin/bash", PATH: bin + delimiter + (process.env.PATH ?? ""), OMP_SETTINGS_ZH_LIFECYCLE_CHILD: "1" };
+      for (const key of Object.keys(env)) if (key !== "PATH" && key.toUpperCase() === "PATH") delete env[key];
       const child = Bun.spawn([process.execPath, "test", import.meta.path], {
-        env: { ...process.env, HOME: home, ZDOTDIR: home, SHELL: "/bin/bash",
-          PATH: bin + ":" + process.env.PATH, OMP_SETTINGS_ZH_LIFECYCLE_CHILD: "1" },
+        env,
         stdout: "pipe", stderr: "pipe",
       });
       const [code, stdout, stderr] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);
       if (code !== 0) throw new Error(stdout + stderr);
       expect(code).toBe(0);
     } finally { await rm(home, { recursive: true, force: true }); }
-  });
+  }, 30_000);
 } else test("child shutdown cannot undo main localization; overlapping language commands leave no ghost translation", async () => {
+  if (process.platform === "win32") {
+    // Keep the real Windows file/launcher lifecycle; isolate only persistent HKCU PATH.
+    const windows = await import("../src/cli/windows");
+    let path: UserPath = { value: null, kind: "String" };
+    const store: WindowsPathStore = {
+      async read() { return { ...path }; },
+      async replace(before, after) {
+        if (!Bun.deepEquals(path, before)) throw new Error("PATH changed concurrently");
+        path = { ...after };
+      },
+    };
+    mock.module("../src/cli/windows", () => ({
+      ...windows,
+      manageWindowsLauncher: (command: "install" | "uninstall", options: LauncherInstallOptions, entry: string, checkOnly = false) =>
+        windows.manageWindowsLauncher(command, options, entry, checkOnly, store),
+    }));
+  }
+  const { default: extension } = await import("../src/index");
   const host = await getHostMetadata();
   const ui = host.schema.autoResume!.ui!;
   const before = Object.getOwnPropertyDescriptors(ui);
@@ -59,4 +81,4 @@ if (process.env.OMP_SETTINGS_ZH_LIFECYCLE_CHILD !== "1") {
   } finally {
     await stop({}, main);
   }
-});
+}, 30_000);

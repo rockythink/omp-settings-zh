@@ -19,7 +19,7 @@ async function autocompleteHost(platform: string): Promise<HostMetadata> {
   return { ...upstream, platform, schema: { [path]: { ...definition, ui: { ...ui, options } } } };
 }
 
-for (const platform of ["darwin", "linux"]) {
+for (const platform of ["darwin", "linux", "win32"]) {
   test("platform-specific autocomplete choices stay native and fully translated on " + platform, async () => {
     const host = await autocompleteHost(platform);
     const ui = host.schema[path]!.ui!;
