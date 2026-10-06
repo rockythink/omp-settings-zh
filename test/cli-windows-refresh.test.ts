@@ -150,8 +150,12 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
     expect(await Bun.file(wrapper).exists()).toBe(false);
     expect(await Bun.file(statePath).exists()).toBe(false);
     expect(await Bun.file(cancelled.pending.file).exists()).toBe(false);
+  } catch (error) {
+    console.error("Maintenance behavior failed before fixture cleanup:", error);
+    throw error;
   } finally {
     for (const child of children) if (child.exitCode === null) { child.stdin.end(); child.kill(); await child.exited; }
-    await rm(home, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
+    try { await rm(home, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }); }
+    catch (error) { console.error("Remaining owned fixture paths:", await readdir(home, { recursive: true })); throw error; }
   }
 }, 120_000);

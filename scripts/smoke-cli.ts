@@ -1,6 +1,7 @@
 import { copyFile, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, dirname, join, resolve } from "node:path";
+import { VERSION } from "@oh-my-pi/pi-utils";
 
 // Explicit real official binary; never substitute a fixture or an npm Stats server.
 const input = Bun.argv[2];
@@ -50,7 +51,7 @@ async function until<T>(check: () => Promise<T | undefined>, description: string
 
 try {
   const version = (await command(official, ["--version"])).trim();
-  if (version !== "omp/18.6.1") throw new Error("Unexpected official host: " + version);
+  if (version !== "omp/" + VERSION) throw new Error("Unexpected official host: " + version);
   await command(official, ["plugin", "link", repo]);
   const marker = join(root, "native-settings.json");
   const probe = join(root, "native-probe.ts");
