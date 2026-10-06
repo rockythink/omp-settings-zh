@@ -34,13 +34,36 @@ $nativeLoader = Join-Path $PSScriptRoot '../../src/cli/windows-native.ps1'
 $startup = New-Object StatsConsoleTest+StartupInfo
 $startup.cb = [Runtime.InteropServices.Marshal]::SizeOf($startup)
 $child = New-Object StatsConsoleTest+ProcessInfo
-$command = [Text.StringBuilder]::new($env.OMP_RUNNER_TEST_COMMAND)
-if (-not [StatsConsoleTest]::CreateProcessW($env.OMP_RUNNER_TEST_BUN, $command, [IntPtr]::Zero, [IntPtr]::Zero, $false, 0x10, [IntPtr]::Zero, $env.OMP_RUNNER_TEST_CWD, [ref]$startup, [ref]$child)) {
-  throw "CreateProcess failed: $([Runtime.InteropServices.Marshal]::GetLastWin32Error())"
+$application = $env:OMP_RUNNER_TEST_BUN
+$cwd = $env:OMP_RUNNER_TEST_CWD
+$commandLine = $env:OMP_RUNNER_TEST_COMMAND
+$readyFile = $env:OMP_RUNNER_TEST_READY_FILE
+$command = [Text.StringBuilder]::new($commandLine)
+if (-not [StatsConsoleTest]::CreateProcessW($application, $command, [IntPtr]::Zero, [IntPtr]::Zero, $false, 0x10, [IntPtr]::Zero, $cwd, [ref]$startup, [ref]$child)) {
+  $nativeError = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+  # UTF-16 code units keep Unicode and control characters unambiguous even when
+  # the PowerShell 5 stderr pipe uses the runner's legacy console code page.
+  function Describe-NativeString($value) {
+    $units = @()
+    if ($null -ne $value) { $units = @($value.ToCharArray() | ForEach-Object { '{0:X4}' -f [int]$_ }) }
+    return @{ value = $value; utf16 = $units }
+  }
+  $diagnostics = @{
+    app = (Describe-NativeString $application)
+    cwd = (Describe-NativeString $cwd)
+    command = (Describe-NativeString $commandLine)
+    commandAfterCall = (Describe-NativeString $command.ToString())
+    startupSize = $startup.cb
+    processSize = [Runtime.InteropServices.Marshal]::SizeOf($child)
+    pointerSize = [IntPtr]::Size
+    win32Error = $nativeError
+  } | ConvertTo-Json -Depth 5 -Compress
+  [Console]::Error.WriteLine($diagnostics)
+  throw "CreateProcessW failed: $nativeError"
 }
 try {
   $deadline = [DateTime]::UtcNow.AddSeconds(20)
-  while (-not (Test-Path -LiteralPath $env.OMP_RUNNER_TEST_READY_FILE)) {
+  while (-not (Test-Path -LiteralPath $readyFile)) {
     if ([StatsConsoleTest]::WaitForSingleObject($child.process, 0) -eq 0) {
       $earlyCode = [uint32]0
       [StatsConsoleTest]::GetExitCodeProcess($child.process, [ref]$earlyCode) | Out-Null

@@ -189,38 +189,49 @@ async function startOwnedWindowsHelper(script: string): Promise<void> {
   finally { if (timer) clearTimeout(timer); await reader.cancel(); }
 }
 
+// Windows PowerShell may inherit a newer shell's module search path. Use
+// framework file hashing without changing that environment or hiding stderr.
+const maintenanceFileHash = `function Get-OwnedFileHash([string]$path) {
+$file=$null;$sha=$null;try {
+$file=[IO.File]::OpenRead($path);$sha=[Security.Cryptography.SHA256]::Create();
+return [BitConverter]::ToString($sha.ComputeHash($file)).Replace('-','');
+}finally{if($sha){$sha.Dispose()};if($file){$file.Dispose()}}
+};`;
+
 async function queueRunningLauncherUpdate(wrapper: string, statePath: string, state: WindowsState, stateText: Buffer): Promise<void> {
   const pending = state.pending!;
   const payload = Buffer.from(JSON.stringify({ wrapper, statePath, oldHash: state.wrapperHash,
     stateHash: hash(stateText), stage: pending.file, stageHash: pending.next.wrapperHash,
     id: pending.id, pid: Number(process.env.OMP_SETTINGS_ZH_LAUNCHER_PID), nextState: Buffer.from(JSON.stringify(pending.next, null, 2) + "\n").toString("base64") })).toString("base64");
   await startOwnedWindowsHelper(`$ErrorActionPreference='Stop';[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false);
+${maintenanceFileHash}
 $p=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${payload}'))|ConvertFrom-Json;
-$owner=Get-Process -Id $p.pid;
-if(![string]::Equals([IO.Path]::GetFullPath($owner.MainModule.FileName),[IO.Path]::GetFullPath($p.wrapper),[StringComparison]::OrdinalIgnoreCase)){throw 'Launcher PID does not own the managed executable'};$owner.Dispose();
-if((Get-FileHash -LiteralPath $p.wrapper -Algorithm SHA256).Hash -ine $p.oldHash -or (Get-FileHash -LiteralPath $p.statePath -Algorithm SHA256).Hash -ine $p.stateHash -or (Get-FileHash -LiteralPath $p.stage -Algorithm SHA256).Hash -ine $p.stageHash){throw 'Pending update ownership changed'};
+$owner=[Diagnostics.Process]::GetProcessById($p.pid);try {
+if(![string]::Equals([IO.Path]::GetFullPath($owner.MainModule.FileName),[IO.Path]::GetFullPath($p.wrapper),[StringComparison]::OrdinalIgnoreCase)){throw 'Launcher PID does not own the managed executable'};
+if((Get-OwnedFileHash $p.wrapper) -ine $p.oldHash -or (Get-OwnedFileHash $p.statePath) -ine $p.stateHash -or (Get-OwnedFileHash $p.stage) -ine $p.stageHash){throw 'Pending update ownership changed'};
 $mutex=[Threading.Mutex]::new($false,'Local\\omp-settings-zh-refresh-'+$p.id);$held=$false;$stream=$null;
 try {
 try{$held=$mutex.WaitOne(0)}catch [Threading.AbandonedMutexException]{$held=$true};if(!$held){[Console]::WriteLine('ACTIVE');[Console]::Out.Flush();exit 0};
-[Console]::WriteLine('READY');[Console]::Out.Flush();Wait-Process -Id $p.pid -ErrorAction SilentlyContinue;
-if(!(Test-Path -LiteralPath $p.statePath)){exit 0};
+[Console]::WriteLine('READY');[Console]::Out.Flush();$owner.WaitForExit();
+if(!([IO.File]::Exists($p.statePath) -or [IO.Directory]::Exists($p.statePath))){exit 0};
 $current=[IO.File]::ReadAllText($p.statePath)|ConvertFrom-Json;if(!$current.pending -or $current.pending.id -cne $p.id){exit 0};
 $stream=[IO.File]::Open($p.statePath,[IO.FileMode]::Open,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None);
-$oldBytes=New-Object byte[] $stream.Length;$offset=0;while($offset -lt $oldBytes.Length){$n=$stream.Read($oldBytes,$offset,$oldBytes.Length-$offset);if($n -eq 0){throw 'Unexpected end of installation state'};$offset+=$n};
+$oldBytes=[byte[]]::new($stream.Length);$offset=0;while($offset -lt $oldBytes.Length){$n=$stream.Read($oldBytes,$offset,$oldBytes.Length-$offset);if($n -eq 0){throw 'Unexpected end of installation state'};$offset+=$n};
 $sha=[Security.Cryptography.SHA256]::Create();try{$actual=[BitConverter]::ToString($sha.ComputeHash($oldBytes)).Replace('-','')}finally{$sha.Dispose()};
-if($actual -ine $p.stateHash -or (Get-FileHash -LiteralPath $p.wrapper -Algorithm SHA256).Hash -ine $p.oldHash -or (Get-FileHash -LiteralPath $p.stage -Algorithm SHA256).Hash -ine $p.stageHash){throw 'Pending update ownership changed'};
-$backup=$p.stage+'.backup';if(Test-Path -LiteralPath $backup){throw 'Unowned update backup exists'};
+if($actual -ine $p.stateHash -or (Get-OwnedFileHash $p.wrapper) -ine $p.oldHash -or (Get-OwnedFileHash $p.stage) -ine $p.stageHash){throw 'Pending update ownership changed'};
+$backup=$p.stage+'.backup';if([IO.File]::Exists($backup) -or [IO.Directory]::Exists($backup)){throw 'Unowned update backup exists'};
 $replaced=$false;
 try {
 [IO.File]::Replace($p.stage,$p.wrapper,$backup);$replaced=$true;
 $next=[Convert]::FromBase64String($p.nextState);$stream.Position=0;$stream.SetLength(0);$stream.Write($next,0,$next.Length);$stream.Flush($true);
-if((Get-FileHash -LiteralPath $backup -Algorithm SHA256).Hash -ine $p.oldHash){throw 'Backup ownership changed'};Remove-Item -LiteralPath $backup;
+if((Get-OwnedFileHash $backup) -ine $p.oldHash){throw 'Backup ownership changed'};[IO.File]::Delete($backup);
 }catch {
-if($replaced){if((Get-FileHash -LiteralPath $backup -Algorithm SHA256).Hash -ine $p.oldHash -or (Get-FileHash -LiteralPath $p.wrapper -Algorithm SHA256).Hash -ine $p.stageHash){throw 'Update rollback ownership changed'};[IO.File]::Replace($backup,$p.wrapper,$p.stage);$stream.Position=0;$stream.SetLength(0);$stream.Write($oldBytes,0,$oldBytes.Length);$stream.Flush($true)};
+if($replaced){if((Get-OwnedFileHash $backup) -ine $p.oldHash -or (Get-OwnedFileHash $p.wrapper) -ine $p.stageHash){throw 'Update rollback ownership changed'};[IO.File]::Replace($backup,$p.wrapper,$p.stage);$stream.Position=0;$stream.SetLength(0);$stream.Write($oldBytes,0,$oldBytes.Length);$stream.Flush($true)};
 throw;
 };
 $stream.Dispose();$stream=$null;
-}finally{if($stream){$stream.Dispose()};if($held){$mutex.ReleaseMutex()};$mutex.Dispose()};`);
+}finally{if($stream){$stream.Dispose()};if($held){$mutex.ReleaseMutex()};$mutex.Dispose()};
+}finally{$owner.Dispose()};`);
 }
 
 function validWindowsState(state: WindowsState, bin: string): boolean {
@@ -235,17 +246,19 @@ async function deferRunningLauncherRemoval(path: string, bytes: Buffer, statePat
   const payload = Buffer.from(JSON.stringify({ path, digest: hash(bytes), statePath, stateDigest: hash(stateText), pid: Number(pid) })).toString("base64");
   // The helper owns only the verified executable. It waits for the parent trampoline,
   // not this Bun process; it never removes a replacement file or a directory.
-  const script = `$ErrorActionPreference='Stop';[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false);$p=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${payload}'))|ConvertFrom-Json;
-$owner=Get-Process -Id $p.pid;
-if(![string]::Equals([IO.Path]::GetFullPath($owner.MainModule.FileName),[IO.Path]::GetFullPath($p.path),[StringComparison]::OrdinalIgnoreCase)){throw 'Launcher PID does not own the managed executable'};$owner.Dispose();
-if((Get-FileHash -LiteralPath $p.path -Algorithm SHA256).Hash -ine $p.digest){throw 'Launcher ownership changed'};
-if((Get-FileHash -LiteralPath $p.statePath -Algorithm SHA256).Hash -ine $p.stateDigest){throw 'Installation ownership changed'};
+  const script = `$ErrorActionPreference='Stop';[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false);${maintenanceFileHash}
+$p=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${payload}'))|ConvertFrom-Json;
+$owner=[Diagnostics.Process]::GetProcessById($p.pid);try {
+if(![string]::Equals([IO.Path]::GetFullPath($owner.MainModule.FileName),[IO.Path]::GetFullPath($p.path),[StringComparison]::OrdinalIgnoreCase)){throw 'Launcher PID does not own the managed executable'};
+if((Get-OwnedFileHash $p.path) -ine $p.digest){throw 'Launcher ownership changed'};
+if((Get-OwnedFileHash $p.statePath) -ine $p.stateDigest){throw 'Installation ownership changed'};
 [Console]::WriteLine('READY');[Console]::Out.Flush();
-Wait-Process -Id $p.pid -ErrorAction SilentlyContinue;
-if((Get-FileHash -LiteralPath $p.statePath -Algorithm SHA256).Hash -ine $p.stateDigest){throw 'Installation ownership changed'};
-if(Test-Path -LiteralPath $p.path){if((Get-FileHash -LiteralPath $p.path -Algorithm SHA256).Hash -ine $p.digest){throw 'Launcher ownership changed'};Remove-Item -LiteralPath $p.path};
-Remove-Item -LiteralPath $p.statePath;
-foreach($d in @([IO.Path]::GetDirectoryName($p.path),[IO.Path]::GetDirectoryName($p.statePath))){if((Test-Path -LiteralPath $d) -and !(Get-ChildItem -LiteralPath $d -Force|Select-Object -First 1)){[IO.Directory]::Delete($d)}};`;
+$owner.WaitForExit();
+if((Get-OwnedFileHash $p.statePath) -ine $p.stateDigest){throw 'Installation ownership changed'};
+if([IO.File]::Exists($p.path) -or [IO.Directory]::Exists($p.path)){if((Get-OwnedFileHash $p.path) -ine $p.digest){throw 'Launcher ownership changed'};[IO.File]::Delete($p.path)};
+[IO.File]::Delete($p.statePath);
+foreach($d in @([IO.Path]::GetDirectoryName($p.path),[IO.Path]::GetDirectoryName($p.statePath))){if([IO.Directory]::Exists($d)){$entries=[IO.Directory]::EnumerateFileSystemEntries($d).GetEnumerator();try{$empty=!$entries.MoveNext()}finally{$entries.Dispose()};if($empty){[IO.Directory]::Delete($d)}}};
+}finally{$owner.Dispose()};`;
   await startOwnedWindowsHelper(script);
   return true;
 }
