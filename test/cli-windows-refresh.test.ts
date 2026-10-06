@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { mkdtemp, mkdir, readFile, readdir, rm, writeFile, copyFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, readdir, realpath, rm, writeFile, copyFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -8,10 +8,22 @@ import { windowsInstallDirectory } from "../src/cli/windows";
 const windowsModuleSource = resolve("src/cli/windows.ts");
 const nativeTest = process.platform === "win32" ? test : test.skip;
 interface MaintenanceProcess { pid: number; file: string }
+async function waitForMaintenance(helpers: MaintenanceProcess[]) {
+  const deadline = Date.now() + 30_000;
+  for (const { pid } of helpers) while (true) {
+    try { process.kill(pid, 0); } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ESRCH") break;
+      throw error;
+    }
+    if (Date.now() > deadline) throw new Error("Maintenance helper did not exit: " + pid);
+    await Bun.sleep(50);
+  }
+}
 
 nativeTest("a real running Windows thin exe queues refresh once, preserves failed stage for retry, and commits after parent exit", async () => {
   const home = await mkdtemp(join(tmpdir(), "omp locked refresh 中文 "));
   const children: Bun.Subprocess<"pipe", "pipe", "pipe">[] = [];
+  const maintenance: MaintenanceProcess[] = [];
   try {
     const app = join(home, "package", "cli");
     await mkdir(app, { recursive: true });
@@ -73,6 +85,7 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
       }
       await reader.cancel();
       const value = JSON.parse(line) as { helpers: MaintenanceProcess[]; runtime: string; args: string[]; cwd: string; pending: { id: string; file: string; next: { wrapperHash: string } } };
+      maintenance.push(...value.helpers);
       expect(value.args).toEqual([official, mode]);
       expect(value.cwd).toBe(process.cwd());
       return { child, stderr, helpers: value.helpers, pending: value.pending, runtime: value.runtime };
@@ -82,19 +95,11 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
     const finish = async (run: { child: Bun.Subprocess<"pipe", "pipe", "pipe">; stderr: Promise<string>; helpers: MaintenanceProcess[] }) => {
       run.child.stdin.end();
       expect(await run.child.exited).toBe(0);
-      const deadline = Date.now() + 30_000;
-      for (const { pid } of run.helpers) while (true) {
-        try { process.kill(pid, 0); } catch (error) {
-          if ((error as NodeJS.ErrnoException).code === "ESRCH") break;
-          throw error;
-        }
-        if (Date.now() > deadline) throw new Error("Maintenance helper did not exit: " + pid);
-        await Bun.sleep(50);
-      }
+      await waitForMaintenance(run.helpers);
       await run.stderr;
     };
     const failed = await launch("refresh");
-    expect(failed.runtime).toBe(process.execPath);
+    expect(await realpath(failed.runtime)).toBe(await realpath(process.execPath));
     const stage = await readFile(failed.pending.file);
     const originalState = await readFile(statePath);
     await writeFile(failed.pending.file, "changed after helper handshake");
@@ -106,11 +111,11 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
 
     const retry = await launch("refresh");
     expect(retry.pending.id).toBe(failed.pending.id);
-    expect(retry.runtime).toBe(process.execPath);
+    expect(await realpath(retry.runtime)).toBe(await realpath(process.execPath));
     await finish(retry);
     const state = JSON.parse(await readFile(statePath, "utf8"));
     expect(state.pending).toBeUndefined();
-    expect(state.bun).toBe(nextBun);
+    expect(await realpath(state.bun)).toBe(await realpath(nextBun));
     expect(createHash("sha256").update(await readFile(wrapper)).digest("hex")).toBe(retry.pending.next.wrapperHash);
     expect((await readdir(root)).some(name => name.startsWith("pending-"))).toBe(false);
 
@@ -118,7 +123,7 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
     // Update the isolated package source while keeping the selected Unicode Bun.
     await writeFile(launcherSource, (await readFile(launcherSource, "utf8")) + "\n// installed package source update\n");
     const concurrent = await launch("refresh");
-    expect(concurrent.runtime).toBe(nextBun);
+    expect(await realpath(concurrent.runtime)).toBe(await realpath(nextBun));
     const pendingText = await readFile(statePath);
     const externalText = Buffer.from(JSON.stringify({ ...JSON.parse(pendingText.toString()), concurrentEdit: true }, null, 2) + "\n");
     await writeFile(statePath, externalText);
@@ -129,7 +134,7 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
     await writeFile(statePath, pendingText);
     const stateRetry = await launch("refresh");
     expect(stateRetry.pending.id).toBe(concurrent.pending.id);
-    expect(stateRetry.runtime).toBe(nextBun);
+    expect(await realpath(stateRetry.runtime)).toBe(await realpath(nextBun));
     await finish(stateRetry);
     const refreshedState = JSON.parse(await readFile(statePath, "utf8"));
     expect(refreshedState.pending).toBeUndefined();
@@ -145,17 +150,14 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
     await copyFile(process.execPath, alternateBun);
     await writeFile(join(app, "main.ts"), (await readFile(join(app, "main.ts"), "utf8")).replaceAll(JSON.stringify(nextBun), JSON.stringify(alternateBun)));
     const cancelled = await launch("cancel");
-    expect(cancelled.runtime).toBe(nextBun);
+    expect(await realpath(cancelled.runtime)).toBe(await realpath(nextBun));
     await finish(cancelled);
     expect(await Bun.file(wrapper).exists()).toBe(false);
     expect(await Bun.file(statePath).exists()).toBe(false);
     expect(await Bun.file(cancelled.pending.file).exists()).toBe(false);
-  } catch (error) {
-    console.error("Maintenance behavior failed before fixture cleanup:", error);
-    throw error;
   } finally {
     for (const child of children) if (child.exitCode === null) { child.stdin.end(); child.kill(); await child.exited; }
-    try { await rm(home, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }); }
-    catch (error) { console.error("Remaining owned fixture paths:", await readdir(home, { recursive: true })); throw error; }
+    await waitForMaintenance(maintenance);
+    await rm(home, { recursive: true, force: true });
   }
 }, 120_000);
