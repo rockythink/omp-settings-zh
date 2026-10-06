@@ -62,7 +62,15 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
       const reader = child.stdout.getReader();
       const decoder = new TextDecoder();
       let line = "";
-      while (!line.includes("\n")) { const part = await reader.read(); if (part.done) throw new Error(await stderr); line += decoder.decode(part.value); }
+      while (!line.includes("\n")) {
+        const part = await reader.read();
+        if (part.done) {
+          const files = (await readdir(home)).filter(name => name.startsWith("helper-") && name.endsWith(".log"));
+          const logs = await Promise.all(files.map(name => readFile(join(home, name), "utf8")));
+          throw new Error((await stderr) + "\n" + logs.join("\n"));
+        }
+        line += decoder.decode(part.value);
+      }
       await reader.cancel();
       const value = JSON.parse(line) as { helpers: MaintenanceProcess[]; runtime: string; args: string[]; cwd: string; pending: { id: string; file: string; next: { wrapperHash: string } } };
       expect(value.args).toEqual([official, mode]);

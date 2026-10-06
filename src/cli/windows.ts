@@ -172,7 +172,7 @@ async function compileLauncher(config: Pick<WindowsState, "bun" | "main" | "omp"
   } finally { await rm(temporary, { recursive: true, force: true }); }
 }
 async function startOwnedWindowsHelper(script: string): Promise<void> {
-  const bootstrap = "[Console]::InputEncoding=[Text.UTF8Encoding]::new($false); & ([ScriptBlock]::Create([Console]::In.ReadToEnd()))";
+  const bootstrap = "$r=[IO.StreamReader]::new([Console]::OpenStandardInput(),[Text.UTF8Encoding]::new($false));try{$s=$r.ReadToEnd()}finally{$r.Dispose()}; & ([ScriptBlock]::Create($s))";
   const child = Bun.spawn(powershellArgs(bootstrap), { detached: true, stdin: new TextEncoder().encode(script), stdout: "pipe", stderr: "inherit" });
   const reader = child.stdout.getReader();
   const decoder = new TextDecoder();
@@ -203,7 +203,7 @@ async function queueRunningLauncherUpdate(wrapper: string, statePath: string, st
   const payload = Buffer.from(JSON.stringify({ wrapper, statePath, oldHash: state.wrapperHash,
     stateHash: hash(stateText), stage: pending.file, stageHash: pending.next.wrapperHash,
     id: pending.id, pid: Number(process.env.OMP_SETTINGS_ZH_LAUNCHER_PID), nextState: Buffer.from(JSON.stringify(pending.next, null, 2) + "\n").toString("base64") })).toString("base64");
-  await startOwnedWindowsHelper(`$ErrorActionPreference='Stop';[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false);
+  await startOwnedWindowsHelper(`$ErrorActionPreference='Stop';
 ${maintenanceFileHash}
 $p=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${payload}'))|ConvertFrom-Json;
 $owner=[Diagnostics.Process]::GetProcessById($p.pid);try {
@@ -246,7 +246,7 @@ async function deferRunningLauncherRemoval(path: string, bytes: Buffer, statePat
   const payload = Buffer.from(JSON.stringify({ path, digest: hash(bytes), statePath, stateDigest: hash(stateText), pid: Number(pid) })).toString("base64");
   // The helper owns only the verified executable. It waits for the parent trampoline,
   // not this Bun process; it never removes a replacement file or a directory.
-  const script = `$ErrorActionPreference='Stop';[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false);${maintenanceFileHash}
+  const script = `$ErrorActionPreference='Stop';${maintenanceFileHash}
 $p=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('${payload}'))|ConvertFrom-Json;
 $owner=[Diagnostics.Process]::GetProcessById($p.pid);try {
 if(![string]::Equals([IO.Path]::GetFullPath($owner.MainModule.FileName),[IO.Path]::GetFullPath($p.path),[StringComparison]::OrdinalIgnoreCase)){throw 'Launcher PID does not own the managed executable'};
