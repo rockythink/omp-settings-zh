@@ -1,9 +1,10 @@
-import { expect, test } from "bun:test";
+import { expect, test as bunTest } from "bun:test";
 import { mkdtemp, mkdir, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
 const installer = resolve("src/cli/install.ts");
+const test = process.platform === "win32" ? bunTest.skip : bunTest;
 
 async function fixture(shell: "bash" | "zsh") {
   const home = await mkdtemp(join(tmpdir(), "omp-installer-'"));

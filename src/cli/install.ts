@@ -2,6 +2,7 @@ import { access, chmod, lstat, mkdir, readFile, realpath, rmdir, stat, unlink, w
 import { constants } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { userInfo } from "node:os";
+import { manageWindowsLauncher } from "./windows";
 
 const BEGIN = "# >>> omp-settings-zh PATH >>>";
 const END = "# <<< omp-settings-zh PATH <<<";
@@ -250,6 +251,7 @@ async function apply(changes: Change[]): Promise<void> {
 }
 
 async function manageLauncher(command: "install" | "uninstall", options: LauncherInstallOptions, checkOnly = false): Promise<string> {
+  if (process.platform === "win32") return manageWindowsLauncher(command, options, import.meta.path, checkOnly);
   if (!process.env.HOME) throw new Error("需要 HOME 环境变量");
   const home = resolve(process.env.HOME);
   const directory = join(home, ".local", "share", "omp-settings-zh");

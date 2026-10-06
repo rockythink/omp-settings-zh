@@ -2,6 +2,7 @@
 
 - 实现版本：18.6.6
 - 验证基线：OMP 18.6.1
+- Windows 适配：工作区未发布变更，原生 Windows 验证尚未执行
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -74,10 +75,14 @@
 ## Stats Web 显示适配
 
 - `src/index.ts` 异步 ExtensionFactory 默认等待 `installLauncher()`：官方 GitHub/npm 安装验证会 await factory，每次扩展加载也幂等维护。无 Stats 启用命令；本地 link 在首次扩展加载时自动接入。
-- `src/cli/install.ts` 在独立目录生成启动器、私有安装状态与可撤销的 zsh/Bash PATH 块。记录实际写出的 wrapper，以允许未来代码升级但拒绝覆盖用户改动；稳定的逻辑包路径不绑定 Git 缓存。无 SHELL 时读取账户登录 shell；macOS 的 Bun 在 USER／LOGNAME 缺失时会报告 unknown 名称，此时用 id 按真实 UID 解析后查询 dscl，Linux 按 UID 查询 getent，不猜测 shell。非 Stats、JSON、摘要和帮助直接 exec 原 OMP；只有本插件的原生 uninstall 经 main 预检所有权、执行原命令并清理自己的 PATH，dry-run 不清理。
-- 官方 `update` 按 PATH 中 `omp` 的位置选择二进制替换目标；启动器只在透传 update 前将已记录官方二进制目录置于 PATH 最前，再 exec 原二进制，保留 argv/stdio。不得将受管 wrapper 作为官方更新目标。
+- `src/cli/install.ts` 在 macOS/Linux 的独立目录生成 shell 启动器、私有安装状态与可撤销的 zsh/Bash PATH 块。记录实际写出的 wrapper，以允许代码升级但拒绝覆盖用户改动；稳定的逻辑包路径不绑定 Git 缓存。无 SHELL 时读取账户登录 shell；macOS 在 Bun 缺少账户名称时按真实 UID 查询 id/dscl，Linux 按 UID 查询 getent。非 Stats、JSON、摘要和帮助直接 exec 原 OMP；本插件的原生 uninstall 经 main 预检所有权、执行原命令并清理自己的 PATH，dry-run 不清理。
+- Windows 分流到 `src/cli/windows.ts`：USERPROFILE/HOME 与 LOCALAPPDATA 定位独立用户目录；仅选择真正 PE `.exe`，拒绝受管启动器及其链接／副本；`windows-launcher.ts` 编译薄 exe，数组方式调用真正 Bun/main，不使用 CMD `%*` 或改变执行策略。用户级 PATH 的原始注册表类型和占位符保持，比较后写入与回滚不覆盖并发编辑；状态／可执行文件所有权校验先于写入，测试显式注入 PATH 存储，不触碰真实 HKCU。机器级 PATH 或已有 alias 的优先级不接管。
+- Windows 薄 exe 的编译自动加载配置关闭；安装状态记录启动器源码摘要与所选 Bun 版本，无变化复用编译结果，代码／Bun 更新时重建。薄 exe 自身消费继承的 Ctrl+C 并等待官方子链退出，不能先退出后由守护强杀官方处理器。运行中 exe 若锁定，卸载清理助手必须确认受管进程路径、完成启动握手，等待退出后重新校验摘要再删除；失败可见，不能覆盖替换后的文件。
+- 正在运行的自有 exe 刷新先写受管 staged exe／pending 状态，清理助手完成 READY 握手与父进程路径验证，再等待退出；命名 mutex、state 独占锁与摘要校验保护替换和提交，失败恢复旧 exe／状态并保留可重试更新。相同 pending 幂等；卸载取消 pending，等待中的助手不得复活文件。
+- 官方 `update` 按 PATH 中 `omp` 的位置选择二进制替换目标；两类启动器都只在 update 子进程前将已记录官方二进制目录置于 PATH 最前，保留 argv/stdio，不将受管启动器作为更新目标。
 - `main.ts` / `run.ts` 运行实际官方 `omp stats`，不导入固定 Stats 包。Web 预先构建 browser.ts 并生成私有 CJS，以合并的 `BUN_OPTIONS --preload` 加载；原 argv、cwd、Profile、stdio、port/host、浏览器打开和独立 judge 保持。没有额外代理、打开器替换或第二个 URL；信号与守护清理子进程和临时文件。
-- `src/stats/preload.ts` 生成自包含启动 Hook，包装 `Bun.serve(options.fetch)`，先执行原 handler；只有成功 HTML 且有官方 Stats 身份标记才注入 `/__omp-settings-zh.js`，同一监听器提供脚本。非 Stats 服务、API/SSE、拒绝/错误、方法、Host/Origin 与 CORS 行为保持。身份头不是授权；修改后的 HTML/脚本 no-store，不保留失效长度或 ETag。Bun 不可靠解析预加载的引号/空格路径，使用安全字符的私有临时路径；不改用户其它预加载参数。
+- `src/stats/preload.ts` 生成自包含启动 Hook，包装 `Bun.serve(options.fetch)`，先执行原 handler；只有成功 HTML 且有官方 Stats 身份标记才注入 `/__omp-settings-zh.js`，同一监听器提供脚本。非 Stats 服务、API/SSE、拒绝/错误、方法、Host/Origin 与 CORS 保持。身份头不是授权；修改后的 HTML/脚本 no-store，不保留失效长度或 ETag。Bun 不可靠解析 BUN_OPTIONS 中的引号／空格路径，因此用短 base64 data URL 只编码 `require(绝对预加载文件名)`；不编码浏览器大包、不改 cwd、不依赖 8dot3，不改用户其它预加载参数。
+- 独立守护使用真正 Bun 子进程，无 shell、包导入、BUN_OPTIONS 或凭据继承；Windows 仅保留 SystemRoot，并以盘根为 cwd，避免锁住临时目录。监控启动器、父进程和官方子进程，异常死亡后终止服务并删除预加载。Windows Ctrl+C 由继承的 console 传给官方处理器，保留官方退出码，不用 kill(SIGINT) 冒充 console 事件；超时终止只作清理兜底。
 - `browser.ts` 使用官方 DOM 类白名单与数据区域排除规则，译文来自 translations.ts；只修改文本节点和显示属性。WeakMap 记录原文，MutationObserver 跟随异步渲染/节点复用，切回 English 恢复。自有写入在 observer 断开期间完成；`mutations.ts` 在处理外部整批写入前失效对应来源，即使真实数据与上次中文显示相同也不恢复旧英文。表头变化重扫整表，stat 标签／chart 模式变化重扫其邻接区域；追踪 Minimap 仅翻译固定 aria-label，canvas 像素不改。
 - localStorage key 为 `omp-settings-zh.stats.language`，首次默认中文；同 origin 跨刷新、路由和服务重启保留，地址改变则使用新 origin 的偏好。未知文案、API 原文、数据标识、错误与 canvas 保留。
 - `/settings-language` 与网页语言独立；会话 `/stats` 保留官方行为。同数据目录下 `/stats` 与 `omp stats` 均扫描多个项目和会话，区别在独立 CLI 与会话绑定的 judge / 费用上下文，不是统计范围。
@@ -89,6 +94,7 @@
 - 宿主契约：用真实 `createSettingsHost()` 和 `getAllSettingDefs()` 证明新面板随语言变化，且控件类型、分组、默认值、条件和选项值不变。
 - 设置覆盖/漂移：`bun run coverage:check`、`bun run drift:check`；命令完整覆盖/漂移：`bun run commands:check`，三者均纳入 `bun run check`。
 - 冒烟：`bun run smoke` 对真实宿主进行三轮应用/撤销，检查原始 UI 恢复和零网络请求。
+- `bun run scripts/smoke-cli.ts <真实官方 omp 路径>` 在隔离 HOME／USERPROFILE 中运行官方编译版，验证默认扩展加载共享中文设置、doctor、原 Stats JSON、同源注入、退出、dry-run 与原生卸载；无模型或付费请求。Windows CI 校验官方 v18.6.1 Windows x64 发布资产 SHA-256 后执行，原生 console Ctrl+C 另以独立 console 测试。未运行的平台必须报告未验证。
 - 发布前：实际运行官方编译版，检查插件加载、中文搜索、原生编辑、语言选择器和同进程原版恢复。源码契约不能替代这一步。
 - Commands：实际官方编译版检查顶层补全及别名、动态状态/键位、中英文恢复、参数/文件/第三方边界与 Tab/Enter 插入和原命令执行；静态门禁不能代替动态模板和交互证明。
 - Stats：真实编译版验证 BUN_OPTIONS 预加载、现有参数合并与安全临时路径；从新 shell 直接 `omp stats` 确认仅原服务一个监听器，测试语言/路由/刷新/同地址重启、原 API/SSE、原授权/静态请求行为、JSON/summary、port/host、退出及默认安装/卸载。不使用源码运行代替编译版，也不触发付费评估。

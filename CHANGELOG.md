@@ -2,6 +2,24 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [Unreleased]
+
+### Added
+
+- 原生 Windows 用户级 PATH 安装／卸载、实际 PE 可执行文件发现和本地编译薄 `omp.exe` 启动器；不依赖 Bash／WSL，不修改机器 PATH 或 PowerShell 执行策略，保留参数、工作目录、标准流、退出码和真正官方 update 目标
+- Windows 文件／PATH 所有权预检与失败回滚、dry-run 保护、稳定包路径和用户后续 PATH 编辑保留；源码／Bun 变更在运行中 exe 锁定时暂存更新，退出后按所有权替换，失败保留可重试状态；卸载取消待更新并只按所有权清理
+- 三平台 CI 与 `scripts/smoke-cli.ts` 真实官方编译版的隔离默认加载／Settings／doctor／Stats／卸载冒烟，Windows CI 下载并校验官方 18.6.1 x64 资产
+
+### Changed
+
+- Stats 开启 win32 路径；短 data URL 只编码私有预加载文件名，支持空格、中文和反斜线，不改变 cwd／原 argv，不依赖 Windows 短路径或额外代理
+- 生命周期守护由 POSIX shell 改为独立 Bun，避免继承凭据和 BUN_OPTIONS；Windows 保留真实 console Ctrl+C 与官方退出状态，Unix 信号语义保持
+
+### Verification boundary
+
+- 本机 macOS 官方 OMP 18.6.1 默认扩展加载共享中文设置、doctor、Stats 原始 JSON／同源脚本、退出、dry-run 与正常卸载已运行；真实网页中文／English 切换与刷新保留通过，端口仅官方一个监听器，结束后监听器消失
+- 原生 Windows 实机与当前代码 CI 尚未运行；跨平台逻辑测试、Windows PE 交叉编译和 macOS 冒烟不等于 Windows 运行通过。本节适配尚未发布；18.6.6 历史记录及版本号保持
+
 ## [18.6.6] - 2026-10-06
 
 ### Fixed

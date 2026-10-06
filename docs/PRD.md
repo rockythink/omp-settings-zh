@@ -95,8 +95,9 @@ OMP 的 `/settings` 面板由领域设置注册表驱动，包含大量影响模
 2. 顶部中文 / English 即时切换；首次默认中文，同 origin 跨刷新、路由与服务重启保留选择。
 3. 非 Stats、JSON、summary、help 直接官方执行；Web 的 argv、cwd、Profile、stdio、port/host、浏览器打开与独立评估保持。Bun 启动预加载在同一监听器注入脚本，不增加第二服务或地址；已有 BUN_OPTIONS 保留。
 4. 仅翻译识别的 DOM 文案，不翻译数据、标识、错误或 canvas。原 handler 先执行，API/SSE、授权拒绝、错误、Host/Origin、方法与 CORS 保持；服务身份头不作为权限判断。
-5. Ctrl+C 或退出关闭服务与临时资源；默认安装幂等，正常插件卸载自动撤销自有启动器与 PATH 块，dry-run 不修改。所有权预检保护原 OMP 与无关配置。
+5. Ctrl+C 或退出关闭服务与临时资源；默认安装幂等，正常插件卸载自动撤销自有启动器与 PATH 块／条目，dry-run 不修改。所有权预检保护原 OMP 与无关配置。
 6. 会话 `/stats` 不接管。同数据目录下两入口均统计多个项目与会话；会话评估绑定当前会话，CLI 独立。
+7. 原生 Windows 使用官方 omp.exe／Bun、薄 exe 启动器与可撤销的用户 PATH，不依赖 WSL、zsh/Bash、管理员权限或执行策略修改。机器级 PATH 和已有 shell alias 的优先级不改变，完整路径仍可使用；真实 Windows 验证通过前不得宣称正式支持。
 
 ## 6. 功能需求
 

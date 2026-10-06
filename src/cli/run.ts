@@ -2,7 +2,7 @@
 import { spawn, type ChildProcess } from "node:child_process";
 import { chmodSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, parse } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createStatsPreload } from "../stats/preload";
 
@@ -19,10 +19,32 @@ export function isStatsWeb(argv: readonly string[]): boolean {
 }
 
 const alive = (child: ChildProcess) => child.exitCode === null && child.signalCode === null;
+const pidAlive = (pid: number) => {
+  try { process.kill(pid, 0); return true; } catch { return false; }
+};
+
+// Runtime-only Bun program: no shell, imports from the package, inherited
+// credentials or BUN_OPTIONS. It survives an uncatchable launcher death.
+const guardSource = String.raw`
+const [launcher, parent, child, directory] = Bun.argv.slice(1);
+const alive = pid => { try { process.kill(Number(pid), 0); return true; } catch { return false; } };
+const kill = signal => { try { process.kill(Number(child), signal); } catch {} };
+while (alive(child)) {
+  if (!alive(launcher) || !alive(parent)) {
+    kill("SIGTERM");
+    for (let i = 0; i < 30 && alive(child); i++) await Bun.sleep(100);
+    if (alive(child)) kill("SIGKILL");
+    break;
+  }
+  await Bun.sleep(250);
+}
+require("node:fs").rmSync(directory, { recursive: true, force: true });
+`;
 
 /** Real OMP owns parsing, binding, profiles, data, judge, browser opening and terminal streams. */
 export async function runOfficialCommand(official: string, argv: string[]): Promise<number> {
-  const web = isStatsWeb(argv) && (process.platform === "darwin" || process.platform === "linux");
+  const windows = process.platform === "win32";
+  const web = isStatsWeb(argv) && (windows || process.platform === "darwin" || process.platform === "linux");
   let directory: string | undefined;
   let child: ChildProcess | undefined;
   let guard: ChildProcess | undefined;
@@ -39,7 +61,9 @@ export async function runOfficialCommand(official: string, argv: string[]): Prom
     stopping = true;
     receivedSignal = signal;
     if (child && alive(child)) {
-      child.kill(signal);
+      // Windows console Ctrl+C already reaches the inherited child console.
+      // kill(SIGINT) there is forced termination, not a console control event.
+      if (!windows || signal !== "SIGINT") child.kill(signal);
       stopTimer = setTimeout(() => { if (child && alive(child)) child.kill("SIGKILL"); }, 3000);
     }
   };
@@ -55,7 +79,9 @@ export async function runOfficialCommand(official: string, argv: string[]): Prom
   process.on("SIGTERM", onTerm);
   process.on("SIGHUP", onHup);
   process.on("exit", onExit);
-  const parentWatch = setInterval(() => { if (process.ppid !== parent) stop("SIGHUP"); }, 1000);
+  const parentWatch = setInterval(() => {
+    if (windows ? !pidAlive(parent) : process.ppid !== parent) stop(windows ? "SIGTERM" : "SIGHUP");
+  }, 1000);
   try {
     const env = { ...process.env };
     if (web) {
@@ -63,14 +89,16 @@ export async function runOfficialCommand(official: string, argv: string[]): Prom
       if (!result.success || !result.outputs[0]) throw new Error("Stats 页面语言脚本构建失败：" + result.logs.join("\n"));
       const script = await result.outputs[0].text();
       if (stopping) return finish({ code: null, signal: receivedSignal ?? null });
-      // Compiled Bun splits BUN_OPTIONS on whitespace without shell quoting. Use a safe
-      // absolute temp path even when TMPDIR or the installed plugin path contains spaces.
-      const temporaryRoot = tmpdir();
-      directory = mkdtempSync(join(/^[A-Za-z0-9_./-]+$/.test(temporaryRoot) ? temporaryRoot : "/tmp", "omp-stats-zh-"));
-      chmodSync(directory, 0o700);
+      directory = mkdtempSync(join(tmpdir(), "omp-stats-zh-"));
+      if (!windows) chmodSync(directory, 0o700);
       const preload = join(directory, "preload.cjs");
       writeFileSync(preload, createStatsPreload(script), { mode: 0o600 });
-      env.BUN_OPTIONS = `${env.BUN_OPTIONS ?? ""} --preload=${preload}`;
+      // Compiled Bun splits BUN_OPTIONS on whitespace without interpreting
+      // quotes. A short data-URL thunk encodes just the absolute filename, not
+      // the browser bundle. Spaces, backslashes and Unicode need no shell or
+      // 8dot3 alias; the official process keeps its original cwd and argv.
+      const thunk = Buffer.from(`require(${JSON.stringify(preload)});`).toString("base64");
+      env.BUN_OPTIONS = `${env.BUN_OPTIONS ?? ""} --preload=data:text/javascript;base64,${thunk}`;
     }
     child = spawn(official, argv, { cwd: process.cwd(), env, stdio: "inherit" });
     const { promise: exited, resolve, reject } = Promise.withResolvers<{ code: number | null; signal: NodeJS.Signals | null }>();
@@ -78,8 +106,11 @@ export async function runOfficialCommand(official: string, argv: string[]): Prom
     child.once("exit", (code, signal) => resolve({ code, signal }));
     if (web && child.pid && directory) {
       // Detached and independent of the launcher's event loop; no inherited stdio or sensitive env.
-      guard = spawn("/bin/sh", ["-c", 'while kill -0 "$2" 2>/dev/null; do\n  if ! kill -0 "$1" 2>/dev/null; then\n    kill -TERM "$2" 2>/dev/null\n    sleep 3\n    kill -KILL "$2" 2>/dev/null\n    /bin/rm -rf -- "$3"\n    exit\n  fi\n  sleep 1\ndone\n/bin/rm -rf -- "$3"', "omp-stats-guard", String(process.pid), String(child.pid), directory], {
-        detached: true, stdio: "ignore", env: { PATH: "/usr/bin:/bin" },
+      const guardEnv: NodeJS.ProcessEnv = {};
+      if (windows && process.env.SystemRoot) guardEnv.SystemRoot = process.env.SystemRoot;
+      guard = spawn(process.execPath, ["--no-env-file", "--no-compile-autoload-bunfig", "-e", guardSource, String(process.pid), String(parent), String(child.pid), directory], {
+        // Never hold the temporary directory as cwd: Windows would lock its removal.
+        detached: true, stdio: "ignore", env: guardEnv, cwd: parse(directory).root,
       });
       guard.on("error", error => { console.error(`Stats 生命周期守护启动失败：${error.message}`); stop("SIGTERM"); });
       guard.unref();
@@ -104,6 +135,9 @@ export async function runOfficialCommand(official: string, argv: string[]): Prom
   }
 
   function finish(result: { code: number | null; signal: NodeJS.Signals | null }): number {
+    // Windows has exit statuses, not POSIX shell signal re-raising. Preserve
+    // the official status, including a handled Ctrl+C returning zero.
+    if (windows) return result.code ?? (receivedSignal === "SIGINT" ? 130 : 1);
     const signal = result.signal ?? (receivedSignal === "SIGINT" && result.code === 0 ? undefined : receivedSignal);
     if (signal) {
       // Re-raise after finally removes listeners, preserving shell signal exit semantics.

@@ -58,14 +58,14 @@ console.log(JSON.stringify({ stats: "http://127.0.0.1:" + stats.port, unrelated:
 `;
 
 async function withServers(run: (urls: { stats: string; unrelated: string }) => Promise<void>) {
-  const directory = await mkdtemp(join(tmpdir(), "omp-stats-preload-"));
+  const directory = await mkdtemp(join(tmpdir(), "omp stats preload 中文-"));
   let child: Bun.Subprocess<"ignore", "pipe", "pipe"> | undefined;
   try {
     const preload = join(directory, "preload.cjs");
     const entry = join(directory, "server.cjs");
     await Promise.all([writeFile(preload, createStatsPreload(script)), writeFile(entry, serverSource)]);
     child = Bun.spawn([process.execPath, entry], {
-      env: { ...process.env, BUN_OPTIONS: `--preload=${preload}` },
+      env: { ...process.env, BUN_OPTIONS: `--preload=data:text/javascript;base64,${Buffer.from(`require(${JSON.stringify(preload)});`).toString("base64")}` },
       stdin: "ignore", stdout: "pipe", stderr: "pipe",
     });
     const reader = child.stdout.getReader();

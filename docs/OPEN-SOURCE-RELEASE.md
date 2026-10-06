@@ -74,7 +74,7 @@
 16. 真实官方编译版验证 `/` 顶层列表、别名、计划/模型/循环实时状态和动态键位；同进程 `/settings-language en/zh` 切换后重新打开列表，Tab/Enter 接受补全并执行无外部副作用的原生命令；参数/文件/第三方说明、模型 ID、原值/排序/插入/执行保持不变，不发送模型请求。
    共享 Settings 选项不得向命令参数说明泄漏；实际打开原生选项和 `/effort `，分别确认中文显示与官方英文参数。官方 update 必须保留受管启动器并替换真正官方二进制。
 17. Settings、Commands、Stats 独立报告各自上游变化、适用覆盖/漂移、实际验证证据与英文回退范围；任一部分未通过不得发布，不以设置或静态命令覆盖证明 Stats/动态补全已完成。
-18. 仅提交本任务文件并 push 到 main；等待该提交 macOS／Linux CI 成功，再从干净插件目录实际 GitHub 安装，确认包版本／来源、默认 PATH 接入、doctor、原 Stats URL 语言按钮及正常卸载／dry-run。任一失败不打 tag 或发布。
+18. 仅提交本任务文件并 push 到 main；等待该提交 macOS／Linux／Windows CI 成功，Windows 须通过校验官方编译版资产的原生 CLI 冒烟、真实 console Ctrl+C、安装／卸载与路径边界。随后从干净插件目录实际 GitHub 安装，确认包版本／来源、默认 PATH 接入、doctor、原 Stats URL 语言按钮及正常卸载／dry-run。任一失败不打 tag 或发布。
 
 任一门禁失败不得发布。
 
