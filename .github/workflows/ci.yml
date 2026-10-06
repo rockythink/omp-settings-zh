@@ -32,8 +32,12 @@ jobs:
           $base = "https://github.com/can1357/oh-my-pi/releases/download/v18.6.1"
           $binary = Join-Path $env:RUNNER_TEMP "official-omp.exe"
           Invoke-WebRequest "$base/$asset" -OutFile $binary
-          $checksums = (Invoke-WebRequest "$base/SHA256SUMS.txt").Content
+          $manifest = Join-Path $env:RUNNER_TEMP "official-SHA256SUMS.txt"
+          Invoke-WebRequest "$base/SHA256SUMS.txt" -OutFile $manifest
+          $checksums = [IO.File]::ReadAllText($manifest, [Text.Encoding]::UTF8)
           $expected = ($checksums -split "`n" | Where-Object { (($_.Trim() -split '\s+')[-1]).TrimStart('*') -eq $asset }) -split '\s+' | Select-Object -First 1
-          if (!$expected -or (Get-FileHash $binary -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expected.ToLowerInvariant()) { throw "Official OMP checksum mismatch" }
+          $actual = (Get-FileHash $binary -Algorithm SHA256).Hash.ToLowerInvariant()
+          if (!$expected -or $actual -ne $expected.ToLowerInvariant()) { throw "Official OMP checksum mismatch: expected=$expected actual=$actual" }
+          Write-Host "Verified official $asset SHA-256: $actual"
           bun run scripts/smoke-cli.ts $binary
           if ($LASTEXITCODE -ne 0) { throw "Native Windows smoke failed" }
