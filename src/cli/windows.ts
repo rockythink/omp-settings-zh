@@ -173,7 +173,7 @@ async function compileLauncher(config: Pick<WindowsState, "bun" | "main" | "omp"
 }
 async function startOwnedWindowsHelper(script: string): Promise<void> {
   const bootstrap = "[Console]::InputEncoding=[Text.UTF8Encoding]::new($false); & ([ScriptBlock]::Create([Console]::In.ReadToEnd()))";
-  const child = Bun.spawn(powershellArgs(bootstrap), { stdin: new TextEncoder().encode(script), stdout: "pipe", stderr: "inherit" });
+  const child = Bun.spawn(powershellArgs(bootstrap), { detached: true, stdin: new TextEncoder().encode(script), stdout: "pipe", stderr: "inherit" });
   const reader = child.stdout.getReader();
   const decoder = new TextDecoder();
   let timer: Timer | undefined;
