@@ -71,7 +71,9 @@ export default function (pi) {
 }
 `);
   const session = Bun.spawn([official, "--mode", "rpc", "--no-ui", "--no-tools", "--no-skills", "--no-rules", "--no-session", "--no-title", "-e", probe], {
-    cwd, env, stdin: "pipe", stdout: "pipe", stderr: "pipe",
+    // Catalog registration only; stdin never sends a prompt and the probe exits
+    // on session_start. No real credential or model request is required.
+    cwd, env: { ...env, ANTHROPIC_API_KEY: "omp-settings-zh-smoke-not-a-credential" }, stdin: "pipe", stdout: "pipe", stderr: "pipe",
   });
   const output = new Response(session.stdout).text();
   const errors = new Response(session.stderr).text();

@@ -29,7 +29,8 @@ jobs:
         shell: pwsh
         run: |
           $asset = "omp-windows-x64.exe"
-          $base = "https://github.com/can1357/oh-my-pi/releases/download/v18.6.1"
+          $version = ([IO.File]::ReadAllText((Join-Path $PWD "package.json")) | ConvertFrom-Json).devDependencies.'@oh-my-pi/pi-coding-agent'
+          $base = "https://github.com/can1357/oh-my-pi/releases/download/v$version"
           $binary = Join-Path $env:RUNNER_TEMP "official-omp.exe"
           Invoke-WebRequest "$base/$asset" -OutFile $binary
           $manifest = Join-Path $env:RUNNER_TEMP "official-SHA256SUMS.txt"
