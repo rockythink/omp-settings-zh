@@ -26,4 +26,11 @@ try {
     const code = await new Promise<number | null>((resolve, reject) => { child.on("close", resolve); child.on("error", reject); });
     console.log(JSON.stringify({ api: "node", detached, code, out, err, started: await Bun.file(trace + ".start").exists(), sourceLength: await readFile(trace, "utf8").catch(error => String(error)) }));
   }
+  const trace = join(root, "broker.txt");
+  const script = "[IO.File]::WriteAllText('" + trace.replaceAll("'", "''") + "','START');[Console]::WriteLine('READY')";
+  const args = [shell, "-NoProfile", "-NonInteractive", "-EncodedCommand", Buffer.from(script, "utf16le").toString("base64")];
+  const broker = "const child=Bun.spawn(" + JSON.stringify(args) + ",{stdin:'ignore',stdout:'pipe',stderr:'inherit'});for await(const bytes of child.stdout){process.stdout.write(bytes)}process.exit(await child.exited)";
+  const child = Bun.spawn([process.execPath, "-e", broker], { detached: true, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
+  const [code, out, err] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);
+  console.log(JSON.stringify({ api: "broker", code, out, err, started: await Bun.file(trace).exists() }));
 } finally { await rm(root, { recursive: true, force: true }); }
