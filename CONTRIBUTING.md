@@ -37,7 +37,7 @@
 
 最低开发环境：
 
-- macOS、Linux，或用于原生 Windows 回归的 Windows（PowerShell/CMD；尚待当前代码的原生验证）；
+- macOS、Linux 或原生 Windows（PowerShell/CMD；已验证 Windows Server 2025 x64，Windows 10／11 桌面和 ARM64 未实测）；
 - Bun 1.4.0 或更新版本；
 - 官方 OMP 18.6.1 或 README 兼容表中明确已验证的版本；
 - Git。

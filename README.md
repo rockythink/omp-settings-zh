@@ -49,7 +49,7 @@
 
 ### 未发布：原生 Windows 适配
 
-工作区已加入 Windows 安装、卸载与 Stats 运行路径，并纳入 `windows-latest` CI。发布版仍为 18.6.6；本轮尚无原生 Windows 实机／CI 成功证据，不能将 macOS 回归或跨平台逻辑测试当作 Windows 已验证。
+工作区已加入 Windows 安装、卸载与 Stats 运行路径，原生 Windows x64（Windows Server 2025、Bun 1.4.0、官方 OMP 18.6.1）已通过[三平台 CI 与官方编译版验收](https://github.com/rockythink/omp-settings-zh/actions/runs/37502068680)：60 项通过／0 失败，默认加载共享中文设置、doctor、Stats 同源脚本／原始 JSON、真实 console Ctrl+C／零退出与清理、dry-run 和正常卸载。Windows ARM64、Windows 10／11 桌面及 Windows OMP 18.6.3 未实测；未合并、打 tag 或发布。 发布版 18.6.6 不因此获得该功能。
 
 - 使用真正的官方 `omp.exe` 与 `bun.exe`，无需 WSL、Bash、管理员权限或修改 PowerShell 执行策略。安装时本地编译薄 `omp.exe` 启动器，PowerShell/CMD 都通过可执行文件传递参数，不经过批处理脚本重解析。
 - 启动器位于 `%LOCALAPPDATA%\omp-settings-zh\bin\omp.exe`；缺少 `LOCALAPPDATA` 时使用 `%USERPROFILE%\AppData\Local`。只维护用户级 PATH，保留无关条目、环境变量占位符和后续修改；不修改机器级 PATH。

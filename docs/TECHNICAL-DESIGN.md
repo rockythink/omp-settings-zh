@@ -2,7 +2,7 @@
 
 - 实现版本：18.6.6
 - 验证基线：OMP 18.6.1
-- Windows 适配：工作区未发布变更，原生 Windows 验证尚未执行
+- Windows 适配：未发布；Windows Server 2025 x64／Bun 1.4.0／官方 OMP 18.6.1 原生 CI 与官方 CLI 验收通过，ARM64 与 Windows 10／11 桌面未测
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -96,7 +96,7 @@
 - 宿主契约：用真实 `createSettingsHost()` 和 `getAllSettingDefs()` 证明新面板随语言变化，且控件类型、分组、默认值、条件和选项值不变。
 - 设置覆盖/漂移：`bun run coverage:check`、`bun run drift:check`；命令完整覆盖/漂移：`bun run commands:check`，三者均纳入 `bun run check`。
 - 冒烟：`bun run smoke` 对真实宿主进行三轮应用/撤销，检查原始 UI 恢复和零网络请求。
-- `bun run scripts/smoke-cli.ts <真实官方 omp 路径>` 在隔离 HOME／USERPROFILE 中运行官方编译版，验证默认扩展加载共享中文设置、doctor、原 Stats JSON、同源注入、退出、dry-run 与原生卸载；无模型或付费请求。Windows CI 校验官方 v18.6.1 Windows x64 发布资产 SHA-256 后执行，原生 console Ctrl+C 另以独立 console 测试。未运行的平台必须报告未验证。
+- `bun run scripts/smoke-cli.ts <真实官方 omp 路径>` 在隔离 HOME／USERPROFILE 中运行官方编译版，验证默认扩展加载共享中文设置、doctor、原 Stats JSON、同源注入、真实 console Ctrl+C、dry-run 与原生卸载。RPC 只注册本地目录占位凭据，stdin 不发送 prompt，session_start 探针退出，不做模型或付费请求。Windows CI 按锁定开发依赖选择官方资产并严格校验 SHA-256；[OMP 18.6.1 x64 验收证据](https://github.com/rockythink/omp-settings-zh/actions/runs/37502068680)。未运行的平台和版本必须报告未验证。
 - 发布前：实际运行官方编译版，检查插件加载、中文搜索、原生编辑、语言选择器和同进程原版恢复。源码契约不能替代这一步。
 - Commands：实际官方编译版检查顶层补全及别名、动态状态/键位、中英文恢复、参数/文件/第三方边界与 Tab/Enter 插入和原命令执行；静态门禁不能代替动态模板和交互证明。
 - Stats：真实编译版验证 BUN_OPTIONS 预加载、现有参数合并与安全临时路径；从新 shell 直接 `omp stats` 确认仅原服务一个监听器，测试语言/路由/刷新/同地址重启、原 API/SSE、原授权/静态请求行为、JSON/summary、port/host、退出及默认安装/卸载。不使用源码运行代替编译版，也不触发付费评估。

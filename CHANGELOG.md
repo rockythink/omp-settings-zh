@@ -8,7 +8,7 @@
 
 - 原生 Windows 用户级 PATH 安装／卸载、实际 PE 可执行文件发现和本地编译薄 `omp.exe` 启动器；不依赖 Bash／WSL，不修改机器 PATH 或 PowerShell 执行策略，保留参数、工作目录、标准流、退出码和真正官方 update 目标
 - Windows 文件／PATH 所有权预检与失败回滚、dry-run 保护、稳定包路径和用户后续 PATH 编辑保留；源码／Bun 变更在运行中 exe 锁定时暂存更新，退出后按所有权替换，失败保留可重试状态；卸载取消待更新并只按所有权清理
-- 三平台 CI 与 `scripts/smoke-cli.ts` 真实官方编译版的隔离默认加载／Settings／doctor／Stats／卸载冒烟，Windows CI 下载并校验官方 18.6.1 x64 资产
+- 三平台 CI 与真实官方编译版的隔离默认加载／Settings／doctor／Stats／卸载冒烟；官方资产版本跟随锁定开发依赖，下载后严格校验 SHA-256
 
 ### Changed
 
@@ -18,7 +18,7 @@
 ### Verification boundary
 
 - 本机 macOS 官方 OMP 18.6.1 默认扩展加载共享中文设置、doctor、Stats 原始 JSON／同源脚本、退出、dry-run 与正常卸载已运行；真实网页中文／English 切换与刷新保留通过，端口仅官方一个监听器，结束后监听器消失
-- 原生 Windows 实机与当前代码 CI 尚未运行；跨平台逻辑测试、Windows PE 交叉编译和 macOS 冒烟不等于 Windows 运行通过。本节适配尚未发布；18.6.6 历史记录及版本号保持
+- 原生 Windows x64（Windows Server 2025、Bun 1.4.0、官方 OMP 18.6.1）已通过[三平台 CI 与官方编译版验收](https://github.com/rockythink/omp-settings-zh/actions/runs/37502068680)：60 项通过／0 失败，默认加载共享中文设置、doctor、Stats 同源脚本／原始 JSON、真实 console Ctrl+C／零退出与清理、dry-run 和正常卸载。Windows ARM64、Windows 10／11 桌面及 Windows OMP 18.6.3 未实测；未合并、打 tag 或发布。 18.6.6 历史记录及版本号保持。
 
 ## [18.6.6] - 2026-10-06
 

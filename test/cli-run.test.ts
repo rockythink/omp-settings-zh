@@ -138,11 +138,11 @@ test("independent Bun guard reaps Stats after the launcher parent disappears", a
   await withRunner(async child => { child.kill("SIGKILL"); await child.exited; }, true);
 }, 20000);
 
-test.skipIf(process.platform === "win32")("Unix Ctrl+C retains an official graceful zero exit and removes preload", async () => {
+test.skipIf(process.platform === "win32")("Unix Ctrl+C retains a compiled Stats fixture's graceful zero exit and removes preload", async () => {
   await withRunner(async child => { process.kill(child.pid, "SIGINT"); expect(await child.exited).toBe(0); });
 }, 20000);
 
-test.skipIf(process.platform !== "win32")("Windows real console Ctrl+C preserves the official zero exit and clears Stats", async () => {
+test.skipIf(process.platform !== "win32")("Windows real console Ctrl+C preserves a compiled Stats fixture's zero exit and clears Stats", async () => {
   const directory = await mkdtemp(join(root, "console 中文-"));
   const temporary = join(directory, "temp with spaces");
   const readyFile = join(directory, "ready.json");

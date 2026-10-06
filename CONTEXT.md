@@ -4,7 +4,7 @@
 
 `omp-settings-zh` 为官方 OMP 提供原生设置与内置斜杠命令补全简体中文，以及直接 `omp stats` 的网页语言切换。当前版本为 18.6.6，开发与实际宿主基线为 OMP 18.6.1；Settings 注册表、Commands 注册表与接口、Stats 客户端均无上游漂移，译文未重复改译。本补丁保持 `/effort` 的 `off` 等官方级别字面量，并保护 Stats Errors 筛选器 tooltip 中的原始错误特征。历史功能和标签保持。宿主适配以目标稳定版为基线，独立插件增量使用高于已发布版本的补丁号，明确实际宿主。
 
-工作区有未发布的原生 Windows 适配：用户级 PATH／薄 exe 启动器、所有权预检与可撤销卸载、win32 Stats 预加载与独立 Bun 守护、三平台 CI 和真实官方编译版 CLI 冒烟脚本。本轮 macOS 官方 18.6.1 默认扩展加载／Stats／卸载已运行；Windows 实机和当前提交 CI 尚未运行，禁止据此宣称 Windows 已验证或发布。版本号和历史发布保持。
+工作区有未发布的原生 Windows 适配：用户级 PATH／薄 exe 启动器、所有权预检与可撤销卸载、运行中锁定 exe 的受管暂存更新、win32 Stats 预加载与独立 Bun 守护。本轮 macOS 官方 18.6.1 默认扩展加载／Stats／卸载已运行；原生 Windows x64（Windows Server 2025、Bun 1.4.0、官方 OMP 18.6.1）已通过[三平台 CI 与官方编译版验收](https://github.com/rockythink/omp-settings-zh/actions/runs/37502068680)：60 项通过／0 失败，默认加载共享中文设置、doctor、Stats 同源脚本／原始 JSON、真实 console Ctrl+C／零退出与清理、dry-run 和正常卸载。Windows ARM64、Windows 10／11 桌面及 Windows OMP 18.6.3 未实测；未合并、打 tag 或发布。 版本号和历史发布保持。
 
 ## 已确认的产品边界
 

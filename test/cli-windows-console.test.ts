@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
 // Native console events are not equivalent to kill(pid, 'SIGINT') on Windows.
-test.skipIf(process.platform !== "win32")("Windows Ctrl+C reaches the official Stats child through the production thin exe and retains its zero exit", async () => {
+test.skipIf(process.platform !== "win32")("Windows Ctrl+C reaches a compiled Stats fixture through the production thin exe and retains its zero exit", async () => {
   const root = await mkdtemp(join(tmpdir(), "omp trampoline console 中文 "));
   let helper: Bun.Subprocess<"ignore", "pipe", "pipe"> | undefined;
   try {
