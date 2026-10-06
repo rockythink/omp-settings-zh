@@ -7,6 +7,7 @@ import { windowsInstallDirectory } from "../src/cli/windows";
 
 const windowsModuleSource = resolve("src/cli/windows.ts");
 const nativeTest = process.platform === "win32" ? test : test.skip;
+interface MaintenanceProcess { pid: number; file: string }
 
 nativeTest("a real running Windows thin exe queues refresh once, preserves failed stage for retry, and commits after parent exit", async () => {
   const home = await mkdtemp(join(tmpdir(), "omp locked refresh 中文 "));
@@ -35,7 +36,11 @@ nativeTest("a real running Windows thin exe queues refresh once, preserves faile
     await writeFile(join(app, "main.ts"), `import {readFile} from 'node:fs/promises';
 import {manageWindowsLauncher} from ${JSON.stringify(windowsModule)};
 const helpers=[],spawn=Bun.spawn.bind(Bun);
-Bun.spawn=(...args)=>{const child=spawn(...args);if(String(args[0][0]).toLowerCase().endsWith('powershell.exe'))helpers.push(child.pid);return child;};
+Bun.spawn=(command,options)=>{
+  if(!String(command[0]).toLowerCase().endsWith('powershell.exe'))return spawn(command,options);
+  const file=${JSON.stringify(home)}+'/helper-'+process.pid+'-'+helpers.length+'.log';
+  const child=spawn(command,{...options,stderr:Bun.file(file)});helpers.push({pid:child.pid,file});return child;
+};
 ${storeSource}
 const entry=${JSON.stringify(entry)},statePath=${JSON.stringify(statePath)};
 const options={omp:${JSON.stringify(official)},bun:${JSON.stringify(nextBun)}};
@@ -59,18 +64,18 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
       let line = "";
       while (!line.includes("\n")) { const part = await reader.read(); if (part.done) throw new Error(await stderr); line += decoder.decode(part.value); }
       await reader.cancel();
-      const value = JSON.parse(line) as { helpers: number[]; runtime: string; args: string[]; cwd: string; pending: { id: string; file: string; next: { wrapperHash: string } } };
+      const value = JSON.parse(line) as { helpers: MaintenanceProcess[]; runtime: string; args: string[]; cwd: string; pending: { id: string; file: string; next: { wrapperHash: string } } };
       expect(value.args).toEqual([official, mode]);
       expect(value.cwd).toBe(process.cwd());
       return { child, stderr, helpers: value.helpers, pending: value.pending, runtime: value.runtime };
     };
     // The direct child can close its pipe before its detached helper finishes.
     // Observe real helper death before asserting committed file state.
-    const finish = async (run: { child: Bun.Subprocess<"pipe", "pipe", "pipe">; stderr: Promise<string>; helpers: number[] }) => {
+    const finish = async (run: { child: Bun.Subprocess<"pipe", "pipe", "pipe">; stderr: Promise<string>; helpers: MaintenanceProcess[] }) => {
       run.child.stdin.end();
       expect(await run.child.exited).toBe(0);
       const deadline = Date.now() + 30_000;
-      for (const pid of run.helpers) while (true) {
+      for (const { pid } of run.helpers) while (true) {
         try { process.kill(pid, 0); } catch (error) {
           if ((error as NodeJS.ErrnoException).code === "ESRCH") break;
           throw error;
@@ -79,6 +84,7 @@ if(Bun.argv.at(-1)==='cancel')await manageWindowsLauncher('uninstall',{},entry,f
         await Bun.sleep(50);
       }
       await run.stderr;
+      for (const helper of run.helpers) console.error(await readFile(helper.file, "utf8"));
     };
     const failed = await launch("refresh");
     expect(failed.runtime).toBe(process.execPath);
