@@ -108,16 +108,22 @@ test("modified managed blocks and foreign wrappers are refused before any other 
   } finally { await rm(f.home, { recursive: true, force: true }); }
 });
 
-test("installer retains a stable logical package path through a package-directory symlink", async () => {
-  const f = await fixture("bash");
-  try {
-    const logical = join(f.home, ".omp/plugins/node_modules/omp-settings-zh");
-    await mkdir(join(f.home, ".omp/plugins/node_modules"), { recursive: true });
-    await symlink(resolve("."), logical);
-    expect((await f.invoke(["install", "--bun", process.execPath], join(logical, "src/cli/install.ts"))).code).toBe(0);
-    const state = JSON.parse(await readFile(join(f.home, ".local/share/omp-settings-zh/state.json"), "utf8"));
-    expect(state.main).toBe(join(logical, "src/cli/main.ts"));
-  } finally { await rm(f.home, { recursive: true, force: true }); }
+test("installer retains stable logical package paths in default and named Profiles", async () => {
+  for (const profile of [undefined, "maintenance-profile"]) {
+    const f = await fixture("bash");
+    try {
+      const env = f.env as NodeJS.ProcessEnv;
+      delete env.PI_PROFILE;
+      env.OMP_PROFILE = profile ?? "";
+      const root = join(f.home, ".omp", ...(profile ? ["profiles", profile] : []), "plugins/node_modules");
+      const logical = join(root, "omp-settings-zh");
+      await mkdir(root, { recursive: true });
+      await symlink(resolve("."), logical);
+      expect((await f.invoke(["install", "--bun", process.execPath], join(logical, "src/cli/install.ts"))).code).toBe(0);
+      const state = JSON.parse(await readFile(join(f.home, ".local/share/omp-settings-zh/state.json"), "utf8"));
+      expect(state.main).toBe(join(logical, "src/cli/main.ts"));
+    } finally { await rm(f.home, { recursive: true, force: true }); }
+  }
 });
 
 test("lifecycle API can be imported from another entry and returns status without emitting output", async () => {

@@ -2,8 +2,66 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.6.3",
+  "sourceOmpVersion": "18.8.0",
   "settings": {
+    "tui.renderSvg": {
+      "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
+      "label": "渲染 SVG 图示",
+      "description": "引导 Agent 使用 SVG 绘制示意图和图表，在支持图形显示的终端中以内嵌图片呈现"
+    },
+    "tui.autoGraph": {
+      "sourceHash": "01dced23b949011c39d979779543093a981fe74917f5e5fdc8abeaf6d777d2b7",
+      "label": "表格自动图表",
+      "description": "在支持图形显示的终端中，使用主题配色在 Agent 回答的数值表格下方绘制图表",
+      "options": {
+        "smart": {
+          "label": "智能",
+          "description": "由 judge 模型为含多个数值列的表格选择图表类型和列"
+        },
+        "always": {
+          "label": "始终",
+          "description": "使用内置推断，为每个可识别为数值表格的表格绘制图表"
+        },
+        "off": {
+          "label": "关闭",
+          "description": "仅显示表格，不绘制图表"
+        }
+      }
+    },
+    "title.icons": {
+      "sourceHash": "5ba7f80738aea5e057fb27c6fb557b691f0ba778332c4d2c489bba6006962aae",
+      "label": "标题图标",
+      "description": "自动生成的会话标题在终端标题中显示的图标及其短代码",
+      "options": {
+        "nf+emoji": {
+          "label": "Nerd Font + Emoji",
+          "description": "Nerd Font 符号预设能显示时使用 Nerd Font 字形，否则使用 Emoji（默认）"
+        },
+        "emoji": {
+          "label": "Emoji",
+          "description": "始终使用 Emoji"
+        },
+        "boring": {
+          "label": "纯文本",
+          "description": "纯文本标题：不显示图标或短代码"
+        }
+      }
+    },
+    "title.generator": {
+      "sourceHash": "be628afe417e60a47128a617cfa593a030841c2c63cdae03c4b56ab9729c33db",
+      "label": "标题生成器",
+      "description": "根据用户消息为未命名会话生成标题的方式",
+      "options": {
+        "fork": {
+          "label": "Fork",
+          "description": "使用会话模型，在回复的旁路轮次中读取其提示词缓存并添加卡片图标（默认）"
+        },
+        "tiny": {
+          "label": "Tiny",
+          "description": "仅使用 title 模型角色，生成不带卡片的纯文本标题"
+        }
+      }
+    },
     "expandThinkingBlocks": {
       "sourceHash": "ff0f00499f3fe3b369f6751f4993be866998e6b06a90384bd0dfa908f577ded2",
       "label": "保持思考块展开",
@@ -93,13 +151,13 @@ export const zhCN = {
       "description": "暂停主 Agent，直至 Advisor 积压低于阈值。数字阈值最多等待 30 秒；strict 会等待所有计划审查完成且不设时间上限。off 禁用追赶延迟；中止、失败或销毁会解除等待"
     },
     "advisor.immuneTurns": {
-      "sourceHash": "1cfb4f6fcdac275833f66f6ff80772aabd9e1b96302b010a33b9a6a5317539a1",
+      "sourceHash": "bb10c90f598a8daf6f0b8770dc2a66dec157838aa70a43538ea5c1a5d76c6cd1",
       "label": "Advisor 免打扰步数",
-      "description": "Advisor 的疑虑或阻断问题造成中断后，在接下来的这些主 Agent 步骤中以不中断方式传递后续疑虑或阻断问题",
+      "description": "Advisor 的疑虑或阻断问题造成中断后，在接下来的这些主 Agent 轮次中，将后续疑虑作为不中断的旁注传递。阻断问题不受冷却期限制",
       "options": {
         "0": {
           "label": "0 步",
-          "description": "允许每个疑虑或阻断问题触发中断"
+          "description": "无冷却期"
         },
         "1": { "label": "1 步" },
         "2": { "label": "2 步" },
@@ -4009,9 +4067,9 @@ export const zhCN = {
       "description": "绝不自动消耗到低于此数量的已保存重置额度（0 = 最后一个额度也可以自动消耗）。即将过期的额度不受此限制——保留一个会过期的额度并无保留作用"
     },
     "codexResets.salvageHorizonHours": {
-      "sourceHash": "4e76020d3cc3d2334ddb60dfac45fcc040167a09cca4e4ebb6b7967aeb5dfd26",
+      "sourceHash": "efd62d6b11839a167ec6bbb8f47081a81b9e80b68c8dfc586ca7884d47103cc3",
       "label": "Codex 重置额度挽回时限",
-      "description": "当已保存的 Codex 重置额度将在此小时数内过期，且任一聊天窗口（5h 或每周）有值得恢复的用量时，自动消耗该额度（0 禁用过期额度挽回）"
+      "description": "启用自动兑换后，当已保存的 Codex 重置额度将在所设小时数内过期，且任一聊天窗口有值得恢复的用量时，消耗该额度。0 禁用提前挽回；5 分钟内到期的额度仍会尝试使用，不受用量限制"
     },
     "provider.appendOnlyContext": {
       "sourceHash": "c98ee8534acca533b8567ff2722eb49f8305266bf8dbdfdb5bcfcac9ac1da978",
@@ -4336,14 +4394,14 @@ export const zhCN = {
       "description": "仅当自然解除阻断的时间（已耗尽且受覆盖的各额度窗口中最晚的重置时间）至少还相隔所设分钟数时，才自动兑换；仅重置 5 小时限额的次数绝不用于每周限额或特定模型限额造成的阻断"
     },
     "claudeResets.keepCredits": {
-      "sourceHash": "affcbc0c1c263f4a8b8793d4638650bbdfb9e473fc13f7337ac1bcb4044c2b8f",
+      "sourceHash": "e011ed7107e11bb6d0bbffe6588bfa0c4598f1aa4d597a5882158639a6b94a6c",
       "label": "Claude 自动兑换保留次数",
-      "description": "至少保留所设数量的 Claude 重置次数（0 允许自动消耗最后一次符合条件的重置）；此保留数量也适用于到期前利用"
+      "description": "至少保留所设数量的 Claude 重置次数（0 允许自动消耗最后一次符合条件的重置）。保留数量适用于提前挽回，但不限制 5 分钟内到期且符合条件的重置"
     },
     "claudeResets.salvageHorizonHours": {
-      "sourceHash": "d496deb3471422497fb60b9f039e4791849dcb718aacb66ec3233bf6e8a12463",
+      "sourceHash": "d23b0074003328c50ff49b895d71f93356ccc8adec0148122068a256d944d9cf",
       "label": "Claude 重置到期利用窗口",
-      "description": "仅当服务器选定的 Cedar 重置将在所设小时数以内到期、其覆盖的额度窗口中有值得恢复的已用额度，且该授权允许提前使用或某个覆盖窗口已耗尽时，才使用该重置（0 禁用到期前利用）"
+      "description": "启用自动兑换后，当服务器选定的 Cedar 重置将在所设小时数内到期，且其覆盖窗口有值得恢复的用量时，使用该重置。0 禁用提前挽回；5 分钟内到期且符合条件的 Cedar 或 Juniper 重置仍会尝试使用，不受用量或保留数量限制。提供商的限额要求仍然适用"
     },
     "telemetry.otlpExportEnabled": {
       "sourceHash": "b640daf01d74fa616c91990ca9ea7af48cbef704785407fee931fe8ce63c3414",
@@ -4514,9 +4572,9 @@ export const zhCN = {
       "description": "自动保存计划的目录；支持 `~`、绝对路径和相对于当前工作目录的路径。留空时使用 `<project>/.omp/plans/`"
     },
     "browser.tern": {
-      "sourceHash": "d47907979a3e419cc7b0946a0e51675354af6c0f07826bc46399dc1085d6c544",
+      "sourceHash": "0355bf9a5c9e3401be54aef02e646c40378f212309afe8f3214238285229832f",
       "label": "Tern 浏览器",
-      "description": "在 Tern 面板内，将浏览器页签作为画中画置于 omp 面板上方（原生网页视图），而不是使用无头 Chromium；没有可承载的 Tern 窗口时回退到 Chromium。显式 `app` 选项、Browser Relay 和浏览器 CDP URL 优先；`headed:false` 或 `app.tern:false` 可让单次打开不使用此模式。设置 `PI_BROWSER_TERN=0` 或 `PI_BROWSER_TERN=1` 可覆盖此设置"
+      "description": "在 Tern 面板内，将浏览器页签作为画中画置于 omp 面板上方（原生网页视图），而不是使用无头 Chromium；没有可承载的 Tern 窗口时回退到 Chromium。显式 `app` 选项、Browser Relay 和浏览器 CDP URL 优先；`app.tern:false` 可让单次打开不使用此模式。设置 `PI_BROWSER_TERN=0` 或 `PI_BROWSER_TERN=1` 可覆盖此设置"
     },
     "browser.freezeOnTurnEnd": {
       "sourceHash": "4277a2304699c39a135dfc0706b3e20347f6ffec2d72f737b055432131d1ea00",

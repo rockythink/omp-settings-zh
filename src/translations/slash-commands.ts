@@ -1,4 +1,4 @@
-/* Display-only translations verified against OMP 18.6.3; copy and aliases unchanged since 18.6.1. */
+/* Display-only translations verified against OMP 18.8.0; only prewalk copy changed since 18.6.3. */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -98,8 +98,8 @@ export const slashCommandTranslations = [
   },
   {
     "name": "prewalk",
-    "en": "Arm or restart a one-shot model handoff",
-    "zh": "启用或重新启动一次性模型交接"
+    "en": "Arm, restart, or cancel a one-shot model handoff",
+    "zh": "启用、重新启动或取消一次性模型交接"
   },
   {
     "name": "modelpreset",

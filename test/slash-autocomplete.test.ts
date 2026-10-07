@@ -71,6 +71,7 @@ test("official switch role order, picker-ranked models and thinking suffixes pas
   const session = {
     scopedModels: models.slice(0, 2).map(model => ({ model })),
     modelRegistry: { getError: () => undefined, getAvailable: () => models, getAll: () => models },
+    effectiveServiceTier: () => undefined,
   };
   const command = buildTuiBuiltinSlashCommands({ ctx: { settings, session } } as unknown as TuiSlashCommandRuntime)
     .find(command => command.name === "switch")!;
@@ -105,6 +106,66 @@ test("official switch role order, picker-ranked models and thinking suffixes pas
   expect(available!.items.map(item => item.value).sort()).toEqual(["alpha/model-1 ", "beta/model-1 ", "outside/model-1 "]);
 });
 
+test("official synchronous bare-slash and collapsed skill namespace match async results in both languages", async () => {
+  const native = new CombinedAutocompleteProvider([
+    ...BUILTIN_SLASH_COMMAND_DEFS,
+    { name: "skill:first", description: "Literal first skill" },
+    { name: "skill:second", description: "Literal second skill" },
+  ]);
+  let chinese = true;
+  const provider = localizeSlashAutocomplete(native, () => chinese);
+  for (const language of [true, false]) {
+    chinese = language;
+    for (const text of ["/", "  /", "/sk"]) {
+      const original = native.trySyncSlashCompletion(text)!;
+      expect(original).not.toBeNull();
+      const asyncResult = await native.getSuggestions([text], 0, text.length);
+      if (!asyncResult) throw new Error("Official slash suggestions are missing");
+      expect(original).toEqual(asyncResult);
+      const sync = provider.trySyncSlashCompletion!(text)!;
+      expect(await provider.getSuggestions([text], 0, text.length)).toEqual(sync);
+      expect(sync.items.map(item => item.value)).toEqual(original.items.map(item => item.value));
+      const namespace = sync.items.find(item => item.value === "skill:")!;
+      const originalNamespace = original.items.find(item => item.value === "skill:")!;
+      expect(namespace.description).toBe(language ? "2 项技能" : "2 skills");
+      expect(provider.applyCompletion([text], 0, text.length, namespace, sync.prefix))
+        .toEqual(native.applyCompletion([text], 0, text.length, originalNamespace, original.prefix));
+      if (!language) expect(sync).toEqual(original);
+    }
+    const text = "/skill:";
+    expect(await provider.getSuggestions([text], 0, text.length)).toEqual(await native.getSuggestions([text], 0, text.length));
+  }
+});
+
+test("official prewalk cancellation copy translates only the command, preserving new off arguments and insertion", async () => {
+  const command = buildTuiBuiltinSlashCommands({} as TuiSlashCommandRuntime).find(command => command.name === "prewalk")!;
+  const native = new CombinedAutocompleteProvider([command]);
+  let chinese = true;
+  const provider = localizeSlashAutocomplete(native, () => chinese);
+  const text = "/prewalk";
+  const original = native.trySyncSlashCompletion(text)!;
+  const localized = provider.trySyncSlashCompletion!(text)!;
+  expect(localized.items[0]!.description).toBe("启用、重新启动或取消一次性模型交接");
+  expect(await provider.getSuggestions([text], 0, text.length)).toEqual(localized);
+  expect(provider.applyCompletion([text], 0, text.length, localized.items[0]!, localized.prefix))
+    .toEqual(native.applyCompletion([text], 0, text.length, original.items[0]!, original.prefix));
+  for (const language of [true, false]) {
+    chinese = language;
+    for (const args of ["", "o", "off", "r"]) {
+      const input = text + " " + args;
+      const originalArgs = await native.getSuggestions([input], 0, input.length);
+      const localizedArgs = await provider.getSuggestions([input], 0, input.length);
+      expect(localizedArgs).toEqual(originalArgs);
+      expect(provider.getInlineHint!([input], 0, input.length)).toBe(native.getInlineHint([input], 0, input.length));
+      expect(provider.trySyncSlashCompletion!(input)).toBeNull();
+      for (let index = 0; index < (originalArgs?.items.length ?? 0); index++) {
+        expect(provider.applyCompletion([input], 0, input.length, localizedArgs!.items[index]!, localizedArgs!.prefix))
+          .toEqual(native.applyCompletion([input], 0, input.length, originalArgs!.items[index]!, originalArgs!.prefix));
+      }
+    }
+  }
+  expect(provider.trySyncSlashCompletion!(text)).toEqual(original);
+});
 test("key glyph changes in official descriptions preserve the key and do not disable live translation", async () => {
   let key = "⌥P";
   const native = new CombinedAutocompleteProvider([

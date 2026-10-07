@@ -292,9 +292,10 @@ async function manageLauncher(command: "install" | "uninstall", options: Launche
     }
     return "已卸载 PATH 启动器；请重新打开终端。原始 OMP 未改动。";
   }
-  const installedEntry = join(home, ".omp/plugins/node_modules/omp-settings-zh/src/cli/install.ts");
+  const { getPluginsNodeModules } = await import("@oh-my-pi/pi-utils");
+  const installedEntry = join(getPluginsNodeModules(), "omp-settings-zh/src/cli/install.ts");
   let entry = import.meta.path;
-  // Module paths are canonicalized; recover the stable default plugin-package link.
+  // Recover the active Profile/XDG package link, not a versioned Bun-cache target.
   if (await metadata(installedEntry) && await realpath(installedEntry) === await realpath(entry)) entry = installedEntry;
   const state: InstallState = {
     version: 1,
