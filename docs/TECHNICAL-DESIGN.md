@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现版本：18.8.0
-- 验证基线：OMP 18.8.0
+- 实现版本：18.8.4
+- 验证基线：OMP 18.8.4
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -66,7 +66,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存 OMP 18.8.0 的 85 条官方英文、93 个命令名／别名及独立中文译文。相对 18.6.3 仅 prewalk 静态说明变化；27 个动态状态回调、公共补全签名、partial／AbortSignal 与可选能力未变。官方 trySyncSlashCompletion 新增裸 `/` 与折叠 `/skill:` 同步路径，行为回归确认显示副本及接受补全仍正确。switch 参数传入 effectiveServiceTier，由原 provider 保持模型值／描述。原 provider 继续负责匹配、排序、参数、插入和执行，插件只改已知顶层说明与状态。
+`src/translations/slash-commands.ts` 保存 OMP 18.8.4 的 85 条官方英文、93 个命令名／别名及独立中文译文。相对 18.8.0 静态原文、别名、27 个动态状态回调、同步/异步/partial/AbortSignal 及可选能力接口均未变；裸 `/` 与折叠 `/skill:` 路径另经回归。switch 参数仍传入 session.effectiveServiceTier(model)，effort 取当前 selector 与宿主键位。18.8.4 模型解析增加近期使用/modelProviderOrder 偏好，显式 provider/id 优先不变；不复制解析逻辑，真实显式切换另验，未冒称多提供商认证歧义已实测。原 provider 继续负责匹配、排序、参数、插入和执行，插件只改已知顶层说明与状态。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -83,6 +83,7 @@
 - localStorage key 为 `omp-settings-zh.stats.language`，首次默认中文；同 origin 跨刷新、路由和服务重启保留，地址改变则使用新 origin 的偏好。未知文案、API 原文、数据标识、错误与 canvas 保留。
 - `/settings-language` 与网页语言独立；会话 `/stats` 保留官方行为。同数据目录下 `/stats` 与 `omp stats` 均扫描多个项目和会话，区别在独立 CLI 与会话绑定的 judge / 费用上下文，不是统计范围。
 - 18.8.0 独立源码审查：query-store 及 useSyncExternalStore 替换全局重绘，最后等待者离开时取消请求，ETag 304 复用对象；追踪 canvas 新增空的 aria-hidden hover／selection overlay，既有 UI 类名、文字与数据身份不变。服务新增 serviceTier／premiumRequests 聚合及 trace 指纹缓存，原官方 API／SSE 原样复用，不在插件复制计算。
+- 18.8.4 独立审查：相对 18.8.0 的 Stats 90 个源码、72 个客户端文件无直接变化，609 个键与 105 个严格模板保留。共享模型解析/认证/价格来源另审；真实官方编译 CLI（Bun 1.4.2）的 API/SSE、11 页 UI、数据排除与单监听器合同另验，不用 npm 源码导入成功替代。
 
 ## 6. 检查与真实验证
 
@@ -94,10 +95,11 @@
 - 发布前：实际运行官方编译版，检查插件加载、中文搜索、原生编辑、语言选择器和同进程原版恢复。源码契约不能替代这一步。
 - Commands：实际官方编译版检查顶层补全及别名、动态状态/键位、中英文恢复、参数/文件/第三方边界与 Tab/Enter 插入和原命令执行；静态门禁不能代替动态模板和交互证明。
 - Stats：真实编译版验证 BUN_OPTIONS 预加载、现有参数合并与安全临时路径；从新 shell 直接 `omp stats` 确认仅原服务一个监听器，测试语言/路由/刷新/同地址重启、原 API/SSE、原授权/静态请求行为、JSON/summary、port/host、退出及默认安装/卸载。不使用源码运行代替编译版，也不触发付费评估。
+- 验收资源：先登记 run、页面身份基线、专属浏览器 Profile/PID、服务 PID/port、临时路径及清理入口。复用一个主标签，默认 headless；官方自动开页也计入归属。测试专属 opener 必须真实交付 URL 并观察页面，默认 `/usr/bin/open` 另记录真实调用/URL/新增页数；不假设 BROWSER 或不存在的 --no-open。登录 shell 的 path_helper 之后在同一子命令断言 command -v open。try/finally 逐阶段先关自有页面、再停止服务并验证端口、最后回收临时目录；正常及人为断言失败分支先实测，残留阻止发布。
 
 ## 7. 发布边界
 
-从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增补丁号并注明实际宿主，已用编号不得复用。当前版本为 18.8.0，开发依赖锁定 18.8.0，宿主范围为 `>=18.8.0 <19`。同主版本不保证内部结构稳定；Settings 保留预检，Commands 核验原文/别名、动态生成逻辑与公共补全接口，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼容。
+从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增补丁号并注明实际宿主，已用编号不得复用。当前版本为 18.8.4，开发依赖锁定 18.8.4，宿主范围为 `>=18.8.4 <19`。同主版本不保证内部结构稳定；Settings 保留预检，Commands 核验原文/别名、动态生成逻辑与公共补全接口，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼容。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

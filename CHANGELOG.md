@@ -2,6 +2,39 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.8.4] - 2026-10-08
+
+### Baseline
+
+- 受支持 `omp update` 将真实官方宿主 18.8.0 → 18.8.3 → 18.8.4；未改官方资源或二进制，实际内嵌 Bun 1.4.2。开发依赖 coding-agent／pi-utils 锁定 18.8.4，宿主范围 `>=18.8.4 <19`；npm omp-stats 18.8.4 仅为独立源码线索
+- 开始发现 GitHub 安装的插件锁版本 18.6.4 与实际 18.8.0 漂移，按相同 GitHub 来源 force install 修复；不更换来源或其它插件
+
+### Settings
+
+- 404/404，新增 0、原文变化 1：只更新 title.icons 说明和哈希；官方配置新增 task.agentAccountPools 不属于设置 UI。类型、默认值、value、group、凭据标记、7 个动态 getter、保存与可逆恢复不变
+- 新官方编译进程实际完成中文搜索、原生图标选项编辑/恢复、同进程 en/zh 往返；`/effort ` 保持原参数英语，不泄漏设置译文
+
+### Commands
+
+- 85/85 定义、93 个标识（8 个别名），新增/删除/英文/别名/冲突/缺译均 0；27 个动态回调及同步/异步/partial/AbortSignal/可选能力接口未变，不重复改译
+- 新编译版实际验证裸 `/`、折叠/展开 2 个技能、别名、计划/模型/循环状态、原生 Tab/Enter 接受执行、参数/文件/第三方描述边界及 en/zh 恢复；隔离真实 F8 将 effort high → xhigh，模型 ID/级别/文件名保持原文
+- 18.8.4 官方模型解析增加近期使用/modelProviderOrder 偏好；显式 provider/id 真实切换保持。不复制业务逻辑，不冒称多提供商认证歧义已实测
+
+### Stats
+
+- 18.8.0→18.8.4 的 90 个源码／72 个客户端文件无直接变化；保留 609 个英文键和 105 个严格模板，显示白名单及数据排除不放宽
+- 真实官方编译版分别验证 11 个导航页、请求抽屉/追踪、图表模式、390px 窄屏与键盘、同 origin 刷新/路由/服务重启偏好、异步 SSE 更新；合成多项目数据与译文键同名的模型/项目/工具/正文/错误保持原文，语言切换 API 数据不变
+- 合并既有 --smol／用户 preload，真实 Bun.serve 单监听器/原 URL；TMPDIR 与安装代码路径含空格仍加载，私有目录 0700、文件 0600。原 handler/API/SSE/方法/Host/Origin/CORS/费用确认保持；身份头不当授权，原跨 Host/Origin 允许行为不冒称拦截
+- 原官方 `/usr/bin/open` 真实调用 1 次、原 URL 新页 1 个、退出 0；语言按钮与切换可用，按 target 定向关闭。测试专属 opener 的真实转交与默认 opener 合同分开记录
+- 隔离默认安装、首次 link 加载、命名 Profile/XDG 稳定逻辑路径与物理迁移、新登录 shell 无 SHELL、doctor、JSON/summary、非 Stats、dry-run 和标准卸载均实测；卸载不依赖动态目录模块。真实 PTY Ctrl+C、wrapper SIGKILL、父进程消失及非法 port 异常均确认服务/私有目录回收
+
+### Verification and release boundaries
+
+- 干净主线候选 frozen install 与 `bun run check`：58 通过、0 失败；Settings UI/Schema 漂移 0，Commands 全量静态门禁 0 漂移，1774 次修改、3 轮 zh/en/恢复。现有本地 smoke-cli 原样临时副本明确传目标官方绝对二进制，退出 0；不将独立 Windows 草稿混入发布
+- 正常及人为断言失败清理预检先实测；每阶段记录 page/target、独占浏览器、PID/port/临时路径并先关页后停服。新 shell 的 path_helper 曾绕过专属 opener；立即停自有服务，按精确 origin、新 target/创建时间及保护基线回收该页，后续只限子进程修正 PATH。该失败不算默认 opener 门禁成功
+- 早期测试驱动将控制字符当粘贴而误提交提示，占位密钥返回 401；未使用真实凭据、未成功推理。停止该轮，不计通过证据；最终 18.8.4 原生交互改用真按键、严格核验提交缓冲及网络隔离
+- 最终提交 macOS/Linux CI、干净 GitHub 安装与所有本轮资源回收是发布前置条件；Windows PR #1 仍独立草稿，旧 18.6.1 证据不代表目标版本支持。升级后须重启 OMP；既有 Agent/Stats 不热注入
+
 ## [18.8.0] - 2026-10-08
 
 ### Baseline

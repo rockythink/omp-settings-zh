@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.8.0",
+  "sourceOmpVersion": "18.8.4",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -29,9 +29,9 @@ export const zhCN = {
       }
     },
     "title.icons": {
-      "sourceHash": "5ba7f80738aea5e057fb27c6fb557b691f0ba778332c4d2c489bba6006962aae",
+      "sourceHash": "12f17559bb8210b11510ed4c42ea7da2534b972864bb0b71f1187fedefdcb031",
       "label": "标题图标",
-      "description": "自动生成的会话标题在终端标题中显示的图标及其短代码",
+      "description": "新生成的会话标题开头显示的图标及其短代码",
       "options": {
         "nf+emoji": {
           "label": "Nerd Font + Emoji",
