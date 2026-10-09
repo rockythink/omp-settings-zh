@@ -2,6 +2,31 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.8.7] - 未发布候选
+
+### Settings
+
+- 官方 OMP 18.8.7，开发依赖 coding-agent／pi-utils 18.8.7，宿主范围 `>=18.8.7 <19`；Settings 410/410，新增 6 项并更新 title.icons、tools.xdev 两项说明及哈希。保留语义、默认值、value、group、动态 getter、保存与恢复
+- 配置专用模型压缩阈值无设置 UI；共享 effort／语速选项仅翻译 Settings 显示副本，实际 /effort 参数保持英文
+
+### Commands
+
+- 85 定义／93 名称别名／27 动态回调未变；新增、删除、静态英文、别名及 provider 合同变化为 0。仅更新来源，不重复改译
+- 实际裸 /、折叠 skill:／技能数量、plan／loop／effort 实时状态、中英往返与原 Tab／Enter Settings 执行已有编译版证据；静态门禁不替代动态核验
+
+### Stats
+
+- 官方 Stats 90 源码／72 客户端文件逐字未变，保留 609 键／105 严格模板；新共享模型目录与价格规则由官方计算
+- 实际 11 页、中英往返／刷新／同 origin 重启、请求抽屉／追踪／图表／窄屏／键盘、双项目、原 API 权限、单官方监听器与 SSE version 2→3／请求 5→6 通过；模型／提供商／工具／路径／正文／错误与 API 数据保留原文
+
+### Verification boundary
+
+- 不含 Windows 草稿的主线 frozen install／check：58 pass／0 fail，Schema 与 Commands 静态漂移 0，410/410、85/85／93 标识；原样 CLI 冒烟由真实官方绝对二进制执行
+- 默认及命名 Profile／实际启用 XDG 的稳定逻辑路径、物理包迁移后新进程、无 SHELL 账户 shell、直通／dry-run／卸载通过；source-linked doctor 3 ok／1 warning／0 errors，不冒称 GitHub 冷安装
+- 原 BUN_OPTIONS 与用户 preload、空格路径／TMPDIR、官方 Bun 1.4.2、SIGINT、父进程消失、wrapper SIGKILL、非法／占用端口及私有 preload 回收有实际证据
+- 早期 TUI 驱动误将计划参数提交为提示，合成占位密钥返回 401；未使用真实凭据、未成功推理，该轮不计验收。后续出站网络拒绝，不把失败轮伪称零模型请求
+- 默认 opener 门禁阻塞：无法获取既有浏览器页签身份，不启动无法安全回收的默认自动页；最终 macOS/Linux CI、干净 GitHub 安装与完整门禁通过前不发布。Windows PR #1 独立未合并草稿，不混入主线
+
 ## [18.8.4] - 2026-10-08
 
 ### Baseline

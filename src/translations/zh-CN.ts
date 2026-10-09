@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.8.4",
+  "sourceOmpVersion": "18.8.7",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -29,9 +29,9 @@ export const zhCN = {
       }
     },
     "title.icons": {
-      "sourceHash": "12f17559bb8210b11510ed4c42ea7da2534b972864bb0b71f1187fedefdcb031",
+      "sourceHash": "02f941604096c7628fcd21e408f7655bd019d7411de67c23c330b9412a393e93",
       "label": "标题图标",
-      "description": "新生成的会话标题开头显示的图标及其短代码",
+      "description": "新生成或通过 /rename 设置的会话标题开头显示的图标及其短代码",
       "options": {
         "nf+emoji": {
           "label": "Nerd Font + Emoji",
@@ -3137,9 +3137,9 @@ export const zhCN = {
       "description": "启用异步 Bash 命令和后台任务执行"
     },
     "tools.xdev": {
-      "sourceHash": "967e3918eb22bfdbe19aa8626b6592ee3414bd6d3bc7443f0e8e40d7d774340a",
+      "sourceHash": "aef279287594846271d548c41381f6c9a662df6427ebfe27ebde5790c1b921c7",
       "label": "`xd://` 工具",
-      "description": "将很少使用、可通过发现机制查找的工具挂载到 `xd://` 设备 URL，通过 `read`/`write` 操作，而不是在每次请求中发送其 schema。若会话的显式工具列表授予 `read` 但不包含 `write`，则通过仅供设备使用的 `write` 通道挂载设备（文件系统写入仍被拒绝）。关闭后，将所有已启用工具直接暴露在顶层"
+      "description": "将很少使用、可通过发现机制查找的工具挂载到 `xd://` 设备 URL，通过 `read`/`write` 操作，而不是在每次请求中发送其 schema。若会话的显式工具列表授予 `read` 但不包含 `write`，则通过仅供设备使用的 `write` 通道挂载设备（设备之外仅 `local://` 临时文件可写）。关闭后，将所有已启用工具直接暴露在顶层"
     },
     "tools.xdevDocs": {
       "sourceHash": "fc6e5da19feb97bd9399025f7981b9f82f188ba78c7584ca7067dce60849414f",
@@ -4694,6 +4694,116 @@ export const zhCN = {
       "sourceHash": "ab0ab9a8f42b5887eb815035a739eb7e9e522b4903b28eec8434f1c8d0b0a75b",
       "label": "子 Agent 完成度探测",
       "description": "通过类似 /btw 的缓存旁路请求，让工作中的子 Agent 估算任务完成度：分别在再过 2、5、10、30 分钟后询问，此后每小时询问一次。估算结果显示在 wait 和 task 视图的子 Agent 旁。仅询问交互式会话中由主 Agent 创建的子 Agent；print、RPC、ACP 和 SDK 运行不会探测"
+    },
+    "terminal.programStatus": {
+      "sourceHash": "02efeda1a333fb278c8af8068e2b342ea9d6c0063e435027217abc47c5f79b49",
+      "label": "程序状态（OSC 7501）",
+      "description": "通过 OSC 7501 报告 Agent 正在工作、等待用户、已完成或失败的状态，供终端页签指示器和 Agent 收件箱使用"
+    },
+    "bash.gitGuard": {
+      "sourceHash": "86f367253f6c8a95b715f6acaf02da583814e69861937abfad1af129aa1f2c6b",
+      "label": "Git 防护",
+      "description": "在 bash 工具中拒绝会丢弃或移动共享工作的 Git 命令：stash、reset --hard 或重置到另一提交，以及非合并或 rebase 冲突期间的 checkout/switch/restore"
+    },
+    "worktree.onStart": {
+      "sourceHash": "eb75fe3d4c29d8239f30e8668bdb130bb3d03544ba2b63b8db5580dfbdcec3e6",
+      "label": "启动时的工作树",
+      "description": "是否让新建交互式会话在新的关联工作树中启动",
+      "options": {
+        "off": {
+          "label": "关闭",
+          "description": "在当前检出目录中启动"
+        },
+        "ask": {
+          "label": "询问",
+          "description": "在会话启动时询问"
+        },
+        "create": {
+          "label": "创建",
+          "description": "始终在 `wt/*` 分支的新工作树中启动"
+        }
+      }
+    },
+    "worktree.onExit": {
+      "sourceHash": "adddacc716cb093ee9054d9cb2076e702a585ce88ea9ab140e4b96ee461e8462",
+      "label": "退出时的工作树",
+      "description": "退出时如何处理自 omp 启动以来创建的工作树（启动时或通过 `/wt` 创建）",
+      "options": {
+        "keep": {
+          "label": "保留",
+          "description": "保留工作树"
+        },
+        "ask": {
+          "label": "询问",
+          "description": "退出时询问"
+        },
+        "remove": {
+          "label": "移除",
+          "description": "移除干净的工作树；有未提交更改或新提交时询问。被 Git 忽略的文件（如 `.env`）也会被删除"
+        }
+      }
+    },
+    "tts.localSpeed": {
+      "sourceHash": "573ddc72a5a07effd82556de3c2f7bacc5310bf39d49d392e6d07df41e5b1df8",
+      "label": "本地 TTS 语速",
+      "description": "本地 TTS 后端（tts 工具、omp say）的语速。1 表示正常；限制在 0.5–2.5 范围内",
+      "options": {
+        "1": {
+          "label": "1×（正常）"
+        },
+        "2": {
+          "label": "2×"
+        },
+        "0.5": {
+          "label": "0.5×"
+        },
+        "0.75": {
+          "label": "0.75×"
+        },
+        "1.25": {
+          "label": "1.25×"
+        },
+        "1.5": {
+          "label": "1.5×"
+        },
+        "1.75": {
+          "label": "1.75×"
+        },
+        "2.5": {
+          "label": "2.5×"
+        }
+      }
+    },
+    "speech.speed": {
+      "sourceHash": "298796cf6aaf3647aaeaed789859e3a594753e7228a565ca28055c7bd34245ba",
+      "label": "语音朗读语速",
+      "description": "朗读助手输出时的语速。1 表示正常；限制在 0.5–2.5 范围内",
+      "options": {
+        "1": {
+          "label": "1×（正常）"
+        },
+        "2": {
+          "label": "2×"
+        },
+        "0.5": {
+          "label": "0.5×"
+        },
+        "0.75": {
+          "label": "0.75×"
+        },
+        "1.25": {
+          "label": "1.25×"
+        },
+        "1.5": {
+          "label": "1.5×"
+        },
+        "1.75": {
+          "label": "1.75×"
+        },
+        "2.5": {
+          "label": "2.5×"
+        }
+      }
     }
   }
 } satisfies LocalePack;

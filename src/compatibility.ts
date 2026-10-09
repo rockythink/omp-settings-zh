@@ -32,7 +32,7 @@ export type CompatibilityResult = { compatible: true } | { compatible: false; re
 export function checkHostCompatibility(host: HostMetadata): CompatibilityResult {
   const majorVersion = Number.parseInt(host.version.split(".", 1)[0] ?? "", 10);
   if (majorVersion !== 18) {
-    return { compatible: false, reason: "不支持 OMP " + host.version + "；当前适配目标为 OMP 18.8.4" };
+    return { compatible: false, reason: "不支持 OMP " + host.version + "；当前适配目标为 OMP 18.8.7" };
   }
   if (typeof host.schema !== "object" || host.schema === null || Array.isArray(host.schema)) {
     return { compatible: false, reason: "设置注册表结构无效" };

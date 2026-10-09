@@ -2,12 +2,14 @@
 
 ## 当前项目
 
-`omp-settings-zh` 当前版本为 18.8.4，开发与实际宿主基线为 OMP 18.8.4。按受支持 `omp update` 从真实 18.8.0 经 18.8.3 升级至 18.8.4；首次下载超时不计成功。本机原 GitHub 插件锁版本漂移已用同源安装修复，最终发布后还须同源升级并 doctor。Settings UI 404/404，相对 18.8.0 仅 title.icons 说明变化 1 项；配置专用 task.agentAccountPools 新增不纳入 UI。Commands 85 条定义、93 个标识、27 个动态回调及同步/异步/partial/取消/可选能力合同未变；18.8.4 模型解析另增加近期使用与提供商偏好优先，显式 provider/id 真实切换保持。Stats 90 个源码、72 个客户端文件直接不变，609 个键与 105 个严格模板保留。新官方编译版三部分交互、11 页 Stats/API/SSE、Bun 1.4.2 预加载与生命周期、命名 Profile 稳定包路径已验证。最终提交 macOS/Linux CI、干净 GitHub 安装与资源零残留仍是不可跳过的发布门禁；Windows PR #1 独立草稿，不随主线发布。
+`omp-settings-zh` 工作区候选为 18.8.7，目标及开发依赖为官方 OMP 18.8.7；最新已发布仍为 v18.8.4／main 100e420。2026-10-09 受支持 `omp update` 将真实 Mach-O 宿主 18.8.5 → 18.8.7。本机插件为 GitHub 来源 18.8.4，doctor 5 ok／0 warning／0 error，不是 local link。Settings UI 410/410，相对 18.8.4 新增 6 项并复核 title.icons、tools.xdev 两项说明与哈希；两项模型压缩阈值配置无 UI。Commands 85 定义／93 标识／27 动态回调及 provider 合同未变。Stats 90 源码／72 客户端文件逐字不变，609 键／105 严格模板保留；共享模型目录及价格规则变化交由官方计算。精确不含 Windows 草稿的主线候选 frozen install 与 check 为 58 pass／0 fail，Schema 和 Commands 静态漂移 0；真实官方 CLI 冒烟完成默认加载、doctor、原 Stats JSON／同源网页、SIGINT 零退出、dry-run／卸载与端口关闭。早期 TUI 驱动错误提交计划提示，占位密钥返回 401；失败轮不计验收，后续改用出站网络拒绝与逐键提交核对。完整三部分交互、默认 opener、Profile／生命周期、最终提交 macOS/Linux CI、冷 GitHub 安装及资源回收仍为门禁，未通过不得发布。Windows PR #1 仍为 OPEN／draft／CONFLICTING，不随主线发布。
+
+本轮真实编译版证据：原生设置搜索、新增 6 项、autoResume 原生编辑及同进程中英往返；思考选项中文与 /effort 参数英文隔离；裸 /、折叠 skill:、技能数量、plan／loop／effort 实时状态与 Tab／Enter 原生 Settings 执行。Stats 11 页、中英往返、请求抽屉／追踪／图表／窄屏／键盘、同 origin 重启保留、双项目数据、原 API 权限、SSE version 2→3 及真实请求数 5→6 已验证。默认及命名 Profile／实际启用 XDG 下迁移物理包位置后新编译进程仍加载稳定逻辑路径；source-linked doctor 为 3 ok／1 warning／0 errors，缺 package_manifest 的警告不掩盖。父进程消失、wrapper SIGKILL、非法／占用端口与私有 preload 清理已验证。系统默认 opener 未启动：原生观测无法取得既有浏览器页签身份，不能安全认领并关闭其自动页面，故该门禁阻塞，不能发布。
 
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前汉化范围：404 项含 UI 元数据的设置名称、说明、风险警告和静态选项；本轮只更新 title.icons 说明与原文哈希。保留默认值、类型、选项 value、group、凭据标记、动态 getter、保存与可逆恢复语义。
+- 当前汉化范围：410 项含 UI 元数据的设置名称、说明、风险警告和静态选项；本轮新增 6 项，更新 title.icons、tools.xdev 两项说明与原文哈希。保留默认值、类型、选项 value、group、凭据标记、动态 getter、保存与可逆恢复语义。
 - 命令补全汉化：85 个内置斜杠命令、93 个命令名/别名的顶层补全说明、实时状态与技能数量；通过公共 addAutocompleteProvider 包装显示结果，不改命令注册表、命令名、参数提示、匹配排序、插入或执行。参数／文件补全、第三方描述和未知原文保持原样，switch / loop / effort 保留动态宿主键位。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
