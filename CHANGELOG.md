@@ -25,7 +25,7 @@
 - 默认及命名 Profile／实际启用 XDG 的稳定逻辑路径、物理包迁移后新进程、无 SHELL 账户 shell、直通／dry-run／卸载通过；source-linked doctor 3 ok／1 warning／0 errors，不冒称 GitHub 冷安装
 - 原 BUN_OPTIONS 与用户 preload、空格路径／TMPDIR、官方 Bun 1.4.2、SIGINT、父进程消失、wrapper SIGKILL、非法／占用端口及私有 preload 回收有实际证据
 - 早期 TUI 驱动误将计划参数提交为提示，合成占位密钥返回 401；未使用真实凭据、未成功推理，该轮不计验收。后续出站网络拒绝，不把失败轮伪称零模型请求
-- 默认 opener 门禁阻塞：无法获取既有浏览器页签身份，不启动无法安全回收的默认自动页；最终 macOS/Linux CI、干净 GitHub 安装与完整门禁通过前不发布。Windows PR #1 独立未合并草稿，不混入主线
+- 默认 opener 门禁阻塞：无法取得既有浏览器页签身份，未启动无法安全回收的默认自动页面，不发布。适配提交 df1dcea 的 macOS/Linux CI [37954104302](https://github.com/rockythink/omp-settings-zh/actions/runs/37954104302) 成功；隔离 GitHub 冷安装／自动启动器／doctor 4 ok 0 warning 0 error／Stats 中英及刷新／原 JSON／单监听器／退出／dry-run 与卸载均通过（测试专属 opener，不替代默认合同）。本机同 GitHub 来源更新为 18.8.7，doctor 5 ok 0 warning 0 error；Windows PR #1 独立未合并草稿。
 
 ## [18.8.4] - 2026-10-08
 
