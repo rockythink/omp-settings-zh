@@ -2,9 +2,9 @@
 
 ## 当前项目
 
-`omp-settings-zh` 候选为 18.8.7，目标／开发依赖／真实官方宿主均为 OMP 18.8.7；最新已发布仍为 v18.8.4（发布提交 100e420）。受支持 update 将真实宿主 18.8.5 → 18.8.7。本机已按同一 GitHub 来源 force install 更新至候选 18.8.7，doctor 5 ok／0 warning／0 error；pi-xcode-mcp 0.1.0 保持，不是 local link。Settings 410/410（新增 6、说明及哈希变化 2），Commands 85 定义／93 标识／27 动态回调不变，Stats 609 键／105 严格模板及客户端源码不变。精确主线 check 58 pass／0 fail，Schema／Commands 静态漂移 0。适配提交 df1dcea 的 macOS/Linux CI 37954104302 成功；隔离 GitHub 冷安装 18.8.7 自动接入启动器，doctor 4 ok／0 warning／0 error，真实官方 Stats 中文／English／刷新恢复、JSON 原值、单监听器、SIGINT 零退出、dry-run／正常卸载及端口回收通过。默认 opener 身份／安全回收门禁阻塞，未发布；Windows PR #1 仍为 OPEN／draft／CONFLICTING。早期 TUI 驱动误提交计划提示，占位密钥返回 401，不计验收；后续使用出站网络拒绝，不把整轮冒称零模型请求。
+`omp-settings-zh` 候选为 18.8.8，目标／开发依赖／真实官方宿主均为 OMP 18.8.8（内嵌 Bun 1.4.3）；最新已发布仍为 v18.8.4（发布提交 100e420）。受支持 update 将真实宿主 18.8.5 → 18.8.7 → 18.8.8。Settings 410/410（相对 18.8.4 新增 6、累计原文变化 3，最新为 tui.vimModeDisplay 的 Text 选项新增 REPLACE），Commands 85 定义／93 标识／27 动态回调不变（官方新增 /jobs kill 与 /dump anon 参数层），Stats 609 键／105 严格模板及客户端源码不变。18.8.8 精确 check 58 pass／0 fail，Schema／Commands 静态漂移 0。
 
-本轮真实编译版证据：原生设置搜索、新增 6 项、autoResume 原生编辑及同进程中英往返；思考选项中文与 /effort 参数英文隔离；裸 /、折叠 skill:、技能数量、plan／loop／effort 实时状态与 Tab／Enter 原生 Settings 执行。Stats 11 页、中英往返、请求抽屉／追踪／图表／窄屏／键盘、同 origin 重启保留、双项目数据、原 API 权限、SSE version 2→3 及真实请求数 5→6 已验证。默认及命名 Profile／实际启用 XDG 下迁移物理包位置后新编译进程仍加载稳定逻辑路径；source-linked doctor 为 3 ok／1 warning／0 errors，缺 package_manifest 的警告不掩盖。父进程消失、wrapper SIGKILL、非法／占用端口与私有 preload 清理已验证。系统默认 opener 未启动：原生观测无法取得既有浏览器页签身份，不能安全认领并关闭其自动页面，故该门禁阻塞，不能发布。
+本轮 18.8.8 真实编译版证据：网络禁用沙箱内完成 Settings 中文搜索、Vim 布尔与指示器（REPLACE）原生编辑/恢复、中英往返；裸 /、skill 折叠、plan／loop／effort 实时状态、Tab／Enter、文件与新参数补全边界。Stats 11 页导航、图表三模式数值不变、请求抽屉与追踪原始数据、窄屏导航、同 origin 重启语言保留、SSE 2→3 增量、包装与原始官方服务逐项等价（身份头/405/403/无 ACAO）、单监听器、终端 Ctrl+C、父进程消失、SIGKILL 与私有 preload 回收、非法/占用端口官方失败、JSON/summary 等价、默认 opener 一次 URL 定向回收。命名 Profile/XDG 物理迁移后冷启动加载稳定逻辑路径，dry-run 与标准卸载通过。两轮终端驱动 Vim 误提交 401 不计通过。
 
 ## 已确认的产品边界
 

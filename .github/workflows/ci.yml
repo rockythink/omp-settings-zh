@@ -23,3 +23,24 @@ jobs:
           bun-version: 1.4.0
       - run: bun install --frozen-lockfile
       - run: bun run check
+      - name: Verify the official compiled macOS/Linux host
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(bun -p 'JSON.parse(await Bun.file("package.json").text()).devDependencies["@oh-my-pi/pi-coding-agent"]')
+          if [[ "$RUNNER_OS" == macOS ]]; then
+            arch=$(uname -m)
+            [[ "$arch" == arm64 ]] && asset=omp-darwin-arm64 || asset=omp-darwin-x64
+            export OMP_SMOKE_BROWSER="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+          else
+            asset=omp-linux-x64
+            export OMP_SMOKE_BROWSER=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium)
+          fi
+          export OMP_NATIVE_ASSET="$asset" OMP_NATIVE_BINARY="$RUNNER_TEMP/official-omp" OMP_NATIVE_SUMS="$RUNNER_TEMP/SHA256SUMS.txt"
+          trap 'rm -f -- "$OMP_NATIVE_BINARY" "$OMP_NATIVE_SUMS"' EXIT
+          base="https://github.com/can1357/oh-my-pi/releases/download/v$version"
+          curl --fail --location "$base/$asset" --output "$OMP_NATIVE_BINARY"
+          curl --fail --location "$base/SHA256SUMS.txt" --output "$OMP_NATIVE_SUMS"
+          bun -e 'const lines=(await Bun.file(process.env.OMP_NATIVE_SUMS).text()).trim().split("\n");const row=lines.find(line=>line.trim().split(/\s+/).at(-1)?.replace(/^\*/, "")===process.env.OMP_NATIVE_ASSET);const expected=row?.trim().split(/\s+/)[0];const actual=new Bun.CryptoHasher("sha256").update(await Bun.file(process.env.OMP_NATIVE_BINARY).arrayBuffer()).digest("hex");if(!expected||expected!==actual)throw new Error("Official OMP checksum mismatch");console.log("Verified official",process.env.OMP_NATIVE_ASSET,actual);'
+          chmod +x "$OMP_NATIVE_BINARY"
+          bun run scripts/smoke-cli.ts "$OMP_NATIVE_BINARY"

@@ -2,11 +2,11 @@
 
 ## 当前状态
 
-`src/translations/zh-CN.ts` 依据 OMP 18.8.7 官方英文元数据独立复核；相对 18.8.4 新增 6 项 UI，并复核 title.icons 与 tools.xdev 两项说明及原文哈希，其余译文保留。配置专用新增路径不纳入 UI 覆盖。未复制第三方中文分支；动态模板只匹配 getter 显示键位，不含功能实现。
+`src/translations/zh-CN.ts` 依据 OMP 18.8.8 官方英文元数据独立复核；相对 18.8.4 新增 6 项 UI，累计复核 title.icons、tools.xdev 与 tui.vimModeDisplay（Text 选项新增 REPLACE）三项说明及原文哈希，其余译文保留。配置专用新增路径不纳入 UI 覆盖。未复制第三方中文分支；动态模板只匹配 getter 显示键位，不含功能实现。
 
-`src/translations/slash-commands.ts` 保存 OMP 18.8.7 官方 85 条英文说明及 93 个命令名／别名；相对 18.8.4 静态原文、别名、27 个动态回调及公共 provider 接口均未变。中文独立生成，保留真实键位、模型、路径和目标数据，不复制命令实现；静态合同不替代动态运行与真实编译版交互。
+`src/translations/slash-commands.ts` 保存 OMP 18.8.8 官方 85 条英文说明及 93 个命令名／别名；相对 18.8.4 静态原文、别名、27 个动态回调及公共 provider 接口均未变，官方 /jobs kill 与 /dump anon 属参数执行层不纳入译文。中文独立生成，保留真实键位、模型、路径和目标数据，不复制命令实现；静态合同不替代动态运行与真实编译版交互。
 
-`src/stats/translations.ts` 的英文键与模板依据官方 `@oh-my-pi/omp-stats@18.8.7` Web 源码独立复核：相对 18.8.4，90 个源码／72 个客户端文件逐字不变，609 个键与 105 个严格模板保留。中文独立生成，不复制第三方中文或业务实现。18.8.7 是审阅基线，不是替代运行时；实际官方编译 CLI 同源 Bun preload 注入显示脚本，不重新分发 Stats 实现或二进制。
+`src/stats/translations.ts` 的英文键与模板依据官方 `@oh-my-pi/omp-stats@18.8.8` Web 源码独立复核：相对 18.8.4，90 个源码／72 个客户端文件逐字不变，609 个键与 105 个严格模板保留。中文独立生成，不复制第三方中文或业务实现。18.8.8 是审阅基线，不是替代运行时；实际官方编译 CLI 同源 Bun preload 注入显示脚本，不重新分发 Stats 实现或二进制。
 
 ## Oh My Pi
 
@@ -15,7 +15,7 @@
 - Project: Oh My Pi
 - Repository: https://github.com/can1357/oh-my-pi
 - License: MIT
-- Baseline reviewed: v18.8.7 (f261ed9faf16b61880b544f599876bface4ded0d)
+- Baseline reviewed: v18.8.8 (1ca13863a82825bdce02908b3db9713e9b084290)
 - Copyright notices in the reviewed upstream license:
   - Copyright (c) 2025 Mario Zechner
   - Copyright (c) 2025-2026 Can Bölük

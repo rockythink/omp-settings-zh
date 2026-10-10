@@ -1,6 +1,6 @@
 {
   "name": "omp-settings-zh",
-  "version": "18.8.7",
+  "version": "18.8.8",
   "description": "Chinese settings and slash-command autocomplete localization, plus a bilingual Stats dashboard for official Oh My Pi — no fork or binary patch.",
   "type": "module",
   "license": "MIT",
@@ -44,13 +44,14 @@
     ]
   },
   "peerDependencies": {
-    "@oh-my-pi/pi-coding-agent": ">=18.8.7 <19",
-    "@oh-my-pi/pi-utils": ">=18.8.7 <19"
+    "@oh-my-pi/pi-coding-agent": ">=18.8.8 <19",
+    "@oh-my-pi/pi-utils": ">=18.8.8 <19"
   },
   "devDependencies": {
-    "@oh-my-pi/pi-coding-agent": "18.8.7",
-    "@oh-my-pi/pi-utils": "18.8.7",
+    "@oh-my-pi/pi-coding-agent": "18.8.8",
+    "@oh-my-pi/pi-utils": "18.8.8",
     "@types/bun": "latest",
+    "puppeteer-core": "25.3.0",
     "typescript": "5.9.2"
   },
   "engines": {

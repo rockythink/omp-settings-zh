@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现版本：18.8.7（未发布候选）
-- 目标验证基线：OMP 18.8.7；完整发布门禁尚未完成
+- 实现版本：18.8.8（未发布候选）
+- 目标验证基线：OMP 18.8.8（内嵌 Bun 1.4.3）；完整发布门禁尚未完成
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -66,7 +66,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存 OMP 18.8.7 的 85 条官方英文、93 个命令名／别名。相对 18.8.4 静态原文、别名、27 个动态状态回调、同步／异步／partial／AbortSignal 及可选能力接口均未变；switch 仍使用 session.effectiveServiceTier(model)，effort 取当前 selector 与宿主键位。官方模型预览新增按模型压缩阈值与 settings.revision 缓存失效，预览硬编码英文不纳入补全译文。原 provider 继续负责匹配、排序、参数、插入和执行；动态源码审查、静态覆盖与编译版交互是独立证据。
+`src/translations/slash-commands.ts` 保存 OMP 18.8.8 的 85 条官方英文、93 个命令名／别名。相对 18.8.4 静态原文、别名、27 个动态状态回调、同步／异步／partial／AbortSignal 及可选能力接口均未变；switch 仍使用 session.effectiveServiceTier(model)，effort 取当前 selector 与宿主键位。官方 18.8.8 为 /jobs 增加 kill <id>|all、/dump 增加 anon，均属参数与执行层，显示层不改译。原 provider 继续负责匹配、排…
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -84,6 +84,7 @@
 - `/settings-language` 与网页语言独立；会话 `/stats` 保留官方行为。同数据目录下 `/stats` 与 `omp stats` 均扫描多个项目和会话，区别在独立 CLI 与会话绑定的 judge / 费用上下文，不是统计范围。
 - 18.8.0 独立源码审查：query-store 及 useSyncExternalStore 替换全局重绘，最后等待者离开时取消请求，ETag 304 复用对象；追踪 canvas 新增空的 aria-hidden hover／selection overlay，既有 UI 类名、文字与数据身份不变。服务新增 serviceTier／premiumRequests 聚合及 trace 指纹缓存，原官方 API／SSE 原样复用，不在插件复制计算。
 - 18.8.7 独立审查：相对 18.8.4 的 Stats 90 个源码、72 个客户端文件逐字不变，609 个键与 105 个严格模板保留。官方共享目录新增两个 CoralBricks 模型，共同 bundled cost 不变，但 Cursor／Copilot Haiku 5.5 价格兼容规则有变化；不复制计算。真实编译 CLI 的全页、API／SSE、数据边界、单监听器及生命周期须另验，源码相同不代表发布通过。
+- 18.8.8 独立审查：相对 18.8.7 Stats 源码与客户端逐字不变；npm 与 GitHub 标签相互一致。官方共享目录新增 connectionBoundNativeHistory 兼容字段，formatDuration 边界取整与 Devin/Cursor 默认模型解析变化由官方运行时计算；显示层不复制。真实编译 CLI 的全页、API／SSE、数据边界、单监听器及生命周期须另验，源码相同不代表发布通过。
 
 ## 6. 检查与真实验证
 
@@ -99,7 +100,7 @@
 
 ## 7. 发布边界
 
-从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增插件补丁号并注明实际宿主，已用编号不得复用。当前工作区候选为 18.8.7，开发依赖锁定 18.8.7，宿主范围为 `>=18.8.7 <19`；最新已发布为 18.8.4。同主版本不保证内部结构稳定；Settings 保留预检，Commands 核验原文／别名、动态生成逻辑与公共补全接口，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼容。
+从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立功能或修复递增插件补丁号并注明实际宿主，已用编号不得复用。当前工作区候选为 18.8.8，开发依赖锁定 18.8.8，宿主范围为 `>=18.8.8 <19`；最新已发布为 18.8.4。同主版本不保证内部结构稳定；Settings 保留预检，Commands 核验原文／别名、动态生成逻辑与公共补全接口，Stats 按真实 CLI 与浏览器验证，不以固定依赖通过冒充宿主兼…
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

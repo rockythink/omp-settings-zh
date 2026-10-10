@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.8.7",
+  "sourceOmpVersion": "18.8.8",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -4224,13 +4224,13 @@ export const zhCN = {
       "descriptionSource": "Modal prompt editing. {escape} leaves Insert mode; Normal mode has hjkl, 0, $, ^, w, b, e, gg, G, counts, x/D/C, dd/yy, p and u; operators take motions or text objects (diw, ca(, dap); v/V start a Visual selection that y copies and d deletes"
     },
     "tui.vimModeDisplay": {
-      "sourceHash": "9e287fe697790e65d7be3dfc6989cc52196cbb31654d01c350f70612f0dce4a6",
+      "sourceHash": "51448aa4314628b0c112961938de31a8854d1285c63d3ed26488d70a17a5ebca",
       "label": "Vim 模式指示器",
       "description": "当前 Vim 模式在状态栏中的显示方式",
       "options": {
         "text": {
           "label": "文本",
-          "description": "完整模式名称：NORMAL、INSERT、VISUAL、V-LINE"
+          "description": "完整模式名称：NORMAL、INSERT、VISUAL、V-LINE、REPLACE"
         },
         "icon": {
           "label": "图标",
