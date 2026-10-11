@@ -18,12 +18,12 @@
 
 ## 当前版本
 
-- 工作区候选：`18.8.8`（目标官方宿主 OMP 18.8.8；未发布，完整发布门禁尚未完成）
-- 最新已发布：`18.8.4`；本机按受支持 `omp update` 从真实 18.8.5 升至 18.8.7，维护期间再升至 18.8.8（内嵌 Bun 1.4.3）。旧进程不会热加载新宿主或插件
-- 翻译覆盖：410/410 项设置 UI 元数据；相对 18.8.4 新增 6，累计原文变化 3（title.icons、tools.xdev、tui.vimModeDisplay 的 Text 选项新增 REPLACE）；配置专用 `compaction.modelThresholds` 与 `compaction.modelThresholdsEnabled` 不计入 UI 覆盖
+- 当前源码版本：`18.9.1`；实际发布状态以 [GitHub Releases](https://github.com/rockythink/omp-settings-zh/releases) 和对应 tag 为准，不以候选文档代替发布证据
+- 目标官方宿主：OMP 18.9.1（内嵌 Bun 1.4.3）；维护开始最新 Release 为 v18.8.8，真实宿主按受支持 `omp update` 从 18.8.8 升至 18.9.1。旧进程不会热加载新宿主或插件
+- Settings：413/413 项 UI 元数据，Schema 漂移 0；相对 18.8.8 新增 3 项（composer.predictions、retry.fallbackOn、已有 contextFiles.extra 新增 UI），复核 4 项原文变化。预测默认关闭；开启后每轮追加一次计费请求，验收不启用
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
-- 命令补全：85 个内置斜杠命令、93 个命令名/别名；相对 18.8.4 静态原文、别名、27 个动态回调与 provider 合同均未变，既有译文保留。官方 18.8.8 新增 `/jobs kill <id>|all` 与 `/dump anon` 参数，参数提示与执行保持官方英文。动态状态与编译版交互不由静态门禁证明
-- Stats：目标运行时为实际官方 OMP 18.8.8 编译 CLI，不是 npm Stats 副本；18.8.4→18.8.8 的 90 个源码／72 个客户端文件无直接变化，609 个英文键／105 个严格模板保留。共享模型目录和价格规则有上游变化，由官方运行时计算，显示层不复制
+- Commands：85 定义、93 个命令名/别名、27 个动态回调；相对 18.8.8 无新增/删除/别名变化，仅更新 /fork 静态说明。原生可选 pane/window/tab 参数提示保留英文；动态回调与同步/异步/partial/AbortSignal/可选能力接口未变
+- Stats：实际官方 OMP 18.9.1 编译 CLI，不是 npm Stats 副本；原有 72 个客户端文件逐字未变，仅新增 favicon，评判问题迁移到官方 JSON 资源。609 键/105 严格模板、UI 白名单和数据排除不变；计算、API、SSE、认证及费用确认仍由官方实现
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -45,7 +45,8 @@
 | 18.6.7 | 18.6.3 | >=18.6.3 <19 |
 | 18.8.0 | 18.8.0 | >=18.8.0 <19 |
 | 18.8.4 | 18.8.4 | >=18.8.4 <19 |
-| 18.8.8（未发布候选） | 18.8.8（验收未完成） | >=18.8.8 <19 |
+| 18.8.8 | 18.8.8 | >=18.8.8 <19 |
+| 18.9.1 | 18.9.1 | >=18.9.1 <19 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -57,7 +58,7 @@ Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、�
 
 ## 安装
 
-要求官方 OMP `>=18.6.3 <19`：
+要求官方 OMP `>=18.9.1 <19`；发布主线仅 macOS/Linux，Windows PR #1 为独立未合并草稿：
 
 ```sh
 omp plugin install github:rockythink/omp-settings-zh

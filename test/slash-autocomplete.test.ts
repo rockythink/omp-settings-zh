@@ -137,6 +137,97 @@ test("official synchronous bare-slash and collapsed skill namespace match async 
   }
 });
 
+test("official fork optional subcommands keep bare submission, English hints and insertion unchanged", async () => {
+  const command = buildTuiBuiltinSlashCommands({} as TuiSlashCommandRuntime).find(command => command.name === "fork")!;
+
+  const native = new CombinedAutocompleteProvider([command]);
+  let chinese = true;
+  const provider = localizeSlashAutocomplete(native, () => chinese);
+  const text = "/fork";
+  const original = native.trySyncSlashCompletion(text)!;
+  const localized = provider.trySyncSlashCompletion!(text)!;
+  expect(localized.items[0]!.description).not.toBe(original.items[0]!.description);
+  expect(await provider.getSuggestions([text], 0, text.length)).toEqual(localized);
+  expect(provider.applyCompletion([text], 0, text.length, localized.items[0]!, localized.prefix))
+    .toEqual(native.applyCompletion([text], 0, text.length, original.items[0]!, original.prefix));
+  expect(command.getArgumentCompletions!("")).toBeNull();
+  expect(command.getInlineHint!("")).toBe("[pane|window|tab]");
+  const pane = (await command.getArgumentCompletions!("pa"))![0]!;
+  expect(pane.value).toBe("pane ");
+  expect(pane.hint).toBe("ne");
+  expect((await command.getArgumentCompletions!("window"))![0]!.hint).toBeUndefined();
+  for (const language of [true, false]) {
+    chinese = language;
+    for (const args of ["", "pa", "pane", "w", "window", "t", "tab", "pane ", "unknown"]) {
+      const input = text + " " + args;
+      const originalArgs = await native.getSuggestions([input], 0, input.length);
+      const localizedArgs = await provider.getSuggestions([input], 0, input.length);
+      expect(localizedArgs).toEqual(originalArgs);
+      expect(provider.trySyncSlashCompletion!(input)).toBeNull();
+      expect(provider.getInlineHint!([input], 0, input.length)).toBe(native.getInlineHint([input], 0, input.length));
+      for (let index = 0; index < (originalArgs?.items.length ?? 0); index++) {
+        expect(provider.applyCompletion([input], 0, input.length, localizedArgs!.items[index]!, localizedArgs!.prefix))
+          .toEqual(native.applyCompletion([input], 0, input.length, originalArgs!.items[index]!, originalArgs!.prefix));
+      }
+    }
+  }
+  expect(provider.trySyncSlashCompletion!(text)).toEqual(original);
+});
+
+test("official required subcommand remainder hints stay literal in both languages", async () => {
+  const command = buildTuiBuiltinSlashCommands({} as TuiSlashCommandRuntime).find(command => command.name === "jobs")!;
+  const native = new CombinedAutocompleteProvider([command]);
+  let chinese = true;
+  const provider = localizeSlashAutocomplete(native, () => chinese);
+  for (const language of [true, false]) {
+    chinese = language;
+    for (const args of ["", "k", "kill", "kill "]) {
+      const input = "/jobs " + args;
+      const original = await native.getSuggestions([input], 0, input.length);
+      expect(await provider.getSuggestions([input], 0, input.length)).toEqual(original);
+      expect(provider.getInlineHint!([input], 0, input.length)).toBe(native.getInlineHint([input], 0, input.length));
+      if (args === "k") expect(original!.items[0]!.hint).toBe("ill <id>|all");
+      if (args === "kill") expect(original!.items[0]!.hint).toBe(" <id>|all");
+    }
+  }
+});
+
+test("official effort arguments follow live model selectors and retain current markers and literal values", async () => {
+  const settings = Settings.isolated();
+  let levels = ["off", "low", "high"];
+  let effort = "high";
+  const session = { configuredThinkingLevel: () => effort, getAvailableEffortSelectors: () => levels };
+  const command = buildTuiBuiltinSlashCommands({ ctx: { settings, session } } as unknown as TuiSlashCommandRuntime)
+    .find(command => command.name === "effort")!;
+  const native = new CombinedAutocompleteProvider([command]);
+  let chinese = true;
+  const provider = localizeSlashAutocomplete(native, () => chinese);
+  for (const language of [true, false]) {
+    chinese = language;
+    levels = ["off", "low", "high"]; effort = "high";
+    for (const args of ["", "o", "off", "h", "high", "x"]) {
+      const input = "/effort " + args;
+      const original = await native.getSuggestions([input], 0, input.length);
+      const result = await provider.getSuggestions([input], 0, input.length);
+      expect(result).toEqual(original);
+      expect(provider.getInlineHint!([input], 0, input.length)).toBe(native.getInlineHint([input], 0, input.length));
+      for (let index = 0; index < (original?.items.length ?? 0); index++) {
+        expect(provider.applyCompletion([input], 0, input.length, result!.items[index]!, result!.prefix))
+          .toEqual(native.applyCompletion([input], 0, input.length, original!.items[index]!, original!.prefix));
+      }
+      if (args === "") {
+        expect(result!.items.map(item => item.value)).toEqual(["off ", "low ", "high "]);
+        expect(result!.items.find(item => item.value === "high ")!.description).toEndWith(" (current)");
+      }
+    }
+    levels = ["low"]; effort = "low";
+    expect((await provider.getSuggestions(["/effort "], 0, 8))!.items.map(item => item.value)).toEqual(["low "]);
+    expect(provider.getInlineHint!(["/effort h"], 0, 9)).toBeNull();
+    levels = [];
+    expect(command.getArgumentCompletions!("")).toBeNull();
+  }
+});
+
 test("official prewalk cancellation copy translates only the command, preserving new off arguments and insertion", async () => {
   const command = buildTuiBuiltinSlashCommands({} as TuiSlashCommandRuntime).find(command => command.name === "prewalk")!;
   const native = new CombinedAutocompleteProvider([command]);

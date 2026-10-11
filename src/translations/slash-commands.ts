@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.8.8. */
+/* Display-only translations; source-review baseline OMP 18.9.1. */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -244,8 +244,8 @@ export const slashCommandTranslations = [
   },
   {
     "name": "fork",
-    "en": "Create a new fork from a previous message",
-    "zh": "从先前的消息创建新分叉"
+    "en": "Fork this session, or open it in a multiplexer pane or window",
+    "zh": "分叉当前会话，或在终端复用器的窗格或窗口中打开分叉"
   },
   {
     "name": "tree",

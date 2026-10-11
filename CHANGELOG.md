@@ -2,8 +2,37 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.9.1] - 2026-10-11
 
-## [18.8.8] - 未发布候选
+### Baseline
+
+- 官方宿主按受支持 update 从真实 18.8.8 升至 18.9.1（内嵌 Bun 1.4.3）；coding-agent/pi-utils 开发依赖锁定 18.9.1，宿主范围 `>=18.9.1 <19`。维护开始远端 main 和最新 Release 已为 18.8.8；保护本地独立 Windows 草稿，在干净主线 worktree 适配
+
+### Settings
+
+- 413/413，新增 composer.predictions、retry.fallbackOn 与已有 contextFiles.extra 的 JSON UI；复核 tui.autoGraph、ask.timeout、codexResets.autoRedeem、claudeResets.autoRedeem 四项英文变化及哈希。旧译文、配置语义、类型/默认值/value/group/凭据标记、保存及可逆恢复保持
+- 预测开启后追加计费请求，译文明确提示；实际验收保持默认关闭。官方编译版完成中文搜索、布尔与 JSON 原生保存/恢复、枚举选项、同进程 en/zh；共享原文隔离，/effort 参数仍为英文
+
+### Commands
+
+- 85 定义/93 名称别名/27 动态回调，无新增/删除/别名变化，仅 /fork 静态说明改为会话分叉或终端复用器窗格/窗口，独立补译；pane/window/tab 可选参数及 usage 保持官方英文
+- 动态回调与公共同步/异步/partial/AbortSignal/可选能力接口未变，显示层不放宽静态原文门禁。真实裸 /、2 项技能折叠/Tab 展开、第三方/文件原文、model 与 q 别名、plan/loop/model/fast/effort 状态、Tab/Enter 原生 Settings 执行与 en/zh 往返通过；禁止出站网络的新会话 agentStarts/providerRequests 均为 0
+
+### Stats
+
+- 官方 npm 源码独立线索为 18.9.1，实际运行仍为已安装的官方编译 CLI。既有 72 个客户端文件逐字未变，仅新增 favicon；评判问题迁移到官方 JSON，问题内容不变。609 英文键/105 严格模板、白名单/数据排除与原计算/API/SSE/认证/费用确认不变，不重复改译
+- 11 页中英、刷新/路由/同 origin 重启、请求/Span 抽屉原始数据、三图表模式、390px 与键盘、合成双项目、真实 SSE 3→4 请求（430→450 Token、$0.43→$0.44）通过。JSON/summary 与原 CLI 相同，不按 cwd 缩小范围；会话 /stats 保持官方入口及相同数据目录统计范围
+- 原/包装服务 8 种 API/静态合同逐项相同：跨 Host/Origin 及静态 POST 原本允许，OPTIONS 200 但无 CORS 授权，judge GET 405/无操作头 POST 403；身份头不是授权，不冒称额外拦截
+- 实际编译 Bun preload 保留 --smol/用户 preload，私有目录/文件 0700/0600；插件路径与 TMPDIR 含空格仍加载。单官方监听器、原 URL、真实 PTY VINTR Ctrl+C 退出 0、父进程消失/SIGKILL/非法及占用端口均回收
+
+### Verification and release boundaries
+
+- frozen install/check：62 pass/0 fail、2333 次断言，Settings/Schema 0 漂移、Commands 85/85 与 93 标识/0 漂移，三轮显示冒烟 1817 项变更/0 网络请求；真实官方绝对二进制 scripts/smoke-cli.ts 通过正常与断言失败清理
+- 默认 /usr/bin/open 正常及人为失败分支各一次真实 URL/新 target 并定向关闭，保留全部既有页面；测试子进程专属 opener 实际转交受管页面，不作为默认合同替代。命名 Profile/XDG、物理安装目录迁移、新进程、缺 SHELL 的账户登录 shell、dry-run 与无动态目录导入标准卸载通过
+- 一次早期 TUI 驱动误按 Ctrl+L，live call 在缺少 OAuth 凭据时失败；不计通过。随后新启动禁止出站网络的会话完成零模型请求验收。未点击任何付费评估继续按钮，未使用或上传真实会话/凭据
+- 发布仍以最终提交 macOS/Linux CI、干净 GitHub 安装/doctor/Stats/卸载和本轮资源清单零残留为门禁，不凭文档宣称已发布；Windows PR #1 独立未合并草稿，不属支持范围
+
+## [18.8.8] - 2026-10-10
 
 ### Baseline
 

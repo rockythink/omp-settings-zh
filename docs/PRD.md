@@ -1,10 +1,10 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.8.8 未发布候选（完整三部分编译版已通过本地实测；最终提交 macOS/Linux CI、冷 GitHub 安装与资源回收尚未全部通过）
-- 基线版本：OMP 18.8.8
+- 状态：18.9.1 源码与真实 macOS 编译版验收；发布状态以对应 tag/Release、最终 macOS/Linux CI 和干净安装/资源门禁为准
+- 基线版本：OMP 18.9.1（实际编译 Bun 1.4.3）
 - 文档日期：2026-10-11
 
-相对 18.8.4：Settings UI 覆盖 410/410，新增 6、累计原文变化 3（title.icons、tools.xdev、tui.vimModeDisplay 新增 REPLACE）；compaction.modelThresholds 与 compaction.modelThresholdsEnabled 为配置专用，不纳入覆盖。Commands 85/85、93 个标识，静态原文／别名和 27 个动态回调未变，官方 18.8.8 另增 /jobs kill 与 /dump anon 参数层；Stats 90 个源码／72 个客户端文件无直接变化，保留 609 个键与 105 个严格模板。静态门禁与 CLI 冒烟已通过；各部分完整验收及命名 Profile 稳定包路径不能由这些结果替代。
+相对 18.8.8：Settings UI 413/413，新增 3 项、原文变化 4 项；新增预测默认关闭，开启会追加计费请求。Commands 85/85、93 个标识、27 个动态回调不变，仅 /fork 静态说明变化，pane/window/tab 参数保持英文；同步/异步/partial/AbortSignal/可选能力接口未变。Stats 92 个源码/73 个客户端文件，既有 72 个客户端逐字不变，仅 favicon 与评判问题 JSON 资源变化；609 键/105 严格模板保留。静态门禁和源码一致不替代动态状态、实际编译版交互、冷安装或发布证据。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 

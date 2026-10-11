@@ -2,14 +2,14 @@
 
 ## 当前项目
 
-`omp-settings-zh` 候选为 18.8.8，目标／开发依赖／真实官方宿主均为 OMP 18.8.8（内嵌 Bun 1.4.3）；最新已发布仍为 v18.8.4（发布提交 100e420）。受支持 update 将真实宿主 18.8.5 → 18.8.7 → 18.8.8。Settings 410/410（相对 18.8.4 新增 6、累计原文变化 3，最新为 tui.vimModeDisplay 的 Text 选项新增 REPLACE），Commands 85 定义／93 标识／27 动态回调不变（官方新增 /jobs kill 与 /dump anon 参数层），Stats 609 键／105 严格模板及客户端源码不变。18.8.8 精确 check 58 pass／0 fail，Schema／Commands 静态漂移 0。
+当前源码、开发依赖及适配基线为 18.9.1；真实官方宿主由受支持 update 从 18.8.8 升至 18.9.1（内嵌 Bun 1.4.3）。维护开始最新 Release 为 v18.8.8、远端 main 为 26711aa，本机 GitHub 插件亦为 18.8.8；原本地主线仍为较旧 18.8.7，含用户 Windows 草稿，因此在同仓库干净 worktree 适配，不重置或夹带原工作区。实际发布必须核对当前 tag/Release/最终 CI，而非本文状态。Settings 413/413，新增 3 项 UI、变化 4；Commands 85 定义/93 标识/27 动态回调，仅 /fork 静态英文变化；Stats 609 键/105 模板，既有客户端不变，仅 favicon 及评判问题资源变化。最终精确 check：62 pass/0 fail，2333 次断言，Schema/Commands 静态漂移 0。
 
-本轮 18.8.8 真实编译版证据：网络禁用沙箱内完成 Settings 中文搜索、Vim 布尔与指示器（REPLACE）原生编辑/恢复、中英往返；裸 /、skill 折叠、plan／loop／effort 实时状态、Tab／Enter、文件与新参数补全边界。Stats 11 页导航、图表三模式数值不变、请求抽屉与追踪原始数据、窄屏导航、同 origin 重启语言保留、SSE 2→3 增量、包装与原始官方服务逐项等价（身份头/405/403/无 ACAO）、单监听器、终端 Ctrl+C、父进程消失、SIGKILL 与私有 preload 回收、非法/占用端口官方失败、JSON/summary 等价、默认 opener 一次 URL 定向回收。命名 Profile/XDG 物理迁移后冷启动加载稳定逻辑路径，dry-run 与标准卸载通过。两轮终端驱动 Vim 误提交 401 不计通过。
+18.9.1 本地真实编译版证据：Settings 中文搜索、布尔和新增 JSON 控件保存/恢复、原生选项、同进程 en/zh；Commands 裸 /、2 项技能折叠/Tab 展开、第三方与文件原文、model 与 q 别名、原生 Settings 执行、plan/loop/model/fast/effort 动态状态。出站网络拒绝的新 TUI 会话 agentStarts/providerRequests 均为 0；早期驱动误按 Ctrl+L 的 live call 因无 OAuth 凭据失败，该失误不计通过。Stats 11 页中英往返、请求及 Span 抽屉原始数据、三种图表模式、390px 与键盘、同 origin 重启、SSE 3→4 请求（2 项目）、原始与包装 API/静态权限等价、单监听器、既有用户 preload/--smol、实际安装路径和 TMPDIR 空格、0700/0600、真实终端 VINTR Ctrl+C、父进程消失/SIGKILL/非法及占用端口回收均通过。默认 /usr/bin/open 正常及人为失败分支各一次 URL/新 target 并定向关闭；测试专属 opener 的真实页面转交另记。会话 /stats 未被接管，原 JSON 与同 Agent 目录 CLI 一致。命名 Profile/实际 XDG 经物理安装目录迁移后新进程仍使用官方稳定逻辑包路径；dry-run 不清理，标准卸载在动态 pi-utils 导入不可用时仍撤销启动器。最终 macOS/Linux CI 和干净 GitHub 安装须另按发布门禁核对。
 
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前汉化范围：410 项含 UI 元数据的设置名称、说明、风险警告和静态选项；本轮新增 6 项，更新 title.icons、tools.xdev 两项说明与原文哈希。保留默认值、类型、选项 value、group、凭据标记、动态 getter、保存与可逆恢复语义。
+- 当前汉化范围：413 项 UI 元数据，18.8.8→18.9.1 新增 3 项并复核 4 项原文/哈希变化；保留默认值、类型、选项 value、group、凭据标记、8 个可配置动态 getter、保存与可逆恢复语义。
 - 命令补全汉化：85 个内置斜杠命令、93 个命令名/别名的顶层补全说明、实时状态与技能数量；通过公共 addAutocompleteProvider 包装显示结果，不改命令注册表、命令名、参数提示、匹配排序、插入或执行。参数／文件补全、第三方描述和未知原文保持原样，switch / loop / effort 保留动态宿主键位。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
@@ -43,7 +43,7 @@
 
 `bun run check` 执行类型、单元/宿主契约、设置覆盖/漂移、`commands:check` 全量内置命令覆盖与原文/别名/删除/标识冲突门禁，以及三轮可逆应用冒烟。命令报告复用运行时原文匹配，允许已知动态键位变化；动态状态生成逻辑、接口和实际 UI 仍需独立核验。宿主适配变化必须另在实际官方编译版验证，不能仅依赖源码运行成功或旧开发依赖。
 
-仓库不包含定时调度器；现有外部 Orca 任务「OMP 更新与中文插件维护（Settings + Commands + Stats）」每天 Asia/Shanghai 23:00 在原工作区执行，三部分独立审查、验证和报告。此次仅修改任务名称与提示词，调度及既有授权不变，未立即触发运行。即使设置或 OMP 无变化，也需独立核验 Commands 的注册表/动态状态/接口与 Stats 上游稳定版线索和实际运行时；不得恢复固定 npm Stats 替代运行时。
+仓库不包含定时调度器；历史外部 Orca 任务每天 Asia/Shanghai 23:00 在原工作区执行三部分维护。本轮不修改调度，未核实其当前启用状态；run completed 不证明验收或发布。即使设置或 OMP 无变化，也独立核验 Commands 注册表/动态状态/接口与 Stats 最新稳定版线索和实际运行时；不恢复固定 npm Stats 替代运行时。
 - 上游适配以目标版本为编号基线，独立功能或修复递增插件补丁号；已用编号不得复用，明确记录实际宿主。上游无设置变化也须核验接口、自动检查和真实编译版；变化先补译或复核，检查失败不发布。
 
 官方上游：https://github.com/can1357/oh-my-pi

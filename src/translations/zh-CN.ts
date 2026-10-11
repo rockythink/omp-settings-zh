@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.8.8",
+  "sourceOmpVersion": "18.9.1",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -10,13 +10,13 @@ export const zhCN = {
       "description": "引导 Agent 使用 SVG 绘制示意图和图表，在支持图形显示的终端中以内嵌图片呈现"
     },
     "tui.autoGraph": {
-      "sourceHash": "01dced23b949011c39d979779543093a981fe74917f5e5fdc8abeaf6d777d2b7",
+      "sourceHash": "e6a3b5a7655fa4a0b15546195b29a084d33d0f0629ff0d737619783928b35e6b",
       "label": "表格自动图表",
       "description": "在支持图形显示的终端中，使用主题配色在 Agent 回答的数值表格下方绘制图表",
       "options": {
         "smart": {
           "label": "智能",
-          "description": "由 judge 模型为含多个数值列的表格选择图表类型和列"
+          "description": "由 judge 模型细化每张图表的类型、列、行名称与分组、刻度、数值优劣方向和标题"
         },
         "always": {
           "label": "始终",
@@ -1051,6 +1051,11 @@ export const zhCN = {
       "label": "附加工作区目录",
       "description": "作为额外根目录添加到每个会话的其他工作区目录（多根工作区）；可通过 /add-dir 和 /remove-dir 实时管理；相对路径以 cwd 为基准解析，建议使用绝对路径；系统会告知 agent 这些根目录存在，且可对其执行 read、grep 和 glob"
     },
+    "contextFiles.extra": {
+      "sourceHash": "51ede8645a8fd95f0b1fe86536b126b48beab068c72d652c8179f13b6c2dd7ec",
+      "label": "额外上下文文件",
+      "description": "与 AGENTS.md 一同加载的额外指令文件名。使用文件名而非路径的 JSON 列表，例如 [\"AGENTS.local.md\"]；[] 禁用额外文件。启动新会话后加载"
+    },
     "personality": {
       "sourceHash": "fafcc92b52f12d1f9436f019b50268e8bca4c3ddd45bfaa69503e36ef71a3930",
       "label": "个性",
@@ -1442,6 +1447,25 @@ export const zhCN = {
       "label": "重试模型回退",
       "description": "允许在重试恢复时切换到已配置的回退模型"
     },
+    "retry.fallbackOn": {
+      "sourceHash": "21672a381f63c7cdcbc2e26b11894af699f21bf1a0a56e61b626814acc2415bc",
+      "label": "模型回退触发条件",
+      "description": "哪些请求失败时允许切换到已配置的回退模型",
+      "options": {
+        "any": {
+          "label": "任何错误",
+          "description": "任何提供商错误都允许切换模型"
+        },
+        "usage-limit": {
+          "label": "仅用量限制",
+          "description": "仅遇到用量限制时切换；其他错误在同一模型上重试，之后报告错误"
+        },
+        "except-usage-limit": {
+          "label": "用量限制以外的错误",
+          "description": "遇到用量限制时等待其解除或报告错误；其他错误则切换模型"
+        }
+      }
+    },
     "retry.usageAwareFallback": {
       "sourceHash": "cfba9ba97c575815def45107822d74c1c411ddee22834a1a19c5b479351d04f0",
       "label": "用量感知回退",
@@ -1647,6 +1671,12 @@ export const zhCN = {
         }
       }
     },
+    "composer.predictions": {
+      "sourceHash": "8689fd38c712097bdb7b4c4bbed0e9d9365f2473204f973eb12ca4a6a65c3854",
+      "label": "输入框消息预测",
+      "description": "每轮对话完成后，请当前模型预测你的下一条消息，并在空输入框中以虚影文字显示；按 {tab} 或 {right} 可插入，但不会发送。额外用量：每轮对话完成后，都会基于完整对话再发送一次计费请求（计入 /stats）",
+      "descriptionSource": "After a completed turn, ask the active model to predict your next message and show it as ghost text in the empty composer; {tab} or {right} inserts it without sending. Extra usage: every completed turn sends one more billed request over the whole conversation (counted in /stats)"
+    },
     "spelling.autocorrect": {
       "sourceHash": "4a5b6e53dd344a0b69d7a078e42dd7023a91562c2f08d28110930e293d40ba38",
       "label": "自动更正（macOS）",
@@ -1781,9 +1811,9 @@ export const zhCN = {
       "description": "当智能体因错误而停止时通知"
     },
     "ask.timeout": {
-      "sourceHash": "027cddc00c76b78c13fcb133b5cfc00872a7d672619b7b6f793c5229600ced2d",
+      "sourceHash": "e16a82b7fe37223e0adc327cb067cce1c7c5c759972cff7cce430176eda6ecf3",
       "label": "Ask 超时",
-      "description": "达到此秒数后自动选择推荐的 ask 选项（0 表示禁用）",
+      "description": "达到此秒数后自动选择推荐的 ask 选项（0 表示禁用）。也用于限制 cfg:// 审批提示的等待时间；审批未获回答时拒绝写入，而不是自动选择",
       "options": {
         "0": {
           "label": "已禁用"
@@ -4038,13 +4068,13 @@ export const zhCN = {
       }
     },
     "codexResets.autoRedeem": {
-      "sourceHash": "62c9eff8142dea889259d012830584ae489c637ba5fa623857fc9348f1873638",
+      "sourceHash": "f7e97012bc893e8b2601d4a96a14e3683e3ff34a8320e0ca5217558785f2243f",
       "label": "Codex 自动兑换已保存的重置额度",
-      "description": "自动消耗已保存的 Codex 速率限制重置额度：当某轮对话卡住、账号因 5h 或每周窗口耗尽而被阻止，且没有其他账号可以接管时，恢复该账号；同时挽回即将过期的额度。unset 会在首次消耗前询问，yes 不经提示直接消耗，no 禁用这两项检查",
+      "description": "自动消耗已保存的 Codex 速率限制重置额度：当某轮对话卡住、账号因 5h 或每周窗口耗尽而被阻止，且没有其他账号可以接管时，恢复该账号；同时挽回即将过期的额度。unset 会在首次消耗前询问（没有询问界面时，仅消耗将在 5 分钟内到期的重置额度），yes 不经提示直接消耗，no 禁用这两项检查",
       "options": {
         "unset": {
           "label": "未设置",
-          "description": "先检查是否符合条件，再在首次消耗前询问"
+          "description": "先检查是否符合条件，再在首次消耗前询问。没有询问界面时，仅消耗将在 5 分钟内到期的重置额度"
         },
         "yes": {
           "label": "是",
@@ -4370,13 +4400,13 @@ export const zhCN = {
       }
     },
     "claudeResets.autoRedeem": {
-      "sourceHash": "0c206e1a18fc62c4b293935ec3c40a2c8d47efd5ca1e3c6193bad12558bc3c47",
+      "sourceHash": "7c0055eae35d897d65a88b24b8a9a88f5116153828bbf0cdee7d4a051cfc0c05",
       "label": "Claude 自动兑换重置",
-      "description": "自动消耗符合条件的 Claude Cedar 或 Juniper 重置次数。Cedar 仅用于其覆盖的额度限制；Juniper 仅能解除单独的 5 小时限额阻断。`unset` 在首次消耗前询问，`yes` 无需询问直接消耗，`no` 禁用限额阻断恢复和到期前利用",
+      "description": "自动消耗符合条件的 Claude Cedar 或 Juniper 重置次数。Cedar 仅用于其覆盖的额度限制；Juniper 仅能解除单独的 5 小时限额阻断。`unset` 在首次消耗前询问（没有询问界面时，仅消耗将在 5 分钟内到期的重置），`yes` 无需询问直接消耗，`no` 禁用限额阻断恢复和到期前利用",
       "options": {
         "unset": {
           "label": "未设置",
-          "description": "实时检查是否符合条件，再在首次消耗 Claude 重置次数前询问"
+          "description": "实时检查是否符合条件，再在首次消耗 Claude 重置次数前询问。没有询问界面时，仅消耗将在 5 分钟内到期的重置"
         },
         "yes": {
           "label": "是",
