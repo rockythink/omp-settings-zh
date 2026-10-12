@@ -11,6 +11,10 @@ import { cfgExtendedContext } from "@oh-my-pi/pi-coding-agent/session/context-se
 import { cfgComputerEnabled } from "@oh-my-pi/pi-coding-agent/tools/settings";
 import { cfgBrowserEnabled, cfgBrowserHeadless } from "@oh-my-pi/pi-coding-agent/tools/browser/settings";
 import { cfgCycleOrder, cfgModelPresets, cfgModelRoles } from "@oh-my-pi/pi-coding-agent/config/model-settings";
+import { formatKeyHint } from "@oh-my-pi/pi-tui/app-keybindings";
+import { setActiveSymbolTheme } from "@oh-my-pi/pi-tui/theme/active-symbols";
+import { loadThemeSync } from "@oh-my-pi/pi-tui/theme/loader";
+import { theme } from "@oh-my-pi/pi-tui/theme/theme";
 import { localizeSlashAutocomplete } from "../src/slash-autocomplete";
 import { slashCommandTranslations } from "../src/translations/slash-commands";
 
@@ -540,5 +544,40 @@ test("known shortcuts may vary but changed surrounding prose and third-party des
   const provider = localizeSlashAutocomplete(native, () => true);
   expect((await provider.getSuggestions(["/"], 0, 1))!.items.find(item => item.value === "skill:")!.description).toBe("2 项技能");
   expect(provider.trySyncSlashCompletion!("/skill:first")).toEqual(native.trySyncSlashCompletion("/skill:first"));
+});
+
+test("official key getters follow actual symbol presets for switch, loop and effort in both completion paths", async () => {
+  const previousTheme = theme;
+  const observed = new Set<string>();
+  try {
+    for (const preset of ["ascii", "unicode", "nerd"] as const) {
+      setActiveSymbolTheme(loadThemeSync("dark", { symbolPresetOverride: preset }));
+      const keys = { switch: formatKeyHint("alt+p"), loop: formatKeyHint("escape"), effort: formatKeyHint("shift+tab") };
+      observed.add(keys.effort);
+      const commands = buildTuiBuiltinSlashCommands({} as TuiSlashCommandRuntime)
+        .filter(command => command.name === "switch" || command.name === "loop" || command.name === "effort");
+      // Exercise actual getter-derived text; live session state is verified in the compiled TUI.
+      const native = new CombinedAutocompleteProvider(commands.map(({ getAutocompleteDescription: _live, ...command }) => command));
+      let chinese = true;
+      const provider = localizeSlashAutocomplete(native, () => chinese);
+      for (const name of ["switch", "loop", "effort"] as const) {
+        const text = "/" + name;
+        const original = native.trySyncSlashCompletion(text)!;
+        const sync = provider.trySyncSlashCompletion!(text)!;
+        const item = sync.items.find(item => item.value === name)!;
+        expect(item.description).toContain(keys[name]);
+        expect(item.description).not.toBe(original.items.find(item => item.value === name)!.description);
+        expect(await provider.getSuggestions([text], 0, text.length)).toEqual(sync);
+        expect(provider.applyCompletion([text], 0, text.length, item, sync.prefix))
+          .toEqual(native.applyCompletion([text], 0, text.length, original.items.find(item => item.value === name)!, original.prefix));
+        chinese = false;
+        expect(provider.trySyncSlashCompletion!(text)).toEqual(original);
+        chinese = true;
+      }
+    }
+    expect(observed.size).toBe(3);
+  } finally {
+    setActiveSymbolTheme(previousTheme);
+  }
 });
 

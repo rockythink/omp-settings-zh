@@ -2,14 +2,16 @@
 
 ## 当前项目
 
-当前源码、开发依赖及适配基线为 18.9.1；真实官方宿主由受支持 update 从 18.8.8 升至 18.9.1（内嵌 Bun 1.4.3）。维护开始最新 Release 为 v18.8.8、远端 main 为 26711aa，本机 GitHub 插件亦为 18.8.8；原本地主线仍为较旧 18.8.7，含用户 Windows 草稿，因此在同仓库干净 worktree 适配，不重置或夹带原工作区。实际发布必须核对当前 tag/Release/最终 CI，而非本文状态。Settings 413/413，新增 3 项 UI、变化 4；Commands 85 定义/93 标识/27 动态回调，仅 /fork 静态英文变化；Stats 609 键/105 模板，既有客户端不变，仅 favicon 及评判问题资源变化。最终精确 check：62 pass/0 fail，2333 次断言，Schema/Commands 静态漂移 0。
+当前源码、开发依赖及适配基线为 18.10.2；真实官方宿主经受支持 update 从 18.9.1 升至 18.10.2（内嵌 Bun 1.4.3）。维护开始最新 Release 为 v18.9.1、远端 main 为 0b31695，本机 GitHub 插件为 18.9.1；原本地主线为 fc689e7 / 18.8.7，含用户 Windows 草稿，在同仓库干净 worktree 适配，不重置或夹带原工作区。实际发布必须现场核对 tag/Release/最终 CI，不凭本文状态。Settings 414/414，新增 task.structured，复核 task.softRequestBudget 说明/哈希；Commands 85 定义/93 标识/27 动态回调相对 18.9.1 逐字未变；Stats 全部 92 源码/73 客户端文件逐字未变，609 键/105 模板保留。完整 check：63 pass/0 fail、2379 次断言，Schema/Commands 静态漂移 0，三轮显示变更 1819 项/零源码网络请求；编译版证据另验。
 
-18.9.1 本地真实编译版证据：Settings 中文搜索、布尔和新增 JSON 控件保存/恢复、原生选项、同进程 en/zh；Commands 裸 /、2 项技能折叠/Tab 展开、第三方与文件原文、model 与 q 别名、原生 Settings 执行、plan/loop/model/fast/effort 动态状态。出站网络拒绝的新 TUI 会话 agentStarts/providerRequests 均为 0；早期驱动误按 Ctrl+L 的 live call 因无 OAuth 凭据失败，该失误不计通过。Stats 11 页中英往返、请求及 Span 抽屉原始数据、三种图表模式、390px 与键盘、同 origin 重启、SSE 3→4 请求（2 项目）、原始与包装 API/静态权限等价、单监听器、既有用户 preload/--smol、实际安装路径和 TMPDIR 空格、0700/0600、真实终端 VINTR Ctrl+C、父进程消失/SIGKILL/非法及占用端口回收均通过。默认 /usr/bin/open 正常及人为失败分支各一次 URL/新 target 并定向关闭；测试专属 opener 的真实页面转交另记。会话 /stats 未被接管，原 JSON 与同 Agent 目录 CLI 一致。命名 Profile/实际 XDG 经物理安装目录迁移后新进程仍使用官方稳定逻辑包路径；dry-run 不清理，标准卸载在动态 pi-utils 导入不可用时仍撤销启动器。最终 macOS/Linux CI 和干净 GitHub 安装须另按发布门禁核对。
+18.10.2 本地真实编译版证据：Settings 新增结构化任务结果中文搜索、原生布尔保存/恢复、中文思考选项与同进程 en/zh；Commands 裸 /、2 项技能折叠/Tab 展开、第三方及参数/文件原文、models 与 q 别名、Tab/Enter 原生 Settings 执行、plan/loop/model/switch/effort 动态状态、Unicode/ASCII 预设恢复。禁止出站网络的新 TUI 会话 agentStarts/providerRequests 均为 0。Stats 11 个中文导航、中文/English、刷新/路由/同 origin 英文重启、请求与工具 Span 抽屉原始数据、三图表模式、390px 与 G+字母键盘、双项目三会话、真实 SSE 版本进展及 6→7 请求的可见 React 异步更新；12 组原始/包装方法/Host/Origin/操作头/CORS 对照相同。真实 Bun 1.4.3 保留 --smol/用户 preload，单官方监听器、0700/0600 私有路径与空格 TMPDIR；费用确认仅观察并取消，从未点击继续。默认 /usr/bin/open 的成功和人为失败各一次精确新 target 定向回收，既有 13 个用户页面未动。早期验收驱动的 hash/隐藏缓存节点选择器及模态遮挡错误均回收后纠正，不计通过；最终 CI、干净 GitHub 安装及资源零残留仍须现场核对。
+
+18.10.2 生命周期十项（实际 PTY Ctrl+C、异常子进程、launcher SIGKILL/父进程消失、参数/无效及占用端口/恢复）通过，私有目录与页面/进程/端口零残留。修正后的正常 RPC 将全部外部及本机 fetch 在 dispatch 前拒绝，13 次模型目录 GET 尝试、0 推理/费用请求；最终编译 smoke-cli 同样拒绝全部 fetch，macOS 15 次目录 GET。不得称零请求尝试；早期脚手架曾允许本机目录 GET，不能证明未接触已有本机目录服务。发布仍须最终提交 CI、干净 GitHub 安装及最终资源现场核对。
 
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前汉化范围：413 项 UI 元数据，18.8.8→18.9.1 新增 3 项并复核 4 项原文/哈希变化；保留默认值、类型、选项 value、group、凭据标记、8 个可配置动态 getter、保存与可逆恢复语义。
+- 当前汉化范围：414 项 UI 元数据，18.9.1→18.10.2 新增 task.structured 并复核 task.softRequestBudget 说明/哈希变化；保留默认值、类型、选项 value、group、凭据标记、8 个可配置动态 getter、保存与可逆恢复语义。
 - 命令补全汉化：85 个内置斜杠命令、93 个命令名/别名的顶层补全说明、实时状态与技能数量；通过公共 addAutocompleteProvider 包装显示结果，不改命令注册表、命令名、参数提示、匹配排序、插入或执行。参数／文件补全、第三方描述和未知原文保持原样，switch / loop / effort 保留动态宿主键位。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。

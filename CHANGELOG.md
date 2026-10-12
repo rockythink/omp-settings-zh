@@ -2,6 +2,39 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.10.2] - 2026-10-13
+
+### Baseline
+
+- 官方宿主经受支持 omp update 从真实 18.9.1 升至 18.10.2（内嵌 Bun 1.4.3）；coding-agent/pi-utils 锁定 18.10.2，宿主范围 `>=18.10.2 <19`。分别查询三个官方稳定包与官方标签，Stats npm 仅作审查线索，不作为运行时。维护开始远端 main/Release/本机 GitHub 插件为 18.9.1；保护旧本地主线及 Windows 草稿，在隔离主线 worktree 适配
+
+### Settings
+
+- 414/414，新增默认关闭的 task.structured；复核 task.softRequestBudget 由 yield 改为 hand back 的说明及哈希。原路径、类型、默认值、value/group/凭据标记、8 个可配置动态 getter、保存及可逆恢复不变；未变化译文不重译
+- 真实官方编译版完成新增项中文搜索、布尔原生保存与恢复、中文思考选项、同进程 en/zh；同进程 /effort 参数仍为官方英文，Settings 显示副本未泄漏
+
+### Commands
+
+- 85 定义/93 名称别名/27 动态回调，相对 18.9.1 完整注册表、原文、别名与公共同步/异步/partial/AbortSignal/可选能力接口逐字未变；静态合同不因显示层动态键位支持而放宽
+- 新增真实官方 Unicode/Nerd/ASCII 键位 getter 的双补全路径及原 provider 插入行为回归；未知/第三方/参数描述保持原文。实际裸 /、两项技能折叠与 Tab 展开、models/q 别名、plan/loop/model/effort 动态状态、Tab/Enter 原生 Settings 执行与 en/zh 往返通过
+- 隔离的官方性能样本在真实编译 /switch 中验证 default/priority/ultrafast/flex 行随 /fast、/slow 实时变化，模型 ID 与 tier 原文保持；样本仅用于状态选择，不代表真实模型性能。两轮禁止出站网络的 TUI 会话 agentStarts/providerRequests 均为 0，未提交模型提示词
+
+### Stats
+
+- 92 个源码/73 个客户端文件相对 18.9.1 全部逐字未变；stats-cli、openPath、独立 judge 与 build 路径保持。609 英文键/105 严格模板、DOM 白名单/数据排除不重复修改；共享模型目录和价格变化由官方计算，不复制 Stats 或官方资源
+- 真实编译 CLI 的 11 个中文导航、中文/English、刷新/路由/同 origin 英文重启、请求与工具 Span 抽屉原始数据、三图表模式、390px 与 G+字母键盘通过；双项目三会话合成数据及原 SSE 版本进展、6→7 请求可见异步更新通过，同名 Overview/Requests 数据与错误/正文保持英文
+- 原/包装 12 组方法/Host/Origin/操作头/CORS/API 合同逐项相同：静态 POST 与跨 Host/Origin 原本允许，OPTIONS 200 但无 CORS 授权，judge GET405/缺操作头 POST403；身份头不是授权。费用确认只观察并取消，从未点击继续，未运行付费评估
+
+### Verification and release boundaries
+
+- frozen install/check：63 pass/0 fail、2379 次断言，Settings 414/414、Schema 漂移 0、Commands 85/85 与 93 标识/漂移 0，三轮显示冒烟 1819 项变更/0 源码网络请求
+- 实际官方绝对二进制 smoke-cli 增强资源清单：真实 CDP targetId/URL、browser PID/Profile、launcher/native PID/port、opener bridge 与私有 preload 路径；真实 Bun1.4.3 保留 --smol/用户 preload 并实测 0700/0600。正常与人为断言失败均先关页、停服务验证端口、检查私有目录消失，专属浏览器关闭与临时目录回收
+- 系统默认 /usr/bin/open 的成功与人为失败均实际打开一个精确 URL/新 target，随后定向关闭且保留全部既有页面；测试专属 opener 真正转交受管页面，不作为系统默认合同替代
+- 命名 Profile/XDG、fresh 进程、自有物理 source/cache 换址模拟、缺 SHELL/USER/LOGNAME 的真实账户 /bin/zsh 解析、JSON/summary/非 Stats 透传、dry-run 与 pi-utils 不可用时标准卸载通过；换址模拟不冒充最终 GitHub 安装
+- 18.10.2 真实编译生命周期十项通过：原版/包装 PTY 实际 Ctrl+C（未改 termios）、官方子进程异常、launcher SIGKILL、父进程消失、等号/短参数、无效/占用端口及释放后恢复；私有目录/端口/PID 均回收。SIGKILL 独立 guard 3.816 秒清理。目录发现与推理分开审计：正常 RPC session_start、Bun 1.4.3、13 次目录 GET（8 外部/5 本机）全部在 dispatch 前阻断，推理/费用请求 0；最终 smoke-cli 也对真实官方子进程全 fetch 阻断并检查仅目录 GET，macOS 实测 15 次。不能称零请求尝试。早期脚手架曾允许本机目录 GET，不能证明其未访问既有本机服务；修正后正式审计全部阻断，失败记录不隐藏。
+- 发布以最终提交 macOS/Linux CI、干净 GitHub 安装/doctor/Stats/卸载与本轮资源零残留全部通过为前提。Windows PR #1 独立未合并草稿，不属支持范围；旧 Agent/Stats 服务不热注入，需要重启
+
+
 ## [18.9.1] - 2026-10-11
 
 ### Baseline

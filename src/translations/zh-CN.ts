@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.9.1",
+  "sourceOmpVersion": "18.10.2",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -3309,6 +3309,11 @@ export const zhCN = {
       "label": "批量任务调用",
       "description": "将 task 工具切换为批处理结构：一次调用携带 { context, tasks[] }——每个条目对应一个子代理，可为每个条目指定可选的 agent（默认为会话的 spawn-policy agent）和隔离设置，并且必须提供共享上下文以添加到每项任务之前。启用 async.enabled=true 时，每次 spawn 都会作为独立的后台代理运行，并采用正常的空闲/停放生命周期；否则调用会阻塞，直至获得合并结果。禁用后恢复扁平的单次 spawn schema"
     },
+    "task.structured": {
+      "sourceHash": "dd338cf50e65b7c4b7cb452b11ebad281571f8bb68b681482efcd31df5296d1f",
+      "label": "结构化任务结果",
+      "description": "在 task 工具中提供 outputSchema/schemaMode，并通过 yield 工具返回子代理结果，按调用方或代理的输出 Schema 校验。关闭后，task 子代理不提供 yield 工具，而是将最终消息作为纯文本返回。Eval 中的 agent()/workpool spawn 始终保留结构化结果"
+    },
     "task.enableEffort": {
       "sourceHash": "d6d2b80e6c10272591a12b32e3300b7c3973c280ab811c1c8978d3977ba5681c",
       "label": "每任务 Effort",
@@ -3401,9 +3406,9 @@ export const zhCN = {
       "description": "空闲子代理在停放到磁盘前保持驻留内存的时长（ms）。向已停放的代理发送消息或恢复代理时，会自动唤醒代理。设为 0 时，空闲代理会保持驻留内存直至退出"
     },
     "task.softRequestBudget": {
-      "sourceHash": "5d5687ce00353539149e55ba47f459454a0dc94f262b3e9d93161fe7893ead74",
+      "sourceHash": "13709303d29139f6c5127bd4ad05ef26b2f074a8dcb194495b065f344e7a9da4",
       "label": "子代理软请求预算",
-      "description": "每个子代理的软请求预算（每次运行中的 assistant 请求数）。超出预算时会注入收尾引导通知（见 task.softRequestBudgetNotice）；达到预算的 1.5 倍时会强制停止运行，代理必须交出其部分发现。设为 0 将禁用此防护。内置的 scout/sonic 代理有更低的内置预算上限，因此低于该上限的值仍会应用于这些代理",
+      "description": "每个子代理的软请求预算（每次运行中的 assistant 请求数）。超出预算时会注入收尾引导通知（见 task.softRequestBudgetNotice）；达到预算的 1.5 倍时会强制停止运行，代理必须交回其部分发现。设为 0 将禁用此防护。内置的 scout/sonic 代理有更低的内置预算上限，因此低于该上限的值仍会应用于这些代理",
       "options": {
         "0": {
           "label": "已禁用"

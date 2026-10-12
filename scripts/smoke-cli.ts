@@ -1,4 +1,4 @@
-import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import puppeteer, { type Browser, type Page } from "puppeteer-core";
@@ -17,8 +17,30 @@ const official = join(root, "official bin 空格", "omp");
 const openerDir = join(root, "opener");
 const wrapper = join(home, ".local/share/omp-settings-zh/bin/omp");
 const repo = resolve(import.meta.dir, "..");
-const owned = { run: root, browserPid: 0, pagesCreated: 0, pagesClosed: 0, services: [] as { pid: number; port: number; closed: boolean }[] };
+interface PageResource { targetId: string; url: string; closed: boolean }
+const owned = {
+  run: root, browserPid: 0, browserExecutable, browserProfile: join(root, "browser-profile"), browserClosed: false,
+  baselinePages: [] as string[], pagesCreated: 0, pagesClosed: 0, pages: [] as PageResource[],
+  services: [] as { pid: number; nativePid?: number; port: number; closed: boolean; preload?: string }[],
+  bridge: undefined as { pid: number; port: number; closed: boolean } | undefined,
+  temporaryPaths: [root, home, cwd, temporary, dirname(official), openerDir],
+};
+const pageResources = new WeakMap<Page, PageResource>();
 const ledger = () => writeFile(join(root, "resources.json"), JSON.stringify(owned));
+async function recordPage(target: Page) {
+  const client = await target.createCDPSession();
+  try {
+    const { targetInfo } = await client.send("Target.getTargetInfo");
+    const resource = { targetId: targetInfo.targetId, url: target.url(), closed: false };
+    pageResources.set(target, resource); owned.pages.push(resource); owned.pagesCreated++;
+    await ledger();
+  } finally { await client.detach(); }
+}
+async function closePage(target: Page) {
+  if (!target.isClosed()) await target.close();
+  const resource = pageResources.get(target);
+  if (resource && !resource.closed) { resource.closed = true; owned.pagesClosed++; }
+}
 let browser: Browser | undefined;
 let page: Page | undefined;
 let service: Bun.Subprocess<"ignore", "pipe", "pipe"> | undefined;
@@ -41,7 +63,7 @@ async function until<T>(check: () => Promise<T | undefined>, description: string
 }
 async function closeStage() {
   const errors: unknown[] = [];
-  try { if (page && !page.isClosed()) { await page.close(); owned.pagesClosed++; } } catch (error) { errors.push(error); }
+  try { if (page) await closePage(page); } catch (error) { errors.push(error); }
   page = undefined;
   try {
     if (service) {
@@ -53,7 +75,14 @@ async function closeStage() {
   } catch (error) { errors.push(error); }
   try {
     if (expectedUrl) await until(async () => { try { await fetch(expectedUrl, { signal: AbortSignal.timeout(1000) }); } catch { return true; } }, "owned Stats port closed");
-    const resource = owned.services.at(-1); if (resource) resource.closed = true;
+    const resource = owned.services.at(-1);
+    if (resource) {
+      if (resource.preload) {
+        try { await stat(resource.preload); throw new Error("Owned private preload directory survived Stats exit"); }
+        catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; }
+      }
+      resource.closed = true;
+    }
     await ledger();
   } catch (error) { errors.push(error); }
   if (errors.length) throw new AggregateError(errors, "Stage resource cleanup failed");
@@ -63,11 +92,11 @@ try {
   await copyFile(resolve(input), official);
   env.PATH = dirname(official) + ":" + (process.env.PATH ?? "");
   await ledger(); // Ownership exists before any command capable of opening a page.
-  browser = await puppeteer.launch({ executablePath: browserExecutable, headless: true, userDataDir: join(root, "browser-profile"), args: ["--no-sandbox", "--disable-dev-shm-usage"] });
+  browser = await puppeteer.launch({ executablePath: browserExecutable, headless: true, userDataDir: owned.browserProfile, args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   owned.browserPid = browser.process()?.pid ?? 0;
   const initialPages = await browser.pages();
   // This browser/profile belongs exclusively to this run, including its initial blank page.
-  for (const initial of initialPages) { owned.pagesCreated++; await initial.close(); owned.pagesClosed++; }
+  for (const initial of initialPages) { await recordPage(initial); await closePage(initial); }
   await ledger();
   bridge = Bun.serve({ hostname: "127.0.0.1", port: 0, async fetch(request) {
     const url = await request.text();
@@ -75,13 +104,23 @@ try {
     try {
       await page.goto(url, { waitUntil: "domcontentloaded" });
       await page.waitForSelector("#omp-stats-language");
-      opened = true;
+      pageResources.get(page)!.url = url; await ledger(); opened = true;
       return new Response("page-observed");
     } catch (error) { return new Response(String(error), { status: 500 }); }
   } });
-  const opener = `#!${process.execPath}\nconst r=await fetch('http://127.0.0.1:${bridge.port}',{method:'POST',body:Bun.argv[2],signal:AbortSignal.timeout(60000)});if(!r.ok||await r.text()!=='page-observed')process.exit(1);\n`;
+  owned.bridge = { pid: process.pid, port: bridge.port!, closed: false }; await ledger();
+  const opener = "#!" + process.execPath + "\nconst r=await fetch(" + JSON.stringify("http://127.0.0.1:" + bridge.port) + ",{method:'POST',body:Bun.argv[2],signal:AbortSignal.timeout(60000)});if(!r.ok||await r.text()!=='page-observed')process.exit(1);\n";
   await writeFile(join(openerDir, process.platform === "darwin" ? "open" : "xdg-open"), opener, { mode: 0o700 });
   env.PATH = openerDir + ":" + env.PATH;
+  const hostMarker = join(root, "compiled-bun.json");
+  const userPreload = join(root, "user-preload.cjs");
+  const fetchAudit = join(root, "compiled-fetch.jsonl");
+  await writeFile(userPreload, `const fs=require('node:fs');if(fs.realpathSync(process.execPath)===fs.realpathSync(${JSON.stringify(official)})){
+fs.writeFileSync(${JSON.stringify(hostMarker)},JSON.stringify({pid:process.pid,bun:Bun.version,argv:Bun.argv,options:process.env.BUN_OPTIONS}));
+globalThis.fetch=async(input,init)=>{const url=String(typeof input==='string'||input instanceof URL?input:input.url);const method=init?.method||(typeof input==='object'&&input.method)||'GET';fs.appendFileSync(${JSON.stringify(fetchAudit)},JSON.stringify({pid:process.pid,url,method})+'\\n');throw new Error('Test subprocess fetch dispatch disabled');};
+}`);
+  env.BUN_OPTIONS = "--smol --preload=" + userPreload;
+  owned.temporaryPaths.push(userPreload, hostMarker, fetchAudit); await ledger();
   if ((await command(official, ["--version"])).trim() !== "omp/" + VERSION) throw new Error("Actual host differs from locked development dependency");
   await command(official, ["plugin", "link", repo]);
   const marker = join(root, "settings.json");
@@ -101,7 +140,7 @@ try {
     const reserve = Bun.serve({ hostname: "127.0.0.1", port: 0, fetch: () => new Response() });
     const port = reserve.port!; reserve.stop(true);
     expectedUrl = `http://127.0.0.1:${port}`; opened = false;
-    page = await browser.newPage(); owned.pagesCreated++; await ledger();
+    page = await browser.newPage(); await recordPage(page);
     service = Bun.spawn([wrapper, "stats", "--port", String(port), "--host", "127.0.0.1"], { cwd, env, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
     owned.services.push({ pid: service.pid, port, closed: false }); await ledger();
     const stdout = new Response(service.stdout).text(); const stderr = new Response(service.stderr).text();
@@ -113,7 +152,16 @@ try {
       const nativePid = listeners[0]!.slice(1);
       const allListeners = (await command("lsof", ["-nP", "-a", "-p", nativePid, "-iTCP", "-sTCP:LISTEN", "-Fn"])).split("\n").filter(line => line.startsWith("n"));
       if (allListeners.length !== 1 || !allListeners[0]!.endsWith(":" + port)) throw new Error("Official Stats process has unexpected listener");
-      console.log("Official process", nativePid, "single listener", allListeners[0]);
+      const resource = owned.services.at(-1)!; resource.nativePid = Number(nativePid);
+      const childPids = (await command("pgrep", ["-P", String(service!.pid)])).trim().split(/\s+/);
+      const processArgs = await command("ps", ["-ww", "-p", childPids.join(","), "-o", "args="]);
+      const privateDirectory = processArgs.match(/omp-stats-guard \d+ \d+ (\S+)$/m)?.[1];
+      if (!privateDirectory) throw new Error("Cannot identify owned private preload directory");
+      resource.preload = privateDirectory; owned.temporaryPaths.push(privateDirectory); await ledger();
+      if (((await stat(privateDirectory)).mode & 0o777) !== 0o700 || ((await stat(join(privateDirectory, "preload.cjs"))).mode & 0o777) !== 0o600) throw new Error("Private preload permissions changed");
+      const compiled = JSON.parse(await readFile(hostMarker, "utf8"));
+      if (compiled.pid !== Number(nativePid) || !compiled.options.startsWith(env.BUN_OPTIONS)) throw new Error("Actual compiled Bun did not retain and execute user preload/flags");
+      console.log("Official process", nativePid, "single listener", allListeners[0], "compiled Bun", compiled.bun, "merged user preload", compiled.options);
       if (failure) { intentional = true; throw new Error("intentional cleanup assertion"); }
       if (await page.$eval("html", node => node.lang) !== "zh-CN") throw new Error("Cold Stats not Chinese");
       await page.click("#omp-stats-language button:nth-child(2)");
@@ -136,12 +184,15 @@ try {
   if (await Bun.file(wrapper).exists()) throw new Error("Standard uninstall left launcher");
   installed = false;
   if ((await command(official, ["--version"])).trim() !== "omp/" + VERSION) throw new Error("Official executable changed");
+  const attempts = (await readFile(fetchAudit, "utf8").catch((error: NodeJS.ErrnoException) => { if (error.code === "ENOENT") return ""; throw error; })).trim().split("\n").filter(Boolean).map(line => JSON.parse(line) as { pid: number; url: string; method: string });
+  if (attempts.some(item => item.method !== "GET" || !/\/(?:models(?:\.json\.zstd)?|tags|props)$/.test(new URL(item.url).pathname))) throw new Error("Unexpected non-catalogue fetch attempt: " + JSON.stringify(attempts));
+  console.log("Compiled fetch audit:", attempts.length, "catalogue GET attempts blocked before dispatch; no inference attempts", JSON.stringify(attempts));
   console.log("Native macOS/Linux smoke passed; test-only opener forwarding is not the system-default opener contract.");
 } finally {
   const errors: unknown[] = [];
   try { await closeStage(); } catch (error) { errors.push(error); }
-  try { bridge?.stop(true); } catch (error) { errors.push(error); }
-  try { await browser?.close(); } catch (error) { errors.push(error); }
+  try { bridge?.stop(true); if (owned.bridge) owned.bridge.closed = true; await ledger(); } catch (error) { errors.push(error); }
+  try { await browser?.close(); owned.browserClosed = true; for (const resource of owned.pages) if (!resource.closed) { resource.closed = true; owned.pagesClosed++; } await ledger(); } catch (error) { errors.push(error); }
   try { if (installed || await Bun.file(wrapper).exists()) await command(process.execPath, [join(repo, "src/cli/install.ts"), "uninstall"]); } catch (error) { errors.push(error); }
   if (!errors.length) { console.log("Resource cleanup:", JSON.stringify(owned)); await rm(root, { recursive: true, force: true }); }
   else throw new AggregateError(errors, "Owned resources retained with ledger at " + root);
