@@ -2,6 +2,37 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.10.3] - 2026-10-13
+
+### Baseline
+
+- 真实官方宿主按受支持 update 从18.10.2升级至18.10.3，内嵌Bun1.4.3；coding-agent/pi-utils/Stats稳定版均18.10.3。开发依赖与宿主一致，原脏工作区及独立Windows草稿不混入。
+
+### Settings
+
+- UI414/414，无新增/删除；复核snapcompact.toolResults包含最新工具结果、read结果精确编辑限制，以及task.softRequestBudget按Agent名称预算覆盖两项说明/哈希。task.agentSoftRequestBudget为配置专用，不计UI；未变化译文保留，选项value、group、凭据标记、动态getter、保存和可逆恢复不改。
+- 真正官方编译版验证两项中文搜索、预算200→150→200原生保存/恢复、中文思考选项与/effort英文参数隔离、同进程en/zh往返。
+
+### Commands
+
+- 85定义/93名称别名/27动态回调及公共provider接口相对18.10.2逐字未变，静态漂移0；无需重复改译。
+- 上游未验证模型effort选择与隐式思考行为有变化；新版真实ModelControls专项回归3pass/77断言，保留原selectors/current/参数插入及有效服务层级，不放宽静态门禁。已有Commands回归20pass/1998断言。
+- 真实编译版验证裸/、2项skill折叠与第三方描述、models/q别名、plan/loop动态状态、effort快捷键high→xhigh、Unicode/ASCII与en/zh恢复、原始文件名和Tab/Enter原生Settings执行。最终干净会话agent_start0，全部fetch在dispatch前拒绝；早期/plan on驱动误把尾词当正文，不计该零turn证据。
+
+### Stats
+
+- 全92源码/73客户端相对18.10.2逐字未变，609键/105严格模板、白名单/数据排除保留；实际运行时是官方编译CLI，不复制npm业务/二进制或安装资源。
+- 实际11导航、中英/刷新/路由/同origin重启、请求及工具Span抽屉、三图表模式、390px/键盘、双项目三会话与6→7异步更新通过；Requests/Costs/Overview同名数据、正文与原始错误保留。费用确认只观察并取消，未点击继续。
+
+### Verification and release boundaries
+
+- frozen install/check：63pass/0fail、2379断言，Schema及Commands静态漂移0，1819项显示变更/3轮恢复/0源码网络请求。
+- 真实官方绝对路径smoke验证Bun1.4.3保留--smol/用户preload、空格路径、0700/0600、一个原监听器和正常/人为失败回收；3页创建/3页关闭，服务/私有目录全部回收。
+- 默认/usr/bin/open实际两轮各开一个精确URL新target，正常与人为失败均定向关闭；阶段既有7页身份/URL保持，2页创建/2页关闭/0残留。早期relay默认创建误导航既有页已按同target恢复原URL，不计正式门禁。
+- 默认及命名Profile/实际XDG稳定逻辑包路径、新进程物理换址加载、GUI缺SHELL/USER/LOGNAME、JSON/summary/非Stats、dry-run与无pi-utils标准卸载通过；source-linked doctor3ok/1warning/0error不隐藏，不能替代冷GitHub安装。
+- 原始/包装22项方法/Host/Origin/操作头/CORS/API合同相同，含非默认Profile损坏gzip真实500及原错误正文；原跨Host/Origin允许不冒称阻止。SSE version2→3、25文件25记录，真实PTY Ctrl+C原版/包装退出0、官方子进程异常、launcher SIGKILL(3790ms)、父消失(1009ms)、非法/占用端口与参数恢复通过。生命周期专项含失败轮45页创建/45关闭、5浏览器关闭、77登记PID/24私有preload/5run根目录零残留，35次fetch尝试在dispatch前阻断，无模型或付费调用。
+- 发布以精确最终提交macOS/Linux编译CI、干净GitHub安装/doctor/原Stats/卸载与资源零残留全部通过为前提；Windows仍为独立未合并草稿。已有用户Agent/Stats不热注入，升级后须重启OMP/新终端，Stats由用户自行重启。
+
 ## [18.10.2] - 2026-10-13
 
 ### Baseline

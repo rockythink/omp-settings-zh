@@ -2,16 +2,17 @@
 
 ## 当前项目
 
-当前源码、开发依赖及适配基线为 18.10.2；真实官方宿主经受支持 update 从 18.9.1 升至 18.10.2（内嵌 Bun 1.4.3）。维护开始最新 Release 为 v18.9.1、远端 main 为 0b31695，本机 GitHub 插件为 18.9.1；原本地主线为 fc689e7 / 18.8.7，含用户 Windows 草稿，在同仓库干净 worktree 适配，不重置或夹带原工作区。实际发布必须现场核对 tag/Release/最终 CI，不凭本文状态。Settings 414/414，新增 task.structured，复核 task.softRequestBudget 说明/哈希；Commands 85 定义/93 标识/27 动态回调相对 18.9.1 逐字未变；Stats 全部 92 源码/73 客户端文件逐字未变，609 键/105 模板保留。完整 check：63 pass/0 fail、2379 次断言，Schema/Commands 静态漂移 0，三轮显示变更 1819 项/零源码网络请求；编译版证据另验。
+当前源码、开发依赖及适配基线为 18.10.3；真实官方宿主经受支持 update 从 18.10.2 升至 18.10.3（内嵌 Bun 1.4.3）。维护开始远端 main/Release 为 03ff215/v18.10.2，本机插件为同一 GitHub 来源18.10.2，doctor 5/0/0；原脏工作区 main fc689e7/package18.8.7 与 Windows 草稿保持，在同仓库干净主线 worktree 适配。Settings414/414，无新增UI，复核 snapcompact.toolResults、task.softRequestBudget 两项说明/哈希；task.agentSoftRequestBudget为配置专用。Commands85定义/93标识/27回调及接口逐字未变，上游未验证模型effort实时选择另验；Stats92源码/73客户端文件逐字未变，609键/105模板保留。发布以现场tag/Release/精确最终macOS/Linux CI及冷安装为准，不凭文档状态。
 
-18.10.2 本地真实编译版证据：Settings 新增结构化任务结果中文搜索、原生布尔保存/恢复、中文思考选项与同进程 en/zh；Commands 裸 /、2 项技能折叠/Tab 展开、第三方及参数/文件原文、models 与 q 别名、Tab/Enter 原生 Settings 执行、plan/loop/model/switch/effort 动态状态、Unicode/ASCII 预设恢复。禁止出站网络的新 TUI 会话 agentStarts/providerRequests 均为 0。Stats 11 个中文导航、中文/English、刷新/路由/同 origin 英文重启、请求与工具 Span 抽屉原始数据、三图表模式、390px 与 G+字母键盘、双项目三会话、真实 SSE 版本进展及 6→7 请求的可见 React 异步更新；12 组原始/包装方法/Host/Origin/操作头/CORS 对照相同。真实 Bun 1.4.3 保留 --smol/用户 preload，单官方监听器、0700/0600 私有路径与空格 TMPDIR；费用确认仅观察并取消，从未点击继续。默认 /usr/bin/open 的成功和人为失败各一次精确新 target 定向回收，既有 13 个用户页面未动。早期验收驱动的 hash/隐藏缓存节点选择器及模态遮挡错误均回收后纠正，不计通过；最终 CI、干净 GitHub 安装及资源零残留仍须现场核对。
+18.10.3 本机编译证据：中文搜索两项变化说明、预算200→150→200原生保存/恢复，思考中文选项与/effort英文参数隔离，同进程Settings及Commands en/zh恢复。干净会话验证裸/、两项skill折叠/展开及第三方原文、models/q别名、Tab/Enter原生Settings执行、plan/loop关闭→开启→关闭、effort快捷键high→xhigh及Unicode/ASCII恢复、原始文件名；agent_start为0，全部fetch在dispatch前拒绝。Commands另以新版真实ModelControls验证未验证模型不提供auto、显式effort及有效服务层级。Stats11导航、中文/English/刷新/路由/同origin重启、请求与工具Span抽屉、图表模式、390px/键盘、双项目三会话与实际6→7请求更新；同名Requests/Costs/Overview数据、正文与错误保持。费用确认只观察后取消，未点击继续。
 
-18.10.2 生命周期十项（实际 PTY Ctrl+C、异常子进程、launcher SIGKILL/父进程消失、参数/无效及占用端口/恢复）通过，私有目录与页面/进程/端口零残留。修正后的正常 RPC 将全部外部及本机 fetch 在 dispatch 前拒绝，13 次模型目录 GET 尝试、0 推理/费用请求；最终编译 smoke-cli 同样拒绝全部 fetch，macOS 15 次目录 GET。不得称零请求尝试；早期脚手架曾允许本机目录 GET，不能证明未接触已有本机目录服务。发布仍须最终提交 CI、干净 GitHub 安装及最终资源现场核对。
+本轮smoke-cli使用真正官方绝对路径，Bun1.4.3保留--smol/用户preload，空格路径、0700/0600私有目录、单监听器及成功/人为失败清理通过（3页创建/3页关闭）。实际默认/usr/bin/open两轮各开一个精确origin新target，成功及人为断言失败均定向关页再停服务；当阶段既有7页身份与URL保持，2页创建/2页关闭/0残留。默认和命名Profile/实际XDG下新编译进程加载稳定逻辑包路径，物理目录换址后新进程仍加载；缺SHELL/USER/LOGNAME解析实际账户登录shell，dry-run/标准卸载及原值透传通过，source-linked doctor3/1/0警告如实保留。早期驱动误把/plan on尾词提交为正文、relay默认open误导航现有页、测试PATH缺官方目录与opener误受fetch guard限制均纠正并回收；误导航按同target恢复原URL。早期轮不计零agent_start或正式验收，所有fetch已在dispatch前拒绝，未泄露真实凭据或运行付费评估。
 
+18.10.3生命周期专项：原始/包装22项静态/API方法、Host/Origin、操作头、CORS/400/404逐项相同；非默认Profile损坏gzip的真实500/错误正文保持，原跨Host/Origin允许不冒称拦截。SSE实际version2→3、25文件25记录，真实PTY Ctrl+C原版/包装退出0；官方子进程异常、launcher SIGKILL(3790ms)、父消失(1009ms)、非法/占用端口及参数恢复通过。该专项含驱动失败轮共45页创建/45关闭、5浏览器关闭、77登记PID无存活、24私有preload和5run根目录全回收；35次fetch尝试在dispatch前阻断，无模型/付费调用。
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前汉化范围：414 项 UI 元数据，18.9.1→18.10.2 新增 task.structured 并复核 task.softRequestBudget 说明/哈希变化；保留默认值、类型、选项 value、group、凭据标记、8 个可配置动态 getter、保存与可逆恢复语义。
+- 当前汉化范围：414 项 UI 元数据，18.10.2→18.10.3 无新增/删除，snapcompact.toolResults 与 task.softRequestBudget 两项说明/哈希变化；配置专用 task.agentSoftRequestBudget 不计 UI。插件保留路径、类型、默认值、选项value、group、凭据标记、8个可配置动态getter、原保存与可逆恢复语义。
 - 命令补全汉化：85 个内置斜杠命令、93 个命令名/别名的顶层补全说明、实时状态与技能数量；通过公共 addAutocompleteProvider 包装显示结果，不改命令注册表、命令名、参数提示、匹配排序、插入或执行。参数／文件补全、第三方描述和未知原文保持原样，switch / loop / effort 保留动态宿主键位。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。

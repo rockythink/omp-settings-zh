@@ -1,6 +1,6 @@
 /**
- * Display-only copy reviewed against @oh-my-pi/omp-stats 18.10.2. All 92 Stats
- * source files, including 73 client files, are unchanged from 18.9.1.
+ * Display-only copy reviewed against @oh-my-pi/omp-stats 18.10.3. All 92 Stats
+ * source files, including 73 client files, are unchanged from 18.10.2.
  * Apply only to known UI
  * text/attributes, never journal payloads, identifiers, or arbitrary data cells.
  * Protocol names, command names, currencies, and brands remain unchanged.

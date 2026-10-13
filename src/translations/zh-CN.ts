@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.10.2",
+  "sourceOmpVersion": "18.10.3",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -2186,9 +2186,9 @@ export const zhCN = {
       }
     },
     "snapcompact.toolResults": {
-      "sourceHash": "96bc045f84c1870203b3f43f77a214f7f7e24e4fc42240ebcf4872bd5d953f7e",
+      "sourceHash": "d3f040ce4321e0fc8002e7f144b6181a1fc4db04b138dc17f0b52fe9640d2e4e",
       "label": "Snapcompact 工具结果",
-      "description": "实验性功能：将较大的历史工具结果渲染为高密度 PNG 图像而非文本（仅限视觉模型）；可减少累积的读取和搜索输出所占用的 token"
+      "description": "实验性功能：将较大的工具结果（包括最新一条）渲染为高密度 PNG 图像而非文本（仅限视觉模型）。可减少累积的搜索和命令输出所占用的 token；读取结果仍保留文本，除非已知该模型能根据图像精确编辑",
     },
     "tools.format": {
       "sourceHash": "e9fbb3f0e902e4d0e0568947251244fb69bd53f8ec90d24e0ea65e55d8ddae90",
@@ -3406,9 +3406,9 @@ export const zhCN = {
       "description": "空闲子代理在停放到磁盘前保持驻留内存的时长（ms）。向已停放的代理发送消息或恢复代理时，会自动唤醒代理。设为 0 时，空闲代理会保持驻留内存直至退出"
     },
     "task.softRequestBudget": {
-      "sourceHash": "13709303d29139f6c5127bd4ad05ef26b2f074a8dcb194495b065f344e7a9da4",
+      "sourceHash": "d3a5073c64d2c3f0b0c1ae7eb20eaf88f7d0d63cedd0e06b75b4cb17a3d9dbdd",
       "label": "子代理软请求预算",
-      "description": "每个子代理的软请求预算（每次运行中的 assistant 请求数）。超出预算时会注入收尾引导通知（见 task.softRequestBudgetNotice）；达到预算的 1.5 倍时会强制停止运行，代理必须交回其部分发现。设为 0 将禁用此防护。内置的 scout/sonic 代理有更低的内置预算上限，因此低于该上限的值仍会应用于这些代理",
+      "description": "每个子代理的软请求预算（每次运行中的 assistant 请求数）。超出预算时会注入收尾引导通知（见 task.softRequestBudgetNotice）；达到预算的 1.5 倍时会强制停止运行，代理必须交回其部分发现。设为 0 将禁用此防护。内置的 scout/sonic 代理有更低的内置预算上限，因此低于该上限的值仍会应用于这些代理。task.agentSoftRequestBudget 中的条目会替换对应名称代理的这一预算",
       "options": {
         "0": {
           "label": "已禁用"

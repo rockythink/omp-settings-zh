@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现版本：18.10.2；发布状态以现场 tag/Release 为准
-- 目标验证基线：OMP 18.10.2（实际内嵌 Bun 1.4.3）；三部分独立编译版、最终 macOS/Linux CI 与冷安装/资源回收构成发布门禁
+- 实现版本：18.10.3；发布状态以现场 tag/Release 为准
+- 目标验证基线：OMP 18.10.3（实际内嵌 Bun 1.4.3）；三部分独立编译版、最终 macOS/Linux CI 与冷安装/资源回收构成发布门禁
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -66,7 +66,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存 OMP 18.10.2 的 85 条官方英文、93 个命令名/别名。相对 18.9.1，完整注册表、静态原文、别名及 27 个动态回调逐字未变；同步/异步/partial/AbortSignal/可选能力接口也未变。switch 仍使用 session.effectiveServiceTier(model)，真实编译 /switch 以隔离官方性能样本验证 default/priority/ultrafast/flex 随 /fast 与 /slow 的有效层级变化；effort 与 switch/loop 的三种符号键位另做真实 getter 行为回归。原 provider 继续负责匹配、排序、参数提示、插入和执行，插件不复制业务实现、不放宽静态门禁。
+`src/translations/slash-commands.ts` 保存 OMP 18.10.3 的85条官方英文/93名称别名。相对18.10.2，完整注册表、静态原文、别名、27动态回调与同步/异步/partial/AbortSignal/可选能力接口逐字未变；动态回调依赖的ModelControls行为有变化：未验证模型不继承隐式effort，不提供auto，自动分类跳过未验证模型。原provider实时获取selectors，包装不缓存/改变参数，因此无实现改动；新版真实ModelControls探针覆盖显式high/off、原英文current、恢复auto及有效服务层级。实际编译版另验plan/loop、effort快捷键、符号预设、en/zh、技能/别名/参数与原生Tab/Enter执行；不以静态门禁替代动态行为。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -86,7 +86,8 @@
 - 18.8.7 独立审查：相对 18.8.4 的 Stats 90 个源码、72 个客户端文件逐字不变，609 个键与 105 个严格模板保留。官方共享目录新增两个 CoralBricks 模型，共同 bundled cost 不变，但 Cursor／Copilot Haiku 5.5 价格兼容规则有变化；不复制计算。真实编译 CLI 的全页、API／SSE、数据边界、单监听器及生命周期须另验，源码相同不代表发布通过。
 - 18.8.8 独立审查：相对 18.8.7 Stats 源码与客户端逐字不变；npm 与 GitHub 标签相互一致。官方共享目录新增 connectionBoundNativeHistory 兼容字段，formatDuration 边界取整与 Devin/Cursor 默认模型解析变化由官方运行时计算；显示层不复制。真实编译 CLI 的全页、API／SSE、数据边界、单监听器及生命周期须另验，源码相同不代表发布通过。
 - 18.9.1 独立审查：既有 72 个客户端文件逐字未变，新增 favicon；frustration 的问题改从官方 prompts/judge/frustration.json 读取，原问题与开销常量不变。609 键/105 严格模板、UI 白名单、数据排除及异步节点复用处理保持。真实编译 Bun 1.4.3 的原与包装服务逐项比较：静态 POST/跨 Host/Origin 允许，OPTIONS 200 无 CORS 授权；judge 方法与操作头拒绝、原 API/SSE 不变，身份头不作为授权。
-- 18.10.2 独立审查：全部 92 个 Stats 源码/73 个客户端文件相对 18.9.1 逐字未变；stats-cli、openPath、独立 judge 和 build 路径也未变。609 键/105 模板与白名单/数据排除不重复修改；共享模型目录为 5697 条（净增 1），模型与价格更新交由官方运行时，不复制计算。真实编译版原/包装 12 组方法/Host/Origin/操作头/CORS 合同对照相同，数据同名键保持原文。
+- 18.10.2 独立审查：全部92个Stats源码/73个客户端文件相对18.9.1逐字未变，609键/105模板保持。
+- 18.10.3 独立审查：全部92源码/73客户端相对18.10.2逐字未变；stats-cli/openPath/utils及Bun调用合同也未变。真实编译Bun1.4.3单原监听器提供同源脚本，语言/11页/抽屉/追踪/图表/异步数据/窄屏/键盘与同origin重启另验；同名UI键的数据保持原文，不复制计算或放宽静态权限。
 
 ## 6. 检查与真实验证
 
@@ -103,7 +104,7 @@
 
 ## 7. 发布边界
 
-从 18.4.6 起，宿主适配以目标版本编号为基线；独立功能或修复递增插件补丁号并注明真实宿主，已用编号不复用。当前源码/开发依赖/实际宿主为 18.10.2，声明范围 `>=18.10.2 <19`；维护开始最新 Release 为 v18.9.1，远端 main 为 0b31695。声明范围不证明所有版本兼容；Settings 预检、Commands 静态与动态合同、Stats 实际 CLI/浏览器/资源门禁分别执行，不以固定 npm 依赖或旧进程通过冒充新版宿主支持。
+从18.4.6起，宿主适配以目标版本编号为基线，独立插件增量使用未发布且高于已发布版本的补丁号。当前源码/开发依赖/实际宿主18.10.3，声明范围`>=18.10.3 <19`；维护开始最新Release v18.10.2、远端main03ff215。声明范围不等于所有版本已验收；三部分、最终精确提交macOS/Linux CI、冷GitHub安装及资源零残留分别构成门禁。Windows PR#1是独立未合并草稿，不纳入正式支持。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 
