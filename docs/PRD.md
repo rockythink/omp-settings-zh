@@ -1,10 +1,10 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.10.3 源码与真实 macOS 编译版验收；发布状态以对应 tag/Release、最终 macOS/Linux CI 和干净安装/资源门禁为准
-- 基线版本：OMP 18.10.3（实际编译 Bun 1.4.3）
-- 文档日期：2026-10-13
+- 状态：18.11.0 源码与真实 macOS 编译版验收；发布状态以对应 tag/Release、最终 macOS/Linux CI 和干净安装/资源门禁为准
+- 基线版本：OMP 18.11.0（实际编译 Bun 1.4.3）
+- 文档日期：2026-10-15
 
-相对 18.10.2：Settings UI 414/414，无新增/删除，snapcompact.toolResults 与 task.softRequestBudget 两项说明/哈希变化；task.agentSoftRequestBudget 为配置专用。Commands 85/85、93 标识、27 个动态回调及公共同步/异步/partial/AbortSignal/可选能力接口逐字未变；上游未验证模型 effort 选择逻辑变化另做行为回归。Stats 92 源码/73 客户端文件逐字未变，609 键/105 严格模板保留。静态门禁不能替代实际编译版交互、冷安装或资源回收。
+相对 18.10.3：Settings UI 412/412，删除两项 Codex Code Mode，复核 contextPromotion.enabled、retry.modelFallback、task.structured 三项说明/哈希；gc.compress 与 gc.compressAfterDays 为配置专用。Commands 85/85、93 标识、27 个动态回调及公共 provider 接口未变；/plugins 参数扩大到 installed plugin 并保持英文，/new 使用新版官方新会话语义。Stats 73 个客户端文件未变，92 个源码中 6 个服务端文件变化；609 键/105 严格模板保留。静态门禁不能替代实际编译版交互、冷安装或资源回收。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 

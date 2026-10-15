@@ -2,6 +2,39 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.11.0] - 2026-10-15
+
+### Baseline
+
+- 实际官方宿主经受支持 `omp update` 从 18.10.4 升至 18.11.0，内嵌 Bun 1.4.3；coding-agent/pi-utils 开发依赖锁定 18.11.0，Stats 官方稳定包独立审阅基线亦为 18.11.0。保护旧脏工作区和独立 Windows 草稿，不复用或覆盖历史标签。
+
+### Settings
+
+- 412/412 完整、Schema 漂移 0。删除两项 Codex Code Mode；独立复核 `contextPromotion.enabled`、`retry.modelFallback`、`task.structured` 三项说明及哈希。`gc.compress` / `gc.compressAfterDays` 无 UI，不补造设置面板。
+- 保留静态选项、8 个动态 getter 与原设置语义。真实编译版验证中文搜索、autoResume false→true→false 保存/恢复、同进程 en/zh、中文思考选项与 `/effort` 英文参数隔离。
+
+### Commands
+
+- 85 定义/93 名称别名/27 动态回调，顶层英文、别名与 provider 同步/异步/partial/AbortSignal/可选能力接口相对 18.10.3 不变；完整静态门禁漂移 0。实际编译英文 provider 的全部 85 个命令与锁定源码匹配。
+- `/plugins` 的 enable/disable 参数扩大为 installed plugin，提示改为 `<plugin>`，参数说明仍保留英文；别名与参数边界新增行为回归。`/new` 使用新版官方新会话处理，不复制或拦截执行。
+- 新编译会话验证裸 `/`、两项技能折叠/展开、models/plugin/q 别名、第三方和文件原文、Tab/Enter 原生 Settings 执行、plan/loop 状态、effort 快捷键 high→xhigh、Unicode/ASCII 与 en/zh 恢复。隔离合成性能样本验证 switch 的 default/priority/ultrafast/flex 实时层级，模型 ID/tier 原文保持；样本不代表真实性能。
+
+### Stats
+
+- 73 个客户端文件逐字未变，609 键/105 严格模板及白名单/数据边界保留。92 个源码中 6 个服务端文件变化：周期/日期费率、Frustration 有效费率、`.omp-gc-compress-*` 扫描及 watcher 排除、Codex 配额窗口分组和共享类型注释。计算继续交给官方编译版。
+- 实际 11 页中文/English 往返、刷新/路由/同 origin 英文重启、请求/工具 Span 抽屉、图表模式、390px/键盘、双项目三会话及 6→7 异步请求更新通过。模型/提供商同名数据、路径、正文和错误保持原文；费用确认仅观察并取消，未点“继续”。
+- 编译 API 验证 7d 跨账户合并、5h/Spark 隔离及无标签 raw ID；压缩暂存初始/实时均不计入，正常会话 0→1→3，SSE version 2→3→4。
+
+### Verification and release boundaries
+
+- `bun install --frozen-lockfile` / `bun run check`：64 pass/0 fail、2530 断言；1816 项显示变更、3 轮可逆恢复、源码冒烟零网络。
+- 真正官方绝对路径 CLI 冒烟、默认/命名 Profile 与 XDG 稳定逻辑路径、物理换址后新进程、无 SHELL 登录 shell、JSON/summary/非 Stats、dry-run/标准卸载通过。local link doctor 的 package_manifest 警告不隐藏。
+- 实际 Bun preload 保留用户 flags/preload、空格路径与 0700/0600，只有原官方一个 Stats 监听器。原/包装 26 项 HTTP 对照仅自有脚本 GET 有预期差异；原跨 Host/Origin 允许，方法/操作头/CORS/拒绝/真实 500 不变。
+- 真实 PTY Ctrl+C 原/包装均退出 0；官方子异常、launcher SIGKILL、父消失、非法/占用端口及私有目录回收通过，孤儿 wrapper 未采集精确退出码。测试专属 opener 真实交付 URL；默认 `/usr/bin/open` 另实测单次开页和原 14 页保护，成功/人为断言失败均回收。
+- 正式 TUI agent_start=0，目录 GET 在 dispatch 前拒绝；早期两次驱动误提交各触发一次 agent_start，含被拦截的推理 POST 尝试，不计正式零 turn 证据。早期网页驱动失败均回收并纠正；未使用真实凭据或运行付费评估。
+- 发布仍以精确最终提交 macOS/Linux CI、干净 GitHub 安装/doctor/原 Stats/卸载和本轮资源零残留全部通过为前提；Windows PR #1 独立未合并，不宣称支持。已有 Agent/Stats 不热注入，升级后须重启 OMP、新终端及相应 Stats 服务。
+
+
 ## [18.10.3] - 2026-10-13
 
 ### Baseline

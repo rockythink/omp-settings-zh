@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.10.3. */
+/* Display-only translations; source-review baseline OMP 18.11.0. */
 export const slashCommandTranslations = [
   {
     "name": "security",

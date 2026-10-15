@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.10.3",
+  "sourceOmpVersion": "18.11.0",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -178,16 +178,6 @@ export const zhCN = {
       "sourceHash": "47cc3667d60052e8a40bef6747773c42dda7a1a855279b31cc8c96800e16b6f2",
       "label": "最大并发请求数",
       "description": "每个提供商 ID（例如 \"openai\" 或 \"anthropic\"）允许的最大并发 LLM 请求数，由使用此配置根目录的本地 OMP 进程共享；未列出的提供商不受限制"
-    },
-    "providers.openai-codex.codeMode": {
-      "sourceHash": "596c36b70f679951fff0b98a161c980337a016fb0dcf16b81823d7f1d27d3343",
-      "label": "Codex Code Mode",
-      "description": "通过 `eval` 路由 Codex `code_mode_only` 模型（GPT-5.6）。直接工具为 `eval`、`ask`、`todo`、`yield`、`think`、`checkpoint` 和 `rewind`；其他会话工具通过 `eval` 单元调用。与 codex-rs Code Mode 保持一致。`auto` 遵循模型目录中的标记"
-    },
-    "providers.openai-codex.codeModeDirectTools": {
-      "sourceHash": "21ff26a401f3283facc95e858d5ed2e4962094e914d2725d1cf4465beba42a50",
-      "label": "Codex Code Mode 直接工具",
-      "description": "Codex Code Mode 的额外直接工具；标准直接工具为 `eval`、`ask`、`todo`、`yield`、`think`、`checkpoint` 和 `rewind`"
     },
     "modelRoleStorage": {
       "sourceHash": "559e85e5e98b03b3e4cea23294f68541afc94696dc64bf6325e9eed7b147b38b",
@@ -1443,9 +1433,9 @@ export const zhCN = {
       "description": "两次重试之间的最长等待时间，单位为 ms。当提供商要求等待的时间超过此值，且凭据或模型回退均未成功时，请求会快速失败，而不是休眠等待（例如 Anthropic 长达 3 小时的速率限制窗口）。设为 0 可取消上限，让会话等待提供商声明的配额重置后自动恢复"
     },
     "retry.modelFallback": {
-      "sourceHash": "3decae223a3b1229a676877586502fa56424b2f5d819d686e6531976e7e266d2",
+      "sourceHash": "ee7e6e73c25e498f297b9fcd6da6310692057847f6cdb77b4a466904c1712be5",
       "label": "重试模型回退",
-      "description": "允许在重试恢复时切换到已配置的回退模型"
+      "description": "提供商出错后，允许在重试恢复时切换到 retry.fallbackChains 中的模型；此设置与“自动升级上下文”相互独立"
     },
     "retry.fallbackOn": {
       "sourceHash": "21672a381f63c7cdcbc2e26b11894af699f21bf1a0a56e61b626814acc2415bc",
@@ -1933,9 +1923,9 @@ export const zhCN = {
       }
     },
     "contextPromotion.enabled": {
-      "sourceHash": "c6e19d3856ee8d0bdaa2f1e438280eb2807d1d0641cde05b24a488b6a1385b5b",
+      "sourceHash": "dae2705bbc87172199eb650e1553585a8f9dc210b20ebf1138e6748a0ff1e4df",
       "label": "自动升级上下文",
-      "description": "上下文溢出时改用上下文窗口更大的模型，而不是进行压缩"
+      "description": "上下文溢出时切换到模型的 contextPromotionTarget，而不是进行压缩。重试回退时的模型切换由“重试模型回退”控制"
     },
     "extendedContext": {
       "sourceHash": "871bf725950ada3db805571e5a2f509029a0946896dde3a2fd13bc02ca4fd53e",
@@ -3310,9 +3300,9 @@ export const zhCN = {
       "description": "将 task 工具切换为批处理结构：一次调用携带 { context, tasks[] }——每个条目对应一个子代理，可为每个条目指定可选的 agent（默认为会话的 spawn-policy agent）和隔离设置，并且必须提供共享上下文以添加到每项任务之前。启用 async.enabled=true 时，每次 spawn 都会作为独立的后台代理运行，并采用正常的空闲/停放生命周期；否则调用会阻塞，直至获得合并结果。禁用后恢复扁平的单次 spawn schema"
     },
     "task.structured": {
-      "sourceHash": "dd338cf50e65b7c4b7cb452b11ebad281571f8bb68b681482efcd31df5296d1f",
+      "sourceHash": "3ec811e3e67ce6ad912560be364f9c7b5b0c6070d9827b0a4f355537dc2d2e1f",
       "label": "结构化任务结果",
-      "description": "在 task 工具中提供 outputSchema/schemaMode，并通过 yield 工具返回子代理结果，按调用方或代理的输出 Schema 校验。关闭后，task 子代理不提供 yield 工具，而是将最终消息作为纯文本返回。Eval 中的 agent()/workpool spawn 始终保留结构化结果"
+      "description": "在 task 工具中提供 outputSchema/schemaMode，并通过 yield 工具返回子代理结果，按调用方或代理的输出 Schema 校验。关闭后，task 子代理不提供 yield 工具，而是将最终消息作为纯文本返回，但定义中设置 structured: true 的代理除外。Eval 中的 agent()/workpool spawn 始终保留结构化结果"
     },
     "task.enableEffort": {
       "sourceHash": "d6d2b80e6c10272591a12b32e3300b7c3973c280ab811c1c8978d3977ba5681c",

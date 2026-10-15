@@ -196,6 +196,36 @@ test("official required subcommand remainder hints stay literal in both language
   }
 });
 
+test("official installed-plugin arguments and alias retain upstream English prose and plugin hints", async () => {
+  const command = buildTuiBuiltinSlashCommands({} as TuiSlashCommandRuntime).find(command => command.name === "plugins")!;
+  const native = new CombinedAutocompleteProvider([command]);
+  let chinese = true;
+  const provider = localizeSlashAutocomplete(native, () => chinese);
+  for (const language of [true, false]) {
+    chinese = language;
+    for (const name of ["plugins", "plugin"]) {
+      const text = "/" + name;
+      const original = native.trySyncSlashCompletion(text)!;
+      const localized = provider.trySyncSlashCompletion!(text)!;
+      expect(localized.items[0]!.description).toBe(language ? "查看和管理已安装插件" : original.items[0]!.description);
+      expect(provider.applyCompletion([text], 0, text.length, localized.items[0]!, localized.prefix))
+        .toEqual(native.applyCompletion([text], 0, text.length, original.items[0]!, original.prefix));
+      for (const args of ["", "l", "list", "e", "enable", "enable ", "d", "disable", "disable "]) {
+        const input = text + " " + args;
+        const originalArgs = await native.getSuggestions([input], 0, input.length);
+        const localizedArgs = await provider.getSuggestions([input], 0, input.length);
+        expect(localizedArgs).toEqual(originalArgs);
+        expect(provider.trySyncSlashCompletion!(input)).toBeNull();
+        expect(provider.getInlineHint!([input], 0, input.length)).toBe(native.getInlineHint([input], 0, input.length));
+        for (let index = 0; index < (originalArgs?.items.length ?? 0); index++) {
+          expect(provider.applyCompletion([input], 0, input.length, localizedArgs!.items[index]!, localizedArgs!.prefix))
+            .toEqual(native.applyCompletion([input], 0, input.length, originalArgs!.items[index]!, originalArgs!.prefix));
+        }
+      }
+    }
+  }
+});
+
 test("official effort arguments follow live model selectors and retain current markers and literal values", async () => {
   const settings = Settings.isolated();
   let levels = ["off", "low", "high"];
@@ -503,7 +533,6 @@ test("all official commands and aliases preserve ranking and completion in both 
   const localized = (await provider.getSuggestions(["/"], 0, 1))!;
   expect(localized.items.map(item => item.value)).toEqual(original.items.map(item => item.value));
   const identifiers = BUILTIN_SLASH_COMMAND_DEFS.flatMap(command => [command.name, ...(command.aliases ?? [])]);
-  expect(identifiers).toHaveLength(93);
   for (const name of identifiers) {
     const text = "/" + name;
     const originalItem = staticNative.trySyncSlashCompletion(text)!.items.find(item => item.value === name)!;

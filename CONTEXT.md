@@ -2,17 +2,19 @@
 
 ## 当前项目
 
-当前源码、开发依赖及适配基线为 18.10.3；真实官方宿主经受支持 update 从 18.10.2 升至 18.10.3（内嵌 Bun 1.4.3）。维护开始远端 main/Release 为 03ff215/v18.10.2，本机插件为同一 GitHub 来源18.10.2，doctor 5/0/0；原脏工作区 main fc689e7/package18.8.7 与 Windows 草稿保持，在同仓库干净主线 worktree 适配。Settings414/414，无新增UI，复核 snapcompact.toolResults、task.softRequestBudget 两项说明/哈希；task.agentSoftRequestBudget为配置专用。Commands85定义/93标识/27回调及接口逐字未变，上游未验证模型effort实时选择另验；Stats92源码/73客户端文件逐字未变，609键/105模板保留。发布以现场tag/Release/精确最终macOS/Linux CI及冷安装为准，不凭文档状态。
+当前源码、开发依赖和真实官方宿主基线为 18.11.0（内嵌 Bun 1.4.3）；受支持 omp update 将实际宿主 18.10.4→18.11.0，下载补丁经官方 SHA-256 校验。维护开始远端 main ca06e04 / Release v18.10.3、本机同一 GitHub 来源插件 18.10.3，doctor 5/0/0；原受保护工作区 main fc689e7/package 18.8.7 的 15 个修改文件、53 个未跟踪项及 Windows 草稿不动，在同仓库独立主线工作树适配。Windows PR #1 仍 OPEN/draft/DIRTY，不属主线 macOS/Linux 支持。发布以最终提交 CI、干净 GitHub 安装及资源门禁为准，不凭候选文档宣称完成。
 
-18.10.3 本机编译证据：中文搜索两项变化说明、预算200→150→200原生保存/恢复，思考中文选项与/effort英文参数隔离，同进程Settings及Commands en/zh恢复。干净会话验证裸/、两项skill折叠/展开及第三方原文、models/q别名、Tab/Enter原生Settings执行、plan/loop关闭→开启→关闭、effort快捷键high→xhigh及Unicode/ASCII恢复、原始文件名；agent_start为0，全部fetch在dispatch前拒绝。Commands另以新版真实ModelControls验证未验证模型不提供auto、显式effort及有效服务层级。Stats11导航、中文/English/刷新/路由/同origin重启、请求与工具Span抽屉、图表模式、390px/键盘、双项目三会话与实际6→7请求更新；同名Requests/Costs/Overview数据、正文与错误保持。费用确认只观察后取消，未点击继续。
+Settings 412/412：删除 providers.openai-codex.codeMode / codeModeDirectTools，复核 contextPromotion.enabled、retry.modelFallback、task.structured 三条说明/哈希；gc.compress / gc.compressAfterDays 仅配置。Commands 85 定义/93 标识/27 动态回调与公共 provider 接口未变；/plugins 的 installed plugin 参数说明与 `<plugin>` 原文保留，/new 走新版原生新会话。Stats 全部 73 客户端文件不变，92 源码中 6 个服务端文件涉及定价、压缩暂存排除和窗口分组；609 键/105 严格模板保持，不复制计算。
 
-本轮smoke-cli使用真正官方绝对路径，Bun1.4.3保留--smol/用户preload，空格路径、0700/0600私有目录、单监听器及成功/人为失败清理通过（3页创建/3页关闭）。实际默认/usr/bin/open两轮各开一个精确origin新target，成功及人为断言失败均定向关页再停服务；当阶段既有7页身份与URL保持，2页创建/2页关闭/0残留。默认和命名Profile/实际XDG下新编译进程加载稳定逻辑包路径，物理目录换址后新进程仍加载；缺SHELL/USER/LOGNAME解析实际账户登录shell，dry-run/标准卸载及原值透传通过，source-linked doctor3/1/0警告如实保留。早期驱动误把/plan on尾词提交为正文、relay默认open误导航现有页、测试PATH缺官方目录与opener误受fetch guard限制均纠正并回收；误导航按同target恢复原URL。早期轮不计零agent_start或正式验收，所有fetch已在dispatch前拒绝，未泄露真实凭据或运行付费评估。
+本机 frozen install/check 64 pass/0 fail、2530 断言，Schema/Commands 静态漂移 0，1816 项显示变化/3 轮恢复/0 源码网络请求。真实新编译 TUI 验证三条设置说明、autoResume false→true→false、中文思考选项与 /effort 英文参数隔离、同进程 en/zh、裸 / 与折叠/展开 2 项技能、models/plugin/q 别名、第三方/文件原文、Tab/Enter 原生设置执行、plan/loop 与 effort high→xhigh、Unicode/ASCII 恢复。隔离的合成性能样本验证 /switch 随 /fast、ultra、/slow 分别选择 default/priority/ultrafast/flex 行；样本不是真实性能。实际英文 provider 的 85 个命令原文与锁定源码无漂移。正式会话 agent_start=0，21 次目录 GET 均在 dispatch 前阻断。早期两次驱动误提交正文各触发一次 agent_start，含推理 POST 尝试但在 dispatch 前被拒绝，不计正式零 turn 证据；随后加入测试专属防误提交门禁，不修改插件产品逻辑。
 
-18.10.3生命周期专项：原始/包装22项静态/API方法、Host/Origin、操作头、CORS/400/404逐项相同；非默认Profile损坏gzip的真实500/错误正文保持，原跨Host/Origin允许不冒称拦截。SSE实际version2→3、25文件25记录，真实PTY Ctrl+C原版/包装退出0；官方子进程异常、launcher SIGKILL(3790ms)、父消失(1009ms)、非法/占用端口及参数恢复通过。该专项含驱动失败轮共45页创建/45关闭、5浏览器关闭、77登记PID无存活、24私有preload和5run根目录全回收；35次fetch尝试在dispatch前阻断，无模型/付费调用。
+真实官方绝对路径 smoke 验证 Bun 1.4.3 合并 --smol/用户 preload、空格路径、0700/0600、单监听器和成功/断言失败回收。默认 /usr/bin/open 实际三轮均只创建一个精确 origin 新页；正式成功/人为失败轮先关页再停服务，原 14 个原生页签身份保持。初轮 SPA fragment 判断和紧接关闭后的 AX 异步观察已纠正并回收。默认及命名 Profile/真实 XDG 下稳定逻辑包路径、物理换址后新进程、缺 SHELL/USER/LOGNAME 的 UID 登录 shell、JSON/summary/非 Stats/dry-run/标准卸载通过；local link doctor 3/1/0 的 package_manifest 警告保留，不能代替 GitHub 冷安装。
+
+Stats 实际 11 页中英往返、刷新/路由/同 origin 英文重启、请求和工具 Span 抽屉、三图表模式、390px/键盘、双项目三会话及 6→7 请求异步渲染通过；同名 Requests/Overview/Costs 数据、正文与错误原文保持。费用确认实际显示估算后取消，未点继续。编译 API 验证周窗口跨账户合并、5h/Spark 隔离、无 windowLabel 保留 raw ID；gc scratch 初始/实时均不计入，正常会话 0→1→3、SSE version 2→3→4。26 项原/包装 HTTP 对照仅自有脚本 GET 产生预期差异，原跨 Host/Origin 允许、CORS/拒绝/真实 500 保持。真实 PTY Ctrl+C 两侧退出 0，官方子异常、父消失、launcher SIGKILL（约 3.94s）、非法/占用端口与私有 preload 清理通过；孤儿 wrapper 精确退出码未采集，不宣称退出 0。早期网页驱动的解释器、隐藏旧页面选择器与异步控件等待问题均单独记录并先回收，未作为通过证据。
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前汉化范围：414 项 UI 元数据，18.10.2→18.10.3 无新增/删除，snapcompact.toolResults 与 task.softRequestBudget 两项说明/哈希变化；配置专用 task.agentSoftRequestBudget 不计 UI。插件保留路径、类型、默认值、选项value、group、凭据标记、8个可配置动态getter、原保存与可逆恢复语义。
+- 当前汉化范围：412 项 UI 元数据；18.10.3→18.11.0 删除两项 Code Mode，contextPromotion.enabled、retry.modelFallback、task.structured 三项说明/哈希变化；gc.compress / gc.compressAfterDays 不计 UI。插件保留路径、类型、默认值、选项 value、group、凭据标记、8 个动态 getter、原保存与可逆恢复语义。
 - 命令补全汉化：85 个内置斜杠命令、93 个命令名/别名的顶层补全说明、实时状态与技能数量；通过公共 addAutocompleteProvider 包装显示结果，不改命令注册表、命令名、参数提示、匹配排序、插入或执行。参数／文件补全、第三方描述和未知原文保持原样，switch / loop / effort 保留动态宿主键位。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
