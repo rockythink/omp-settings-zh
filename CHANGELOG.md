@@ -2,11 +2,11 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
-## [18.11.0] - 2026-10-15
+## [18.11.1] - 2026-10-16
 
 ### Baseline
 
-- 实际官方宿主经受支持 `omp update` 从 18.10.4 升至 18.11.0，内嵌 Bun 1.4.3；coding-agent/pi-utils 开发依赖锁定 18.11.0，Stats 官方稳定包独立审阅基线亦为 18.11.0。保护旧脏工作区和独立 Windows 草稿，不复用或覆盖历史标签。
+- 实际官方宿主经受支持 `omp update` 从 18.10.4→18.11.0→18.11.1，内嵌 Bun 1.4.3；coding-agent/pi-utils 开发依赖及 Stats 独立审阅基线均为 18.11.1。18.11.0 中间提交 CI 成功但未打 tag/Release；新宿主重跑完整门禁。保护旧脏工作区和 Windows 草稿，不覆盖历史标签。
 
 ### Settings
 
@@ -15,23 +15,23 @@
 
 ### Commands
 
-- 85 定义/93 名称别名/27 动态回调，顶层英文、别名与 provider 同步/异步/partial/AbortSignal/可选能力接口相对 18.10.3 不变；完整静态门禁漂移 0。实际编译英文 provider 的全部 85 个命令与锁定源码匹配。
-- `/plugins` 的 enable/disable 参数扩大为 installed plugin，提示改为 `<plugin>`，参数说明仍保留英文；别名与参数边界新增行为回归。`/new` 使用新版官方新会话处理，不复制或拦截执行。
-- 新编译会话验证裸 `/`、两项技能折叠/展开、models/plugin/q 别名、第三方和文件原文、Tab/Enter 原生 Settings 执行、plan/loop 状态、effort 快捷键 high→xhigh、Unicode/ASCII 与 en/zh 恢复。隔离合成性能样本验证 switch 的 default/priority/ultrafast/flex 实时层级，模型 ID/tier 原文保持；样本不代表真实性能。
+- 85 定义/93 名称别名/27 动态回调，顶层英文、别名与公共 provider 接口相对 18.10.3 不变；静态门禁漂移 0，编译英文 provider 的 85 个 canonical 与源码一致。partial 在正式 TUI 未触发，以既有行为回归补充，不冒称实测。
+- 上游统一双引号 `@` 文件 token、修正 composer 点击偏移和 image-reference 资源所有权；不影响显示包装器。`/session pin`、`/jobs`、`/plugins` 参数与输出保持英文，`/new` 使用原生新会话。无需功能适配，不复制执行逻辑。
+- 18.11.1 新会话观察同步/异步裸列表、两项技能折叠/展开、全部 8 个 alias prefix、第三方/effort/普通及双引号文件原文、Tab/Enter 原生 Settings 执行；双引号 Tab 插入 `@"quoted note.txt"`。plan/loop、effort high→xhigh→off→high、Unicode/ASCII 与 en/zh 恢复，switch 四种层级的隔离合成样本选择均通过；样本不代表真实性能。
 
 ### Stats
 
-- 73 个客户端文件逐字未变，609 键/105 严格模板及白名单/数据边界保留。92 个源码中 6 个服务端文件变化：周期/日期费率、Frustration 有效费率、`.omp-gc-compress-*` 扫描及 watcher 排除、Codex 配额窗口分组和共享类型注释。计算继续交给官方编译版。
+- 73 个客户端文件未变；18.11.0 的 6 个服务端文件涉及周期/日期费率、有效费率、压缩暂存扫描/watch 排除、Codex 窗口分组与注释；18.11.1 全部 179 包文件仅 package.json 不同。保留 609 键/105 模板，严格 saved 模板允许负号，保持数字/百分号并拒绝周围数据；实际官方页面观察负数已显示中文，补数值边界回归。
 - 实际 11 页中文/English 往返、刷新/路由/同 origin 英文重启、请求/工具 Span 抽屉、图表模式、390px/键盘、双项目三会话及 6→7 异步请求更新通过。模型/提供商同名数据、路径、正文和错误保持原文；费用确认仅观察并取消，未点“继续”。
-- 编译 API 验证 7d 跨账户合并、5h/Spark 隔离及无标签 raw ID；压缩暂存初始/实时均不计入，正常会话 0→1→3，SSE version 2→3→4。
+- 编译 API 验证 7d 跨账户合并、5h/Spark 隔离及无标签 raw ID；压缩暂存初始/watch 均不计入，普通会话创建/追加 0→1→2，SSE version 2→3→4。Stats 启动时 sessions 根目录不存在会退回周期扫描，这是上游行为；正式 watcher 验收预建隔离根目录并保留先前超时诊断。
 
 ### Verification and release boundaries
 
-- `bun install --frozen-lockfile` / `bun run check`：64 pass/0 fail、2530 断言；1816 项显示变更、3 轮可逆恢复、源码冒烟零网络。
+- 最终 `bun install --frozen-lockfile` / `bun run check`：65 pass/0 fail、2541 断言；412/412 设置、85/85 命令/93 标识、漂移 0，1816 项显示变更与 3 轮可逆恢复，源码冒烟零网络。
 - 真正官方绝对路径 CLI 冒烟、默认/命名 Profile 与 XDG 稳定逻辑路径、物理换址后新进程、无 SHELL 登录 shell、JSON/summary/非 Stats、dry-run/标准卸载通过。local link doctor 的 package_manifest 警告不隐藏。
 - 实际 Bun preload 保留用户 flags/preload、空格路径与 0700/0600，只有原官方一个 Stats 监听器。原/包装 26 项 HTTP 对照仅自有脚本 GET 有预期差异；原跨 Host/Origin 允许，方法/操作头/CORS/拒绝/真实 500 不变。
 - 真实 PTY Ctrl+C 原/包装均退出 0；官方子异常、launcher SIGKILL、父消失、非法/占用端口及私有目录回收通过，孤儿 wrapper 未采集精确退出码。测试专属 opener 真实交付 URL；默认 `/usr/bin/open` 另实测单次开页和原 14 页保护，成功/人为断言失败均回收。
-- 正式 TUI agent_start=0，目录 GET 在 dispatch 前拒绝；早期两次驱动误提交各触发一次 agent_start，含被拦截的推理 POST 尝试，不计正式零 turn 证据。早期网页驱动失败均回收并纠正；未使用真实凭据或运行付费评估。
+- 正式 18.11.1 TUI agent_start=0、21 次目录 fetch 在 dispatch 前拒绝；早期驱动有误提交及 input guard 合同错误，累计 4 次 agent_start，含被阻断的推理 POST 尝试，不计正式零 turn 证据。一次 login shell path_helper 使测试 opener 失效，意外单页按精确 63824 origin/新原生身份认领关闭，恢复原 14 页；之后在同一 shell 子命令断言 opener 后重验。所有失败轮均回收，不使用真实凭据或运行付费评估。
 - 发布仍以精确最终提交 macOS/Linux CI、干净 GitHub 安装/doctor/原 Stats/卸载和本轮资源零残留全部通过为前提；Windows PR #1 独立未合并，不宣称支持。已有 Agent/Stats 不热注入，升级后须重启 OMP、新终端及相应 Stats 服务。
 
 
