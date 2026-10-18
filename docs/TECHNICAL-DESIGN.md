@@ -111,10 +111,13 @@
 
 ## 7. 发布边界
 
-候选源码/开发依赖/实际宿主为18.12.1，范围 `>=18.12.1 <19`；初始main/Release与GitHub插件均18.11.1，旧工作区/Windows草稿保留。三部分目标编译交互、精确最终macOS/Linux CI、冷GitHub安装与完整资源账本分别构成门禁。18.12.1原版默认opener已用新AX ref/精确origin验证；包装默认opener失败分支因普通浏览器基线消失未启动。早期18.11.3重启驱动还缺初始空白页target/数量，Profile删除后不能回补；本轮不tag/Release。Windows PR #1独立未合并。
+候选源码/开发依赖/实际宿主为18.12.1，范围 `>=18.12.1 <19`；三部分目标编译交互、精确最终macOS/Linux CI、冷GitHub安装与完整资源账本分别构成门禁。历史默认opener及资源审计缺口保留，不回填旧身份；新轮已重验原生Settings/Commands与headless Stats的完整页面/服务/private路径回收，但用户暂不授权桌面控制，实际默认opener门禁仍未通过，不tag/Release。用户批准单main治理后，本地/远端只保留main；原未提交改动私有备份，旧脏工作树detached归档。Windows PR #1已关闭、未合并，草稿由非发布tag `archive/windows-support-20261018`保留。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 
 上游没有设置变更时复用现有实现和译文，仍检查导入边界、行为契约、原文哈希及实际编译版，再发布对齐版本与兼容说明。有变更则先补译或复核。旧版本与标签不重写；自动检查或实际验证失败不得发布。
+
+本地与远端工作分支固定为main；不按宿主版本创建maintenance分支，临时隔离只用detached worktree并回收。每次正式Release版本必须高于上一Release且未使用，package.json、v版本tag、GitHub Release一致；未发布候选可继续验收，不空升编号。存在适配变化且门禁全部通过后必须实际创建tag与Release，main push和本机升级不能代替发布。
+
 
 长期应推动上游提供正式设置 Locale API 和 Extension 卸载回调；接口可用后迁移并删除内部对象修改，不保留双轨实现。

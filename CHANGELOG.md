@@ -29,7 +29,14 @@
 - 测试网络拒绝覆盖原生Node HTTPS暖连与代理fetch分支；标准Agent异步拒绝返回真实ClientRequest、不建Socket，35秒compiled RPC与正式TUI不再触发同步throw导致的abort TDZ。目录GET、Stats身份GET及无凭据HEAD分开审计，未向模型发送请求。
 - 冒烟驱动不再经pi-utils包根引入抢先postmortem退出，也禁用Puppeteer自带信号退出；统一处理SIGINT/SIGTERM/SIGHUP，实测130/143/129及每轮2/2/0页面、服务/端口/root回收。两次失败驱动均保留账本并完成精确归属回收；最终完整smoke3/3/0通过。
 - 将真实compiled marker的native PID/私有preload登记前移到自动URL转交之前；未取得private归属则报错保留账本。正式三类信号轮对照实际lsof PID、0700/0600及逐目录消失，避免中断早于晚期ps审计造成漏记；更早三次信号轮的未命名private路径不补造、不计作完整目录证据。
-- 新目标原版默认opener精确URL/一次打开/原页保护通过；包装失败分支因原生浏览器基线消失未启动。早期重启驱动还缺初始空白页target/数量，不能补造计数。完整门禁未过，不tag/Release；旧工作区及独立Windows草稿保持。
+- 历史默认opener原版成功、包装失败分支未启动，以及初始空白页target等资源账本缺口均保留。新轮补做原生TUI、headless全页/数据/动态回归和完整资源回收，不冒称补齐历史身份；用户暂不授权桌面控制，系统默认opener门禁仍未通过，不tag/Release。
+
+### 主线与发布流程
+
+- 本地与远端收敛为唯一 `main` 工作分支；已合并维护分支删除，不再按宿主版本创建分支。
+- Windows PR #1关闭且未合并，草稿提交由非发布归档tag `archive/windows-support-20261018`保留；两处原工作树改动私有保全并校验，不混入主线或宣称新版Windows支持。
+- 明确每次正式Release递增版本且package/tag/Release一致；有变化且门禁通过后须实际创建tag和GitHub Release，main push与本机升级不算发布。未发布候选不反复空升版本，无变化不空发版。
+
 
 ## [18.11.3] - 2026-10-18（未发布候选）
 

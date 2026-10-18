@@ -4,7 +4,7 @@
 
 当前源码候选、开发依赖和真实官方宿主目标为18.12.1（内嵌Bun1.4.3），未发布。官方 `omp update` 下载遇ECONNRESET后，用受支持的 `omp update --force` 从18.11.3升级成功；真实二进制SHA256为fa41b27d434380e99b713e4f9ced0f73eb1fc0c409fdf23a57c119971d24bac5。coding-agent/pi-utils/Stats稳定版同为18.12.1，coding-agent同版依赖保持；官方v18.12.1对应291e055836c210f314af3f73f53244e8e9d09de8。npm Stats只是独立审阅线索，运行时仍是实际官方编译CLI。
 
-维护最初远端main a364115/Release v18.11.1；上一阶段18.11.3代码与审计文档已推送至c449bbb，双平台CI39103764181及冷GitHub安装通过，但未tag/Release。进入18.12.1阶段时本机GitHub插件仍18.11.3#c449bbb、doctor5/0/0；必须在最终CI/冷安装后按原来源upgrade，不以宿主更新代替插件更新。原工作区main fc689e7/package18.8.7的15个修改文件/53个未跟踪项保持；适配在同仓库隔离worktree，Windows PR #1仍为独立未合并草稿。
+维护最初远端main a364115/Release v18.11.1；18.11.3中间候选未发布。18.12.1适配及资源驱动修正已推送至808aa64，本机同一GitHub来源插件为18.12.1#808aa64、doctor5/0/0。用户批准单main收敛：原main fc689e7/package18.8.7的15个修改文件及53个未跟踪项先做仓库外私有备份，68个文件逐字节校验及历史bundle验证后，主工作区快进到远端main；旧18.10.4脏工作树以detached状态移入私有归档，原补丁保持。Windows PR #1已关闭、未合并，独立草稿d546017由非发布tag `archive/windows-support-20261018`保留，不宣称正式Windows支持。全部维护分支及Windows分支已从本地/远端移除，只保留main；用户未跟踪内容不提交。
 
 Settings416/416：相对18.11.3仅新增advisor.continueSeverity，nit/concern/blocker原值与默认concern不变；无删除，其余译文不重复修改。新增sharpshooter.minPromptLength和statusLine.segmentOptions.pi.showProfile无UI，不补造译文。Commands86定义/94标识/27动态回调：整个命令目录、pi-tui补全和公共provider合同均未变化；switch有效层级与effort实时selector另审。Stats179包文件仅package.json、CHANGELOG、db.ts、trace.ts变化，73客户端不变；价格peer解析保留官方计算，609键/105模板不扩张。
 
@@ -16,7 +16,7 @@ frozen/check通过：65pass/0fail、2551断言，设置与命令漂移0，本机
 
 驱动用pi-utils/dirs读取同一锁定VERSION，避免包根postmortem抢先exit，并关闭Puppeteer自带三类信号退出。前两次失败均留证：第一轮独占Chrome退出，第二轮遗留headless Chrome77900，已按专属Profile/精确CDP target关闭，再证实PID/端口/private目录无残留后删根。另一次lsof整段输出比较的驱动失败，source finally退出143、2页全关；改为只取p字段后正式轮通过。
 
-更早三次信号轮仅登记页/端口/root，private路径未持久化，不能补造逐目录证明或合并冒称全部历史资源完整。最新正式轮补齐前后路径证据，不回写旧记录。历史资源缺口仍阻止本轮发布。
+更早三次信号轮仅登记页/端口/root，private路径未持久化，不能补造逐目录证明或合并冒称全部历史资源完整。最新正式轮补齐前后路径证据，不回写旧记录。该历史轮未通过；后续独立轮次须在获取资源前重新登记并验收，不回填旧记录。
 
 新compiled干净TUI已验：Advisor启用/禁用条件、concern→nit→concern保存恢复、autoResume false→true→false、中文搜索及同进程en/zh；思考中文显示与effort英文参数隔离。Commands裸/、8个alias、2项skill中英数量与Tab展开、第三方描述、quoted文件Tab插入、原生Tab/Enter执行Settings、plan/loop开关、原生model picker Opus5.5→Sonnet5.5→Opus5.5、switch数据ID、Unicode/ASCII与Shift+Tab high→xhigh→high均保留帧。正式轮agent_start0、POST尝试0、退出0；4个HEAD/46个GET全部阻断。技能说明按官方SQLite/schema及SHA256键预置既有英文，未调用后台生成；partial/取消由已有行为回归补充，不冒称UI触发。
 
@@ -30,7 +30,9 @@ Stats仍有官方价格一致性失败：Costs与会话列表unpriced为0、费�
 
 原/包装各25项HTTP合同、16项API完整响应和真实SSE heartbeat一致；原跨Host/Origin静态200不变，身份头不等于授权。真实PTY ISIG/VINTR前台Ctrl+C退出0，官方子异常、wrapper SIGKILL、父消失、非法/占用端口、空格路径及私有preload回收另验；孤儿退出码unknown。Stats网页五轮10页建/10关，生命周期含默认页15建/15关，均无剩余；精确target/PID/端口与失败驱动证据独立保存，不扩大为整个历史run总数。
 
-不发布的资源门禁：18.12.1原版默认 `/usr/bin/open` 已按精确origin/新AX ref认领，13→14→13保持原页，退出0/端口关闭。包装默认opener人为失败轮在fresh baseline时普通Chrome窗口消失，因此启动前停止，未再造页。早期18.11.3独占浏览器94045虽已退出、Profile已删，启动空白页target/数量未持久化，不能回补。完整本轮账本、目标默认opener失败分支与上述官方价格边界均不得冒称通过；最终提交CI/冷安装不代替这些门禁。
+历史默认opener证据：18.12.1原版 `/usr/bin/open` 已按精确origin/新AX ref认领，13→14→13保持原页；包装失败轮因普通Chrome基线消失在启动前停止。早期18.11.3独占浏览器94045的初始空白页target/数量未持久化，Profile已删，不能回补。新轮默认opener未执行：computer.control.acquire返回active:false，用户明确选择“暂不控制桌面”；不得重试绕过授权，也不得以headless转交URL代替系统默认opener。该发布门禁保持未通过，不创建版本tag/Release。
+
+单main新轮验收：真实编译版TUI完成50项通过检查、96文字帧，Settings与Commands分别复核；正式已见证BUN_OPTIONS preload的进程agent_start0、POST尝试0。首次NODE_OPTIONS未执行的无护栏轮和两项驱动断言纠正保留，不把它们改写为通过或声称全历史零外发。Stats新轮含正常/故意失败回收、11导航中英、双项目32请求、10API/4完整Trace、抽屉/图表/390px/键盘、同origin重启与SSE；8页创建/8关闭、7个Stats实例退出0，具名private/driver/Profile均回收，初始blank目标完整持久化。只有测试专属opener转交已验，不等于默认opener。官方费用口径差异仍原样记录，不由插件修补。
 
 ## 已确认的产品边界
 
@@ -71,6 +73,8 @@ Stats仍有官方价格一致性失败：Costs与会话列表unpriced为0、费�
 
 仓库不包含定时调度器；历史外部 Orca 任务每天 Asia/Shanghai 23:00 在原工作区执行三部分维护。本轮不修改调度，未核实其当前启用状态；run completed 不证明验收或发布。即使设置或 OMP 无变化，也独立核验 Commands 注册表/动态状态/接口与 Stats 最新稳定版线索和实际运行时；不恢复固定 npm Stats 替代运行时。
 - 上游适配以目标版本为编号基线，独立功能或修复递增插件补丁号；已用编号不得复用，明确记录实际宿主。上游无设置变化也须核验接口、自动检查和真实编译版；变化先补译或复核，检查失败不发布。
+- 本地和远端只保留main工作分支，不再创建maintenance或feature分支。临时隔离只用detached worktree并逐轮回收；归档tag不是Release。
+- 每次正式Release必须递增到未使用的版本，package.json、v版本tag与GitHub Release一致。未发布候选可沿用其已更新编号；有变化且门禁通过后必须实际发布，不能以push/main或本机升级代替，无变化不空发布。
 
 官方上游：https://github.com/can1357/oh-my-pi
 
