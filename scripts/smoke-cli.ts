@@ -100,10 +100,9 @@ async function closeStage() {
     if (expectedUrl) await until(async () => { try { await fetch(expectedUrl, { signal: AbortSignal.timeout(1000) }); } catch { return true; } }, "owned Stats port closed", true);
     const resource = owned.services.at(-1);
     if (resource) {
-      if (resource.preload) {
-        try { await stat(resource.preload); throw new Error("Owned private preload directory survived Stats exit"); }
-        catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; }
-      }
+      if (!resource.preload) throw new Error("Private preload ownership was not captured; preserve the run ledger");
+      try { await stat(resource.preload); throw new Error("Owned private preload directory survived Stats exit"); }
+      catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; }
       resource.closed = true;
     }
     await ledger();
@@ -127,6 +126,13 @@ try {
     const url = await request.text();
     if (request.method !== "POST" || url.replace(/\/$/, "") !== expectedUrl || !page) return new Response("unowned URL", { status: 400 });
     try {
+      const compiled = JSON.parse(await readFile(hostMarker, "utf8"));
+      const privateFile = compiled.options.match(/(?:^|\s)--preload=(\/\S+\/preload\.cjs)(?:\s|$)/)?.[1];
+      const resource = owned.services.at(-1);
+      if (!resource || !privateFile || !compiled.argv.includes("stats")) throw new Error("Compiled Stats startup ownership is missing");
+      resource.nativePid = compiled.pid; resource.preload = dirname(privateFile);
+      if (!owned.temporaryPaths.includes(resource.preload)) owned.temporaryPaths.push(resource.preload);
+      await ledger(); // Record private ownership before forwarding the official automatic URL.
       await page.goto(url, { waitUntil: "domcontentloaded" });
       await page.waitForSelector("#omp-stats-language");
       pageResources.get(page)!.url = url; await ledger(); opened = true;
@@ -211,12 +217,13 @@ require('node:module').syncBuiltinESMExports?.();
       const nativePid = listeners[0]!.slice(1);
       const allListeners = (await command("lsof", ["-nP", "-a", "-p", nativePid, "-iTCP", "-sTCP:LISTEN", "-Fn"])).split("\n").filter(line => line.startsWith("n"));
       if (allListeners.length !== 1 || !allListeners[0]!.endsWith(":" + port)) throw new Error("Official Stats process has unexpected listener");
-      const resource = owned.services.at(-1)!; resource.nativePid = Number(nativePid);
+      const resource = owned.services.at(-1)!;
+      if (resource.nativePid !== Number(nativePid)) throw new Error("Stats listener does not match compiled startup ownership");
       const childPids = (await command("pgrep", ["-P", String(service!.pid)])).trim().split(/\s+/);
       const processArgs = await command("ps", ["-ww", "-p", childPids.join(","), "-o", "args="]);
       const privateDirectory = processArgs.match(/omp-stats-guard \d+ \d+ (\S+)$/m)?.[1];
       if (!privateDirectory) throw new Error("Cannot identify owned private preload directory");
-      resource.preload = privateDirectory; owned.temporaryPaths.push(privateDirectory); await ledger();
+      if (resource.preload !== privateDirectory) throw new Error("Guard private directory does not match compiled startup ownership");
       if (((await stat(privateDirectory)).mode & 0o777) !== 0o700 || ((await stat(join(privateDirectory, "preload.cjs"))).mode & 0o777) !== 0o600) throw new Error("Private preload permissions changed");
       const compiled = JSON.parse(await readFile(hostMarker, "utf8"));
       if (compiled.pid !== Number(nativePid) || !compiled.options.startsWith(env.BUN_OPTIONS)) throw new Error("Actual compiled Bun did not retain and execute user preload/flags");

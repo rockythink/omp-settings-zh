@@ -8,11 +8,15 @@
 
 Settings416/416：相对18.11.3仅新增advisor.continueSeverity，nit/concern/blocker原值与默认concern不变；无删除，其余译文不重复修改。新增sharpshooter.minPromptLength和statusLine.segmentOptions.pi.showProfile无UI，不补造译文。Commands86定义/94标识/27动态回调：整个命令目录、pi-tui补全和公共provider合同均未变化；switch有效层级与effort实时selector另审。Stats179包文件仅package.json、CHANGELOG、db.ts、trace.ts变化，73客户端不变；价格peer解析保留官方计算，609键/105模板不扩张。
 
-frozen/check通过：65pass/0fail、2551断言，设置与命令漂移0，1846显示变更、3次可逆恢复，源码冒烟零网络。真实绝对路径编译smoke另验Settings共享元数据、link默认启动器、doctor3/1/0、JSON透传、原URL自动开页、网页语言与刷新、Bun flags/用户preload合并、空格路径0700/0600、单监听器及标准卸载；不以源码导入证明编译共享。
+frozen/check通过：65pass/0fail、2551断言，设置与命令漂移0，本机macOS1846显示变更（Linux CI1845）、3次可逆恢复，源码冒烟零网络。真实绝对路径编译smoke另验Settings共享元数据、link默认启动器、doctor3/1/0、JSON透传、原URL自动开页、网页语言与刷新、Bun flags/用户preload合并、空格路径0700/0600、单监听器及标准卸载；不以源码导入证明编译共享。
 
 18.12.1 SDK使用原生HTTPS暖连，测试子进程同时拒绝fetch和Node HTTP/HTTPS/net/TLS，不继承真实凭据或代理。标准Agent异步callback拒绝返回真实ClientRequest且不创建Socket；目标compiled35秒RPC跨abort timeout存活退出0，原生HEAD与目录GET均阻断。代理暖连分支另验为fetch HEAD，在dispatch前拒绝；并非真实代理连通性证明。正式短smoke分开记录13个目录GET、2个Stats身份GET与1个无凭据HEAD，不把全部GET笼统称为目录发现。
 
-真实中断门禁已补齐：冒烟驱动使用pi-utils/dirs读取同一锁定VERSION，避免包根postmortem抢先exit；关闭Puppeteer自带SIGINT/TERM/HUP处理，由自身finally按页→服务→端口→目录回收。真实SIGINT/SIGTERM/SIGHUP分别退出130/143/129，各2页建/2关、1个Stats及bridge端口均关闭、root删除；随后完整成功/断言失败smoke3页建/3关、两服务与私有preload回收。前两次中断失败保留账本：第一轮独占Chrome退出，第二轮遗留headless Chrome77900，已按专属Profile/精确CDP target定向关闭，再证实PID/三个端口/private目录均无残留后删临时根；不把这些失败轮计作门禁通过。
+中断门禁的最新正式轮已在转交自动URL之前，从真实compiled marker登记native PID和私有preload路径；随后对照lsof PID及目录0700/文件0600。SIGINT/SIGTERM/SIGHUP分别退出130/143/129，各2页建/2关、Stats/bridge端口关闭、已命名私有目录逐一消失、root删除；完整正常/断言失败smoke再验3页建/3关和两服务/私有目录回收。未捕获private归属时保留run账本并报错，不把端口空当目录回收证明。
+
+驱动用pi-utils/dirs读取同一锁定VERSION，避免包根postmortem抢先exit，并关闭Puppeteer自带三类信号退出。前两次失败均留证：第一轮独占Chrome退出，第二轮遗留headless Chrome77900，已按专属Profile/精确CDP target关闭，再证实PID/端口/private目录无残留后删根。另一次lsof整段输出比较的驱动失败，source finally退出143、2页全关；改为只取p字段后正式轮通过。
+
+更早三次信号轮仅登记页/端口/root，private路径未持久化，不能补造逐目录证明或合并冒称全部历史资源完整。最新正式轮补齐前后路径证据，不回写旧记录。历史资源缺口仍阻止本轮发布。
 
 新compiled干净TUI已验：Advisor启用/禁用条件、concern→nit→concern保存恢复、autoResume false→true→false、中文搜索及同进程en/zh；思考中文显示与effort英文参数隔离。Commands裸/、8个alias、2项skill中英数量与Tab展开、第三方描述、quoted文件Tab插入、原生Tab/Enter执行Settings、plan/loop开关、原生model picker Opus5.5→Sonnet5.5→Opus5.5、switch数据ID、Unicode/ASCII与Shift+Tab high→xhigh→high均保留帧。正式轮agent_start0、POST尝试0、退出0；4个HEAD/46个GET全部阻断。技能说明按官方SQLite/schema及SHA256键预置既有英文，未调用后台生成；partial/取消由已有行为回归补充，不冒称UI触发。
 

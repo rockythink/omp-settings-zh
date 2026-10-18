@@ -25,9 +25,10 @@
 
 ### 验证与发布状态
 
-- frozen/check：65pass/0fail、2551断言；416/416设置、86/86命令/94标识、漂移0，1846显示变更与3次恢复。命名Profile/XDG四组合、物理缓存换址后新进程、无SHELL登录shell、透传/dry-run/无动态导入卸载通过。
+- frozen/check：65pass/0fail、2551断言；416/416设置、86/86命令/94标识、漂移0，本机macOS1846显示变更与3次恢复（Linux CI1845）。命名Profile/XDG四组合、物理缓存换址后新进程、无SHELL登录shell、透传/dry-run/无动态导入卸载通过。
 - 测试网络拒绝覆盖原生Node HTTPS暖连与代理fetch分支；标准Agent异步拒绝返回真实ClientRequest、不建Socket，35秒compiled RPC与正式TUI不再触发同步throw导致的abort TDZ。目录GET、Stats身份GET及无凭据HEAD分开审计，未向模型发送请求。
 - 冒烟驱动不再经pi-utils包根引入抢先postmortem退出，也禁用Puppeteer自带信号退出；统一处理SIGINT/SIGTERM/SIGHUP，实测130/143/129及每轮2/2/0页面、服务/端口/root回收。两次失败驱动均保留账本并完成精确归属回收；最终完整smoke3/3/0通过。
+- 将真实compiled marker的native PID/私有preload登记前移到自动URL转交之前；未取得private归属则报错保留账本。正式三类信号轮对照实际lsof PID、0700/0600及逐目录消失，避免中断早于晚期ps审计造成漏记；更早三次信号轮的未命名private路径不补造、不计作完整目录证据。
 - 新目标原版默认opener精确URL/一次打开/原页保护通过；包装失败分支因原生浏览器基线消失未启动。早期重启驱动还缺初始空白页target/数量，不能补造计数。完整门禁未过，不tag/Release；旧工作区及独立Windows草稿保持。
 
 ## [18.11.3] - 2026-10-18（未发布候选）

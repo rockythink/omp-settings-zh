@@ -83,6 +83,8 @@
 
 冒烟驱动本身也须实测捕获中断：避免pi-utils包根postmortem和Puppeteer默认SIGINT抢先退出；版本常量用官方公开dirs子路径，关闭Puppeteer三类signal handler后由自身finally回收。真实SIGINT/SIGTERM/SIGHUP分别保留130/143/129、页面target关闭与Stats/bridge端口空结果，不能只看退出码认定清理完成。SIGKILL不能保证finally，下次只凭明确run/Profile/target/PID账本回收，未知身份只报告。
 
+private preload不能等正常流程后期ps审计才登记；自动opener bridge转交URL前，先从真实compiled marker记录native PID、BUN_OPTIONS中的私有路径，再打开自有页。中断回归同时证明目录/文件0700/0600与退出后该路径ENOENT；归属未知时保留账本失败关闭，不因端口已关闭就删掉唯一追踪记录。
+
 模型请求隔离不能只覆盖global fetch：目标compiled显式模型的原生HTTPS暖连须到达标准Agent异步无Socket拒绝，并跨abort timeout存活；代理fetch分支独立检查。目录GET、Stats身份GET、无凭据HEAD、被拒POST尝试分别记账。技能描述fixture预置官方格式缓存，不调用后台生成；未知输入在input阶段handled，不靠agent_start throw阻止费用。
 
 ## 5. 安装契约
