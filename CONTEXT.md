@@ -16,7 +16,9 @@ Stats实际11个可见路由、请求/工具Span抽屉、3种图表模式、390p
 
 默认/命名Profile、默认/命名XDG四组合的稳定逻辑包路径及物理缓存换址后新进程均通过。缺SHELL/USER/LOGNAME按真实UID解析登录shell；版本/JSON/summary透传、dry-run/标准卸载保持无关配置与权限。原/包装15项HTTP/SSE边界一致，原跨Host/Origin静态200不变；真实PTY ISIG/VINTR与前台进程组验证Ctrl+C退出0，官方子异常、wrapper SIGKILL、父消失、非法/占用端口及私有preload回收通过，孤儿退出码unknown。
 
-发布阻塞：无法通过原生computer取得普通Chrome现有窗口/页签身份；relay仅列URL（存在重复）且具名close只释放采用页，未建立可靠的默认opener安全关闭合同。因此没有启动真实系统默认opener阶段；测试专属URL转交不替代它，不打tag/Release。最终精确提交macOS/Linux CI、冷GitHub安装与全部资源零残留仍以现场结果为准。
+默认opener阻塞已解除：结束核查发现普通Chrome原生窗口14241可通过窗口ID观测（app bundle ID筛选不命中不等于没有窗口）。以新AX页签ref与精确origin认领，原版正常/包装人为断言失败两轮均各一次真实/usr/bin/open，先定向关闭自有页，再停服务，13个既有页签基线保持、退出0/端口关闭。一次初始枚举驱动因网页radio缺title超时，后按新ref/精确50469 origin认领单页关闭并恢复基线；该失败轮不计通过。
+
+仍不发布：早期独占浏览器重启脚手架仅记录显式主标签1/1，启动时已有空白页虽逐页关闭且整个独占进程94045退出，未持久化其target和数量。所属Profile已删除，不能回补或把推断当计数；本轮完整页面账本门禁未通过。候选代码、已通过的独立行为、最终CI与GitHub冷安装不代替此门禁。本机已按原GitHub来源upgrade到18.11.3、doctor5/0/0，pi-xcode-mcp0.1.0保持；552c933双平台CI39103069787与冷安装4/0/0通过，最终文档提交仍核对其精确CI。
 
 ## 已确认的产品边界
 

@@ -23,7 +23,7 @@
 - Settings：415/415 项 UI 元数据，Schema 漂移 0；相对 18.11.1 新增 `prewalk.auto`、`prewalk.autoTarget`、`lsp.requestTimeout`，复核 `lsp.shared` 与 `task.isolation.enabled` 的原文/哈希。保留设置语义、选项 value、group、凭据标记、动态 getter、保存与恢复
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
 - Commands：86 定义、94 个命令名/别名；新增 `/seance` 的只读会话咨询说明，保留其 `[session id|path] [--model selector]` 参数原文，不代用户执行咨询。原有 27 个动态回调与公共 provider 接口未变，静态原文/别名漂移 0；动态状态、键位和编译版交互不能由静态门禁替代
-- Stats：实际运行官方 OMP 18.11.3 编译 CLI，不是 npm Stats 副本。相对 18.11.1，179 个包文件仅 package.json 变化，92 源码/73 客户端文件无变化；609 键/105 严格模板及 UI/数据边界保留。当前默认系统 opener 的原生页面身份与安全关闭合同未能建立，未启动该阶段，**不得发布**
+- Stats：实际运行官方 OMP18.11.3 编译CLI，不是npm副本。相对18.11.1，179包文件仅package.json变化，92源码/73客户端无变化；609键/105模板与UI/数据边界保留。实际默认opener现已验证精确URL、单次开页与原生定向关闭；但早期重启驱动未持久化浏览器初始空白页的target/数量，无法完整回补本轮页面账本，**仍不发布**
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
