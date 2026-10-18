@@ -2,6 +2,34 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.12.1] - 2026-10-18（未发布候选）
+
+### Settings
+
+- 真实官方宿主经 `omp update --force` 从18.11.3升级至18.12.1；coding-agent/pi-utils开发依赖和兼容范围对齐，内嵌Bun1.4.3。
+- UI415→416：仅新增 `advisor.continueSeverity`，独立从官方英文翻译；nit/concern/blocker原值、默认concern、Advisor条件和保存语义不变。两个新增无UI配置不补造译文。
+- 真实编译版验证Advisor条件显示、concern→nit→concern、autoResume保存恢复、同进程中英切换和effort参数原文隔离。
+
+### Commands
+
+- 86定义、94名称/别名、27动态回调及公共provider接口相对18.11.3逐字未变；仅更新独立审阅基线，不重复改译。
+- 真实新compiled验证裸/、8 aliases、2项技能中英数量/Tab展开、第三方和文件边界、Tab/Enter原生Settings、plan/loop、原生model picker和switch ID、符号/effort键位恢复；partial/取消由既有行为回归补充。
+- 正式轮agent_start0、POST尝试0、退出0。之前错误 `/model <id>` 进入prompt的失败轮单列，7次POST尝试全部阻断；不把正式轮结论扩展为整轮零尝试。
+
+### Stats
+
+- 73客户端文件不变；官方db/trace新增价格peer解析，保留官方计算，609键/105严格模板及UI/数据排除不扩张。
+- 真实11路由中英、32请求/双项目、原/包装JSON/API/trace相等、抽屉/工具Span、三图表、390px/键盘、同origin重启及自然SSE/React4→5通过；不执行收费评估。
+- 发现官方缺价边界：Costs/会话列表未定价0，四份详细trace合计8，费用显示$0.11/N/A不一致；原版与包装同样，不由汉化层修补或冒称通过。
+- 25项HTTP合同、16项API响应、SSE heartbeat、单监听器、Bun用户flags/preload、私有路径权限与Ctrl+C/异常/父消失/SIGKILL回收另验；原静态跨Host/Origin允许不冒称已阻止。
+
+### 验证与发布状态
+
+- frozen/check：65pass/0fail、2551断言；416/416设置、86/86命令/94标识、漂移0，1846显示变更与3次恢复。命名Profile/XDG四组合、物理缓存换址后新进程、无SHELL登录shell、透传/dry-run/无动态导入卸载通过。
+- 测试网络拒绝覆盖原生Node HTTPS暖连与代理fetch分支；标准Agent异步拒绝返回真实ClientRequest、不建Socket，35秒compiled RPC与正式TUI不再触发同步throw导致的abort TDZ。目录GET、Stats身份GET及无凭据HEAD分开审计，未向模型发送请求。
+- 冒烟驱动不再经pi-utils包根引入抢先postmortem退出，也禁用Puppeteer自带信号退出；统一处理SIGINT/SIGTERM/SIGHUP，实测130/143/129及每轮2/2/0页面、服务/端口/root回收。两次失败驱动均保留账本并完成精确归属回收；最终完整smoke3/3/0通过。
+- 新目标原版默认opener精确URL/一次打开/原页保护通过；包装失败分支因原生浏览器基线消失未启动。早期重启驱动还缺初始空白页target/数量，不能补造计数。完整门禁未过，不tag/Release；旧工作区及独立Windows草稿保持。
+
 ## [18.11.3] - 2026-10-18（未发布候选）
 
 ### Settings

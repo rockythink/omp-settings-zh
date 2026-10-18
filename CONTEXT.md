@@ -2,29 +2,37 @@
 
 ## 当前项目
 
-当前源码候选、开发依赖和真实官方宿主目标为 18.11.3（内嵌 Bun 1.4.3），未发布。维护开始远端 main 为 a364115，Release v18.11.1，本机 GitHub 插件 18.11.1、doctor 5/0/0。原工作区 main fc689e7/package18.8.7 有15个修改文件/53个未跟踪项，保持不动；本轮在同仓库隔离 worktree 适配，不混入 Windows 草稿。Windows PR #1 仍 OPEN/draft/CONFLICTING。
+当前源码候选、开发依赖和真实官方宿主目标为18.12.1（内嵌Bun1.4.3），未发布。官方 `omp update` 下载遇ECONNRESET后，用受支持的 `omp update --force` 从18.11.3升级成功；真实二进制SHA256为fa41b27d434380e99b713e4f9ced0f73eb1fc0c409fdf23a57c119971d24bac5。coding-agent/pi-utils/Stats稳定版同为18.12.1，coding-agent同版依赖保持；官方v18.12.1对应291e055836c210f314af3f73f53244e8e9d09de8。npm Stats只是独立审阅线索，运行时仍是实际官方编译CLI。
 
-官方 `omp update` 首次下载180秒超时，重试成功18.11.1→18.11.3；真实二进制 SHA256 为 d518310d647d467a2c5c3f2d38e34489a761996d766395c03b37c61a2203d02b。coding-agent/pi-utils/Stats 最新稳定版均18.11.3且依赖同版；官方tag指向96894a6147d8cc64b7e00ad3a7d7178fd93b9531。插件编号不用于推断内嵌 Stats。
+维护最初远端main a364115/Release v18.11.1；上一阶段18.11.3代码与审计文档已推送至c449bbb，双平台CI39103764181及冷GitHub安装通过，但未tag/Release。进入18.12.1阶段时本机GitHub插件仍18.11.3#c449bbb、doctor5/0/0；必须在最终CI/冷安装后按原来源upgrade，不以宿主更新代替插件更新。原工作区main fc689e7/package18.8.7的15个修改文件/53个未跟踪项保持；适配在同仓库隔离worktree，Windows PR #1仍为独立未合并草稿。
 
-Settings415/415：新增prewalk.auto、prewalk.autoTarget、lsp.requestTimeout，复核lsp.shared和task.isolation.enabled说明/哈希，无删除。Commands86定义/94标识：新增seance只读咨询说明，原27动态回调与公共provider接口不变；参数、会话路径、模型ID不译，不执行咨询。Stats179包文件仅package.json变化，92源码/73客户端不变；609键/105模板不重复改译。
+Settings416/416：相对18.11.3仅新增advisor.continueSeverity，nit/concern/blocker原值与默认concern不变；无删除，其余译文不重复修改。新增sharpshooter.minPromptLength和statusLine.segmentOptions.pi.showProfile无UI，不补造译文。Commands86定义/94标识/27动态回调：整个命令目录、pi-tui补全和公共provider合同均未变化；switch有效层级与effort实时selector另审。Stats179包文件仅package.json、CHANGELOG、db.ts、trace.ts变化，73客户端不变；价格peer解析保留官方计算，609键/105模板不扩张。
 
-目标版本frozen/check通过：65pass/0fail、2551断言，Settings/Commands漂移0，1837显示变更、3轮恢复与源码冒烟零网络。真实绝对路径smoke验证编译共享Settings、默认link自动启动器、doctor3/1/0（缺package_manifest不隐藏）、JSON保持、同源网页切换/刷新、Bun1.4.3合并--smol/用户preload及空格路径0700/0600、单监听器、dry-run/标准卸载。成功与人为断言失败均回收，3显式页面建/3关、2服务端口关闭，15个目录GET尝试均在dispatch前阻断。
+frozen/check通过：65pass/0fail、2551断言，设置与命令漂移0，1846显示变更、3次可逆恢复，源码冒烟零网络。真实绝对路径编译smoke另验Settings共享元数据、link默认启动器、doctor3/1/0、JSON透传、原URL自动开页、网页语言与刷新、Bun flags/用户preload合并、空格路径0700/0600、单监听器及标准卸载；不以源码导入证明编译共享。
 
-实际新编译TUI观察中文搜索、新增/变化项、autoResume false→true→false、同进程en/zh、seance说明/原参数提示、8个alias前缀、plan/loop/model状态、Settings中文选项与effort英文参数隔离和Tab/Enter原生Settings执行。补充活会话确认2项技能中英数量、Tab显式展开后的技能英文说明、第三方说明、双引号文件Tab插入、Unicode→ASCII→Unicode、Shift+Tab high→xhigh及原生effort high恢复、fast切换后的原模型ID。正式活会话agent_start0，20个目录/更新GET均在dispatch前拒绝；退出130、PID已回收，不冒称TUI零退出。首轮驱动结束等待超时、两轮误将setup边框当composer、两轮未按Tab触发技能列表均保留失败证据。partial/取消未在实际UI触发，以既有行为回归补充。
+18.12.1 SDK使用原生HTTPS暖连，测试子进程同时拒绝fetch和Node HTTP/HTTPS/net/TLS，不继承真实凭据或代理。标准Agent异步callback拒绝返回真实ClientRequest且不创建Socket；目标compiled35秒RPC跨abort timeout存活退出0，原生HEAD与目录GET均阻断。代理暖连分支另验为fetch HEAD，在dispatch前拒绝；并非真实代理连通性证明。正式短smoke分开记录13个目录GET、2个Stats身份GET与1个无凭据HEAD，不把全部GET笼统称为目录发现。
 
-Stats实际11个可见路由、请求/工具Span抽屉、3种图表模式、390px无横向溢出、键盘跳转、双项目4→5异步请求（1005ms）通过；模型/服务商同名UI键、路径、正文与错误保持原文，语言往返API不变。独占浏览器另验同origin英文重启/刷新，复用1主标签、两次服务退出0且端口关闭。共享浏览器驱动一次重启opener等待超时已回收，不冒称该轮通过；隐藏旧路由标题与不连通会话链样本的驱动错误保留。
+真实中断门禁已补齐：冒烟驱动使用pi-utils/dirs读取同一锁定VERSION，避免包根postmortem抢先exit；关闭Puppeteer自带SIGINT/TERM/HUP处理，由自身finally按页→服务→端口→目录回收。真实SIGINT/SIGTERM/SIGHUP分别退出130/143/129，各2页建/2关、1个Stats及bridge端口均关闭、root删除；随后完整成功/断言失败smoke3页建/3关、两服务与私有preload回收。前两次中断失败保留账本：第一轮独占Chrome退出，第二轮遗留headless Chrome77900，已按专属Profile/精确CDP target定向关闭，再证实PID/三个端口/private目录均无残留后删临时根；不把这些失败轮计作门禁通过。
 
-默认/命名Profile、默认/命名XDG四组合的稳定逻辑包路径及物理缓存换址后新进程均通过。缺SHELL/USER/LOGNAME按真实UID解析登录shell；版本/JSON/summary透传、dry-run/标准卸载保持无关配置与权限。原/包装15项HTTP/SSE边界一致，原跨Host/Origin静态200不变；真实PTY ISIG/VINTR与前台进程组验证Ctrl+C退出0，官方子异常、wrapper SIGKILL、父消失、非法/占用端口及私有preload回收通过，孤儿退出码unknown。
+新compiled干净TUI已验：Advisor启用/禁用条件、concern→nit→concern保存恢复、autoResume false→true→false、中文搜索及同进程en/zh；思考中文显示与effort英文参数隔离。Commands裸/、8个alias、2项skill中英数量与Tab展开、第三方描述、quoted文件Tab插入、原生Tab/Enter执行Settings、plan/loop开关、原生model picker Opus5.5→Sonnet5.5→Opus5.5、switch数据ID、Unicode/ASCII与Shift+Tab high→xhigh→high均保留帧。正式轮agent_start0、POST尝试0、退出0；4个HEAD/46个GET全部阻断。技能说明按官方SQLite/schema及SHA256键预置既有英文，未调用后台生成；partial/取消由已有行为回归补充，不冒称UI触发。
 
-默认opener阻塞已解除：结束核查发现普通Chrome原生窗口14241可通过窗口ID观测（app bundle ID筛选不命中不等于没有窗口）。以新AX页签ref与精确origin认领，原版正常/包装人为断言失败两轮均各一次真实/usr/bin/open，先定向关闭自有页，再停服务，13个既有页签基线保持、退出0/端口关闭。一次初始枚举驱动因网页radio缺title超时，后按新ref/精确50469 origin认领单页关闭并恢复基线；该失败轮不计通过。
+早期TUI失败不抹除：同步HTTP throw测试hook触发官方Cowork abort回调TDZ，并非已证明的Settings缺陷；异步拒绝修正后正式轮未发生。此前误用不支持的 `/model <id>` 被当成prompt，agent_start1、POST尝试7均dispatch前拒绝、退出130；handler throw不能阻止执行。正式轮改用原生picker及精确input白名单（实际拒绝0）。因此不能把整轮合并声称零模型请求尝试；未向模型发送请求或产生费用。
 
-仍不发布：早期独占浏览器重启脚手架仅记录显式主标签1/1，启动时已有空白页虽逐页关闭且整个独占进程94045退出，未持久化其target和数量。所属Profile已删除，不能回补或把推断当计数；本轮完整页面账本门禁未通过。候选代码、已通过的独立行为、最终CI与GitHub冷安装不代替此门禁。本机已按原GitHub来源upgrade到18.11.3、doctor5/0/0，pi-xcode-mcp0.1.0保持；552c933双平台CI39103069787与冷安装4/0/0通过，最终文档提交仍核对其精确CI。
+Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包装JSON、10路API及4份trace逐值相等，catalog动态价格匹配；请求/工具Span抽屉、三种图表、390px/键盘、同名UI键数据/正文/错误保留、同origin语言重启保留及自然SSE/React4→5通过。估价只打开后取消，隔离环境未配置judge，没有可用报价；不点击继续、不执行评估。
+
+Stats仍有官方价格一致性失败：Costs与会话列表unpriced为0、费用$0.11，四份详细trace各unpriced2、费用N/A。边界为minimax-code/MiniMax-M2.1-lightning及刻意缺价的google-antigravity/Overview；db缺价返回unpriced:false，trace递增未定价。原版与包装结果完全相同，不以插件改官方计算或掩盖此差异。
+
+默认/命名Profile与默认/命名XDG四组合通过官方getPluginsNodeModules稳定逻辑路径及物理缓存v1→v2后8个新compiled进程发现；缺SHELL/USER/LOGNAME按真实UID读取/bin/zsh。不可用Bun时版本/JSON/summary透传、dry-run不撤销、移除本地pi-utils后标准卸载通过；保持无关shell内容与0640权限，link doctor3/1/0警告不隐藏。首次裸Bun依赖探针超时已回收，可能自动解析依赖，不能称该失败探针零外网；修正--no-install后四组合通过。
+
+原/包装各25项HTTP合同、16项API完整响应和真实SSE heartbeat一致；原跨Host/Origin静态200不变，身份头不等于授权。真实PTY ISIG/VINTR前台Ctrl+C退出0，官方子异常、wrapper SIGKILL、父消失、非法/占用端口、空格路径及私有preload回收另验；孤儿退出码unknown。Stats网页五轮10页建/10关，生命周期含默认页15建/15关，均无剩余；精确target/PID/端口与失败驱动证据独立保存，不扩大为整个历史run总数。
+
+不发布的资源门禁：18.12.1原版默认 `/usr/bin/open` 已按精确origin/新AX ref认领，13→14→13保持原页，退出0/端口关闭。包装默认opener人为失败轮在fresh baseline时普通Chrome窗口消失，因此启动前停止，未再造页。早期18.11.3独占浏览器94045虽已退出、Profile已删，启动空白页target/数量未持久化，不能回补。完整本轮账本、目标默认opener失败分支与上述官方价格边界均不得冒称通过；最终提交CI/冷安装不代替这些门禁。
 
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前汉化范围：415 项 UI 元数据；相对18.11.1新增3项、复核2项，无删除；保留设置路径、类型、默认值、选项 value、group、凭据标记、动态 getter、保存与可逆恢复。
-- 命令补全汉化：86 个内置斜杠命令、94 个命令名/别名的顶层说明、实时状态与技能数量；新增seance，原动态逻辑未变。只包装公共provider显示，不改命令名、参数、排序、插入和执行；第三方/未知说明、路径、模型ID保留原文。
+- 当前汉化范围：416项UI元数据；相对18.11.3新增advisor.continueSeverity 1项，无删除；保留设置路径、类型、默认值、选项value、group、凭据标记、动态getter、保存与可逆恢复。
+- 命令补全汉化：86个内置斜杠命令、94个命令名/别名的顶层说明、实时状态与技能数量；相对18.11.3静态与动态合同不变。只包装公共provider显示，不改命令名、参数、排序、插入和执行；第三方/未知说明、路径、模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
 - 设置语言只保留在当前进程，下次启动默认中文；设置汉化不写配置、不读当前设置值或凭据、不联网。

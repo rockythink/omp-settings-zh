@@ -26,7 +26,7 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前候选/真实宿主18.11.3，维护开始Release v18.11.1/main a364115。默认系统opener现已实测正常与人为失败回收、精确URL/单次开页及13个既有页签保护；但早期重启驱动未持久化初始空白页target/数量，整个独占浏览器已回收，Profile已删且不得补造计数，完整资源账本门禁未过，本轮不tag/Release。代码/CI/冷安装、旧宿主证据及Orca completed均不能替代未通过门禁；历史标签不覆盖。
+- 当前候选/真实宿主18.12.1，维护开始Release v18.11.1/main a364115。18.12.1原版默认opener实测精确URL/单次开页及13个既有页签保护，包装默认opener人为失败轮因普通浏览器基线消失未启动；18.11.3的成功不替代新宿主。早期重启驱动还未持久化初始空白页target/数量，整个独占浏览器已回收，Profile已删且不得补造计数，完整资源账本门禁未过，本轮不tag/Release。代码/CI/冷安装、旧宿主证据及Orca completed均不能替代未通过门禁；历史标签不覆盖。
 - GitHub Release、Git tag 和 `package.json` 版本必须一致。
 - 上游无设置变更也要验证依赖入口、自动检查和实际编译版；检测到变化先补译，任一检查失败不发布。已用编号不得复用，选择未使用且高于已发布版本的编号，不得重写旧标签。
 - 不上传修改后的 OMP 二进制、完整 OMP 源码或第三方构建产物。
@@ -80,6 +80,10 @@
 任一门禁失败不得发布。
 
 目录逻辑路径须使用实际活动 Profile／XDG 的官方解析结果，并在新进程验证，不以默认 Profile 通过替代命名 Profile。终端退出证据记录 ISIG、VINTR 和 foreground process group；只写 0x03 而未证明产生 SIGINT 的超时须保留，不能伪称代码修复或用 SIGTERM 成功替代正常 Ctrl+C。
+
+冒烟驱动本身也须实测捕获中断：避免pi-utils包根postmortem和Puppeteer默认SIGINT抢先退出；版本常量用官方公开dirs子路径，关闭Puppeteer三类signal handler后由自身finally回收。真实SIGINT/SIGTERM/SIGHUP分别保留130/143/129、页面target关闭与Stats/bridge端口空结果，不能只看退出码认定清理完成。SIGKILL不能保证finally，下次只凭明确run/Profile/target/PID账本回收，未知身份只报告。
+
+模型请求隔离不能只覆盖global fetch：目标compiled显式模型的原生HTTPS暖连须到达标准Agent异步无Socket拒绝，并跨abort timeout存活；代理fetch分支独立检查。目录GET、Stats身份GET、无凭据HEAD、被拒POST尝试分别记账。技能描述fixture预置官方格式缓存，不调用后台生成；未知输入在input阶段handled，不靠agent_start throw阻止费用。
 
 ## 5. 安装契约
 

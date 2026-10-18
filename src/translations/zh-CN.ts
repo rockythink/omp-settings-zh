@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.11.3",
+  "sourceOmpVersion": "18.12.1",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -138,6 +138,25 @@ export const zhCN = {
       "sourceHash": "76e910dce826950b9375a9ff4f803788a80d0a905098688946f216aae17f7218",
       "label": "自动 Prewalk 目标",
       "description": "自动 Prewalk 在首次编辑/写入时交接到的模型或角色（默认为 @smol）"
+    },
+    "advisor.continueSeverity": {
+      "sourceHash": "415c9cbc35cf87fd211146ff4450189001028336b3403a2b31fc430289c58032",
+      "label": "Advisor 续行严重级别",
+      "description": "Agent 给出最终回答并结束后，可唤醒其继续运行的 Advisor 备注最低严重级别。较低级别的备注以卡片保留在会话记录末尾，并随你的下一条消息传给 Agent",
+      "options": {
+        "nit": {
+          "label": "细节建议",
+          "description": "每条备注都会让 Agent 继续运行"
+        },
+        "concern": {
+          "label": "疑虑",
+          "description": "疑虑和阻断问题会让 Agent 继续运行；默认"
+        },
+        "blocker": {
+          "label": "阻断问题",
+          "description": "只有阻断问题会让 Agent 继续运行"
+        }
+      }
     },
     "advisor.reviewMode": {
       "sourceHash": "7eda663e2a7c50ef6748c64ab5f729f4f182f67c2a93bc48acc947e019531606",

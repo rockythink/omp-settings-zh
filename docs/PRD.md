@@ -1,10 +1,10 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.11.3未发布候选；默认opener已验证，早期重启驱动未持久化初始空白页target/数量，完整资源账本门禁未过
-- 基线版本：OMP 18.11.3（实际编译 Bun 1.4.3）
+- 状态：18.12.1未发布候选；完整资源账本及目标编译版默认opener门禁未全通过，分项证据见CONTEXT.md
+- 基线版本：OMP 18.12.1（实际编译 Bun 1.4.3）
 - 文档日期：2026-10-18
 
-相对18.11.1：Settings415/415，新增prewalk.auto、prewalk.autoTarget、lsp.requestTimeout，复核lsp.shared与task.isolation.enabled，无删除；Commands86/86、94标识，新增seance，原27动态回调与公共接口不变；Stats179包文件仅package.json变化，92源码/73客户端不变，609键/105模板保留。静态覆盖与编译版smoke已通过，不替代动态交互、默认opener、最终CI、冷安装与逐阶段回收。
+相对18.11.3：Settings416/416，仅新增advisor.continueSeverity，无删除；Commands86/86、94标识、27动态回调及公共接口均不变；Stats的73客户端文件不变，db/trace价格peer解析变化，609键/105模板保留。静态覆盖与编译版smoke已通过，不替代动态交互、默认opener、最终CI、冷安装与逐阶段回收，也不以插件修补官方统计计算。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 

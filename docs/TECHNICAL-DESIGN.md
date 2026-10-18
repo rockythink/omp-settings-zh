@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.11.3，未发布；最新已发布为v18.11.1
-- 目标基线：官方OMP18.11.3/内嵌Bun1.4.3；默认opener原生认领/关闭已验证，早期重启驱动初始空白页target/数量未持久化，完整资源账本门禁阻止发布
+- 实现候选：18.12.1，未发布；最新已发布为v18.11.1
+- 目标基线：官方OMP18.12.1/内嵌Bun1.4.3；完整资源账本及目标默认opener门禁未全通过，精确证据见CONTEXT.md
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -66,7 +66,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存OMP18.11.3的86条官方英文/94个名称别名。相对18.11.1仅新增seance静态说明，无别名/动态回调，原27个动态回调与公共provider接口不变。seance有 `[session id|path] [--model selector]` 原提示，可触发咨询任务，验收不执行。pi-tui仅为 `@` 文件fuzzy walk添加1500ms预算，不改变包装器。switch仍使用effectiveServiceTier(model)，effort实时selectors及键位格式依赖未变；静态门禁仅容许switch/loop已知键位差异，不因显示层能力放宽其它原文。
+`src/translations/slash-commands.ts` 保存OMP18.12.1的86条官方英文/94个名称别名。相对18.11.3，整个slash-commands目录、27个动态回调、公共provider接口与pi-tui补全实现逐字不变；switch仍使用effectiveServiceTier(model)，effort实时selectors及键位格式依赖未变。seance的 `[session id|path] [--model selector]` 原提示保留，可触发咨询，验收不执行。静态门禁仅容许switch/loop已知键位差异，不因显示层能力放宽其它原文。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -91,6 +91,7 @@
 - 18.11.0 独立审查：全部 73 个客户端文件逐字未变，92 个 Stats 源码中 6 个服务端文件变化：recurring tariff 与 dated rate card 定价、Frustration 有效费率、初始扫描及 watcher 排除 `.omp-gc-compress-*`、Codex positional quota slot 按 family/windowLabel 分组，以及共享类型注释。原计算由官方编译版执行，不复制业务；609 键/105 模板保持。实际 API 验证 7d 跨账户合并、5h/Spark 隔离、无 windowLabel 保留 raw ID，常规会话 SSE 更新且压缩暂存不计入。
 - 18.11.1 独立审查：179 个 Stats 包文件仅 package.json 不同，92 源码/73 客户端逐字不变。实际编译版发现负百分比 saved 文案未匹配，严格模板允许负号且保持符号/数值不变，609 键/105 模板数量不变；未知及数据区边界不放宽。实际 11 页、请求/Span、费用估算取消、6→7 异步渲染和同 origin 重启另验。
 - 18.11.3独立审查：相对18.11.1的179包文件仅package.json变化，92源码/73客户端、stats-cli与openPath逐字不变。609键/105模板及浏览器白名单/数据排除/React整批来源失效保持，不重复改译。目标编译版另验11路由、抽屉/追踪/图表/窄屏/键盘、双项目异步4→5、原/包装HTTP/SSE与进程生命周期；原静态跨Host/Origin允许不冒称拦截。
+- 18.12.1独立审查：179包文件中仅package.json、CHANGELOG、db.ts、trace.ts变化；73客户端、stats-cli与openPath不变。db与trace共享pricingPeerFor的价格peer规则，不能用客户端未变推断服务计算未变。插件不复制或修正官方费用计算；原/包装API逐值比较及价格边界观察独立记录。
 
 ## 6. 检查与真实验证
 
@@ -103,11 +104,13 @@
 - Commands：实际官方编译版检查顶层补全及别名、动态状态/键位、中英文恢复、参数/文件/第三方边界与 Tab/Enter 插入和原命令执行；静态门禁不能代替动态模板和交互证明。
 - Stats：真实编译版验证 BUN_OPTIONS 预加载、现有参数合并与安全临时路径；从新 shell 直接 `omp stats` 确认仅原服务一个监听器，测试语言/路由/刷新/同地址重启、原 API/SSE、原授权/静态请求行为、JSON/summary、port/host、退出及默认安装/卸载。不使用源码运行代替编译版，也不触发付费评估。
 - 验收资源：先登记 run、页面身份基线、专属浏览器 Profile/PID、服务 PID/port、临时路径及清理入口。冒烟用 CDP Target.getTargetInfo 登记真实 target ID，记录原自动 URL、launcher/official PID、opener bridge 端口与私有 preload 路径；实测 0700/0600、已有 --smol/用户 preload 在实际 compiled Bun 中执行、退出后私有目录消失。复用一个主标签，默认 headless；官方自动开页也计入归属。测试专属 opener 必须真实交付 URL 并观察页面，默认 /usr/bin/open 另记录真实调用/URL/新增页数；不假设 BROWSER 或不存在的 --no-open。try/finally 逐阶段先关自有页面、再停止服务并验证端口、最后回收临时目录；正常及人为断言失败分支先实测，残留阻止发布。
-- 18.10.2 真实编译生命周期十项通过：原版/包装 PTY 实际 Ctrl+C（未改 termios）、官方子进程异常、launcher SIGKILL、父进程消失、等号/短参数、无效/占用端口及释放后恢复；私有目录/端口/PID 均回收。SIGKILL 独立 guard 3.816 秒清理。目录发现与推理分开审计：正常 RPC session_start、Bun 1.4.3、13 次目录 GET（8 外部/5 本机）全部在 dispatch 前阻断，推理/费用请求 0；最终 smoke-cli 也对真实官方子进程全 fetch 阻断并检查仅目录 GET，macOS 实测 15 次。不能称零请求尝试。早期脚手架曾允许本机目录 GET，不能证明其未访问既有本机服务；修正后正式审计全部阻断，失败记录不隐藏。
+- 驱动信号所有权：读取VERSION使用公开pi-utils/dirs子路径，不经包根引入postmortem的异步cleanup→native exit；Puppeteer默认SIGINT会process.exit(130)，launch必须关闭handleSIGINT/handleSIGTERM/handleSIGHUP，由本驱动统一捕获并进入finally。Chrome使用清除真实凭据/代理的隔离env。实测三类信号非成功退出130/143/129且页面/服务/端口/私有目录闭合；不能只检查exit130就假定finally已执行。
+- 18.12.1编译网络隔离：显式选择真实Anthropic模型触发无凭据暖连；仅global fetch不足，Node HTTPS经标准Agent.createConnection异步callback拒绝，不创建Socket且返回真实ClientRequest，防止同步throw触发Cowork的abort TDZ。net/TLS仍fail-closed，实际compiled35秒与TUI验证；代理分支的fetch HEAD另验。目录GET、Stats本地身份GET、HEAD分别归类；任何推理POST尝试单列，不能以agent_start handler throw充当取消。
+- 18.10.2历史编译生命周期十项通过：原版/包装PTY实际Ctrl+C（未改termios）、官方子进程异常、launcher SIGKILL、父进程消失、等号/短参数、无效/占用端口及恢复；私有目录/端口/PID回收，SIGKILL独立guard3.816秒清理。旧fetch审计及15个GET的归类不能作为18.12.1“只有目录GET”的证明；早期允许本机目录GET的脚手架也不能证明未访问既有本机服务，失败记录不隐藏。
 
 ## 7. 发布边界
 
-候选源码/开发依赖/实际宿主为18.11.3，范围 `>=18.11.3 <19`；维护开始main/Release与GitHub插件均18.11.1，旧工作区/Windows草稿保留。三部分编译交互、精确最终macOS/Linux CI、冷GitHub安装与完整资源账本分别构成门禁。默认opener已按原生窗口ID、新AX ref与精确origin验证；早期重启驱动初始空白页target/数量未持久化，整个独占浏览器已退出但Profile删除后无法回补，本轮不tag/Release。Windows PR #1独立未合并。
+候选源码/开发依赖/实际宿主为18.12.1，范围 `>=18.12.1 <19`；初始main/Release与GitHub插件均18.11.1，旧工作区/Windows草稿保留。三部分目标编译交互、精确最终macOS/Linux CI、冷GitHub安装与完整资源账本分别构成门禁。18.12.1原版默认opener已用新AX ref/精确origin验证；包装默认opener失败分支因普通浏览器基线消失未启动。早期18.11.3重启驱动还缺初始空白页target/数量，Profile删除后不能回补；本轮不tag/Release。Windows PR #1独立未合并。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 
