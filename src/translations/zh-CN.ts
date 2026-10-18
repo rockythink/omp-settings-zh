@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.11.1",
+  "sourceOmpVersion": "18.11.3",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -114,6 +114,30 @@ export const zhCN = {
       "sourceHash": "216aa6a231a0c76446686388a1c9695577c3f6a126834d97294ea8ce835360c0",
       "label": "启用 Prewalk",
       "description": "先使用当前模型启动，然后在规划提示的待办列表生成后，于首次编辑/写入时切换到快速/低成本模型（默认为“smol”角色）——由高能力模型制定计划、确认待办事项并开始实现，然后再交接。每个会话可通过 --prewalk / --no-prewalk 覆盖此设置"
+    },
+    "prewalk.auto": {
+      "sourceHash": "54269b1af40b805a6183d75f94c36b39d92ec6a3a5bda5e05c648e4a988a0d5a",
+      "label": "自动 Prewalk",
+      "description": "通过 judge 角色解析到的原生 judge，判断每个新的顶层用户任务是否将高难度推理集中在前期。需要原生 judge；没有时不进行分类。独立于“启用 Prewalk”",
+      "options": {
+        "off": {
+          "label": "关闭",
+          "description": "不为 Prewalk 对提示词进行分类"
+        },
+        "suggest": {
+          "label": "建议",
+          "description": "对每个任务进行分类并报告判断结果，但不启用 Prewalk 交接"
+        },
+        "on": {
+          "label": "开启",
+          "description": "对明确将推理集中在前期的任务，启用从当前模型到自动目标的交接；下一个任务重新从规划模型开始"
+        }
+      }
+    },
+    "prewalk.autoTarget": {
+      "sourceHash": "76e910dce826950b9375a9ff4f803788a80d0a905098688946f216aae17f7218",
+      "label": "自动 Prewalk 目标",
+      "description": "自动 Prewalk 在首次编辑/写入时交接到的模型或角色（默认为 @smol）"
     },
     "advisor.reviewMode": {
       "sourceHash": "7eda663e2a7c50ef6748c64ab5f729f4f182f67c2a93bc48acc947e019531606",
@@ -2763,9 +2787,22 @@ export const zhCN = {
       "description": "首次使用时（调用 lsp 工具或编辑匹配文件类型的文件）启动语言服务器，而非在会话启动时启动"
     },
     "lsp.shared": {
-      "sourceHash": "218b9222cfe3848219373cc6045062f421cb9a23560c461df245a0460bb8e46c",
+      "sourceHash": "0dd224c3bb142aa2ff60767668701ae683a39874bc649d6b41189cc4fc97599e",
       "label": "共享语言服务器",
-      "description": "通过 daemon broker，让各 omp 实例按项目共享一个语言服务器（不可用时回退到私有服务器）"
+      "description": "通过项目专属 daemon broker 启动语言服务器，每个连接使用独立服务器。只要项目中还有另一个 omp 实例运行，已释放的服务器就保持就绪，供下一个连接复用而无需冷启动（不可用时回退到私有服务器）"
+    },
+    "lsp.requestTimeout": {
+      "sourceHash": "d5b85279f9793785f1f3e279c4d98c033ac065314f03a3365da6f34bbb5ddc67",
+      "label": "请求超时",
+      "description": "Agent 未设置超时时，等待语言服务器诊断、悬停信息等响应的秒数；编辑后延迟返回的诊断至少等待这么久。服务器冷启动较慢时可调高；lsp 工具的 timeout 参数仍可逐次调高或调低此值",
+      "options": {
+        "10": { "label": "10 秒", "description": "默认" },
+        "20": { "label": "20 秒" },
+        "30": { "label": "30 秒" },
+        "60": { "label": "1 分钟" },
+        "120": { "label": "2 分钟" },
+        "300": { "label": "5 分钟" }
+      }
     },
     "lsp.formatOnWrite": {
       "sourceHash": "37df220d69eae80d57e2a2c0f38e185e41db58745eac1fe47066be3402d24388",
@@ -4524,9 +4561,9 @@ export const zhCN = {
       "description": "为每个 `workpool` 条目启动新的子代理，而不是复用工作代理或批量处理排队条目"
     },
     "task.isolation.enabled": {
-      "sourceHash": "961516429072948ae8177dacbf8f2e54c09d5487d2882af0b03161abcd0481bc",
-      "label": "隔离子代理",
-      "description": "在当前检出目录的隔离副本中运行子代理，之后整合其更改"
+      "sourceHash": "5db54873c25a1bfb17303686081e7eefa87429640ea4a55c3c1ec0a2b4451e95",
+      "label": "允许隔离子代理",
+      "description": "允许任务通过 `isolated: true` 单独启用隔离；未指定的任务在共享检出目录中运行"
     },
     "isolation.backend": {
       "sourceHash": "a72b13a07a5e5f80c984f1d49464f393abad0fc62bee9bef516e11b314ab1003",

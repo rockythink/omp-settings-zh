@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现版本：18.11.1；发布状态以现场 tag/Release 为准
-- 目标验证基线：OMP 18.11.1（实际内嵌 Bun 1.4.3）；三部分独立编译版、最终 macOS/Linux CI 与冷安装/资源回收构成发布门禁
+- 实现候选：18.11.3，未发布；最新已发布为v18.11.1
+- 目标基线：官方OMP18.11.3/内嵌Bun1.4.3；默认系统opener的可靠页面认领与关闭合同阻塞，不能用测试专属opener或旧证据代替
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -66,7 +66,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存 OMP 18.11.1 的 85 条官方英文/93 名称别名。相对 18.10.3，顶层静态原文、别名、27 个动态回调与公共 provider 接口未变；18.11.1 的 autocomplete/editor 抽出 extractAtFilePrefix，统一双引号 `@` 文件 token，包装不改匹配或插入。switch 继续取 session.effectiveServiceTier(model)，effort 实时读取 selectors；静态门禁仅容许 switch/loop 已知键位变化。上游 /session pin、/jobs 树形输出及 /plugins 参数保持英文，/new 走原生 handleNewCommand。真实编译版验证同步/异步裸列表、8 个别名、2 项技能、双引号文件 Tab 插入、语言/键位恢复和有效服务层级；partial 在该实际会话未触发，由既有行为回归补充，不冒称 UI 已覆盖。
+`src/translations/slash-commands.ts` 保存OMP18.11.3的86条官方英文/94个名称别名。相对18.11.1仅新增seance静态说明，无别名/动态回调，原27个动态回调与公共provider接口不变。seance有 `[session id|path] [--model selector]` 原提示，可触发咨询任务，验收不执行。pi-tui仅为 `@` 文件fuzzy walk添加1500ms预算，不改变包装器。switch仍使用effectiveServiceTier(model)，effort实时selectors及键位格式依赖未变；静态门禁仅容许switch/loop已知键位差异，不因显示层能力放宽其它原文。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -90,6 +90,7 @@
 - 18.10.3 独立审查：全部92源码/73客户端相对18.10.2逐字未变；stats-cli/openPath/utils及Bun调用合同也未变。真实编译Bun1.4.3单原监听器提供同源脚本，语言/11页/抽屉/追踪/图表/异步数据/窄屏/键盘与同origin重启另验；同名UI键的数据保持原文，不复制计算或放宽静态权限。
 - 18.11.0 独立审查：全部 73 个客户端文件逐字未变，92 个 Stats 源码中 6 个服务端文件变化：recurring tariff 与 dated rate card 定价、Frustration 有效费率、初始扫描及 watcher 排除 `.omp-gc-compress-*`、Codex positional quota slot 按 family/windowLabel 分组，以及共享类型注释。原计算由官方编译版执行，不复制业务；609 键/105 模板保持。实际 API 验证 7d 跨账户合并、5h/Spark 隔离、无 windowLabel 保留 raw ID，常规会话 SSE 更新且压缩暂存不计入。
 - 18.11.1 独立审查：179 个 Stats 包文件仅 package.json 不同，92 源码/73 客户端逐字不变。实际编译版发现负百分比 saved 文案未匹配，严格模板允许负号且保持符号/数值不变，609 键/105 模板数量不变；未知及数据区边界不放宽。实际 11 页、请求/Span、费用估算取消、6→7 异步渲染和同 origin 重启另验。
+- 18.11.3独立审查：相对18.11.1的179包文件仅package.json变化，92源码/73客户端、stats-cli与openPath逐字不变。609键/105模板及浏览器白名单/数据排除/React整批来源失效保持，不重复改译。目标编译版另验11路由、抽屉/追踪/图表/窄屏/键盘、双项目异步4→5、原/包装HTTP/SSE与进程生命周期；原静态跨Host/Origin允许不冒称拦截。
 
 ## 6. 检查与真实验证
 
@@ -106,7 +107,7 @@
 
 ## 7. 发布边界
 
-从 18.4.6 起，宿主适配以目标版本编号为基线，独立插件增量使用未发布且高于已发布版本的补丁号。当前源码/开发依赖/实际宿主 18.11.1，声明范围 `>=18.11.1 <19`；维护开始最新 Release v18.10.3、远端 main ca06e04。中间 18.11.0 提交 CI 成功但未打 tag/Release，不能替代新宿主验收；受保护旧工作区与 Windows 草稿不混入。三部分、最终精确提交 macOS/Linux CI、冷 GitHub 安装及资源零残留分别构成门禁；Windows PR #1 未合并，不纳入正式支持。
+候选源码/开发依赖/实际宿主为18.11.3，声明范围 `>=18.11.3 <19`；维护开始main/Release与本机GitHub插件均18.11.1，旧工作区及Windows草稿保留。版本基线与独立插件补丁编号不用于推断实际宿主/Stats。三部分编译交互、精确最终提交macOS/Linux CI、干净GitHub安装及逐阶段资源回收分别构成门禁；默认系统opener未建立安全认领/关闭合同，未启动该阶段，不打tag或Release。Windows PR #1仍独立未合并。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

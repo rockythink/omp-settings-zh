@@ -2,11 +2,11 @@
 
 ## 当前状态
 
-`src/translations/zh-CN.ts` 依据 OMP 18.11.1 官方英文元数据独立复核。相对 18.10.3，UI 414→412：删除两项 Codex Code Mode，复核 contextPromotion.enabled、retry.modelFallback、task.structured 三项说明/哈希；18.11.0→18.11.1 设置域源码无变化。gc.compress / gc.compressAfterDays 不计 UI；未变化译文、126 组静态选项及 8 个动态 getter 保留，不复制第三方中文或功能实现。
+`src/translations/zh-CN.ts` 依据 OMP 18.11.3 官方英文元数据独立复核。相对18.11.1，UI412→415：新增prewalk.auto、prewalk.autoTarget、lsp.requestTimeout，复核lsp.shared与task.isolation.enabled，无删除。未变化译文与动态getter保留，不复制第三方中文或功能实现。
 
-`src/translations/slash-commands.ts` 保存官方 OMP 18.11.1 的 85 条英文说明及 93 个名称/别名；顶层静态原文、别名、27 个动态回调与公共 provider 接口未变。独立审查双引号 @ 文件补全、/session pin、/jobs、/plugins 和 /new 执行变化，参数说明及正文仍保留英文；不复制命令实现，不以静态门禁冒称覆盖动态状态。
+`src/translations/slash-commands.ts` 保存官方 OMP18.11.3 的86条英文说明、94个名称/别名；新增seance只读咨询说明，保留会话/路径/模型参数，未复制或执行咨询逻辑。原27动态回调、switch有效层级、effort selector及公共provider接口不变，动态状态独立验收。
 
-`src/stats/translations.ts` 独立审阅基线为官方 `@oh-my-pi/omp-stats@18.11.1`。73 个客户端文件相对 18.10.3 未变；18.11.0 的 6 个服务端文件涉及定价/扫描/窗口分组，18.11.1 的 179 个包文件仅 package.json 不同。保留 609 键/105 严格模板，负数节省百分比仅补显示匹配，不改变数值或计算。npm 包仅作审阅来源；真实官方编译 CLI 原监听器通过同源 Bun preload 注入，不重新分发 Stats 实现或二进制。
+`src/stats/translations.ts` 的独立审阅基线为官方 `@oh-my-pi/omp-stats@18.11.3`。相对18.11.1，179包文件仅package.json不同，92源码/73客户端无变化。609键/105严格模板、UI白名单与数据排除保持。npm包只是审阅来源；实际官方编译CLI在原监听器通过同源Bun preload注入，不重新分发Stats实现或二进制。
 
 ## Oh My Pi
 
@@ -15,7 +15,7 @@
 - Project: Oh My Pi
 - Repository: https://github.com/can1357/oh-my-pi
 - License: MIT
-- Baseline reviewed: v18.11.1 (7cc912940b107eb2d771b0d106c640a8eddc9edf)
+- Baseline reviewed: v18.11.3 (96894a6147d8cc64b7e00ad3a7d7178fd93b9531)
 - Copyright notices in the reviewed upstream license:
   - Copyright (c) 2025 Mario Zechner
   - Copyright (c) 2025-2026 Can Bölük

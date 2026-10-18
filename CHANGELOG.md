@@ -2,6 +2,36 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.11.3] - 2026-10-18（未发布候选）
+
+### Settings
+
+- 目标官方宿主18.11.3，经受支持 `omp update` 从18.11.1升级；coding-agent/pi-utils开发依赖对齐，内嵌Bun1.4.3。
+- UI412→415：新增 `prewalk.auto`、`prewalk.autoTarget`、`lsp.requestTimeout`；复核 `lsp.shared` 的逐连接服务器复用语义和 `task.isolation.enabled` 的显式 `isolated: true` 条件，无删除。原默认值、类型、value、group、凭据标记、getter与保存/恢复不变。
+- 编译版观察新增/变化项的中文搜索、autoResume false→true→false、同进程en/zh及Settings中文选项与effort英文参数隔离；首轮终端驱动退出等待超时不计整条命令通过。
+
+### Commands
+
+- 85→86定义、93→94名称/别名：新增seance“向已保存的会话咨询，不恢复该会话”。会话/路径/模型参数与提示原样保留，验收不执行咨询。
+- 原27个动态回调、switch有效层级、effort selector、同步/异步/partial/AbortSignal与可选provider接口未变。pi-tui仅为文件fuzzy walk添加1500ms预算，原provider继续负责匹配、排序、插入和执行。
+- 目标编译版观察裸列表、别名前缀、seance中英/原参数提示、plan/loop/model状态与Tab/Enter原生Settings执行。未实际触发的partial/取消等路径由既有行为回归补充，不冒称UI覆盖。
+- 补充活会话验证2项技能数量中英恢复、官方Tab显式展开与技能英文说明、第三方说明、双引号文件Tab插入、Unicode/ASCII往返及Shift+Tab high→xhigh→high。该轮agent_start0，20个目录/更新GET在dispatch前阻断；TUI退出130、PID回收，不冒称零退出。Setup识别与技能显式触发的失败驱动轮次不计通过。
+
+### Stats
+
+- 18.11.1→18.11.3的179包文件仅package.json变化，92源码/73客户端逐字不变。609键/105严格模板、UI白名单/数据排除/节点来源失效保持，不重复改译、不固定npm运行时。
+- 实际11可见路由、请求与工具Span抽屉、三种图表模式、390px/键盘、双项目4→5异步更新（1005ms）、语言往返API保持通过；同名UI键的数据、路径、正文、错误与canvas安全保留。
+- 独占浏览器复用1主标签，两次同origin服务退出0、端口关闭，English跨重启/刷新保留。一次共享浏览器重启opener超时已回收，不计通过。
+- 原/包装15项HTTP/SSE边界一致，原静态跨Host/Origin200不变；真实PTY Ctrl+C退出0、官方子异常、wrapper SIGKILL、父消失、非法/占用端口与私有preload回收通过；孤儿退出码unknown。
+
+### Verification and release boundary
+
+- frozen/check：65 pass、0 fail、2551断言；415/415设置、86/86命令/94标识、漂移0；1837显示变更、三轮可逆恢复，源码冒烟零网络。
+- 真正官方绝对路径smoke通过；默认/命名Profile与XDG四组合稳定逻辑路径、物理缓存换址后新进程、缺SHELL/USER/LOGNAME按UID解析登录shell、透传/dry-run/标准卸载通过。link doctor的3/1/0警告保留。
+- 实际Bun预加载保留用户flags/preload，空格路径0700/0600与单监听器通过。smoke成功/人为失败分支3显式页建/3关、两服务端口关闭；生命周期另11页/10服务/5私有目录回收。
+- 默认系统opener无法取得可靠原生页签身份及安全关闭入口，未启动该阶段；测试专属opener不替代默认合同，候选不发布。精确最终提交CI与干净GitHub安装结果仍须现场核对，不以文档代替。
+- 原脏工作区与Windows PR #1草稿隔离，不发布Windows支持。已有Agent/Stats不会热注入；升级后需重启OMP，并从新终端启动自己的Stats服务，不停止他人服务。
+
 ## [18.11.1] - 2026-10-16
 
 ### Baseline

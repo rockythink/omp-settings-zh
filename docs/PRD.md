@@ -1,10 +1,10 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.11.1 源码与真实 macOS 编译版验收；发布状态以对应 tag/Release、最终 macOS/Linux CI 和干净安装/资源门禁为准
-- 基线版本：OMP 18.11.1（实际编译 Bun 1.4.3）
-- 文档日期：2026-10-16
+- 状态：18.11.3 未发布候选；默认系统 opener 安全认领/关闭合同阻塞，未通过完整发布门禁
+- 基线版本：OMP 18.11.3（实际编译 Bun 1.4.3）
+- 文档日期：2026-10-18
 
-相对 18.10.3：Settings UI 412/412，删除两项 Code Mode，复核 contextPromotion.enabled、retry.modelFallback、task.structured 三项说明/哈希；gc.compress / gc.compressAfterDays 为配置专用，18.11.1 设置域源码无变化。Commands 85/85、93 标识、27 个动态回调与公共接口未变，双引号文件补全及原生参数/执行变化另验。Stats 73 客户端未变，18.11.0 的 6 个服务端文件变化由官方计算，18.11.1 仅包元数据变化；609 键/105 模板补齐负数节省显示。静态门禁不能替代编译交互、冷安装或资源回收。
+相对18.11.1：Settings415/415，新增prewalk.auto、prewalk.autoTarget、lsp.requestTimeout，复核lsp.shared与task.isolation.enabled，无删除；Commands86/86、94标识，新增seance，原27动态回调与公共接口不变；Stats179包文件仅package.json变化，92源码/73客户端不变，609键/105模板保留。静态覆盖与编译版smoke已通过，不替代动态交互、默认opener、最终CI、冷安装与逐阶段回收。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 

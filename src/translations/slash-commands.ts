@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.11.1. */
+/* Display-only translations; source-review baseline OMP 18.11.3. */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -306,6 +306,11 @@ export const slashCommandTranslations = [
     "name": "handoff",
     "en": "Summarize the session into a handoff document and compact in place",
     "zh": "将会话总结为交接文档，并压缩当前上下文"
+  },
+  {
+    "name": "seance",
+    "en": "Consult a saved session without resuming it",
+    "zh": "向已保存的会话咨询，不恢复该会话"
   },
   {
     "name": "resume",
