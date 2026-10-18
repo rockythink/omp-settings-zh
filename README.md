@@ -18,12 +18,12 @@
 
 ## 当前版本
 
-- 当前源码候选：`18.12.1`，未发布；最新已发布为 `v18.11.1`。发布状态以 [GitHub Releases](https://github.com/rockythink/omp-settings-zh/releases) 和对应 tag 为准
+- 源码版本：`18.12.1`。正式发布状态以 [GitHub Releases](https://github.com/rockythink/omp-settings-zh/releases) 和对应 `v18.12.1` tag 为准；main 提交或本机安装不等于 Release
 - 目标官方宿主：OMP 18.12.1（真实内嵌 Bun 1.4.3）；经受支持 `omp update --force` 从 18.11.3 升级。本地与远端只维护 `main`，原未提交改动已私有备份并校验；已有进程不会热加载新代码
 - Settings：416/416 项 UI 元数据，Schema 漂移 0；相对 18.11.3 仅新增 `advisor.continueSeverity`，其余译文不重复修改。保留设置语义、选项 value、group、凭据标记、动态 getter、保存与恢复
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
 - Commands：86 定义、94 个命令名/别名、27 个动态回调；相对 18.11.3 的注册表、动态生成逻辑及公共 provider 接口未变，静态原文/别名漂移 0。参数、路径、模型 ID 和第三方描述保持原文；动态状态、键位和编译版交互不能由静态门禁替代
-- Stats：实际运行官方 OMP18.12.1 编译CLI，不是npm副本。相对18.11.3，73客户端文件不变，官方db/trace价格peer解析有变化；609键/105模板与UI/数据边界保留。新轮11页中英、API/Trace/SSE及8页创建/8关闭回收已验证；用户暂不授权桌面控制，实际默认opener门禁保持未通过，**仍不发布**。历史资源审计缺口不回填，分项证据见[CONTEXT.md](CONTEXT.md)
+- Stats：实际运行官方 OMP18.12.1 编译CLI，不是npm副本。相对18.11.3，73客户端文件不变，官方db/trace价格peer解析有变化；609键/105模板与UI/数据边界保留。11页中英、API/Trace/SSE、冷安装及受管页面回收已验证。**仅本次18.12.1经明确授权豁免真实系统默认浏览器的打开/失败回收验收，该项仍未验证**；不申请桌面控制，不以测试专属opener转交冒充默认opener证据，其余发布门禁不豁免。历史失败记录保留，分项证据见[CONTEXT.md](CONTEXT.md)
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -51,7 +51,7 @@
 | 18.10.3 | 18.10.3 | >=18.10.3 <19 |
 | 18.11.1 | 18.11.1 | >=18.11.1 <19 |
 | 18.11.3（历史未发布候选） | 18.11.3（macOS 编译版；资源门禁未通过） | >=18.11.3 <19 |
-| 18.12.1（未发布候选） | 18.12.1（macOS 编译版；完整门禁见 CONTEXT.md） | >=18.12.1 <19 |
+| 18.12.1 | 18.12.1（macOS/Linux 编译版；默认opener验收例外见上文） | >=18.12.1 <19 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -63,7 +63,7 @@ Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、�
 
 ## 安装
 
-当前源码候选要求官方 OMP `>=18.12.1 <19`；最新 Release v18.11.1 的历史基线见上表。发布主线仅 macOS/Linux。Windows PR #1已关闭、未合并，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端均只有main工作分支。直接从GitHub main安装会取得当前候选：
+当前版本要求官方 OMP `>=18.12.1 <19`；实际验证基线见上表。发布主线仅 macOS/Linux。Windows PR #1已关闭、未合并，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端均只有main工作分支。通过官方插件管理器安装：
 
 ```sh
 omp plugin install github:rockythink/omp-settings-zh

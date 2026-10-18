@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.12.1，未发布；最新已发布为v18.11.1
-- 目标基线：官方OMP18.12.1/内嵌Bun1.4.3；完整资源账本及目标默认opener门禁未全通过，精确证据见CONTEXT.md
+- 实现版本：18.12.1；实际发布状态以同版本tag与GitHub Release为准
+- 目标基线：官方OMP18.12.1/内嵌Bun1.4.3；默认opener未验证，仅本版本获明确发布例外，其他门禁及证据见CONTEXT.md
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -111,7 +111,7 @@
 
 ## 7. 发布边界
 
-候选源码/开发依赖/实际宿主为18.12.1，范围 `>=18.12.1 <19`；三部分目标编译交互、精确最终macOS/Linux CI、冷GitHub安装与完整资源账本分别构成门禁。历史默认opener及资源审计缺口保留，不回填旧身份；新轮已重验原生Settings/Commands与headless Stats的完整页面/服务/private路径回收，但用户暂不授权桌面控制，实际默认opener门禁仍未通过，不tag/Release。用户批准单main治理后，本地/远端只保留main；原未提交改动私有备份，旧脏工作树detached归档。Windows PR #1已关闭、未合并，草稿由非发布tag `archive/windows-support-20261018`保留。
+源码/开发依赖/实际宿主基线为18.12.1，范围 `>=18.12.1 <19`；三部分目标编译交互、精确最终macOS/Linux CI、冷GitHub安装与完整新轮资源账本分别构成门禁。历史默认opener及资源审计缺口保留，不回填旧身份；新轮已重验原生Settings/Commands与headless Stats的页面/服务/private路径回收。2026-10-19用户明确批准仅对18.12.1豁免真实系统默认浏览器打开/失败回收验收，Release必须标注未验证；不控制桌面、其余门禁不豁免、后续版本不自动继承。用户批准单main治理后，本地/远端只保留main；原未提交改动私有备份，旧脏工作树detached归档。Windows PR #1已关闭、未合并，草稿由非发布tag `archive/windows-support-20261018`保留。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

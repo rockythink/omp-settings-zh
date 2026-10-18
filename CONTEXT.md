@@ -2,9 +2,9 @@
 
 ## 当前项目
 
-当前源码候选、开发依赖和真实官方宿主目标为18.12.1（内嵌Bun1.4.3），未发布。官方 `omp update` 下载遇ECONNRESET后，用受支持的 `omp update --force` 从18.11.3升级成功；真实二进制SHA256为fa41b27d434380e99b713e4f9ced0f73eb1fc0c409fdf23a57c119971d24bac5。coding-agent/pi-utils/Stats稳定版同为18.12.1，coding-agent同版依赖保持；官方v18.12.1对应291e055836c210f314af3f73f53244e8e9d09de8。npm Stats只是独立审阅线索，运行时仍是实际官方编译CLI。
+当前源码版本、开发依赖和真实官方宿主目标为18.12.1（内嵌Bun1.4.3）；实际发布以同版本tag和GitHub Release为准。官方 `omp update` 下载遇ECONNRESET后，用受支持的 `omp update --force` 从18.11.3升级成功；真实二进制SHA256为fa41b27d434380e99b713e4f9ced0f73eb1fc0c409fdf23a57c119971d24bac5。coding-agent/pi-utils/Stats审阅基线同为18.12.1，coding-agent同版依赖保持；官方v18.12.1对应291e055836c210f314af3f73f53244e8e9d09de8。npm Stats只是独立审阅线索，运行时仍是实际官方编译CLI。
 
-维护最初远端main a364115/Release v18.11.1；18.11.3中间候选未发布。18.12.1适配及资源驱动修正已推送至808aa64，本机同一GitHub来源插件为18.12.1#808aa64、doctor5/0/0。用户批准单main收敛：原main fc689e7/package18.8.7的15个修改文件及53个未跟踪项先做仓库外私有备份，68个文件逐字节校验及历史bundle验证后，主工作区快进到远端main；旧18.10.4脏工作树以detached状态移入私有归档，原补丁保持。Windows PR #1已关闭、未合并，独立草稿d546017由非发布tag `archive/windows-support-20261018`保留，不宣称正式Windows支持。全部维护分支及Windows分支已从本地/远端移除，只保留main；用户未跟踪内容不提交。
+维护最初远端main a364115/Release v18.11.1；18.11.3中间候选未发布。18.12.1运行时代码适配及资源驱动修正基线为808aa64，后续14ad3c9仅更新单main治理及发布文档；当前安装提交必须以插件锁文件和doctor现场核对，不以文档快照代替。用户批准单main收敛：原main fc689e7/package18.8.7的15个修改文件及53个未跟踪项先做仓库外私有备份，68个文件逐字节校验及历史bundle验证后，主工作区快进到远端main；旧18.10.4脏工作树以detached状态移入私有归档，原补丁保持。Windows PR #1已关闭、未合并，独立草稿d546017由非发布tag `archive/windows-support-20261018`保留，不宣称正式Windows支持。全部维护分支及Windows分支已从本地/远端移除，只保留main；用户未跟踪内容不提交。
 
 Settings416/416：相对18.11.3仅新增advisor.continueSeverity，nit/concern/blocker原值与默认concern不变；无删除，其余译文不重复修改。新增sharpshooter.minPromptLength和statusLine.segmentOptions.pi.showProfile无UI，不补造译文。Commands86定义/94标识/27动态回调：整个命令目录、pi-tui补全和公共provider合同均未变化；switch有效层级与effort实时selector另审。Stats179包文件仅package.json、CHANGELOG、db.ts、trace.ts变化，73客户端不变；价格peer解析保留官方计算，609键/105模板不扩张。
 
@@ -24,13 +24,13 @@ frozen/check通过：65pass/0fail、2551断言，设置与命令漂移0，本机
 
 Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包装JSON、10路API及4份trace逐值相等，catalog动态价格匹配；请求/工具Span抽屉、三种图表、390px/键盘、同名UI键数据/正文/错误保留、同origin语言重启保留及自然SSE/React4→5通过。估价只打开后取消，隔离环境未配置judge，没有可用报价；不点击继续、不执行评估。
 
-Stats仍有官方价格一致性失败：Costs与会话列表unpriced为0、费用$0.11，四份详细trace各unpriced2、费用N/A。边界为minimax-code/MiniMax-M2.1-lightning及刻意缺价的google-antigravity/Overview；db缺价返回unpriced:false，trace递增未定价。原版与包装结果完全相同，不以插件改官方计算或掩盖此差异。
+官方价格口径边界（非汉化差异）：Costs与会话列表unpriced为0、费用$0.11，四份详细trace各unpriced2、费用N/A。边界为minimax-code/MiniMax-M2.1-lightning及刻意缺价的google-antigravity/Overview；db缺价返回unpriced:false，trace递增未定价。原版与包装结果完全相同，汉化层不修补官方计算，也不宣称该上游差异已经解决。
 
 默认/命名Profile与默认/命名XDG四组合通过官方getPluginsNodeModules稳定逻辑路径及物理缓存v1→v2后8个新compiled进程发现；缺SHELL/USER/LOGNAME按真实UID读取/bin/zsh。不可用Bun时版本/JSON/summary透传、dry-run不撤销、移除本地pi-utils后标准卸载通过；保持无关shell内容与0640权限，link doctor3/1/0警告不隐藏。首次裸Bun依赖探针超时已回收，可能自动解析依赖，不能称该失败探针零外网；修正--no-install后四组合通过。
 
 原/包装各25项HTTP合同、16项API完整响应和真实SSE heartbeat一致；原跨Host/Origin静态200不变，身份头不等于授权。真实PTY ISIG/VINTR前台Ctrl+C退出0，官方子异常、wrapper SIGKILL、父消失、非法/占用端口、空格路径及私有preload回收另验；孤儿退出码unknown。Stats网页五轮10页建/10关，生命周期含默认页15建/15关，均无剩余；精确target/PID/端口与失败驱动证据独立保存，不扩大为整个历史run总数。
 
-历史默认opener证据：18.12.1原版 `/usr/bin/open` 已按精确origin/新AX ref认领，13→14→13保持原页；包装失败轮因普通Chrome基线消失在启动前停止。早期18.11.3独占浏览器94045的初始空白页target/数量未持久化，Profile已删，不能回补。新轮默认opener未执行：computer.control.acquire返回active:false，用户明确选择“暂不控制桌面”；不得重试绕过授权，也不得以headless转交URL代替系统默认opener。该发布门禁保持未通过，不创建版本tag/Release。
+默认opener未验证项：历史18.12.1原版 `/usr/bin/open` 曾按精确origin/新AX ref认领并恢复原页；包装失败轮因普通Chrome基线消失在启动前停止。后续实时桌面控制返回active:false，用户选择不控制桌面，未执行该轮默认opener。2026-10-19用户明确选择“豁免该项，实际发布”：**仅对18.12.1发布豁免真实系统默认浏览器的打开/失败回收验收，必须在Release标注未验证**；不再申请桌面控制，不以headless转交URL冒充默认opener通过。该例外不放宽其他门禁，也不自动用于后续版本。早期资源账本缺口及失败仍保留，不补造历史计数；新轮资源须独立完整回收。
 
 单main新轮验收：真实编译版TUI完成50项通过检查、96文字帧，Settings与Commands分别复核；正式已见证BUN_OPTIONS preload的进程agent_start0、POST尝试0。首次NODE_OPTIONS未执行的无护栏轮和两项驱动断言纠正保留，不把它们改写为通过或声称全历史零外发。Stats新轮含正常/故意失败回收、11导航中英、双项目32请求、10API/4完整Trace、抽屉/图表/390px/键盘、同origin重启与SSE；8页创建/8关闭、7个Stats实例退出0，具名private/driver/Profile均回收，初始blank目标完整持久化。只有测试专属opener转交已验，不等于默认opener。官方费用口径差异仍原样记录，不由插件修补。
 

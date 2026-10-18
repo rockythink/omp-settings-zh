@@ -27,7 +27,8 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前候选/真实宿主18.12.1，维护开始Release v18.11.1/main a364115。历史轮次的空白页target、桥port与部分private路径缺口保留，不补造计数。新轮已完成真实Settings/Commands及headless Stats验收，初始blank目标、native PID、端口、private路径和正常/断言失败回收均重新记账；不冒称修复了历史记录。实际默认opener仍未完成：实时桌面控制未获批准，用户选择暂不控制桌面，禁止绕过。因此尚不tag/Release，代码/CI/冷安装和Orca completed均不替代该门禁。
+- 当前版本/真实宿主基线为18.12.1。历史资源账本缺口和失败记录保留，不补造计数；新轮真实Settings/Commands、headless Stats、逐资源回收、精确最终macOS/Linux CI和干净GitHub安装分别验收，不以文档或Orca completed代替。
+- **18.12.1单次授权例外（2026-10-19）**：维护者明确批准仅豁免真实系统默认浏览器的打开/失败回收验收，允许完成实际tag与GitHub Release。该项仍为未验证，Release必须显著列出；不申请或绕过桌面控制，不以测试专属opener转交当作默认opener证据。其余版本一致性、Settings、Commands、Stats headless、资源回收、最终CI和冷安装门禁全部保留；后续版本不自动继承本例外。
 - GitHub Release、Git tag 和 `package.json` 版本必须一致。
 - 每次正式 Release 必须比上一正式 Release 版本更高且编号未使用；尚未发布的同一候选无需反复空升补丁号。源码编号、main push 和本机安装版本都不能代替实际 tag/Release。
 - 有适配或修复变化时，验收通过后实际创建对应 tag 和 GitHub Release；发布流程不能停在“代码已推送”。没有变化则不空发版。
@@ -80,7 +81,7 @@
 18. 仅提交本任务文件并 push 到 main；等待该最终提交在实际发布范围内的全部必需 CI 成功。当前主线为 macOS／Linux，未合并的 Windows 草稿不得混入或宣称正式支持；明确纳入 Windows 后，须补齐目标宿主的 Windows CI、已校验官方编译版资产的原生 CLI 冒烟、真实 console Ctrl+C、安装／卸载与路径边界，旧版本验收不能替代。随后从干净插件目录实际 GitHub 安装，确认包版本／来源、默认 PATH 接入、doctor、原 Stats URL 语言按钮及正常卸载／dry-run。任一失败不打 tag 或发布。
 19. 任何可能开页的命令前登记独立 run、既有 page/target ID、本轮页面及浏览器 Profile/PID、服务 PID/port、临时路径和清理入口，包含上游查阅、CLI 冒烟、冷安装、服务重启的自动开页。同一 Stats 阶段复用专属 headless 主标签，最多一个即时关闭的对照页；HTTP/API/JSON/summary 不另开页。官方 Stats 无 --no-open，BROWSER 不能当作禁开保证；测试子进程专属 opener 必须将真实 URL 转交已有受管标签并观察实际网页，不能无操作/假成功，真实默认 opener 的动作/URL/次数另验。新登录 shell 在 path_helper 之后同一子命令断言 command -v open。不改系统默认浏览器、全局 PATH、官方资源或产品逻辑。不能接管时先建立可靠原生基线，按新 target 与精确 origin 认领，既有同地址页不动；无法辨认或安全关闭即停止。成功、断言失败、超时、异常及可捕获中断用 finally/退出钩子逐阶段先关明确自有页面，再停止服务、等待退出并确认端口关闭，最后清理临时文件与独占浏览器/Profile；一个失败也继续其它清理并汇总。验收前实测正常和人为断言失败分支保护原有页面；发布前报告创建/关闭/残留及端口证据，残留或失败不发布。禁止 close-all、批量 localhost 关闭、退出用户浏览器或杀非本轮服务；SIGKILL/崩溃遗留仅凭明确 run 所有权处置，身份不明只报告。
 
-任一门禁失败不得发布。
+除上文明确记录的18.12.1单次默认opener验收例外外，任一门禁失败不得发布；不得扩大豁免范围或将未验证项目记为通过。
 
 目录逻辑路径须使用实际活动 Profile／XDG 的官方解析结果，并在新进程验证，不以默认 Profile 通过替代命名 Profile。终端退出证据记录 ISIG、VINTR 和 foreground process group；只写 0x03 而未证明产生 SIGINT 的超时须保留，不能伪称代码修复或用 SIGTERM 成功替代正常 Ctrl+C。
 
