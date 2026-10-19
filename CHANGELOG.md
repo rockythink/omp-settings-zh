@@ -2,6 +2,34 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.12.2] - 2026-10-19（未发布候选）
+
+### Settings
+
+- 通过受支持 `omp update` 将真实官方宿主18.12.1升级至18.12.2，开发依赖/宿主范围/翻译来源对齐，内嵌Bun1.4.3。
+- UI416→418：新增完整回滚历史与计算机后台回退，独立从官方英文生成；保留布尔默认false、takeover/refuse原值及默认takeover。复核空闲压缩延迟的一小时提示词缓存例外，不改变数值/保存语义，其余译文不重写。
+- 新compiled实际中文搜索、布尔/枚举编辑恢复、同进程en/zh与effort参数原文隔离；91文字帧留证。首次局部源码审查漏项被完整check检出，修正后418/418、Schema漂移0；失败记录保留。
+
+### Commands
+
+- 86定义/94标识/8别名/27动态回调及公共provider合同相对18.12.1不变，静态漂移0；仅原生/computer status配置正文新增backgroundFallback，不属于补全翻译，不宣称整个命令目录逐字相同。
+- 实际裸/、2技能数量/Tab展开、8别名、第三方与quoted文件边界、原生Settings Tab/Enter、plan/loop、模型picker与effort状态、Unicode/ASCII恢复另验。partial/取消/可选能力由既有行为回归补充。
+- 编译TUI有guard见证，agent_start0、POST尝试0；驱动搜索误选和picker未关闭断言留证并恢复。最终Agent未在Ctrl+C等待内退出，用具名SIGTERM回收143，不冒称正常退出0。
+
+### Stats
+
+- 92源码/73客户端逐字不变，npm179文件仅package.json变化；保留609键/105模板、UI白名单、数据排除与React节点来源处理。
+- catalog模型行新增171/删除6，376既有cost对象变化含浮点表示差异；默认judge固定到新版本，不复制官方定价/评估逻辑。目标原/包装11API、4完整trace、16请求详情逐值相等，双项目自然SSE/React16→17。
+- 11路由zh/en/zh、请求/工具Span抽屉、三图表模式、390px/键盘、English刷新与同origin重启实测；估价只打开取消，无judge可用，不点继续。新终端经受管启动器仍为原URL/单官方监听器。
+- 生命周期另验56HTTP合同、38API完整响应、SSE heartbeat、ISIG/VINTR前台Ctrl+C退出0、子异常143、launcher SIGKILL/父消失及驱动三类信号；原静态跨Host/Origin行为不放宽、不冒称已阻断。
+
+### 验证与发布门禁
+
+- 冻结安装与check通过：65pass/0fail、2551断言、418/418设置、86/86命令/94标识、漂移0、1855显示变更与3次可逆恢复。
+- Profile/XDG四组合、物理缓存换址后的8个新compiled发现、缺SHELL按真实UID登录shell、无Bun透传、dry-run与无pi-utils动态导入的标准卸载通过；link doctor3/1/0警告不隐藏。
+- compiled smoke正常/人为断言失败3页建/3关；网页阶段3页建/3关、6服务/端口与私有目录回收，生命周期另17页建/17关、15服务/13preload目录回收。驱动导入/路径、nullable退出码及跨Eval回调错误均留证，不冒称所有历史执行成功。
+- **不发布**：真实默认浏览器打开/失败回收因screenLocked无法建立原生页面身份基线，18.12.1单次豁免不延续；最终提交CI、干净GitHub安装与所有资源回收均须实际核对，任一未过不创建tag/Release。Windows关闭且未合并草稿继续独立保护。
+
 ## [18.12.1] - 2026-10-19
 
 ### Settings

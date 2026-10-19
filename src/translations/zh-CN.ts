@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.12.1",
+  "sourceOmpVersion": "18.12.2",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -873,6 +873,11 @@ export const zhCN = {
           "description": "仅重绘视口，并让历史记录继续按原宽度换行"
         }
       }
+    },
+    "tui.completeScrollback": {
+      "sourceHash": "4296d59fe8213d9cef796c7f8cbbd7b045697c0f4250b1b616375b2164c8f8bb",
+      "label": "完整回滚历史",
+      "description": "HUD 或对话框增高时，将挤出屏幕的对话记录行直接送入终端回滚历史；其缩小时，对话记录与输入框之间会留下空白行，直到新输出填满"
     },
     "terminal.showProgress": {
       "sourceHash": "b4f580d92d54db9a568da23af4f079ace787311d87580e3770512fca60269074",
@@ -2165,9 +2170,9 @@ export const zhCN = {
       }
     },
     "compaction.idleTimeoutSeconds": {
-      "sourceHash": "4785cae326f9041d125c9186f0523ecfd667733a4ea03d43e86dc1dc71e90db9",
+      "sourceHash": "217ce7e1ff22e70fb1544e875584d05ea031debe3cb47697732705aa32c36e69",
       "label": "空闲压缩延迟",
-      "description": "空闲后等待多少秒再进行压缩",
+      "description": "空闲后等待多少秒再进行压缩；使用 1 小时提示词缓存时，改为在缓存即将过期前压缩",
       "options": {
         "60": {
           "label": "1 分钟"
@@ -3086,6 +3091,21 @@ export const zhCN = {
       "sourceHash": "3fda41698ce87415bfb563a37b35c631e53d20d0d14f96acb966dcf6d4b92c9f",
       "label": "计算机截图高度",
       "description": "截图的最大高度（像素）"
+    },
+    "computer.backgroundFallback": {
+      "sourceHash": "aeb2e32863bb5f8c4b5aa59722a7b9fca07368eea0b7ffaaea5bad30a5541c97",
+      "label": "计算机后台回退",
+      "description": "窗口输入无法走后台通道时，切至前台重试该次调用并将焦点还给你的应用（macOS；其他平台仅切至前台），或拒绝调用；拒绝还会阻止 Agent 自行抢占前台或打开 macOS 菜单",
+      "options": {
+        "takeover": {
+          "label": "前台接管",
+          "description": "仅为这一次调用短暂将目标切至前台，然后将焦点还给你的应用（macOS 下即使你一直在打字也会归还）"
+        },
+        "refuse": {
+          "label": "拒绝",
+          "description": "调用失败，不进行接管；Agent 自行发起的 takeover、raise、激活式打开、桌面输入和 macOS 菜单也会被拒绝（上下文菜单、弹出按钮和菜单按钮；菜单打开期间会占用你的键盘）"
+        }
+      }
     },
     "checkpoint.enabled": {
       "sourceHash": "c1ac2ea7e3b16f73d3847d4ca6e298385ce96356f8554060bb11e766649c187c",

@@ -1,6 +1,24 @@
 # Project Context
 
-## 当前项目
+## 18.12.2 当前未发布候选
+
+通过受支持 `omp update` 将真实官方二进制从18.12.1升级至18.12.2，内嵌Bun1.4.3，SHA256为abd9a5b0fef77f4204078e348e233faa0dd3d5d81719cf2b6a9b9478c10eee48。coding-agent、pi-utils、Stats最新稳定版均为18.12.2；开发依赖、翻译来源与宿主范围对齐。官方标签1d5aff90b057ce7dbfe32ea557a527c1b3144b72；最新正式插件Release仍为v18.12.1，不以源码编号或main替代发布。
+
+Settings416→418：新增`tui.completeScrollback`（默认false）和`computer.backgroundFallback`（takeover/refuse，默认takeover）；复核`compaction.idleTimeoutSeconds`的1小时提示词缓存到期前压缩例外。均从官方英文独立翻译；未变化译文不重写。注册分布在modes/tools/session领域；首轮只查config目录漏项，完整check以64pass/1fail检出2项缺译和1项哈希变化，修正后65pass/0fail、2551断言、418/418、Schema漂移0、1855显示变更与3次恢复。该失败保留，不把目录局部比较当完整注册表审阅。
+
+Commands86定义/94标识/8别名/27动态回调不变，静态漂移0；公共provider、同步/异步/partial/AbortSignal/可选能力、switch有效层级与effort selector无相关变化。30个命令文件仅builtin-modes.ts原生`/computer status`配置正文新增backgroundFallback，不翻译目标正文，不宣称整个目录逐字不变。
+
+Stats92源码/73客户端逐字不变，npm179包文件仅package.json变化；609键/105严格模板与UI白名单/数据排除保持。catalog5732→5897行，新增171/删除6，1232既有行变化、376行cost对象变化（包含浮点表示差异，不等于376项实质调价）；coreweave/deepseek-ai/DeepSeek-V4.1-Flash输入0.2→0.15、缓存读取0.03→0.002。默认judge固定到typesafe/jev-1.14.0及openrouter/typesafe/jev-1.14；不由插件复制计算或执行评估。
+
+新compiled TUI保留91文字帧：新增布尔false→true→false、fallback takeover→refuse→takeover，中文搜索、原生编辑、同进程en/zh与effort英文参数隔离；裸/、2技能数量及Tab展开、8别名、第三方、quoted文件Tab、原生Settings Tab/Enter、plan/loop、原生模型picker往返、Shift+Tab high→xhigh及符号恢复。agent_start0、POST尝试0；54次连接/请求尝试均dispatch前阻断。搜索误选后恢复与picker未关闭的断言失败留证；最终Agent Ctrl+C未在驱动等待内退出，按具名进程组SIGTERM回收，退出143，不冒称正常退出0或全轮无驱动失败。partial/取消等由既有行为回归补充，不冒称UI触发。
+
+实际Stats复用主标签，11路由zh/en/zh、请求/工具Span抽屉、三图表模式、390px/键盘、English刷新及同origin重启；双项目4会话16请求自然SSE更新至5会话17请求（1456ms）。11路API、4份完整trace及16份请求详情与原版逐值相等，同名UI键的项目/路径/正文/错误保持原文；费用估价仅打开后取消，无judge可用，不点继续。持久Bun.serve回调跨Eval调用浏览器返回Run no longer active的两轮驱动失败均先关自有页再停服务，改为纯URL队列由当前调用转交；不把工具限制算产品修复。网页阶段3页建/3关、6服务退出0且端口/private目录关闭，32次外连尝试阻断、POST0，临时运行目录已回收。只关闭具名页，不终止共享工具浏览器。
+
+Profile/XDG四组合、物理cache-v1→v2后8个新compiled发现、缺SHELL/USER/LOGNAME按UID解析/bin/zsh、不可用Bun的透传、dry-run/无pi-utils动态导入标准卸载均实测；96子进程退出、目录回收，link doctor3/1/0警告不隐藏。生命周期另验56HTTP合同、38完整API响应、真实SSE heartbeat、原/包装PTY ISIG/VINTR Ctrl+C退出0、异常子进程143、launcher SIGKILL/父消失和三种驱动信号；17页建/17关、15服务/13私有preload目录回收。nullable exitCode驱动超时及导入/路径断言失败留证，未知孤儿退出码不补造。
+
+**未发布门禁**：本轮桌面工具仍报告screenLocked:true，不能建立真实系统默认浏览器页面身份基线，故未启动该阶段。18.12.1单次豁免不继承；仅测试子进程opener转交实际URL不等于默认opener通过。最终提交CI及干净GitHub安装以本轮实际输出为准，不由本文预先宣称通过；任何未验/残留均禁止tag/Release。PR #1现场为CLOSED、isDraft:true、mergedAt:null，Windows归档不纳入macOS/Linux主线。
+
+## 18.12.1 历史发布基线
 
 当前源码版本、开发依赖和真实官方宿主目标为18.12.1（内嵌Bun1.4.3）；实际发布以同版本tag和GitHub Release为准。官方 `omp update` 下载遇ECONNRESET后，用受支持的 `omp update --force` 从18.11.3升级成功；真实二进制SHA256为fa41b27d434380e99b713e4f9ced0f73eb1fc0c409fdf23a57c119971d24bac5。coding-agent/pi-utils/Stats审阅基线同为18.12.1，coding-agent同版依赖保持；官方v18.12.1对应291e055836c210f314af3f73f53244e8e9d09de8。npm Stats只是独立审阅线索，运行时仍是实际官方编译CLI。
 
@@ -37,8 +55,8 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前汉化范围：416项UI元数据；相对18.11.3新增advisor.continueSeverity 1项，无删除；保留设置路径、类型、默认值、选项value、group、凭据标记、动态getter、保存与可逆恢复。
-- 命令补全汉化：86个内置斜杠命令、94个命令名/别名的顶层说明、实时状态与技能数量；相对18.11.3静态与动态合同不变。只包装公共provider显示，不改命令名、参数、排序、插入和执行；第三方/未知说明、路径、模型ID保留原文。
+- 当前Settings为418项UI元数据；相对18.12.1新增2项、复核1项，无删除。18.12.1的416项及更早变化见历史记录；保留设置路径、类型、默认值、选项value、group、凭据标记、getter、保存与恢复。
+- 当前Commands为86个定义、94个命令名/别名的顶层说明、实时状态与技能数量；相对18.12.1静态/动态补全合同不变。只包装公共provider显示，不改命令名、参数、排序、插入和执行；第三方/未知说明、路径、模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
 - 设置语言只保留在当前进程，下次启动默认中文；设置汉化不写配置、不读当前设置值或凭据、不联网。

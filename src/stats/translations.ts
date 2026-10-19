@@ -1,7 +1,7 @@
 /**
- * Display-only copy reviewed against @oh-my-pi/omp-stats 18.12.1. All 73 client
- * files are unchanged from 18.11.3; only db.ts and trace.ts among the 92 Stats
- * source files changed (catalog pricing peers). No display copy changed.
+ * Display-only copy reviewed against @oh-my-pi/omp-stats 18.12.2. All 92 Stats
+ * source files, including all 73 client files, are unchanged from 18.12.1.
+ * The published package changes only its version and official dependencies.
  * Apply only to known UI text/attributes, never journal payloads,
  * identifiers, or arbitrary data cells.
  * Protocol names, command names, currencies, and brands remain unchanged.

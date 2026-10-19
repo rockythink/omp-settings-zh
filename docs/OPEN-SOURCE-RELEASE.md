@@ -27,7 +27,7 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前版本/真实宿主基线为18.12.1。历史资源账本缺口和失败记录保留，不补造计数；新轮真实Settings/Commands、headless Stats、逐资源回收、精确最终macOS/Linux CI和干净GitHub安装分别验收，不以文档或Orca completed代替。
+- 当前源码/真实宿主候选基线为18.12.2，正式Release仍为v18.12.1；本候选默认opener因锁屏无法建立原生页面基线，保持未验证、不发布。新轮Settings/Commands、headless Stats、逐资源回收、精确最终macOS/Linux CI和干净GitHub安装分别验收，不以文档或Orca completed代替。历史例外仅适用18.12.1。
 - **18.12.1单次授权例外（2026-10-19）**：维护者明确批准仅豁免真实系统默认浏览器的打开/失败回收验收，允许完成实际tag与GitHub Release。该项仍为未验证，Release必须显著列出；不申请或绕过桌面控制，不以测试专属opener转交当作默认opener证据。其余版本一致性、Settings、Commands、Stats headless、资源回收、最终CI和冷安装门禁全部保留；后续版本不自动继承本例外。
 - GitHub Release、Git tag 和 `package.json` 版本必须一致。
 - 每次正式 Release 必须比上一正式 Release 版本更高且编号未使用；尚未发布的同一候选无需反复空升补丁号。源码编号、main push 和本机安装版本都不能代替实际 tag/Release。
