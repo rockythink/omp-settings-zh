@@ -1,6 +1,6 @@
 /**
- * Display-only copy reviewed against @oh-my-pi/omp-stats 18.12.2. All 92 Stats
- * source files, including all 73 client files, are unchanged from 18.12.1.
+ * Display-only copy reviewed against @oh-my-pi/omp-stats 18.12.3. All 92 Stats
+ * source files, including all 73 client files, are unchanged from 18.12.2.
  * The published package changes only its version and official dependencies.
  * Apply only to known UI text/attributes, never journal payloads,
  * identifiers, or arbitrary data cells.

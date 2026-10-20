@@ -2,6 +2,35 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.12.3] - 2026-10-20（未发布候选）
+
+### Settings
+
+- 通过官方`omp update`将真实宿主18.12.2升级至18.12.3，内嵌Bun1.4.3，开发依赖、宿主范围和翻译来源对齐。
+- 418→419项：新增实时任务组件async.widgets，保留widget/smol首次生成规格与后续更新无模型调用的区别；复核tools.approvalMode的always-ask-cached选项、读取也询问及文件/文件夹/当前/所有会话授权范围。其余译文不重写，默认值、value、group及保存/恢复不变。
+- 41个去重设置域/注册入口对照固定官方tag；真实compiled中文搜索、布尔编辑恢复、新审批选项、同进程语言往返与effort参数英文隔离实测。
+
+### Commands
+
+- 86→87定义、94→95标识，新增forget-approvals；既有静态原文和8别名不变，不执行清除授权。
+- model/switch/effort动态状态及effort参数候选/提示/执行改读viewSession；保留官方新增descriptionMatch与Enter保护，显示包装无需改写原provider。
+- 真实compiled裸/、技能数量/Tab展开、8别名、第三方/参数/文件边界、原生Settings插入执行、plan/loop与effort键位实测；纯描述命中Enter不误执行，Tab仍接受。
+- 另以官方SDK零请求真实子会话，经原生Agent Hub聚焦后确认Sonnet/low→xhigh与主Opus/high隔离，English往返、Unicode/ASCII实际键位提示恢复；正式两轮59项、65文字帧、退出0、agent_start0/POST尝试0。
+
+### Stats
+
+- 92源码/73客户端相对18.12.2逐字不变；npm179文件仅package.json版本及官方依赖变化，保留609键/105严格模板及UI/数据边界，不固定npm运行时。
+- 实际11路由、请求/trace/工具Span、3指标图表、390px/键盘/空态、English刷新/路由/同origin重启；双项目16→17请求自然SSE/React更新，CLI JSON及35/76份完整API响应原/包装逐值等价。
+- 四种Profile/XDG、物理缓存换址后的新compiled发现、缺SHELL账户解析、透传/dry-run/标准卸载，以及36项HTTP边界、原/包装PTY Ctrl+C、异常/SIGKILL/父消失/private清理另验；原跨Host/Origin允许行为不冒称已拦截。
+- 工具汇总`1 failed`徽章保留英文；未知文案/canvas和数据原文均不强行替换，不执行付费judge。
+
+### 验证与发布门禁
+
+- frozen/check：65pass/0fail、2566断言，419/419设置、87/87命令/95标识，Schema与命令漂移0，1859显示变更与3次恢复。首轮旧viewSession fixture导致3fail，修正合同和焦点回归后通过，不绕过预检。
+- 真实绝对路径compiled smoke通过；3页建/3关、两服务单监听器、flags/用户preload合并、空格路径权限、正常/断言失败清理及卸载均实测。
+- 保留终端驱动断言/超时及错误input返回形状的失败证据；其中1次Agent/2次POST尝试由无Socket护栏阻断，修正后正式轮零尝试，不把全历史写成零尝试。
+- **不发布**：默认系统opener因锁屏未验；首个Stats登录shell驱动重排PATH，潜在默认浏览器页归属/存在/关闭unknown。已知自有资源回收不能替代全轮零残留，18.12.1例外不延续；最终CI及冷GitHub安装也须另核。Windows草稿继续独立，不宣称正式支持。
+
 ## [18.12.2] - 2026-10-19（未发布候选）
 
 ### Settings

@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.12.2",
+  "sourceOmpVersion": "18.12.3",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -2919,13 +2919,17 @@ export const zhCN = {
       "description": "每项工具的审批策略。设为 'allow' 可自动批准，设为 'prompt' 可要求确认，设为 'deny' 可阻止。覆盖设置在每种审批模式下都会生效"
     },
     "tools.approvalMode": {
-      "sourceHash": "9920bc16ed279d2f93463626589aad28234b08b6cf736b3ecaef928d6f8752ff",
+      "sourceHash": "d0e5f00f79f1df379aa266ff4e32e59089ee62343a9506d5adbf2f9b39bf9b1c",
       "label": "工具审批",
-      "description": "工具调用的默认审批行为。'Always ask' 仅自动批准只读工具。'Write' 自动批准读取和工作区写入工具。'Yolo' 自动批准所有层级；用户策略仍可要求确认或阻止",
+      "description": "工具调用的默认审批行为。'Always ask' 仅自动批准只读工具。'Ask and remember' 还会在读取文件前询问，并可记住文件或文件夹的授权。'Write' 自动批准读取和工作区写入工具。'Yolo' 自动批准所有层级；用户策略仍可要求确认或阻止",
       "options": {
         "always-ask": {
           "label": "始终询问",
           "description": "自动批准只读工具；写入和执行工具需要确认"
+        },
+        "always-ask-cached": {
+          "label": "询问并记住",
+          "description": "读写文件前询问，可在当前会话或所有会话中记住该文件或所在文件夹的授权；执行工具仍需确认"
         },
         "write": {
           "label": "写入",
@@ -3231,6 +3235,11 @@ export const zhCN = {
       "sourceHash": "0e13bc50485d1cd091849fbf92c0693937819ac5de4217dd8b87174a0d27debe",
       "label": "异步执行",
       "description": "启用异步 Bash 命令和后台任务执行"
+    },
+    "async.widgets": {
+      "sourceHash": "5ec5f39435cb287e86bdeb5e77efb303cd65a70d7a6ef3a3acedd2caf9c2ef0b",
+      "label": "实时任务组件",
+      "description": "在等待卡片、任务状态胶囊和任务面板中，为每个运行中的后台任务绘制实时组件（根据输出生成图表、进度条和状态网格）。由 `widget` 模型角色（默认使用 `smol`）为每个任务编写一份规格，后续更新无需再次调用模型"
     },
     "tools.xdev": {
       "sourceHash": "aef279287594846271d548c41381f6c9a662df6427ebfe27ebde5790c1b921c7",

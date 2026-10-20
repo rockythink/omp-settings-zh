@@ -2,11 +2,11 @@
 
 ## 当前状态
 
-`src/translations/zh-CN.ts` 依据 OMP18.12.2 官方英文分领域注册表独立复核。相对18.12.1，UI416→418，新增tui.completeScrollback、computer.backgroundFallback，复核compaction.idleTimeoutSeconds的一小时缓存例外；无删除，未变译文、动态getter和选项原值保留。无UI配置不补造译文，不复制第三方中文或功能实现。
+`src/translations/zh-CN.ts` 依据 OMP18.12.3 官方英文分领域注册表独立复核。相对18.12.2，UI418→419，新增async.widgets，复核tools.approvalMode的always-ask-cached选项及说明。保留每任务首次生成规格需要widget模型角色、后续更新无需模型调用，以及文件/文件夹授权的当前会话/跨会话范围和exec仍需确认；未变译文不重写，无UI配置不补造译文。
 
-`src/translations/slash-commands.ts` 保存官方 OMP18.12.2 的86条英文说明、94个名称/别名。相对18.12.1，完整定义、27动态回调、switch有效层级、effort selector及公共provider接口不变；原生/computer status正文新增backgroundFallback不属于补全翻译范围。保留参数、会话/路径/模型ID，不复制或执行命令逻辑，动态状态独立验收。
+`src/translations/slash-commands.ts` 保存官方 OMP18.12.3 的87条英文说明、95个名称/别名。相对18.12.2新增forget-approvals，既有静态原文与8个别名不变；27动态回调中model/switch/effort改读viewSession，switch仍使用宿主effectiveServiceTier。新增descriptionMatch由原provider/编辑器负责，显示包装保留原item身份与执行；不复制或执行命令逻辑。
 
-`src/stats/translations.ts` 的独立审阅基线为官方 `@oh-my-pi/omp-stats@18.12.2`。相对18.12.1，npm179包文件仅package.json变化，92源码/73客户端逐字不变；catalog及默认judge变化由官方运行时处理。609键/105严格模板、UI白名单与数据排除保持。npm包只是审阅来源；实际官方编译CLI在原监听器通过同源Bun preload注入，不重新分发Stats实现或二进制。
+`src/stats/translations.ts` 的独立审阅基线为官方 `@oh-my-pi/omp-stats@18.12.3`。相对18.12.2，npm179包文件仅package.json版本与官方依赖变化，92源码/73客户端逐字不变。609键/105严格模板、UI白名单与数据排除保持。npm包只是审阅来源；实际官方编译CLI在原监听器通过同源Bun preload注入，不重新分发Stats实现或二进制。
 
 ## Oh My Pi
 
@@ -15,7 +15,7 @@
 - Project: Oh My Pi
 - Repository: https://github.com/can1357/oh-my-pi
 - License: MIT
-- Baseline reviewed: v18.12.2 (1d5aff90b057ce7dbfe32ea557a527c1b3144b72)
+- Baseline reviewed: v18.12.3 (53a0377db6845e0dae606146130766ec92d407fd)
 - Copyright notices in the reviewed upstream license:
   - Copyright (c) 2025 Mario Zechner
   - Copyright (c) 2025-2026 Can Bölük

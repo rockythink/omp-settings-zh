@@ -231,7 +231,12 @@ test("official effort arguments follow live model selectors and retain current m
   let levels = ["off", "low", "high"];
   let effort = "high";
   const session = { configuredThinkingLevel: () => effort, getAvailableEffortSelectors: () => levels };
-  const command = buildTuiBuiltinSlashCommands({ ctx: { settings, session } } as unknown as TuiSlashCommandRuntime)
+  const context = {
+    settings,
+    session: { configuredThinkingLevel: () => "medium", getAvailableEffortSelectors: () => ["medium"] },
+    viewSession: session,
+  };
+  const command = buildTuiBuiltinSlashCommands({ ctx: context } as unknown as TuiSlashCommandRuntime)
     .find(command => command.name === "effort")!;
   const native = new CombinedAutocompleteProvider([command]);
   let chinese = true;
@@ -239,6 +244,7 @@ test("official effort arguments follow live model selectors and retain current m
   for (const language of [true, false]) {
     chinese = language;
     levels = ["off", "low", "high"]; effort = "high";
+    expect(provider.trySyncSlashCompletion!("/effort")!.items[0]!.state).toBe("high");
     for (const args of ["", "o", "off", "h", "high", "x"]) {
       const input = "/effort " + args;
       const original = await native.getSuggestions([input], 0, input.length);
@@ -260,6 +266,11 @@ test("official effort arguments follow live model selectors and retain current m
     levels = [];
     expect(command.getArgumentCompletions!("")).toBeNull();
   }
+  context.viewSession = context.session;
+  expect(provider.trySyncSlashCompletion!("/effort")!.items[0]!.state).toBe("medium");
+  const refocused = (await provider.getSuggestions(["/effort "], 0, 8))!;
+  expect(refocused.items.map(item => item.value)).toEqual(["medium "]);
+  expect(refocused.items[0]!.description).toEndWith(" (current)");
 });
 
 test("official prewalk cancellation copy translates only the command, preserving new off arguments and insertion", async () => {
@@ -343,6 +354,7 @@ test("official live callbacks cover every state family without changing matching
     collabGuest: undefined as { readOnly: boolean } | undefined,
     todoPhases: [] as { tasks: { status: string }[] }[],
     oauthManualInput: { hasPending: () => pendingLogin, get pendingProviderId() { return loginProvider; } },
+    get viewSession() { return this.session; },
     session: {
       settings, get model() { return model; }, isStreaming: false,
       getGoalModeState: () => goal, isFastModeEnabled: () => fast, isUltrafastModeEnabled: () => ultra,

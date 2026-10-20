@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.12.2. */
+/* Display-only translations; source-review baseline OMP 18.12.3. */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -445,6 +445,11 @@ export const slashCommandTranslations = [
     "name": "pause",
     "en": "Freeze all agents (main, subagents, advisor) until resumed",
     "zh": "暂停所有智能体（主智能体、子智能体、顾问），直到恢复"
+  },
+  {
+    "name": "forget-approvals",
+    "en": "Forget every file and folder approval Ask and remember has recorded",
+    "zh": "清除“询问并记住”已记录的所有文件和文件夹授权"
   },
   {
     "name": "quit",

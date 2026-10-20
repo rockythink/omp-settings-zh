@@ -4,9 +4,9 @@
 
 ## 当前版本
 
-`18.12.2` 是面向OMP18.12.2的未发布候选：418项设置文案，相对18.12.1新增2项、复核1项；兼容预检、原子恢复、动态getter与原生Settings保持。Settings选项使用显示副本，不修改命令参数共用原文；effort值、文件/参数提示与Stats数据保留。Stats默认接入可撤销PATH启动器，在原监听器注入，不复制计算。默认opener因锁屏未验，18.12.1单次例外不延续，未通过完整门禁不得发布。分项证据见CONTEXT.md。开始贡献前请阅读：
+`18.12.3` 是面向OMP18.12.3的未发布候选：419项设置文案，相对18.12.2新增async.widgets、复核tools.approvalMode的新选项和说明；兼容预检、原子恢复、动态getter与原生Settings保持。Settings选项使用显示副本，不修改命令参数共用原文；effort值、文件/参数提示与Stats数据保留。Stats默认接入可撤销PATH启动器，在原监听器注入，不复制计算。默认opener因锁屏未验，18.12.1单次例外不延续，未通过完整门禁不得发布。分项证据见CONTEXT.md。开始贡献前请阅读：
 
-本候选覆盖86个内置斜杠命令、94个名称/别名；相对18.12.1完整定义、27动态回调和公共provider合同不变，仅原生/computer status正文新增backgroundFallback，不在补全翻译范围。实时状态与技能数量跟随 `/settings-language`；不翻译参数/文件/第三方说明，保留原provider排序、插入、执行和动态键位。
+本候选覆盖87个内置斜杠命令、95个名称/别名；相对18.12.2新增forget-approvals，既有静态说明/8别名不变，model/switch/effort改读viewSession。保留官方新增descriptionMatch及Enter保护，实时状态与技能数量跟随 `/settings-language`；不翻译参数/文件/第三方说明，保留原provider排序、插入、执行和动态键位。静态门禁不覆盖焦点切换或动态模板。
 
 - [产品需求](docs/PRD.md)
 - [技术设计](docs/TECHNICAL-DESIGN.md)
@@ -39,7 +39,7 @@
 
 - macOS 或 Linux；
 - Bun 1.4.0 或更新版本；
-- 官方 OMP18.12.2；候选与历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
+- 官方 OMP18.12.3；候选与历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
 - Git。
 
 项目保持以下脚本契约：

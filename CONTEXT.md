@@ -1,6 +1,28 @@
 # Project Context
 
-## 18.12.2 当前未发布候选
+## 18.12.3 当前未发布候选
+
+本轮通过受支持 `omp update` 将真实官方二进制从18.12.2升级至18.12.3，内嵌Bun1.4.3，SHA256为f2a657b3320fcafa23055053940a45b26a8d3254e1412a158838013d670d6ec5。coding-agent、pi-utils、Stats最新稳定版均为18.12.3，coding-agent精确依赖同版utils/Stats。开发依赖、宿主范围与翻译来源对齐；目标官方tag为53a0377db6845e0dae606146130766ec92d407fd。开始时本地/远端main同为71102b78，正式Release仍v18.12.1；不把候选或main当作发布。
+
+Settings418→419：新增`async.widgets`，保留widget模型角色（默认smol）为每任务首次生成规格、后续更新无需模型调用的语义；复核`tools.approvalMode`新增always-ask-cached及总说明，文件读取也询问、文件/文件夹与当前/所有会话授权范围、exec仍需确认不弱化。默认值true/yolo、原value/group/getter/保存不变；无UI的shellCommandPrefix不补造译文。完整宿主源码1788→1806文件比较，41个去重设置注册/域文件逐字对照固定官方tag；变化仅tools/settings.ts与exec/settings.ts。
+
+Commands86→87定义、94→95名称/别名、8别名无漂移，新增forget-approvals独立译文，不执行清除授权。27动态回调中model/switch/effort改读viewSession，effort候选/提示/执行也跟随查看会话；switch仍由宿主effectiveServiceTier(model)计算。公共provider同步/异步/partial/AbortSignal与可选能力保留，官方新增descriptionMatch和编辑器Enter保护，现有包装保留原字段与item身份，无需改写匹配/插入/执行或放宽静态门禁。11个关键目标GitHub源码与npm逐字一致。
+
+Stats179包文件仅package.json版本及官方依赖变化；92源码/73客户端、stats-cli/openPath/handler逐字不变，609键/105严格模板与browser/mutations保持。utils新增可选throughMissing路径归一化，默认行为不变，Stats未调用；7个关键目标GitHub运行入口与npm逐字一致，不固定npm运行时或复制计算。
+
+本轮frozen/check通过：65pass/0fail、2566断言、419/419设置、87/87命令/95标识、两项漂移0、1859显示变更与3次恢复。首轮62pass/3fail因旧fixture缺viewSession，修正为查看会话合同并增加主/查看会话不同及重新聚焦的候选/当前值回归；不改产品为旧fixture兜底。
+
+真实新compiled主TUI正式轮42项/45文字帧、退出0：中文搜索、新布尔编辑恢复、审批新选项、同进程en/zh、effort参数英文隔离、裸/、8别名、2技能数量及Tab展开、第三方/quoted文件、原生Settings Tab/Enter、plan与loop开启/暂停/关闭、Shift+Tab high→xhigh与恢复、模型picker、纯描述命中Enter保留原查询与Tab显式接受均实测。另以官方SDK创建零请求的真实idle子会话，经原生Agent Hub Enter聚焦；17项/20文字帧、退出0，model/switch随Sonnet子会话而非Opus主会话，effort low→xhigh不改主会话high，English往返、参数原文、Unicode/ASCII设置和effort实际键位提示恢复。两正式轮agent_start0、POST尝试0；不把源码导入或原生Agent定义管理页当作焦点证明。
+
+终端驱动失败如实保留：首轮大小写断言错误后无界SIGTERM等待导致外层超时，PID已证实消失、精确root/launcher回收，退出码unknown；之后的搜索误选、原文预期、技能namespace及不可见静态键位断言纠正均为驱动修正，不冒称产品修复。一轮误用input的action字段，/menu启动了1次Agent、2次POST尝试均由异步无Socket护栏在dispatch前拒绝；改为实际handled:true后正式轮零尝试，不称整个历史零推理尝试。
+
+Stats安全网页轮复用一个主target：11路由zh/en/zh、双项目4会话16请求、请求/trace/工具Span、3指标图表、390px/键盘/空态、English刷新/路由/同origin重启；自然JSONL增量经官方SSE/React至5会话17请求（17280ms），初始35份/增量后76份完整API/请求/trace/entry及CLI JSON原/包装逐值相同，同名数据/路径/正文/错误保留。4次原URL真实转交/ack、4单监听器服务退出0、1页建/关、2private回收；不执行judge。工具汇总`1 failed`徽章仍英文，保留未知安全回退，不宣称全量汉化。
+
+Profile/XDG四组合、物理cache-v1→v2删除旧址后的新compiled发现、缺SHELL/USER/LOGNAME按UID读取账户shell、无Bun透传、dry-run、移走依赖桥后的标准卸载均实测。最终生命周期另36项HTTP对照、原/包装PTY ISIG/VINTR Ctrl+C退出0、native/launcher SIGKILL及父消失清理通过；跨Host/Origin的原静态/只读API200保持，身份头不是授权。最终9页/8服务/6private回收；含驱动失败的该切片25页建/25关，92次HEAD/GET尝试均dispatch前拒绝，POST0。SSE实测流事件，不冒称该切片15秒heartbeat。
+
+**不发布的硬阻塞**：本轮桌面仍screenLocked:true、displayCount0，真实系统默认opener无法建立页面身份基线。Stats网页首个驱动还因登录shell的path_helper重排PATH，潜在调用/usr/bin/open，精确origin为`http://127.0.0.1:52700`；该次默认opener退出/错误及潜在原生页target/存在/关闭均unknown。已知自有页、服务、private及独占Chrome/root均已回收，但不能认领未知原生页、不能称全轮零残留。安全重跑在同一shell、path_helper之后断言自有opener再启动，原URL真实转交不等于默认opener通过。18.12.1单次例外不延续；不得创建18.12.3 tag/Release。最终CI、GitHub冷安装与本机来源更新以实际输出另核，不由本文预先宣称通过。Windows PR #1现场仍CLOSED、isDraft:true、mergedAt:null，保护独立归档，不纳入macOS/Linux主线。
+
+## 18.12.2 历史未发布候选
 
 通过受支持 `omp update` 将真实官方二进制从18.12.1升级至18.12.2，内嵌Bun1.4.3，SHA256为abd9a5b0fef77f4204078e348e233faa0dd3d5d81719cf2b6a9b9478c10eee48。coding-agent、pi-utils、Stats最新稳定版均为18.12.2；开发依赖、翻译来源与宿主范围对齐。官方标签1d5aff90b057ce7dbfe32ea557a527c1b3144b72；最新正式插件Release仍为v18.12.1，不以源码编号或main替代发布。
 
@@ -55,8 +77,8 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前Settings为418项UI元数据；相对18.12.1新增2项、复核1项，无删除。18.12.1的416项及更早变化见历史记录；保留设置路径、类型、默认值、选项value、group、凭据标记、getter、保存与恢复。
-- 当前Commands为86个定义、94个命令名/别名的顶层说明、实时状态与技能数量；相对18.12.1静态/动态补全合同不变。只包装公共provider显示，不改命令名、参数、排序、插入和执行；第三方/未知说明、路径、模型ID保留原文。
+- 当前Settings为419项UI元数据；相对18.12.2新增async.widgets、复核tools.approvalMode的新选项及说明，无删除。此前版本的变化见历史记录；保留设置路径、类型、默认值、选项value、group、凭据标记、getter、保存与恢复。
+- 当前Commands为87个定义、95个命令名/别名的顶层说明、实时状态与技能数量；相对18.12.2新增forget-approvals、model/switch/effort改读viewSession，保留官方descriptionMatch保护。只包装公共provider显示，不改命令名、参数、排序、插入和执行；第三方/未知说明、路径、模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
 - 设置语言只保留在当前进程，下次启动默认中文；设置汉化不写配置、不读当前设置值或凭据、不联网。

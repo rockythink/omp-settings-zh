@@ -27,7 +27,8 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前源码/真实宿主候选基线为18.12.2，正式Release仍为v18.12.1；本候选默认opener因锁屏无法建立原生页面基线，保持未验证、不发布。新轮Settings/Commands、headless Stats、逐资源回收、精确最终macOS/Linux CI和干净GitHub安装分别验收，不以文档或Orca completed代替。历史例外仅适用18.12.1。
+- 当前源码/真实宿主候选基线为18.12.3，正式Release仍为v18.12.1；本轮默认opener因screenLocked/displayCount0无法建立原生页面基线，保持未验证、不发布。Settings/Commands、headless Stats、逐资源回收、精确最终macOS/Linux CI和干净GitHub安装分别验收，不以文档或Orca completed代替。历史例外仅适用18.12.1。
+- 18.12.3首个Stats登录shell驱动被path_helper重排，潜在调用系统open；`http://127.0.0.1:52700`的潜在原生页存在/target/关闭均unknown，详见CONTEXT与SECURITY。已知自有资源全部回收或安全重跑通过仍不能替代该轮零残留门禁；保持未发布候选，不创建tag/Release。
 - **18.12.1单次授权例外（2026-10-19）**：维护者明确批准仅豁免真实系统默认浏览器的打开/失败回收验收，允许完成实际tag与GitHub Release。该项仍为未验证，Release必须显著列出；不申请或绕过桌面控制，不以测试专属opener转交当作默认opener证据。其余版本一致性、Settings、Commands、Stats headless、资源回收、最终CI和冷安装门禁全部保留；后续版本不自动继承本例外。
 - GitHub Release、Git tag 和 `package.json` 版本必须一致。
 - 每次正式 Release 必须比上一正式 Release 版本更高且编号未使用；尚未发布的同一候选无需反复空升补丁号。源码编号、main push 和本机安装版本都不能代替实际 tag/Release。
@@ -76,6 +77,7 @@
 14. 正常安装验证 Stats 默认接入、无独立启用命令；新 shell 直接运行实际编译版 `omp stats`，确认原 host/port 仅一个监听器并在原 URL 显示语言按钮。验证中文/English、刷新/路由/同地址重启、API/SSE、原静态/授权规则、窄屏、已有 BUN_OPTIONS 合并、临时路径空格处理、JSON/summary、退出、默认安装幂等/原生卸载/dry-run与稳定包路径，不触发付费评估。
 15. `bun run commands:check` 全量覆盖通过，新增/删除、静态英文/别名漂移、空译文及标识冲突为零；先核对锁定开发依赖与实际宿主一致。动态状态模板、快捷键占位及公共补全接口须从目标官方源码独立审查并通过行为回归。
 16. 真实官方编译版验证 `/` 顶层列表、别名、计划/模型/循环实时状态和动态键位；同进程 `/settings-language en/zh` 切换后重新打开列表，Tab/Enter 接受补全并执行无外部副作用的原生命令；参数/文件/第三方说明、模型 ID、原值/排序/插入/执行保持不变，不发送模型请求。
+   18.12.3新增descriptionMatch保护：未主动选择的纯描述命中不得因Enter误执行，Tab/主动选择仍交回原provider。model/switch/effort的viewSession焦点切换须独立回归，不以主会话静态列表覆盖替代。
    共享 Settings 选项不得向命令参数说明泄漏；实际打开原生选项和 `/effort `，分别确认中文显示与官方英文参数。官方 update 必须保留受管启动器并替换真正官方二进制。
 17. Settings、Commands、Stats 独立报告各自上游变化、适用覆盖/漂移、实际验证证据与英文回退范围；任一部分未通过不得发布，不以设置或静态命令覆盖证明 Stats/动态补全已完成。
 18. 仅提交本任务文件并 push 到 main；等待该最终提交在实际发布范围内的全部必需 CI 成功。当前主线为 macOS／Linux，未合并的 Windows 草稿不得混入或宣称正式支持；明确纳入 Windows 后，须补齐目标宿主的 Windows CI、已校验官方编译版资产的原生 CLI 冒烟、真实 console Ctrl+C、安装／卸载与路径边界，旧版本验收不能替代。随后从干净插件目录实际 GitHub 安装，确认包版本／来源、默认 PATH 接入、doctor、原 Stats URL 语言按钮及正常卸载／dry-run。任一失败不打 tag 或发布。

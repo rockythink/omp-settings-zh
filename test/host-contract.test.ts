@@ -30,8 +30,8 @@ test("new native panels follow language changes without changing controls or set
 });
 
 test("Chinese settings do not change official effort argument descriptions", async () => {
-  // This official completion factory reads only these two session selectors.
-  const runtime = { ctx: { session: {
+  // The official completion factory reads the viewed session's selectors.
+  const runtime = { ctx: { viewSession: {
     configuredThinkingLevel: () => "high",
     getAvailableEffortSelectors: () => ["off", "auto", "low", "medium", "high", "xhigh"],
   } } } as unknown as TuiSlashCommandRuntime;

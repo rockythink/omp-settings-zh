@@ -6,7 +6,7 @@
 
 ## 内置斜杠补全译文边界
 
-- 原文来自 OMP18.12.2 官方 BUILTIN_SLASH_COMMAND_DEFS；86条说明、94个名称/别名保存在 `src/translations/slash-commands.ts`。相对18.12.1，完整注册表、27动态回调、switch有效服务层级、effort selector及公共provider接口不变；仅原生`/computer status`正文新增backgroundFallback，不翻译该配置正文。既有译文不重复修改，命令参数、会话/路径/模型ID保留。动态状态、键位、同步/异步/partial/取消与可选能力须独立回归，静态门禁不能替代。
+- 原文来自 OMP18.12.3 官方 BUILTIN_SLASH_COMMAND_DEFS；87条说明、95个名称/别名保存在 `src/translations/slash-commands.ts`。相对18.12.2新增forget-approvals，既有原文/8别名不变；27动态回调中model/switch/effort改读viewSession，effort候选/提示也跟随查看会话。保留官方新增descriptionMatch及Enter保护，公共provider同步/异步/partial/取消与可选能力不变；不翻译命令参数、会话/路径/模型ID，既有译文不重复修改。焦点/动态键位和提交边界独立验收，静态门禁不替代。
 - 只翻译顶层补全的说明与实时状态、`skill:` 数量；参数提示、命令名、别名、模型／提供商 ID、路径与目标正文保持原样。
 - `switch` / `loop` / `effort` 的动态快捷键按宿主实际显示捕获，中文保留原键位。除键位占位外必须匹配官方原文，第三方覆盖、技能说明和未知文案不改。
 - `/settings-language en` 恢复官方补全结果；中文与英文都须验证排序、Tab／Enter 插入和实际官方编译版，不能用静态表检查代替。
@@ -14,7 +14,7 @@
 
 ## Stats Web 译文边界
 
-- 原文审阅基线为官方 `@oh-my-pi/omp-stats@18.12.2`；相对18.12.1，92源码/73客户端逐字不变，609键/105模板保持。官方catalog和默认judge变化不由插件复制或修补；signed saved百分比严格保留符号、数值和百分号，不扩展UI白名单/数据区。实际运行时必须是已安装官方编译CLI，不固定或复制npm Stats。
+- 原文审阅基线为官方 `@oh-my-pi/omp-stats@18.12.3`；相对18.12.2，92源码/73客户端逐字不变，npm仅package.json版本与官方依赖变化；609键/105模板保持。signed saved百分比严格保留符号、数值和百分号，不扩展UI白名单/数据区。实际运行时必须是已安装官方编译CLI，不固定或复制npm Stats，也不复制官方计算/评估。
 - `src/stats/translations.ts` 只包含原文键、中文值及严格锚定的动态模板；浏览器端必须先通过官方 UI 区域白名单，不能在整页全局替换英文。
 - 保留模型、提供商、工具、项目与账户名称、路径、请求与会话正文、错误原文、协议、数字和模板中的实际数据；未知文案与 canvas 内绘制内容保持官方原文。Window utilization 普通 tooltip series 标签是账户数据，即使为 Requests／Other (3) 也不译；仅官方带 tone-bad 的 Exhausted 注记与 total 固定标签属于 UI。
 - 切回 English 恢复原始文本与显示属性；验证 React 异步更新、路由复用与译文键同名的数据值，不只检查首页。外部写入即使与插件上次显示相同，也须失效旧来源；一批外部文本／属性写入全部失效后才渲染，不能误恢复真实数据。表头复用须重新判断整表单元格的 UI／数据身份。同 origin 的偏好跨刷新、路由与服务重启保留，首次默认中文；网页语言独立于 /settings-language。页面脚本在原 Stats 服务同端口加载，不增加代理。
@@ -187,7 +187,7 @@ Settings 选项显示副本与宿主共享原文源必须隔离；不能因设�
 
 活动翻译只以目标版本 OMP 官方设置注册表的英文显示元数据为语义来源：
 
-1. 从锁定的 `@oh-my-pi/pi-coding-agent@18.12.2` 的完整分领域注册表提取原文；418项UI，相对18.12.1新增`tui.completeScrollback`与`computer.backgroundFallback`，复核`compaction.idleTimeoutSeconds`的一小时提示词缓存例外。完整回滚需保留HUD/对话框缩小时暂留空白行的副作用；后台回退需保留takeover/refuse原值、默认takeover、macOS焦点归还与拒绝前台/菜单的键盘语义。没有UI的配置不补造译文，未变化项目不重译，保留Advisor/Prewalk/LSP等技术名与原设置行为；
+1. 从锁定的 `@oh-my-pi/pi-coding-agent@18.12.3` 的完整分领域注册表提取原文；419项UI，相对18.12.2新增`async.widgets`、复核`tools.approvalMode`的新选项及说明。实时组件由widget模型角色（默认smol）为每任务首次写规格，后续更新无需模型调用；“询问并记住”必须保留读取也要询问、文件/文件夹与当前/所有会话授权范围、exec仍需确认，不能弱化为自动读写。没有UI的shellCommandPrefix不补造译文，未变化项目不重译，保留Advisor/Prewalk/LSP等技术名与原设置行为；
 2. 使用本项目自己的 LLM 能力按本规范生成初稿，不输入或复用第三方中文译文；
 3. 按设置路径和选项 `value` 校验完整性；
 4. 用英文原文哈希标记待复核的上游语义变化；

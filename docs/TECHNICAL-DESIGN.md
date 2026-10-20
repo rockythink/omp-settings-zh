@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.12.2；未发布，main与源码编号不等于tag/Release
-- 目标基线：官方OMP18.12.2/内嵌Bun1.4.3；真实默认opener因锁屏未验证，18.12.1例外不继承，其他门禁及证据见CONTEXT.md
+- 实现候选：18.12.3；未发布，main与源码编号不等于tag/Release
+- 目标基线：官方OMP18.12.3/内嵌Bun1.4.3；真实默认opener因锁屏未验证，18.12.1例外不继承，其他门禁及证据见CONTEXT.md
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -66,7 +66,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存OMP18.12.2的86条官方英文/94个名称别名。相对18.12.1，完整定义、静态原文/别名、27个动态回调、公共provider与pi-tui补全合同均不变；30个命令文件仅builtin-modes.ts的原生`/computer status`配置摘要新增backgroundFallback，不属于补全翻译范围。switch继续使用effectiveServiceTier(model)，effort实时selectors及键位依赖未变。seance的 `[session id|path] [--model selector]` 原提示保留，验收不执行咨询。静态门禁仅容许switch/loop已知键位差异，不因显示层能力放宽其它原文。
+`src/translations/slash-commands.ts` 保存OMP18.12.3的87条官方英文/95个名称别名。相对18.12.2新增forget-approvals，既有静态原文与8别名不变；27动态回调中model/switch/effort改读viewSession，effort参数候选/提示/执行也作用于查看会话，switch仍由session.effectiveServiceTier(model)计算服务层级。公共provider同步/异步/partial/AbortSignal及可选能力保持；pi-tui新增descriptionMatch标记及原生编辑器Enter保护，显示副本保留该字段，不自行重做匹配或提交。静态门禁仅容许switch/loop已知键位差异，不因显示层能力放宽其它原文；动态焦点切换另验。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -93,6 +93,7 @@
 - 18.11.3独立审查：相对18.11.1的179包文件仅package.json变化，92源码/73客户端、stats-cli与openPath逐字不变。609键/105模板及浏览器白名单/数据排除/React整批来源失效保持，不重复改译。目标编译版另验11路由、抽屉/追踪/图表/窄屏/键盘、双项目异步4→5、原/包装HTTP/SSE与进程生命周期；原静态跨Host/Origin允许不冒称拦截。
 - 18.12.1独立审查：179包文件中仅package.json、CHANGELOG、db.ts、trace.ts变化；73客户端、stats-cli与openPath不变。db与trace共享pricingPeerFor的价格peer规则，不能用客户端未变推断服务计算未变。插件不复制或修正官方费用计算；原/包装API逐值比较及价格边界观察独立记录。
 - 18.12.2独立审查：Stats92源码/73客户端、stats-cli/openPath/服务handler均与18.12.1逐字不变，npm179文件仅package.json变化。官方catalog新增171/删除6行、1232既有行变化，376行cost对象变化含浮点表示差异；默认judge更新为固定版本。实际compiled的11API/4完整trace/16请求详情逐值等价与自然SSE16→17另验，插件不复制定价。网页跨Eval回调工具失败改用测试驱动纯URL队列，不改产品opener。
+- 18.12.3独立审查：179个Stats包文件仅package.json版本与官方依赖变化，92源码/73客户端、stats-cli/openPath及handler均与18.12.2逐字不变。utils的路径归一化新增可选throughMissing，默认行为不变，Stats未调用；609键/105模板和browser/mutations保持。固定官方tag的7个关键运行入口与npm逐字一致；实际compiled验证仍不可省略。
 
 ## 6. 检查与真实验证
 
@@ -112,7 +113,7 @@
 
 ## 7. 发布边界
 
-源码/开发依赖/实际宿主候选基线为18.12.2，范围 `>=18.12.2 <19`；真实三部分交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。当前真实默认opener因screenLocked无法建立原生页面基线，保持未验证并阻止发布；18.12.1仅本版本的明确授权例外是历史记录，不自动延续。本地/远端只保留main；Windows PR #1为CLOSED、未合并草稿，由非发布tag `archive/windows-support-20261018`保留，不宣称新版Windows支持。
+源码/开发依赖/实际宿主候选基线为18.12.3，范围 `>=18.12.3 <19`；真实三部分交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。当前真实默认opener因screenLocked/displayCount0无法建立原生页面基线，保持未验证并阻止发布；18.12.1仅本版本的明确授权例外是历史记录，不自动延续。本地/远端只保留main；Windows PR #1为CLOSED、未合并草稿，由非发布tag `archive/windows-support-20261018`保留，不宣称新版Windows支持。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

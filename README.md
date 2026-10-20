@@ -18,12 +18,12 @@
 
 ## 当前版本
 
-- 源码候选：`18.12.2`，**未发布**；最新正式版仍为 [`v18.12.1`](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.1)。main、源码编号和本机升级不等于 Release
-- 目标官方宿主：OMP 18.12.2（真实内嵌 Bun 1.4.3）；通过受支持的 `omp update` 从 18.12.1 升级，保留原官方二进制与受管启动器。已有进程不会热加载新代码
-- Settings：418/418 项 UI 元数据，Schema 漂移 0；相对 18.12.1 新增 `tui.completeScrollback`、`computer.backgroundFallback`，复核 `compaction.idleTimeoutSeconds` 的 1 小时提示词缓存例外。保留默认值、value、group、凭据标记、getter 与原生保存/恢复
+- 源码候选：`18.12.3`，**未发布**；最新正式版仍为 [`v18.12.1`](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.1)。main、源码编号和本机升级不等于 Release
+- 目标官方宿主：OMP 18.12.3（真实内嵌 Bun 1.4.3）；通过受支持的 `omp update` 从 18.12.2 升级，保留原官方二进制与受管启动器。已有进程不会热加载新代码
+- Settings：419/419 项 UI 元数据，Schema 漂移 0；相对 18.12.2 新增 `async.widgets`，复核 `tools.approvalMode` 的 `always-ask-cached` 选项与说明。保留默认值、value、group、凭据标记、getter 与原生保存/恢复；组件初次生成由官方模型角色负责，汉化不调用模型
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
-- Commands：86 定义、94 个命令名/别名、27 个动态回调；完整注册表、动态回调及公共 provider 合同相对 18.12.1 不变，静态漂移 0。`/computer status` 原生正文新增 `backgroundFallback`，不属于顶层说明翻译，不宣称整个命令目录逐字不变
-- Stats：仍运行实际官方 OMP 18.12.2 编译 CLI；92 源码/73 客户端与 18.12.1 不变，609 键/105 严格模板保持。官方 catalog 与默认 judge 变化由官方计算，不复制或修补业务。真实 11 页中英、17 请求/双项目、API/Trace/抽屉、自然 SSE/React、窄屏/键盘、同 origin 重启及生命周期另验。**本候选的真实系统默认浏览器打开/失败回收尚未验证，锁屏使原生页面归属无法建立，因此不得发布；18.12.1 的单次豁免不延续。** 分项证据和失败边界见 [CONTEXT.md](CONTEXT.md)
+- Commands：87 定义、95 个命令名/别名、27 个动态回调；新增 `/forget-approvals`，既有静态原文与别名无漂移。`model` / `switch` / `effort` 动态状态改读 `viewSession`；官方描述命中标记及 Enter 保护由原 provider/编辑器负责，汉化不改变排序、匹配或执行
+- Stats：仍运行实际官方 OMP 18.12.3 编译 CLI；92 源码/73 客户端与 18.12.2 不变，609 键/105 严格模板保持，npm 版本不作为替代运行时。**真实系统默认浏览器打开/失败回收尚未验证：锁屏使原生页面归属无法建立，因此不得发布；18.12.1 的单次豁免不延续。** 真实交互、逐项门禁与失败边界见 [CONTEXT.md](CONTEXT.md)，不将旧版本验证计为本候选通过
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -53,6 +53,7 @@
 | 18.11.3（历史未发布候选） | 18.11.3（macOS 编译版；资源门禁未通过） | >=18.11.3 <19 |
 | 18.12.1 | 18.12.1（macOS/Linux 编译版；默认opener验收例外见上文） | >=18.12.1 <19 |
 | 18.12.2（未发布候选） | 18.12.2（本机 macOS 编译版；默认 opener 门禁受阻） | >=18.12.2 <19 |
+| 18.12.3（未发布候选） | 18.12.3（本机 macOS 编译版；默认 opener 门禁受阻，分项证据见 CONTEXT） | >=18.12.3 <19 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -64,7 +65,7 @@ Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、�
 
 ## 安装
 
-当前源码候选要求官方 OMP `>=18.12.2 <19`；已发布版本及其实际验证基线见上表。发布主线仅 macOS/Linux。Windows PR #1已关闭、未合并，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端均只有main工作分支。通过官方插件管理器安装：
+当前源码候选要求官方 OMP `>=18.12.3 <19`；已发布版本及其实际验证基线见上表。发布主线仅 macOS/Linux。Windows PR #1已关闭、未合并，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端均只有main工作分支。通过官方插件管理器安装：
 
 ```sh
 omp plugin install github:rockythink/omp-settings-zh
