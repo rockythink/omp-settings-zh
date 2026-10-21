@@ -2,6 +2,34 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.12.5] - 2026-10-21（未发布候选）
+
+### Settings
+
+- 通过官方`omp update`将真实宿主18.12.3升级至18.12.5（内嵌Bun1.4.3），开发依赖、宿主范围与翻译来源对齐。
+- 419项不增不减，复核两项：长期缓存的Anthropic/Bedrock 1h、OpenAI GPT-5.6+ Responses 12h、较贵写入及仅运行中保温；服务器压缩增加Bedrock支持。原value/default/group/保存恢复保持。
+- 首轮check检出导入选项来源漏审；扩展到完整注册域及依赖选项后修正哈希，不放宽门禁。真实compiled中文搜索、long→auto、同进程中英恢复及effort参数原文隔离另验。
+
+### Commands
+
+- 87定义、95标识、8别名、27动态回调与原文模板保持；官方/move仅更新目录参数先补分隔符行为，汉化继续透传原provider。
+- 真实compiled裸/、8别名、第三方/quoted文件、/move .、Tab/Enter原生Settings、description-only Enter、plan/loop、模型ID/原生切换及Shift+Tab effort状态留证。viewSession、switch有效服务层级及原插入执行不改。
+- 独立compiled两轮150帧、退出0：两技能数量/Tab展开、真实idle子会话Agent Hub焦点、viewSession模型/effort隔离、ASCII/Unicode动态键位与真实按键通过，agent_start0/POST0；首轮overlay驱动错误不计正式ASCII证据。
+
+### Stats
+
+- 179包文件仅package.json版本与官方依赖变化；92源码/73客户端保持，609键/105模板不重译、不扩大白名单，仍运行真实官方编译版。
+- 实际十一页双语、抽屉/追踪/工具Span、三图表、390px/键盘、同origin语言重启、双项目自然SSE/React16→17及实际heartbeat实测；31/34份完整API与12项HTTP合同对照相同。
+- 真实PTY Ctrl+C、native/launcher SIGKILL及父消失回收另验；跨Host/Origin原允许行为不冒称阻止，身份标记不是授权，未执行费用评估。
+
+### 验证与发布门禁
+
+- `bun install --frozen-lockfile`与`bun run check`通过：65pass/0fail、2566断言，419/419设置、87/87命令/95标识，漂移0，1859显示变更及3次恢复。
+- 真实绝对路径compiled smoke正常/断言失败清理、单监听器、BUN_OPTIONS合并、空格路径权限、卸载通过；Profile/XDG四组合与物理缓存换址后8次新compiled发现、无SHELL账户解析及独立卸载另验。
+- 保留驱动夹具/断言/接口错误；误用`/plan on`导致1次Agent/1次POST尝试，由无Socket护栏dispatch前拒绝；不得将整轮描述为零尝试。
+- 冒烟驱动SIGINT/SIGTERM/SIGHUP分别130/143/129，每轮2页全关、官方服务/bridge端口与具名preload/独占浏览器/Profile/root回收；最终输出保留逐轮所有权，不借历史计数。
+- **不发布**：默认opener实时控制确认两次超时、inactive，阶段未启动；测试opener转交不替代默认系统合同，18.12.1例外不延续。最终CI、冷GitHub安装与资源回收分别按现场证据核对，Windows草稿不纳入主线。
+
 ## [18.12.3] - 2026-10-20（未发布候选）
 
 ### Settings

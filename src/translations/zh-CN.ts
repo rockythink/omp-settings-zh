@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.12.3",
+  "sourceOmpVersion": "18.12.5",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -1991,13 +1991,13 @@ export const zhCN = {
       "description": "在轮次中安全的工具循环边界处、发起下一次提供商请求前检查阈值；子代理始终检查，因为其整个任务都在一个轮次内完成"
     },
     "compaction.methodOrder": {
-      "sourceHash": "a620bcc8781ba133237d86dd9301a2e98210dbc2451e51b19066638faa02715c",
+      "sourceHash": "93e3fe578c8e2f1d440f6bd89c22a6207e568ab02373da20c6be5363f2724e46",
       "label": "压缩方法顺序",
       "description": "自动维护上下文时首选的回退顺序；方法不可用或失败时会转到下一个选项",
       "options": {
         "remote": {
           "label": "服务器压缩",
-          "description": "当前路由支持时，使用提供商原生的服务器压缩（OpenAI Responses compact、Anthropic compaction beta）"
+          "description": "当前路由支持时，使用提供商原生的服务器压缩（OpenAI Responses compact、Anthropic compaction beta，包括 Bedrock 上的支持）"
         },
         "snapcompact": {
           "label": "Snapcompact",
@@ -4015,7 +4015,7 @@ export const zhCN = {
       }
     },
     "providers.cacheRetention": {
-      "sourceHash": "445590c5156229532581a6ce9a557ab741e165c1bf27a8f61cc2788d4a93af39",
+      "sourceHash": "c86b4a3e6ea2688f2f69e506707bfe5940e57f098d7bbcbb8c630f008ae3149c",
       "label": "提示词缓存保留时间",
       "description": "向支持此功能的提供商（Anthropic、Bedrock、OpenRouter、OpenAI）传递提示词缓存保留时间",
       "options": {
@@ -4028,8 +4028,8 @@ export const zhCN = {
           "description": "缓存写入费用最低；配合缓存保温，可在空闲时让短期条目保持有效"
         },
         "long": {
-          "label": "长期（1 小时）",
-          "description": "提供商支持时使用 1 小时 TTL；写入费用更高，仅在运行期间保温"
+          "label": "长期（1 小时及以上）",
+          "description": "支持时使用更长的 TTL（Anthropic/Bedrock 为 1 小时，OpenAI GPT-5.6+ Responses 为 12 小时）；写入费用更高，仅在运行期间保温"
         },
         "none": {
           "label": "关闭",

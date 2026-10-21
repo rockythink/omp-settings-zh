@@ -1,6 +1,32 @@
 # Project Context
 
-## 18.12.3 当前未发布候选
+## 18.12.5 当前未发布候选
+
+现场起点：本地/远端main同为3707548d，package与GitHub安装插件18.12.3；插件锁指向GitHub同提交，doctor5/0/0，另一个插件不动。正式Release仍v18.12.1，Windows PR #1仍CLOSED、isDraft:true、mergedAt:null，独立归档不混入主线。通过受支持omp update将真实官方二进制18.12.3→18.12.5，SHA256为5e50df9879de9165d5c6df5e48bb5d038737270013cd849e189da7774fb7368b，实际内嵌Bun1.4.3；三个官方npm包最新稳定版均18.12.5且coding-agent精确依赖同版utils/Stats。官方tag为d5cd750e41fede277f9eb933455da92a0738915e；源码编号/main均不代表Release。
+
+Settings419→419，新增/删除0，复核2项：providers.cacheRetention.long保留Anthropic/Bedrock 1h、OpenAI GPT-5.6+ Responses 12h、较贵写入与仅运行中保温；compaction.methodOrder.remote补充Bedrock支持。首次只比注册域漏掉导入的compaction-methods选项，完整check以67pass/1fail检出哈希漂移；扩审37域的非type import、本包23依赖及外部UI来源后修正，不放宽门禁。固定tag/npm共71文件逐字相同。默认值、value、group、getter、凭据、原生保存与共享effort原文不变，未变译文不重写。
+
+Commands87定义/95标识/8别名/27动态回调保持。30命令文件仅builtin-completions.ts变更/move的目录分隔符补全，不翻译参数或接管匹配。viewSession、switch有效服务层级、effort键位、同步/异步/partial/AbortSignal/可选能力与descriptionMatch/原生Enter保护保持；固定tag/npm36关键文件相同。Stats179包文件仅package.json变化，92源码/73客户端保持，609键/105模板和数据边界不变；固定tag/npm14关键入口相同。utils测试运行时与日志目录变化独立审阅，不据此复制业务或替换官方编译Stats。
+
+冻结安装及完整check通过：65pass/0fail、2566断言，419/419设置、87/87命令/95标识，Schema与命令漂移0，1859显示变更、3次恢复、源码冒烟网络0。删除新增的文案/转发型重复测试，不用重新钉死措辞代替行为验收。
+
+真实新compiled TUI实测中文搜索、新缓存auto→long→auto原生保存恢复、缓存/压缩新说明、同进程en/zh及effort参数英文隔离；裸/、8别名、第三方原文、原Tab/Enter执行Settings、description-only Enter将/menu原查询交回输入护栏、quoted文件Tab、/move .先补./。原生plan开关、loop3轮→Escape暂停→关闭、Shift+Tab high→xhigh→high、/switch在Opus/Sonnet间切换及模型ID保留。父驱动保留168文字帧；最后进程退出0。技能与查看子会话焦点由独立compiled切片另验，不以这些帧替代。
+
+独立compiled技能/焦点切片两轮退出0，150文字帧：两技能数量中英/原生Tab展开与第三方/skill英文边界通过；官方SDK真实零请求idle子会话经Agent Hub Enter聚焦，Sonnet low→xhigh不改Main Opus/high，model/switch/effort跟随viewSession，实际switch往返/model picker current留证。真实Settings ASCII↔Unicode与Shift+Tab恢复实测；两轮agent_start0/POST0，31GET/8HEAD由护栏拒绝。首轮overlay固定Unicode的驱动错误保留，正式新进程纠正；附带preload进程退出码unknown但具名PID均消失，子会话dispose及独立slice回收已确认。
+
+驱动失败不抹除：首次漏掉setupVersion/官方PATH、预期大小写/文案错误及Escape关闭层级判断均先退出本轮进程再修正；/plan on被官方当作prompt，产生1次agent_start和1次POST尝试，已由真实compiled异步无Socket护栏在dispatch前拒绝，未发送模型请求。正式后续仅裸/plan切换，不能称全历史零尝试。正常exit后killpg被拒，waitpid明确返回该子进程退出0后不再发信号；不伪造未知孤儿退出码。
+
+Stats实际十一页en/zh、各空态、请求抽屉/追踪/工具Span、三指标图表、390px与Tab焦点、English刷新/路由/同origin重启实测；双项目4会话16请求，在已存在的真实Profile目录新增JSONL后自然SSE/React至5会话17请求，另读取实际15秒keep-alive。初始31份、增量后34份完整API/请求/trace与原版逐值相等。12项HTTP对照保留原跨Host/Origin静态和只读API200、judge缺方法/操作头405/403；身份头不是授权。模型/项目名Overview、Requests、路径、正文、错误原文及canvas保留，不执行judge或费用确认。
+
+网页首轮夹具误把namedProfile数据写到PI_CODING_AGENT_DIR，按官方dirs解析修正并冷启动后实际摄取；另两个浏览器驱动接口错误均先回收自有资源后重跑，不算产品修复。每次仅一个主target、路由与重启复用；失败才另建具名target。所有启动均先登记真实URL、compiled PID/BUN_OPTIONS/private路径并在实际页面观察后ack测试opener，不调用系统默认opener。原/包装真实PTY均证明ISIG、VINTR03与foreground PGID后Ctrl+C退出0；native/launcher SIGKILL与父进程消失后端口/private回收。即时SIGKILL断言曾早于守护宽限期，后续按明确所有权确认实际回收，保留该驱动失败。
+
+真实绝对路径scripts/smoke-cli.ts通过：3页建/3关、两官方单监听器服务、合并--smol/用户preload、空格路径0700/0600、正常/故意失败回收、dry-run与标准卸载均实测；13目录GET、2身份GET、1无凭据HEAD均dispatch前阻断，推理尝试0。独立四种Profile/XDG切片通过8次新compiled发现、cache-v1→v2删除旧址、缺SHELL/USER/LOGNAME按UID501解析/bin/zsh、无Bun版本/JSON/summary透传与移走依赖桥后卸载；87直接子进程回收，76GET阻断、POST0，doctor3/1/0警告不隐藏。缺Bun的4次卸载dry-run退出126，不把它们计作成功。
+
+三类冒烟驱动中断另验：SIGINT/SIGTERM/SIGHUP分别退出130/143/129，各自2页建/2关、一个官方Stats服务/bridge端口及具名private目录关闭、独占Chrome/Profile/root回收；私有路径在自动URL转交前已登记，不把仅退出码正确当作finally证据。
+
+**不发布的硬阻塞**：当前桌面screenLocked:false、displayCount2，但两次control.acquire均在120秒超时、state仍inactive，已release；没有实时确认，不能安全操作默认浏览器新页，因此该阶段未启动。测试opener转交不替代默认opener，18.12.1单次例外不延续；18.12.3历史52700潜在原生页仍无可认领身份，不擅自关闭。精确最终CI、GitHub冷安装和本机来源升级在提交后按实际输出独立核对，不能由本文预先视为通过。本轮已知具名页/服务/私有目录与临时脚手架均须最终核对；不合并历史未知页宣称全历史零残留。
+
+## 18.12.3 历史未发布候选
 
 本轮通过受支持 `omp update` 将真实官方二进制从18.12.2升级至18.12.3，内嵌Bun1.4.3，SHA256为f2a657b3320fcafa23055053940a45b26a8d3254e1412a158838013d670d6ec5。coding-agent、pi-utils、Stats最新稳定版均为18.12.3，coding-agent精确依赖同版utils/Stats。开发依赖、宿主范围与翻译来源对齐；目标官方tag为53a0377db6845e0dae606146130766ec92d407fd。开始时本地/远端main同为71102b78，正式Release仍v18.12.1；不把候选或main当作发布。
 
@@ -77,8 +103,8 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前Settings为419项UI元数据；相对18.12.2新增async.widgets、复核tools.approvalMode的新选项及说明，无删除。此前版本的变化见历史记录；保留设置路径、类型、默认值、选项value、group、凭据标记、getter、保存与恢复。
-- 当前Commands为87个定义、95个命令名/别名的顶层说明、实时状态与技能数量；相对18.12.2新增forget-approvals、model/switch/effort改读viewSession，保留官方descriptionMatch保护。只包装公共provider显示，不改命令名、参数、排序、插入和执行；第三方/未知说明、路径、模型ID保留原文。
+- 当前Settings为419项UI元数据；相对18.12.3不增不减，仅复核providers.cacheRetention及compaction.methodOrder两项选项原文。此前变化见历史记录；保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
+- 当前Commands为87定义、95名称/别名的顶层说明、实时状态与技能数量；18.12.5静态/动态说明不变，仅官方/move目录参数补全变更。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
 - 设置语言只保留在当前进程，下次启动默认中文；设置汉化不写配置、不读当前设置值或凭据、不联网。
