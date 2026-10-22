@@ -2,7 +2,7 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
-## [18.12.6] - 2026-10-22（未发布候选）
+## [18.12.6] - 2026-10-22
 
 ### Settings
 
@@ -15,7 +15,7 @@
 
 - 87定义/95标识/8别名/27动态回调保持，静态门禁漂移0；六个官方命令实现文件的失败标记、MCP reauth和账户处理另审，不复制业务或放宽原文。
 - viewSession、switch有效服务层级、effort键位、同步/异步/partial/取消/可选能力、descriptionMatch及原provider插入执行保持；实际编译版证据独立记录。
-- 真实裸/、原Tab/Enter执行Settings、plan/loop、quoted文件、descriptionMatch、两技能与真实idle子会话焦点另验；原生model/switch picker有效层委托已观察，不冒称switch参数ranker读取了未调用的tier callback。--no-tools夹具下force:无候选说明的范围单列，不伪造八条可见描述。
+- 真实裸/、原Tab/Enter执行Settings、plan/loop、quoted文件、descriptionMatch、两技能与真实idle子会话焦点另验；原生model/switch picker有效层委托已观察，不冒称switch参数ranker读取了未调用的tier callback。补充标准12工具的冷/暖启动及无插件官方对照：精确force:均无原生候选，canonical force说明正常；不伪造八条可见描述，也未提交执行force。
 
 ### Stats
 
@@ -29,7 +29,8 @@
 - 真实绝对路径compiled smoke：3页建/3关、两单监听器、flags/用户preload合并、空格路径权限、正常/故意断言失败回收与卸载通过；四种Profile/XDG及物理缓存换址后新compiled发现另验。
 - 保留浏览器启动target不可得、隐藏h1、工具API签名和菜单动画等驱动失败；安全回收后正式断言独立留证，不当作产品修复或全历史零残留。
 - 本机upgrade/--force后插件18.12.6但磁盘宿主依赖仍18.12.5；仅官方卸载该插件再按相同GitHub来源重装，三项依赖刷新至18.12.6、doctor5/0/0，另一插件未变。a2eeffd的macOS/Linux CI及后续干净GitHub安装/默认Stats启动切换卸载已通过，最终补充证据提交另按精确SHA核验。
-- **不发布**：真实默认opener因锁屏/无显示器未验；测试URL转交不替代默认系统合同，18.12.1例外不延续。最终TUI、精确最终CI、冷GitHub安装及本机来源升级以实际输出另核，Windows草稿不纳入主线。
+- 补齐真实系统默认opener：未替换open，实际官方进程对原始独占URL各调用/usr/bin/open一次、opener退出0；故意断言失败与正常分支均定向关闭新target，再退出服务并核实端口/private目录消失。正常分支中文默认、English刷新及切回中文/API不变通过，不继承18.12.1例外。
+- 默认opener补验阶段6页创建/6页关闭/0自有残留，3个Stats端口及private目录回收、隔离root删除；保留并修正URL基线误判用户导航和waitFor签名两项驱动失败，不触碰用户页或历史未知页。后续精确最终CI、干净GitHub安装及实际tag/Release仍分别核对；Windows草稿不纳入主线。
 
 ## [18.12.5] - 2026-10-21（未发布候选）
 

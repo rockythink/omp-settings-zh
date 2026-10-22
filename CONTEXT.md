@@ -1,6 +1,6 @@
 # Project Context
 
-## 18.12.6 当前未发布候选
+## 18.12.6 验收基线与默认 opener 补验
 
 现场起点：本地/远端main同为6834b4e53f0621f3ae10f1306ea0b0436422e2f9，package/官方宿主/GitHub安装插件均18.12.5，doctor5/0/0；正式Release仍v18.12.1，最终旧提交CI39628081451的macOS/Linux均成功。Windows PR #1仍CLOSED、isDraft:true、mergedAt:null，独立归档不混入主线；保护42项既有未跟踪内容，不reset/clean。
 
@@ -26,7 +26,15 @@ Profile/XDG四组合实测8个新compiled进程退出0；官方稳定逻辑包�
 
 适配提交a2eeffd的CI39804824946已实际完成macOS/Linux两门禁，随后干净GitHub安装同提交，doctor4/0/0、默认PATH接入、新登录shell（path_helper之后先断言自有open与wrapper）、实际官方原URL单监听器、390px中文/English/刷新、dry-run与标准卸载均通过；此处仍只验证测试opener转交。本机官方plugin upgrade虽升插件至18.12.6且doctor5/0/0，磁盘coding-agent/utils/Stats仍18.12.5；--force重装未刷新。仅用官方卸载该插件再同源重装后，三项依赖均18.12.6，doctor5/0/0；pi-xcode-mcp0.1.0及来源清单未变。补充证据后的最终提交CI/冷安装仍须现场按精确SHA再核，不拿a2eeffd代替。
 
-**不发布的硬阻塞**：当前screenLocked:true、displayCount0、displayAsleep:true，不能建立真实默认浏览器新页身份基线；该阶段未启动，不申请绕过锁屏，不调用默认opener。测试专属opener真实URL转交/页面观察不替代默认opener；18.12.1例外不延续，历史18.12.3潜在52700原生页仍无可认领身份。真实TUI最终证据、精确最终CI、干净GitHub安装、本机来源升级及完整资源计数均按本轮最终输出独立核对，本文不预先视为通过；不创建18.12.6 tag/Release。
+2026-10-22继续验收时，本地/远端main均239b19b3b292d5f261d67f8aef6405820aa1d77d，package、真实宿主、GitHub插件及三项磁盘依赖均18.12.6，doctor5/0/0；该精确提交CI39806582050的macOS/Linux均成功，冷GitHub安装亦有同SHA证据。相对已验适配提交a2eeffd仅CHANGELOG/CONTEXT两份文档变化。独立再次查询三个npm稳定版均18.12.6，coding-agent精确依赖同版utils/Stats。
+
+真实默认opener补验run为omp-release-18126-qNVXeV：桌面已解锁且有两个显示器，取得过实时控制许可，原生Chrome窗口接口仍不可见，故使用已连接Chrome relay读取真实target身份并定向观察/关闭。先记录两个既有用户target；用户期间新增并导航第三个target，仅更新归属基线，不关闭或回退用户操作。正常及故意断言失败的空白页清理预检均通过。Chrome为系统http/https注册的默认应用，既有进程55997只读记录、不终止、不修改Profile。
+
+隔离HOME/PI_CODING_AGENT_DIR/Profile/XDG与含空格TMPDIR，实际GitHub冷安装18.12.6自动接入启动器、doctor4/0/0；没有替换open或修改系统默认浏览器。仅在测试子进程的用户preload记录Bun.spawn原调用后原样委托，三次实际官方Stats分别在52857、53313、53592端口各调用/usr/bin/open一次、子进程均退出0，原始URL精确为各自http://127.0.0.1:端口。每次lsof均只有该真实官方进程的原host/port单监听器。故意断言失败分支与最终正常分支均先关闭新target、再SIGINT退出0并确认端口/private目录消失；最终正常分支中文默认、English刷新保留、切回中文和API相同通过。
+
+补验驱动失败仍保留：按URL而非target ID比较基线，误将用户自己的X页导航判作回收失败；重新读取三个原target ID，均保留、所有自有页均已关闭。另一次误用tab.waitFor函数签名，finally先回收后改用原page.waitForFunction重跑。该补验阶段共6页创建/6页关闭/0自有残留（3个清理预检空白页、3个真实默认自动页），3个Stats端口及3个private目录消失，受管tab列表为空，标准卸载撤销启动器、dry-run不撤销，隔离root已删除；3个目录探测GET在dispatch前阻断，POST0。私有账本及截图保留在仓库外，不提交浏览器个人数据或日志。
+
+18.12.6真实默认opener门禁现已通过，不继承18.12.1例外；此前锁屏状态属于初轮历史，不再代表当前桌面。历史18.12.3潜在52700原生页仍无可认领身份，未触碰、未借新轮证明历史零残留。旧轮Chrome首次启动target数量unknown仍照实保留，不将已知页计数冒充全历史总数。任何后续最终文档提交仍须按其精确SHA完成macOS/Linux CI及干净GitHub安装/Stats/卸载，再创建未使用的18.12.6 tag与Release；本文不代替远端发布证据。
 
 ## 18.12.5 历史未发布候选
 

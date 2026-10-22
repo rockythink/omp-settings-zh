@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.12.6；未发布，main与源码编号不等于tag/Release
-- 目标基线：官方OMP18.12.6/内嵌Bun1.4.3；真实默认opener因锁屏/无显示器未验证，18.12.1例外不继承，其他门禁及证据见CONTEXT.md
+- 实现版本：18.12.6；实际发布以GitHub tag/Release为准，main与源码编号不是发布证据
+- 目标基线：官方OMP18.12.6/内嵌Bun1.4.3；真实默认opener的URL/次数及正常/断言失败定向回收已补验，不继承18.12.1例外，分轮证据见CONTEXT.md
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -97,7 +97,7 @@
 - 18.12.2独立审查：Stats92源码/73客户端、stats-cli/openPath/服务handler均与18.12.1逐字不变，npm179文件仅package.json变化。官方catalog新增171/删除6行、1232既有行变化，376行cost对象变化含浮点表示差异；默认judge更新为固定版本。实际compiled的11API/4完整trace/16请求详情逐值等价与自然SSE16→17另验，插件不复制定价。网页跨Eval回调工具失败改用测试驱动纯URL队列，不改产品opener。
 - 18.12.3独立审查：179个Stats包文件仅package.json版本与官方依赖变化，92源码/73客户端、stats-cli/openPath及handler均与18.12.2逐字不变。utils的路径归一化新增可选throughMissing，默认行为不变，Stats未调用；609键/105模板和browser/mutations保持。固定官方tag的7个关键运行入口与npm逐字一致；实际compiled验证仍不可省略。
 - 18.12.5独立审查：Stats179包文件仅package.json变化，92源码/73客户端保持；Stats CLI、openPath、handler/API/SSE合同不变。utils抽取test-runtime与测试日志目录，不改变普通Profile/XDG/Bun启动。实际compiled十一页、双项目16→17自然SSE/React、真实heartbeat、31/34份完整API对照、12项HTTP边界、真实PTY与SIGKILL/父消失清理独立实测；测试opener转交不是默认opener验收。
-- 18.12.6独立审查：179包文件仅package.json变化，92源码/73客户端保持，23份固定commit/npm运行边界来源逐字相同。catalog5900→5901模型、3增2删、保留模型价格不变；Codex持久缓存轴由官方处理，不复制计算。真实compiled十一页双语、请求/工具追踪、图表/390px/键盘、同origin重启、自然17→18更新与heartbeat、37份完整API/12项HTTP对照、PTY及崩溃清理另验；默认opener因锁屏未验。
+- 18.12.6独立审查：179包文件仅package.json变化，92源码/73客户端保持，23份固定commit/npm运行边界来源逐字相同。catalog5900→5901模型、3增2删、保留模型价格不变；Codex持久缓存轴由官方处理，不复制计算。真实compiled十一页双语、请求/工具追踪、图表/390px/键盘、同origin重启、自然17→18更新与heartbeat、37份完整API/12项HTTP对照、PTY及崩溃清理另验；解锁后的独立run已补验真实默认/usr/bin/open的原始URL/次数、单监听器、语言刷新及正常/故意断言失败回收。
 
 ## 6. 检查与真实验证
 
@@ -117,7 +117,7 @@
 
 ## 7. 发布边界
 
-源码/开发依赖/实际宿主候选基线为18.12.6，范围 `>=18.12.6 <19`；真实三部分交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。桌面锁屏/无显示器，默认opener未启动并阻止发布；不使用历史18.12.1例外。历史18.12.3未知原生页不凭同origin认领。本地/远端只维护main；Windows PR #1现场CLOSED、未合并草稿，独立归档，不宣称正式支持。
+源码/开发依赖/实际宿主基线为18.12.6，范围 `>=18.12.6 <19`；真实三部分交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。真实系统默认opener已在独立run完成URL/次数、语言及正常/故意断言失败回收，不使用历史18.12.1例外。历史18.12.3未知原生页不凭同origin认领，初轮失败和unknown计数保留，不把新轮通过冒称全历史零残留。本地/远端只维护main；Windows PR #1现场CLOSED、未合并草稿，独立归档，不宣称正式支持。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 
