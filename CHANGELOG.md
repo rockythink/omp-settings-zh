@@ -9,11 +9,13 @@
 - 通过官方`omp update`将真实宿主18.12.5升级至18.12.6（内嵌Bun1.4.3）；开发依赖、宿主范围与译文来源对齐。
 - 419项UI路径/原文/选项及8个动态getter不变；37域与导入来源完整复核，不重复改译。
 - 适配上游扩展延迟启动：实际复现主关闭后迟到元数据导入仍挂载中文，修复为关闭终态、既有语言串行链恢复和迟到请求拒绝；子会话隔离保持。独立复现先失败后通过，永久行为回归覆盖关闭交错和迟到语言请求。
+- 真实compiled六轮452帧：中文搜索、auto→long→auto原生保存恢复、同进程en/zh、Unicode/ASCII与effort英文参数隔离；各轮退出0。驱动的旧思考循环预期错误保留，目标宿主实际支持high→xhigh→max，并由原生命令恢复high。
 
 ### Commands
 
 - 87定义/95标识/8别名/27动态回调保持，静态门禁漂移0；六个官方命令实现文件的失败标记、MCP reauth和账户处理另审，不复制业务或放宽原文。
 - viewSession、switch有效服务层级、effort键位、同步/异步/partial/取消/可选能力、descriptionMatch及原provider插入执行保持；实际编译版证据独立记录。
+- 真实裸/、原Tab/Enter执行Settings、plan/loop、quoted文件、descriptionMatch、两技能与真实idle子会话焦点另验；原生model/switch picker有效层委托已观察，不冒称switch参数ranker读取了未调用的tier callback。--no-tools夹具下force:无候选说明的范围单列，不伪造八条可见描述。
 
 ### Stats
 
@@ -26,6 +28,7 @@
 - frozen/check：65pass/0fail、2566断言，419/419设置、87/87命令/95标识，Schema/命令漂移0，1859显示变更与3次恢复。
 - 真实绝对路径compiled smoke：3页建/3关、两单监听器、flags/用户preload合并、空格路径权限、正常/故意断言失败回收与卸载通过；四种Profile/XDG及物理缓存换址后新compiled发现另验。
 - 保留浏览器启动target不可得、隐藏h1、工具API签名和菜单动画等驱动失败；安全回收后正式断言独立留证，不当作产品修复或全历史零残留。
+- 本机upgrade/--force后插件18.12.6但磁盘宿主依赖仍18.12.5；仅官方卸载该插件再按相同GitHub来源重装，三项依赖刷新至18.12.6、doctor5/0/0，另一插件未变。a2eeffd的macOS/Linux CI及后续干净GitHub安装/默认Stats启动切换卸载已通过，最终补充证据提交另按精确SHA核验。
 - **不发布**：真实默认opener因锁屏/无显示器未验；测试URL转交不替代默认系统合同，18.12.1例外不延续。最终TUI、精确最终CI、冷GitHub安装及本机来源升级以实际输出另核，Windows草稿不纳入主线。
 
 ## [18.12.5] - 2026-10-21（未发布候选）

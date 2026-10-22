@@ -10,6 +10,10 @@ Settings419→419，无新增/删除/原文变化，完整37域与导入选项/�
 
 Commands87定义/95标识/8别名/27动态回调不变，完整30命令文件中6份实现变化（lifecycle/session/types及helpers mcp/parse/usage-accounts）另审；46份目标固定commit/npm来源匹配。新增失败标记及MCP OAuth reauth可能开页/改凭据，不用于无副作用验收；viewSession/effectiveServiceTier、effort真实键位、裸/与折叠skill同步路径、partial/取消/可选能力/descriptionMatch合同保持，静态门禁不放宽。
 
+真实compiled TUI六轮均waitpid退出0，452文字帧；后五轮使用关闭竞态修复后的源码。Settings首次/与首次提交/settings中文，中文缓存搜索、auto→long→auto原生保存恢复、同进程en/zh、Unicode/ASCII与effort参数英文隔离实测。Commands裸/、原Tab接受/Enter执行Settings、第三方原文、plan/loop状态、quoted文件、descriptionMatch原查询保护、两技能中英数量/Tab展开及真实idle子会话Agent Hub焦点均留证；Main Opus/high与查看Sonnet/xhigh隔离。真实Shift+Tab为high→xhigh→max，再由原生命令恢复high，旧循环预期失败不抹除。原生model/裸switch picker实测委托查看会话的effectiveServiceTier（Main priority、子none）；仅合成局部performance数据激活惰性分支，不请求模型。switch参数ranker未调用tier callback，不冒称已验证参数层级排序差异。八别名均实际输入；--no-tools夹具下七条显示中文候选，精确force:无候选说明，不算八条可见译文。
+
+上述79项TUI断言72通过、7个驱动预期错误及一次helper参数错误保留，后四轮断言全部通过；六次SDK子会话dispose、六个具名PID消失、PTY/root回收。agent_start0/POST0，131GET+23HEAD均dispatch前拒绝。后四轮在首个editor出现即输入/，捕获列表已中文；未伪造强制eager或普遍首帧时延保证。结构化证据、452帧与原始字节在本轮local artifacts，不提交会话或日志。
+
 Stats179包文件仅package.json变化，92源码/73客户端保持；23份固定commit/npm运行边界来源相同。609键/105严格模板、DOM白名单/数据排除/异步节点复用不变；catalog5900→5901模型（3增2删、保留价格不变），计算仍归官方。真实compiled十一可见路由zh/en/zh、请求/工具Span追踪、三图表、English刷新/路由/同origin重启、390px菜单/键盘已实测；双项目由5会话17请求自然SSE/React至6会话18请求，实际15秒heartbeat，37份完整API与12项HTTP对照一致。原静态和只读API跨Host/Origin200保持，judge缺方法/操作头405/403，不把身份头当授权，不执行费用评估。最初4会话16请求，首次增量达到17后驱动方法调用错误已回收，正式后续17→18独立留证。
 
 冻结安装及完整check通过：65pass/0fail、2566断言，419/419设置、87/87命令/95标识，Schema/命令漂移0，1859显示变更、3次恢复、源码冒烟网络0。真实绝对路径scripts/smoke-cli.ts通过：3页建/3关、2个官方单监听器服务、合并--smol/用户preload、空格路径与0700/0600、正常/故意失败回收、dry-run和标准卸载。13目录GET/2身份GET/1无凭据HEAD均dispatch前拒绝，推理尝试0。
@@ -19,6 +23,8 @@ Profile/XDG四组合实测8个新compiled进程退出0；官方稳定逻辑包�
 原/包装真实PTY的ISIG、VINTR03与foreground PGID实测，Ctrl+C退出0；native/launcher SIGKILL与父消失后端口/private回收，Bun返回null退出码不补造0。冒烟驱动SIGINT/SIGTERM/SIGHUP分别130/143/129，每轮2页建/2关、服务/bridge端口、具名preload及独占浏览器/Profile/root回收。
 
 驱动失败保留：首次指定Chrome路径启动未取得page target，具名页未创建，专属Profile锁PID91158后已不存在；不伪造该次target/页数。后续受管headless正常/断言失败回收均恢复基线。网页初轮误取所有挂载路由中隐藏Overview的h1、tab.press签名/不存在的waitForFunction、窄屏菜单动画尚未完成时点击失败，均先关闭本轮页/服务后修正驱动；正式逐可见h1/原生菜单键盘与API断言另留证，不算产品修复或全轮无失败。每阶段复用主target，失败才新建；不关闭共享浏览器进程。
+
+适配提交a2eeffd的CI39804824946已实际完成macOS/Linux两门禁，随后干净GitHub安装同提交，doctor4/0/0、默认PATH接入、新登录shell（path_helper之后先断言自有open与wrapper）、实际官方原URL单监听器、390px中文/English/刷新、dry-run与标准卸载均通过；此处仍只验证测试opener转交。本机官方plugin upgrade虽升插件至18.12.6且doctor5/0/0，磁盘coding-agent/utils/Stats仍18.12.5；--force重装未刷新。仅用官方卸载该插件再同源重装后，三项依赖均18.12.6，doctor5/0/0；pi-xcode-mcp0.1.0及来源清单未变。补充证据后的最终提交CI/冷安装仍须现场按精确SHA再核，不拿a2eeffd代替。
 
 **不发布的硬阻塞**：当前screenLocked:true、displayCount0、displayAsleep:true，不能建立真实默认浏览器新页身份基线；该阶段未启动，不申请绕过锁屏，不调用默认opener。测试专属opener真实URL转交/页面观察不替代默认opener；18.12.1例外不延续，历史18.12.3潜在52700原生页仍无可认领身份。真实TUI最终证据、精确最终CI、干净GitHub安装、本机来源升级及完整资源计数均按本轮最终输出独立核对，本文不预先视为通过；不创建18.12.6 tag/Release。
 
