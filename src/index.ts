@@ -14,6 +14,7 @@ const extension: ExtensionFactory = async (pi) => {
   let restoreError: string | undefined;
   let transition = Promise.resolve<string | undefined>(undefined);
   let autocompleteRegistered = false;
+  let shuttingDown = false;
 
   const changeLanguage = async (language: "en" | "zh"): Promise<string | undefined> => {
     if (language === "en") {
@@ -24,9 +25,11 @@ const extension: ExtensionFactory = async (pi) => {
       restoreError = undefined;
       return;
     }
+    if (shuttingDown) return;
     if (active) return restoreError;
     try {
       host ??= await getHostMetadata();
+      if (shuttingDown) return;
       const result = applyTranslations(host, zhCN);
       if (result.status !== "applied") {
         return result.status === "rolled-back" && result.rollbackErrors.length > 0
@@ -46,7 +49,7 @@ const extension: ExtensionFactory = async (pi) => {
 
   pi.on("session_start", async (_event, context) => {
     // Child sessions share the registry; they must not own or undo the parent's localization.
-    if (context.agent.kind !== "main") return;
+    if (context.agent.kind !== "main" || shuttingDown) return;
     if (!autocompleteRegistered) {
       context.ui.addAutocompleteProvider(current => localizeSlashAutocomplete(current, () => !!active));
       autocompleteRegistered = true;
@@ -62,13 +65,14 @@ const extension: ExtensionFactory = async (pi) => {
         context.ui.notify("设置语言由主会话管理。", "warning");
         return;
       }
+      if (shuttingDown) return;
       let language = args.trim();
       if (!language) {
         const choice = await context.ui.select(
           "Settings language / 设置语言（当前：" + (restoreError ? "恢复未完成" : active ? "中文" : "原版") + "）",
           ["简体中文", "Original（原版）"],
         );
-        if (!choice) return;
+        if (!choice || shuttingDown) return;
         language = choice === "简体中文" ? "zh" : "en";
       }
       if (language !== "en" && language !== "zh") {
@@ -85,10 +89,9 @@ const extension: ExtensionFactory = async (pi) => {
 
   pi.on("session_shutdown", async (_event, context) => {
     if (context.agent.kind !== "main") return;
-    if (!active) return;
-    const errors = active.restore();
-    if (errors.length > 0) context.ui.notify("设置原文恢复失败：" + errors.join("；"), "warning");
-    else active = undefined;
+    shuttingDown = true;
+    const reason = await setLanguage("en");
+    if (reason) context.ui.notify("设置原文恢复失败：" + reason, "warning");
   });
 };
 

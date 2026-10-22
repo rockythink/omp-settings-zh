@@ -1,6 +1,28 @@
 # Project Context
 
-## 18.12.5 当前未发布候选
+## 18.12.6 当前未发布候选
+
+现场起点：本地/远端main同为6834b4e53f0621f3ae10f1306ea0b0436422e2f9，package/官方宿主/GitHub安装插件均18.12.5，doctor5/0/0；正式Release仍v18.12.1，最终旧提交CI39628081451的macOS/Linux均成功。Windows PR #1仍CLOSED、isDraft:true、mergedAt:null，独立归档不混入主线；保护42项既有未跟踪内容，不reset/clean。
+
+通过受支持`omp update`将实际官方二进制18.12.5→18.12.6，SHA256为cfbb5e38cd8f8a3be55e710700be587d287deaacdc58c9b0a661c5086bccfe58，实际内嵌Bun1.4.3。coding-agent、pi-utils、Stats最新稳定版均18.12.6且精确同版依赖，开发依赖/宿主范围/来源同步；官方tag45c35e40c46166dc726ccc52f5d27f40f2449f99。插件编号不代替实际宿主或Release证据。
+
+Settings419→419，无新增/删除/原文变化，完整37域与导入选项/边界82来源逐字相同，8个动态getter/共享effort原文不变；90份目标固定commit/npm来源匹配，未变译文与420条平台原文哈希不重写。上游新增扩展延迟加载，实际复现主启动等待元数据时关闭，旧实现关闭后仍挂载中文；修复后主关闭进入终态、通过现有串行链恢复，迟到启动/语言选择不能重挂，子会话隔离保持。独立reproducer先失败后通过，原Auto Resume描述符恢复；生命周期回归纳入既有隔离子进程。
+
+Commands87定义/95标识/8别名/27动态回调不变，完整30命令文件中6份实现变化（lifecycle/session/types及helpers mcp/parse/usage-accounts）另审；46份目标固定commit/npm来源匹配。新增失败标记及MCP OAuth reauth可能开页/改凭据，不用于无副作用验收；viewSession/effectiveServiceTier、effort真实键位、裸/与折叠skill同步路径、partial/取消/可选能力/descriptionMatch合同保持，静态门禁不放宽。
+
+Stats179包文件仅package.json变化，92源码/73客户端保持；23份固定commit/npm运行边界来源相同。609键/105严格模板、DOM白名单/数据排除/异步节点复用不变；catalog5900→5901模型（3增2删、保留价格不变），计算仍归官方。真实compiled十一可见路由zh/en/zh、请求/工具Span追踪、三图表、English刷新/路由/同origin重启、390px菜单/键盘已实测；双项目由5会话17请求自然SSE/React至6会话18请求，实际15秒heartbeat，37份完整API与12项HTTP对照一致。原静态和只读API跨Host/Origin200保持，judge缺方法/操作头405/403，不把身份头当授权，不执行费用评估。最初4会话16请求，首次增量达到17后驱动方法调用错误已回收，正式后续17→18独立留证。
+
+冻结安装及完整check通过：65pass/0fail、2566断言，419/419设置、87/87命令/95标识，Schema/命令漂移0，1859显示变更、3次恢复、源码冒烟网络0。真实绝对路径scripts/smoke-cli.ts通过：3页建/3关、2个官方单监听器服务、合并--smol/用户preload、空格路径与0700/0600、正常/故意失败回收、dry-run和标准卸载。13目录GET/2身份GET/1无凭据HEAD均dispatch前拒绝，推理尝试0。
+
+Profile/XDG四组合实测8个新compiled进程退出0；官方稳定逻辑包路径经cache-v1→v2、删除旧址后仍发现插件。缺SHELL/USER/LOGNAME从UID501取得/bin/zsh，保持无关shell内容/0640；无Bun的版本/JSON/summary透传、dry-run与移走依赖桥后标准卸载通过。doctor3/1/0的Not created yet警告保留；81直接子进程/89已知PID均回收，76目录GET全部拒绝，POST0。此处只模拟GUI缺环境，不冒称真实GUI启动。
+
+原/包装真实PTY的ISIG、VINTR03与foreground PGID实测，Ctrl+C退出0；native/launcher SIGKILL与父消失后端口/private回收，Bun返回null退出码不补造0。冒烟驱动SIGINT/SIGTERM/SIGHUP分别130/143/129，每轮2页建/2关、服务/bridge端口、具名preload及独占浏览器/Profile/root回收。
+
+驱动失败保留：首次指定Chrome路径启动未取得page target，具名页未创建，专属Profile锁PID91158后已不存在；不伪造该次target/页数。后续受管headless正常/断言失败回收均恢复基线。网页初轮误取所有挂载路由中隐藏Overview的h1、tab.press签名/不存在的waitForFunction、窄屏菜单动画尚未完成时点击失败，均先关闭本轮页/服务后修正驱动；正式逐可见h1/原生菜单键盘与API断言另留证，不算产品修复或全轮无失败。每阶段复用主target，失败才新建；不关闭共享浏览器进程。
+
+**不发布的硬阻塞**：当前screenLocked:true、displayCount0、displayAsleep:true，不能建立真实默认浏览器新页身份基线；该阶段未启动，不申请绕过锁屏，不调用默认opener。测试专属opener真实URL转交/页面观察不替代默认opener；18.12.1例外不延续，历史18.12.3潜在52700原生页仍无可认领身份。真实TUI最终证据、精确最终CI、干净GitHub安装、本机来源升级及完整资源计数均按本轮最终输出独立核对，本文不预先视为通过；不创建18.12.6 tag/Release。
+
+## 18.12.5 历史未发布候选
 
 现场起点：本地/远端main同为3707548d，package与GitHub安装插件18.12.3；插件锁指向GitHub同提交，doctor5/0/0，另一个插件不动。正式Release仍v18.12.1，Windows PR #1仍CLOSED、isDraft:true、mergedAt:null，独立归档不混入主线。通过受支持omp update将真实官方二进制18.12.3→18.12.5，SHA256为5e50df9879de9165d5c6df5e48bb5d038737270013cd849e189da7774fb7368b，实际内嵌Bun1.4.3；三个官方npm包最新稳定版均18.12.5且coding-agent精确依赖同版utils/Stats。官方tag为d5cd750e41fede277f9eb933455da92a0738915e；源码编号/main均不代表Release。
 
@@ -103,8 +125,8 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前Settings为419项UI元数据；相对18.12.3不增不减，仅复核providers.cacheRetention及compaction.methodOrder两项选项原文。此前变化见历史记录；保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
-- 当前Commands为87定义、95名称/别名的顶层说明、实时状态与技能数量；18.12.5静态/动态说明不变，仅官方/move目录参数补全变更。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
+- 当前Settings为419项UI元数据；相对18.12.5路径、原文、选项与getter无变化，不重复改译。此前变化见历史记录；保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
+- 当前Commands为87定义、95名称/别名的顶层说明、实时状态与技能数量；18.12.6显示合同不变，六个命令实现文件变化另审。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
 - 设置语言只保留在当前进程，下次启动默认中文；设置汉化不写配置、不读当前设置值或凭据、不联网。

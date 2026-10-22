@@ -60,3 +60,30 @@ if (process.env.OMP_SETTINGS_ZH_LIFECYCLE_CHILD !== "1") {
     await stop({}, main);
   }
 });
+
+if (process.env.OMP_SETTINGS_ZH_LIFECYCLE_CHILD === "1") test("main shutdown drains pending startup and remains terminal for late language requests", async () => {
+  const host = await getHostMetadata();
+  const ui = host.schema.autoResume!.ui!;
+  const before = Object.getOwnPropertyDescriptors(ui);
+  const events = new Map<string, Handler>();
+  const commands = new Map<string, Command>();
+  await extension({
+    on: (name: string, handler: Handler) => events.set(name, handler),
+    registerCommand: (name: string, options: { handler: Command }) => commands.set(name, options.handler),
+  } as never);
+  const main: Context = { agent: { kind: "main" }, ui: { notify: () => {}, select: async () => undefined, addAutocompleteProvider: () => {} } };
+  const start = events.get("session_start")!;
+  const stop = events.get("session_shutdown")!;
+  const language = commands.get("settings-language")!;
+  try {
+    const starting = start({}, main);
+    const stopping = stop({}, main);
+    await Promise.all([starting, stopping]);
+    expect(Object.getOwnPropertyDescriptors(ui)).toEqual(before);
+    await start({}, main);
+    await language("zh", main);
+    expect(Object.getOwnPropertyDescriptors(ui)).toEqual(before);
+  } finally {
+    await stop({}, main);
+  }
+});

@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.12.5；未发布，main与源码编号不等于tag/Release
-- 目标基线：官方OMP18.12.5/内嵌Bun1.4.3；真实默认opener因两次实时确认超时、inactive未验证，18.12.1例外不继承，其他门禁及证据见CONTEXT.md
+- 实现候选：18.12.6；未发布，main与源码编号不等于tag/Release
+- 目标基线：官方OMP18.12.6/内嵌Bun1.4.3；真实默认opener因锁屏/无显示器未验证，18.12.1例外不继承，其他门禁及证据见CONTEXT.md
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -60,13 +60,15 @@
 
 `/settings-language` 打开语言选择器；`/settings-language zh` 应用中文，`/settings-language en` 调用撤销。语言转换串行执行，防止重叠请求保存错误的原文快照。当前模式仅保留在该进程中，不写配置；再次启动默认中文。
 
-子会话共享设置注册表，因此不能应用、撤销或改变主会话语言。主会话 `session_shutdown` 负责撤销其修改；子会话关闭不触碰这些对象。插件不注册同名 `settings` 命令。
+子会话共享设置注册表，因此不能应用、撤销或改变主会话语言。主会话 `session_shutdown` 先设置终态 `shuttingDown`，再通过既有语言串行链等待英文恢复；排队/新到的中文请求以及等待宿主导入的启动续体不得在关闭后挂载。重复关闭仍可恢复失败重试；子会话关闭不改变终态。插件不注册同名 `settings` 命令。
+
+18.12.6官方可延迟加载已缓存为startup-safe的扩展，晚到扩展会重放session_start；正常提交输入先等待延迟扩展完成。插件不伪造provider/快捷键注册强迫eager加载，也不添加定时等待；冷/暖首帧补全和即时/settings需真实compiled另验。已确定性复现“元数据导入等待→主关闭→导入完成”后遗留中文，修复后描述符恢复，永久回归覆盖关闭终态与迟到请求。
 
 ## 内置命令补全显示适配
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存OMP18.12.5的87条官方英文/95个名称别名；相对18.12.3静态/动态说明、8别名及27回调不变，仅官方/move目录参数补全更新。model/switch/effort仍读viewSession，effort参数/执行作用于查看会话，switch仍由session.effectiveServiceTier(model)计算服务层级。公共provider同步/异步/partial/AbortSignal及可选能力、descriptionMatch标记和原生Enter保护保持；显示副本保留原字段，不重做匹配或提交。静态门禁仅容许switch/loop已知键位差异，不因effort显示能力放宽原文；动态焦点切换另验。
+`src/translations/slash-commands.ts` 保存OMP18.12.6的87条官方英文/95个名称别名；相对18.12.5静态/动态说明、8别名及27回调不变。30命令文件中6份实现变化：lifecycle/session/types/helpers的mcp/parse/usage-accounts；失败标记与OAuth重认证不属于显示翻译。model/switch/effort读viewSession，switch仍由session.effectiveServiceTier(model)计算有效层级。公共provider同步/异步/partial/AbortSignal及可选能力、descriptionMatch和原生Enter保护保持；静态门禁仅容许switch/loop已知键位差异，不因effort显示能力放宽原文。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -95,6 +97,7 @@
 - 18.12.2独立审查：Stats92源码/73客户端、stats-cli/openPath/服务handler均与18.12.1逐字不变，npm179文件仅package.json变化。官方catalog新增171/删除6行、1232既有行变化，376行cost对象变化含浮点表示差异；默认judge更新为固定版本。实际compiled的11API/4完整trace/16请求详情逐值等价与自然SSE16→17另验，插件不复制定价。网页跨Eval回调工具失败改用测试驱动纯URL队列，不改产品opener。
 - 18.12.3独立审查：179个Stats包文件仅package.json版本与官方依赖变化，92源码/73客户端、stats-cli/openPath及handler均与18.12.2逐字不变。utils的路径归一化新增可选throughMissing，默认行为不变，Stats未调用；609键/105模板和browser/mutations保持。固定官方tag的7个关键运行入口与npm逐字一致；实际compiled验证仍不可省略。
 - 18.12.5独立审查：Stats179包文件仅package.json变化，92源码/73客户端保持；Stats CLI、openPath、handler/API/SSE合同不变。utils抽取test-runtime与测试日志目录，不改变普通Profile/XDG/Bun启动。实际compiled十一页、双项目16→17自然SSE/React、真实heartbeat、31/34份完整API对照、12项HTTP边界、真实PTY与SIGKILL/父消失清理独立实测；测试opener转交不是默认opener验收。
+- 18.12.6独立审查：179包文件仅package.json变化，92源码/73客户端保持，23份固定commit/npm运行边界来源逐字相同。catalog5900→5901模型、3增2删、保留模型价格不变；Codex持久缓存轴由官方处理，不复制计算。真实compiled十一页双语、请求/工具追踪、图表/390px/键盘、同origin重启、自然17→18更新与heartbeat、37份完整API/12项HTTP对照、PTY及崩溃清理另验；默认opener因锁屏未验。
 
 ## 6. 检查与真实验证
 
@@ -114,7 +117,7 @@
 
 ## 7. 发布边界
 
-源码/开发依赖/实际宿主候选基线为18.12.5，范围 `>=18.12.5 <19`；真实三部分交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。桌面已解锁，但两次control.acquire在120秒超时、control.state为inactive，默认opener未启动并阻止发布；不使用历史18.12.1例外。历史18.12.3未知原生页不凭同origin认领。本地/远端只维护main；Windows PR #1现场CLOSED、未合并草稿，独立归档，不宣称正式支持。
+源码/开发依赖/实际宿主候选基线为18.12.6，范围 `>=18.12.6 <19`；真实三部分交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。桌面锁屏/无显示器，默认opener未启动并阻止发布；不使用历史18.12.1例外。历史18.12.3未知原生页不凭同origin认领。本地/远端只维护main；Windows PR #1现场CLOSED、未合并草稿，独立归档，不宣称正式支持。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 
