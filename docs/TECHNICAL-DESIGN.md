@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现版本：18.12.6；实际发布以GitHub tag/Release为准，main与源码编号不是发布证据
-- 目标基线：官方OMP18.12.6/内嵌Bun1.4.3；真实默认opener的URL/次数及正常/断言失败定向回收已补验，不继承18.12.1例外，分轮证据见CONTEXT.md
+- 实现候选：18.13.1；最新正式Release为18.12.6，main与源码编号不是发布证据
+- 目标基线：官方OMP18.13.1/内嵌Bun1.4.4；本轮真实默认opener因锁屏未验，测试URL转交不替代，不继承历史例外
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -54,6 +54,8 @@
 
 静态选项数组可能引用命令补全也读取的思考元数据。仅复制有显示变化的选项（保留原型/属性描述符）并挂载到该设置的 `ui.options`，不改共享原选项。选项字段先逆序恢复；显示数组成员/描述符仍由插件拥有时才恢复原数组，后续外部编辑、属性新增、成员替换或追加均保留。预检仍覆盖数组属性及显示字段可写性，失败关闭。
 
+18.13.1新增`tools.restrictedFolders`和`async.printWake`，睡眠说明改为仅执行轮次保持唤醒；官方Settings新增`restrictedFoldersNotProject`条件，项目级受限列表不得提升全局。翻译仍只覆盖元数据并沿用原生条件/保存，不复制审批、后台唤醒或睡眠实现；8动态getter和选项隔离不变。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -68,7 +70,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存OMP18.12.6的87条官方英文/95个名称别名；相对18.12.5静态/动态说明、8别名及27回调不变。30命令文件中6份实现变化：lifecycle/session/types/helpers的mcp/parse/usage-accounts；失败标记与OAuth重认证不属于显示翻译。model/switch/effort读viewSession，switch仍由session.effectiveServiceTier(model)计算有效层级。公共provider同步/异步/partial/AbortSignal及可选能力、descriptionMatch和原生Enter保护保持；静态门禁仅容许switch/loop已知键位差异，不因effort显示能力放宽原文。
+`src/translations/slash-commands.ts` 保存OMP18.13.1的88条官方英文/96个名称别名；新增local，原87条说明、8别名及27回调不变。30命令文件中7份变化：completions/session/registry/control/lifecycle/modes/helpers draft，新增local异步文件补全、pause计数与共享草稿处理由官方承担。model/switch/effort读viewSession，switch仍由session.effectiveServiceTier(model)计算有效层级。公共provider同步/异步/partial/AbortSignal及可选能力、descriptionMatch和原生Enter保护保持；静态门禁仅容许switch/loop已知键位差异，不因effort显示能力放宽原文。local参数文件名、编码URL与当前会话目录不翻译，不执行外部编辑器进行验收。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -98,6 +100,7 @@
 - 18.12.3独立审查：179个Stats包文件仅package.json版本与官方依赖变化，92源码/73客户端、stats-cli/openPath及handler均与18.12.2逐字不变。utils的路径归一化新增可选throughMissing，默认行为不变，Stats未调用；609键/105模板和browser/mutations保持。固定官方tag的7个关键运行入口与npm逐字一致；实际compiled验证仍不可省略。
 - 18.12.5独立审查：Stats179包文件仅package.json变化，92源码/73客户端保持；Stats CLI、openPath、handler/API/SSE合同不变。utils抽取test-runtime与测试日志目录，不改变普通Profile/XDG/Bun启动。实际compiled十一页、双项目16→17自然SSE/React、真实heartbeat、31/34份完整API对照、12项HTTP边界、真实PTY与SIGKILL/父消失清理独立实测；测试opener转交不是默认opener验收。
 - 18.12.6独立审查：179包文件仅package.json变化，92源码/73客户端保持，23份固定commit/npm运行边界来源逐字相同。catalog5900→5901模型、3增2删、保留模型价格不变；Codex持久缓存轴由官方处理，不复制计算。真实compiled十一页双语、请求/工具追踪、图表/390px/键盘、同origin重启、自然17→18更新与heartbeat、37份完整API/12项HTTP对照、PTY及崩溃清理另验；解锁后的独立run已补验真实默认/usr/bin/open的原始URL/次数、单监听器、语言刷新及正常/故意断言失败回收。
+- 18.13.1独立审查：179包文件仅package.json变化，92源码/73客户端保持，118份固定commit/npm来源逐字相同。23运行边界中5份变化不改变既有Stats/openPath调用；catalog5948模型的价格仍由官方计算。真实Bun1.4.4的单原监听器与已有flags/preload合并、十一页双语/抽屉/工具Span/图表/390px/键盘、同origin重启及自然16→17更新、34/36份完整API对照实测；默认opener锁屏门禁单独阻塞，不拿受管URL转交替代。
 
 ## 6. 检查与真实验证
 
@@ -117,7 +120,7 @@
 
 ## 7. 发布边界
 
-源码/开发依赖/实际宿主基线为18.12.6，范围 `>=18.12.6 <19`；真实三部分交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。真实系统默认opener已在独立run完成URL/次数、语言及正常/故意断言失败回收，不使用历史18.12.1例外。历史18.12.3未知原生页不凭同origin认领，初轮失败和unknown计数保留，不把新轮通过冒称全历史零残留。本地/远端只维护main；Windows PR #1现场CLOSED、未合并草稿，独立归档，不宣称正式支持。
+源码/开发依赖/目标宿主基线为18.13.1，范围 `>=18.13.1 <19`；真实三部分交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。本轮真实默认opener因锁屏未验，不继承18.12.6的既有通过证据或18.12.1例外。历史18.12.3未知原生页不凭同origin认领，初轮失败和unknown计数保留，不把新轮通过冒称全历史零残留。本地/远端仅维护main；Windows PR #1现场CLOSED、未合并草稿，独立归档，不宣称正式支持。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

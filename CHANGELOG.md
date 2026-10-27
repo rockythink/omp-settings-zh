@@ -2,6 +2,38 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.13.1] - 2026-10-27（未发布候选）
+
+### Settings
+
+- 目标实际官方宿主18.13.1、内嵌Bun1.4.4；开发依赖、宿主范围、来源及锁文件对齐。受管`omp update`使用官方patch升级，二进制SHA-256与官方资产一致，启动器与原安装位置保留。
+- 419→421项UI：新增`tools.restrictedFolders`与`async.printWake`；复核`power.sleepPrevention`总说明与idle选项，明确只在执行轮次保持唤醒，空闲和等待后台任务不保持。非UI新增不补译，其余418项既有UI及8动态getter不变。
+- 完整37域及导入选项/共享边界复核，90份固定commit/npm来源逐字相同；保留官方项目受限列表不得提升全局的条件、原生保存及共享选项隔离，不复制审批、睡眠或后台唤醒逻辑。
+- 真实新compiled原生/settings、中文搜索、新设置与sleep说明、printWake false→true→false原生保存恢复及同进程en/zh通过；思考设置选项中文与真实/effort参数英文隔离。
+
+### Commands
+
+- 87→88定义、95→96标识，新增`/local`顶层说明；原87条英文、8别名、27动态回调不变。七个官方命令实现文件变化另审，43份固定commit/npm来源内容匹配，不放宽静态门禁。
+- local文件名/参数/编码URL/会话目录焦点仍归官方provider；新增真实隔离文件消费边界回归，包含与UI键同名的文件、中文/空格/%/#/?和目录切换，不调用外部编辑器。
+- 裸/与折叠skill:同步路径、同步/异步/partial/取消/可选能力、viewSession、有效服务层级、effort动态键位及descriptionMatch保持；动态交互仍独立验收。
+- 真实compiled裸/、八别名、原Tab/Enter执行Settings、local原文件名/编码URL插入、两技能数量/Tab展开、第三方/quoted文件、descriptionMatch护栏与动态plan/loop/effort/键位恢复实测。两次真实idle子会话经Agent Hub聚焦后model/switch/effort跟随viewSession，Main保持；有效tier回调以合成本地perf激活惰性分支，不声称真实测速或参数排序差异。
+- 三轮TUI退出0，176帧；88项断言82通过、6个驱动预期失败另留正确分支证据。force:现场有中文候选，Sonnet4.6不支持xhigh，均以本轮真实宿主为准，不改产品迎合旧假设。agent_start0/POST0、两SDK子会话dispose、三PID/PTY及runtime root回收。
+
+### Stats
+
+- 179包文件仅package.json版本/官方依赖变化，92源码/73客户端不变；609键/105严格模板不重译、不扩张白名单。118份固定commit/npm来源逐字相同，运行时仍是真实官方编译CLI。
+- 实测Bun1.4.4合并--smol/用户preload、单官方监听器、十一页zh/en/zh、请求正文/原错误和工具Span、三图表、390px菜单/键盘、English刷新/路由及同origin重启。
+- 隔离双项目4→5会话、16→17请求自然SSE/React更新；初始34份、增量36份完整API与原版逐值一致，数据与译文键同名仍保留原文，不触发费用评估。
+
+### 验证与发布门禁
+
+- 最终`bun install --frozen-lockfile`及`bun run check`通过：66pass/0fail、2611断言，421/421设置、88/88命令/96标识，Schema/命令漂移0，1863显示变更、3次恢复、源码冒烟网络0。移除新增local测试的冗余非空断言，35项消费者边界断言另验通过。
+- 初次直接绝对路径update继承wrapper优先PATH，下载整包至wrapper旁；在swap前停止，wrapper未改，两个自有具名.new按退出PID回收。正确受管update路由后用官方49.4MB patch完成升级，不将驱动错误记为产品修复。
+- 先实测受管页面正常/故意断言失败清理回到baseline；父网页及预检7个已知target创建/7关闭/0已知残留，首次显式Chrome启动target数量unknown保留。模态/菜单遮挡、Node上下文location及hash-only导航错误均如实保留并纠正，不作为产品缺陷或全轮无失败。六个网页服务退出0、原端口与四个私有preload目录回收，脚手架清除，身份GET在dispatch前拒绝、POST0。
+- 真实绝对路径compiled smoke退出0，3页建/3关；三类驱动中断分别130/143/129且每轮2页回收。四种Profile/XDG、物理缓存换址后的新compiled发现、缺SHELL按UID取得/bin/zsh、无Bun透传及不依赖pi-utils动态导入的标准卸载均通过；隔离link doctor3/1/0的manifest警告保留。
+- CLI生命周期36项HTTP原/包装对照及真实15秒SSE heartbeat相同；原/包装PTY先证ISIG/VINTR/前台PGID后Ctrl+C退出0，故意异常、SIGKILL和父消失均按所有权回收。含fixture失败的CLI切片17页建/17关，155PID/34端口/19private无残留，专属浏览器/Profile及脚手架删除；不把父shell的137当孤儿子进程wait状态。
+- **不发布**：本轮默认opener因桌面锁屏、无可用显示器未验；测试专属opener转交不替代，不继承历史例外。真实TUI、CLI各切片、精确最终macOS/Linux CI、干净GitHub安装及完整资源账本独立按本轮输出记录，任一未过不得tag/Release。Windows PR #1仍为关闭、未合并的独立草稿。
+
 ## [18.12.6] - 2026-10-22
 
 ### Settings

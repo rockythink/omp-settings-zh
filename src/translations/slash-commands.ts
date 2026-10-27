@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.12.6. */
+/* Display-only translations; source-review baseline OMP 18.13.1. */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -228,6 +228,11 @@ export const slashCommandTranslations = [
     "name": "git",
     "en": "Open the git UI (split diff viewer, staging, commit composer)",
     "zh": "打开 Git 界面（分栏差异查看、暂存和提交编辑）"
+  },
+  {
+    "name": "local",
+    "en": "Open a session local:// file in $EDITOR (picker when no name given)",
+    "zh": "在 $EDITOR 中打开会话的 local:// 文件（未提供名称时打开选择器）"
   },
   {
     "name": "hub",

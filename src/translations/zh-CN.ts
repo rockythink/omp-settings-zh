@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.12.6",
+  "sourceOmpVersion": "18.13.1",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -83,9 +83,9 @@ export const zhCN = {
       "description": "自动恢复当前目录中最近的会话"
     },
     "power.sleepPrevention": {
-      "sourceHash": "f5493aa7f9bdab68b1e4d5cbb745f6c3925423f42c5e68232ea23a2d3b2f51dd",
+      "sourceHash": "32eb53512a5e74ed241e4937f40802dbadf08dd7965032cca1e980eee3c1fab6",
       "label": "阻止睡眠",
-      "description": "在活跃会话期间阻止系统睡眠。各级别效果会累加，即包含所有更低级别的标志",
+      "description": "在 Agent 执行轮次期间阻止系统睡眠；空闲会话（包括等待后台任务的会话）不会阻止睡眠。各级别效果会累加，即包含所有更低级别的标志",
       "options": {
         "off": {
           "label": "关闭",
@@ -93,7 +93,7 @@ export const zhCN = {
         },
         "idle": {
           "label": "阻止空闲睡眠",
-          "description": "会话打开期间保持系统唤醒（macOS `caffeinate -i`）"
+          "description": "在 Agent 执行轮次期间保持系统唤醒（macOS `caffeinate -i`）"
         },
         "display": {
           "label": "阻止显示器睡眠",
@@ -2941,6 +2941,11 @@ export const zhCN = {
         }
       }
     },
+    "tools.restrictedFolders": {
+      "sourceHash": "4e5da661430fefb65565bfd802d858f6faa39fc30026b8fedbac87792fb89cda",
+      "label": "受限文件夹",
+      "description": "这些文件夹中的每次读取、写入、编辑、搜索或命令执行都需要明确批准，不受审批模式或已记住的授权影响。限制涵盖文件夹及其全部内容；命令按执行时所在目录匹配。以 JSON 路径列表配置，例如 [\"~/secrets\"]"
+    },
     "todo.enabled": {
       "sourceHash": "6b2de007e67a7c632d6aa2367881883edc4da6bcc871cc13a5ea80c694229d95",
       "label": "待办事项",
@@ -3235,6 +3240,11 @@ export const zhCN = {
       "sourceHash": "0e13bc50485d1cd091849fbf92c0693937819ac5de4217dd8b87174a0d27debe",
       "label": "异步执行",
       "description": "启用异步 Bash 命令和后台任务执行"
+    },
+    "async.printWake": {
+      "sourceHash": "541d71d07725bbf089174c13b08dd612a97a314fb5db8283bd124c25a1e92130",
+      "label": "任务结果唤醒打印模式",
+      "description": "在打印模式（-p、--mode json）下，最后一条提示词处理完毕后，只要本次运行的后台任务仍在活动就继续运行，并在同一会话中为每个任务结果启动新轮次；没有待处理的任务或结果时退出。关闭时，打印模式在处理完提示词后退出，并取消运行中的任务"
     },
     "async.widgets": {
       "sourceHash": "5ec5f39435cb287e86bdeb5e77efb303cd65a70d7a6ef3a3acedd2caf9c2ef0b",

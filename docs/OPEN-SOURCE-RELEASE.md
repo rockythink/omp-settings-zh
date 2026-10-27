@@ -27,7 +27,7 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前源码/真实宿主验收基线18.12.6；解锁后的独立run已补齐真实默认/usr/bin/open的原始URL、每次一次调用、语言刷新及正常/故意断言失败后的定向回收，未替换opener。Settings/Commands、headless Stats、逐资源回收、精确最终macOS/Linux CI与干净GitHub安装仍分别验收；全部通过后实际创建未使用的18.12.6 tag/Release，发布状态只认远端证据，不以文档或Orca completed代替。18.12.1例外不延续；历史18.12.3未知页及初轮失败/unknown计数仍保留，不擅自认领或宣称全历史零残留。
+- 当前源码/目标宿主候选18.13.1（实际Bun1.4.4）；最新正式发布v18.12.6。本轮真实默认opener因screenLocked/displayCount0未验，受管headless自动URL转交不替代、不继承历史例外。Settings/Commands/Stats真实compiled、逐资源回收、精确最终macOS/Linux CI与干净GitHub安装分别验收，全部通过后才可创建未使用的18.13.1 tag/Release；当前禁止发布。历史18.12.3未知页及初轮失败/unknown计数保留，不擅自认领或宣称全历史零残留。
 - 18.12.3首个Stats登录shell驱动被path_helper重排，潜在调用系统open；`http://127.0.0.1:52700`的潜在原生页存在/target/关闭均unknown，详见CONTEXT与SECURITY。已知自有资源全部回收或安全重跑通过仍不能替代该轮零残留门禁；保持未发布候选，不创建tag/Release。
 - **18.12.1单次授权例外（2026-10-19）**：维护者明确批准仅豁免真实系统默认浏览器的打开/失败回收验收，允许完成实际tag与GitHub Release。该项仍为未验证，Release必须显著列出；不申请或绕过桌面控制，不以测试专属opener转交当作默认opener证据。其余版本一致性、Settings、Commands、Stats headless、资源回收、最终CI和冷安装门禁全部保留；后续版本不自动继承本例外。
 - GitHub Release、Git tag 和 `package.json` 版本必须一致。

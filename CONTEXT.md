@@ -1,6 +1,34 @@
 # Project Context
 
-## 18.12.6 验收基线与默认 opener 补验
+## 18.13.1 当前维护候选（未发布）
+
+现场起点：本地/远端main同为b7298a164c3d110df3f297504ae061719af21ad0，package/真实宿主/GitHub来源插件均18.12.6；正式tag和Release已为v18.12.6，精确提交CI39822109557成功。Windows PR #1仍CLOSED、isDraft:true、mergedAt:null，保护42项既有未跟踪内容，不混入主线。
+
+官方coding-agent、pi-utils、Stats最新稳定版均18.13.1，coding-agent精确依赖同版utils/Stats。经受管`omp update`将官方18.12.6→18.13.1，实际内嵌Bun1.4.4，SHA256为f9c66e8725cf132a6de31b2321908ae1c43c668de12c91deaf368d25c01947d8，与官方资产一致；固定tag为0838d2ab4407b74e870de07e1a6780a13c7d542c。初次绝对路径update继承了wrapper优先PATH，错误地下载整包到wrapper旁；超时/取消均发生在swap前，wrapper未改。两个具名.new文件按已退出PID回收，改由现有wrapper的update路由使用官方49.4MB patch完成，不把该驱动错误当成产品修复。
+
+Settings559→563定义、419→421 UI：新增tools.restrictedFolders和async.printWake，新增非UI session.warnCost/maxCost不补译；既有仅power.sleepPrevention总说明和idle选项变化，明确执行轮次防睡眠、空闲和等待后台任务不保持唤醒。其余418项既有UI及8动态getter不变。37域、包内/外导入选项与共享边界完整审查，90份固定commit/npm来源逐字相同。官方新增restrictedFoldersNotProject条件保护项目受限路径不提升为全局；保留原路径/value/default/group/凭据/保存与显示选项隔离，不复制审批或睡眠逻辑。
+
+Commands87→88定义、95→96标识，新增local；8别名、原87条英文及27动态回调不变。30命令文件中7份变化：completions/session/registry/control/lifecycle/modes/helpers draft；local异步文件补全、pause计数及原生草稿恢复归宿主管理。43份固定commit来源与npm内容匹配（读取器末尾空白规范化，不冒称原始下载字节hash一致）。裸/与折叠skill:同步、partial/取消/可选能力、viewSession、switch有效服务层级、effort键位与descriptionMatch保持；静态例外仍仅switch/loop。新增消费者边界回归使用真实隔离local文件及编码URL、会话目录切换，不执行编辑器。
+
+Stats179包文件仅package.json版本/官方依赖变化，92源码/73客户端不变，609键/105严格模板保持；118份固定commit/npm来源逐字相同。23运行边界中5份变化涉及CLI布尔元数据/Windows标题保护、formatNumber可选小数参数、parseJsonlLenient游标、$whichAll；Stats/opener既有调用行为保持。catalog5901→5948模型，64增17删，209个既有cost对象变化含浮点表示差异，计算仍归官方。实际compiled十一页zh/en/zh、原请求/错误正文和工具Span、三图表、390px菜单/键盘、English刷新/路由/同origin重启、双项目4→5会话/16→17请求自然SSE/React实测；初始34份、增量36份完整API与原版逐值相同。
+
+最终frozen/check通过：66pass/0fail、2611断言，421/421设置、88/88命令/96标识，Schema/命令漂移0，1863显示变更、3次恢复、源码冒烟网络0。删除新增local回归中的冗余非空断言后，消费者边界单测35断言通过，再完成上述完整检查。真实compiled各切片结果、精确最终CI及冷GitHub安装另以本轮实际输出记录，不能由此自动视为通过。
+
+真实新compiled TUI三轮退出0，176文字帧：Settings中文搜索、新受限文件夹/printWake/sleep说明、printWake false→true→false原生保存恢复、同进程zh/en/zh、思考选项中文与真实/effort参数英文隔离均实测。Commands裸/、八别名、新local中文及local://Original%20filename%20%231.txt原生Tab插入、原Tab/Enter执行Settings、description-only Enter保留原查询、两真实skill数量/展开/原说明、第三方与quoted文件均留证；18.13.1的force:现场有中文“无启用的工具”候选，不沿用历史无候选假设。
+
+TUI动态plan/loop开关与暂停、原生model/switch、Shift+Tab和ASCII/Unicode恢复实测。官方SDK两次真实零请求idle子会话通过Agent Hub Enter聚焦，model/switch/effort跟随Sonnet子会话，子low→high→low及真实Shift+Tab low→medium后恢复，Main Opus/high保持。合成本地perf数据仅激活惰性分支，实际记录model/裸switch对Main priority、Child undefined的effectiveServiceTier调用，不冒称真实测速或参数排序差异。88项断言中82通过、6个驱动预期失败保留并另验正确路径：force历史假设、键位观察面、skill namespace、空local夹具、Sonnet不支持xhigh等；非产品修复。agent_start0/POST0，77GET+16HEAD均dispatch前拒绝；两子会话dispose/移除、三PID退出0/消失、三PTY及整个runtime root回收。partial/取消/可选能力由本轮行为回归补充，不冒称UI触发。
+
+真实绝对路径compiled smoke退出0：Bun1.4.4、3页建/3关，正常/人为断言失败回收、原URL单监听器、已有--smol/用户preload、空格路径0700/0600、中文/English刷新、JSON透传、doctor、dry-run和标准卸载通过；隔离link doctor3/1/0的未创建manifest警告如实保留。15目录GET、2身份GET、1无凭据HEAD均dispatch前拒绝，无推理尝试。驱动SIGINT/SIGTERM/SIGHUP分别130/143/129且每轮2页全关。
+
+Profile/XDG四组合实测稳定逻辑包路径：cache-v1→v2并删除旧址后新compiled进程仍发现插件。缺SHELL/USER/LOGNAME按UID501取得/bin/zsh；保持无关shell内容和0640，卸载恢复。所选Bun移走后version/JSON/summary透传与原版输出/状态相同；移除复制包依赖桥且pi-utils负对照import真实失败后，标准卸载仍成功。
+
+CLI生命周期36项HTTP对照保持原跨Host/Origin200、无CORS授权，judge GET405、缺/错误操作头及身份头伪授权POST403，不发送有效judge；原/包装SSE分别15007/15004ms收到真实keep-alive。原/包装PTY先证ISIG、VINTR03、前台PGID后Ctrl+C均退出0；故意compiled异常1、native/launcher SIGKILL137，父消失后wrapper/native/guard/private回收，孤儿wait状态不伪造。CLI切片含失败历史共17个具名页面创建/17关闭，155PID、34端口、19private最终无残留，专属浏览器/Profile/脚手架回收；保留Puppeteer入口错误及pty.py遮蔽标准库两次fixture失败。
+
+资源门禁：本轮先建run账本，受管headless正常/人为断言失败清理均恢复空baseline。显式Chrome首次启动报无page target，锁PID随后ESRCH且专属Profile已删，target数量unknown保留。父网页切片及预检共7个已知target创建/7关闭/0已知残留，每阶段复用一个主target，失败才重新建立；驱动的模态遮挡、Node上下文location、窄屏菜单遮挡及hash-only导航误保留旧DOM均保留，未当产品缺陷，关闭/安全恢复后另留正确交互证据。网页六个真实服务退出0、49629端口及四个具名private目录消失，官方单监听器/Bun1.4.4合并--smol/用户preload生效；六次本机身份GET在dispatch前拒绝，POST0。父网页HOME/fixture/临时目录/opener/guard脚手架已删，保留仓库外证据，不退出共享工具浏览器或用户浏览器。
+
+**不发布门禁**：当前桌面screenLocked:true、displayCount0，不能取得可靠原生默认浏览器页面归属及安全关闭条件，未启动默认opener阶段；不以测试子进程URL转交替代，不继承18.12.1例外。不得创建18.13.1 tag/Release；源码候选及本机宿主更新不等于三部分完整验收或发布。后续只能在本轮所有门禁及资源回收、最终提交macOS/Linux CI和精确SHA冷GitHub安装都通过后发布。
+
+## 18.12.6 已发布基线与历史验收记录
 
 现场起点：本地/远端main同为6834b4e53f0621f3ae10f1306ea0b0436422e2f9，package/官方宿主/GitHub安装插件均18.12.5，doctor5/0/0；正式Release仍v18.12.1，最终旧提交CI39628081451的macOS/Linux均成功。Windows PR #1仍CLOSED、isDraft:true、mergedAt:null，独立归档不混入主线；保护42项既有未跟踪内容，不reset/clean。
 
@@ -139,8 +167,8 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前Settings为419项UI元数据；相对18.12.5路径、原文、选项与getter无变化，不重复改译。此前变化见历史记录；保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
-- 当前Commands为87定义、95名称/别名的顶层说明、实时状态与技能数量；18.12.6显示合同不变，六个命令实现文件变化另审。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
+- 当前Settings为421项UI元数据；18.13.1新增受限文件夹与打印模式唤醒，复核睡眠防护说明；8动态getter不变。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
+- 当前Commands为88定义、96名称/别名的顶层说明、实时状态与技能数量；18.13.1新增local，原静态与动态说明不变。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
 - 设置语言只保留在当前进程，下次启动默认中文；设置汉化不写配置、不读当前设置值或凭据、不联网。

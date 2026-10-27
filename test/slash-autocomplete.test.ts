@@ -1,8 +1,12 @@
 import { expect, test } from "bun:test";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { CombinedAutocompleteProvider, type AutocompleteProvider } from "@oh-my-pi/pi-tui";
 import { buildModel } from "@oh-my-pi/pi-catalog/build";
 import { BUILTIN_SLASH_COMMAND_DEFS, buildTuiBuiltinSlashCommands } from "@oh-my-pi/pi-coding-agent/slash-commands/builtin-registry";
 import type { TuiSlashCommandRuntime } from "@oh-my-pi/pi-coding-agent/slash-commands/types";
+import { resolveLocalRoot } from "@oh-my-pi/pi-coding-agent/internal-urls/local-protocol";
 import { Settings } from "@oh-my-pi/pi-coding-agent/config/settings";
 import { cfgPlanEnabled } from "@oh-my-pi/pi-coding-agent/plan-mode/settings";
 import { cfgGoalEnabled } from "@oh-my-pi/pi-coding-agent/goals/settings";
@@ -176,6 +180,48 @@ test("official fork optional subcommands keep bare submission, English hints and
     }
   }
   expect(provider.trySyncSlashCompletion!(text)).toEqual(original);
+});
+
+test("official local file completion preserves session scope, literal labels, encoded URLs and native insertion", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "omp-zh-local-"));
+  let artifactsDir = join(directory, "first");
+  const sessionManager = { getArtifactsDir: () => artifactsDir, getSessionId: () => "local-completion-test" };
+  try {
+    for (const [session, names] of [
+      ["first", ["Open settings menu", "设置 参数%#?.md"]],
+      ["second", ["Second session.md"]],
+    ] as const) {
+      const root = resolveLocalRoot({ getArtifactsDir: () => join(directory, session) });
+      await mkdir(root, { recursive: true });
+      for (const name of names) await writeFile(join(root, name), "literal fixture");
+    }
+    const command = buildTuiBuiltinSlashCommands({ ctx: { sessionManager } } as unknown as TuiSlashCommandRuntime)
+      .find(command => command.name === "local")!;
+    const native = new CombinedAutocompleteProvider([command]);
+    let chinese = true;
+    const provider = localizeSlashAutocomplete(native, () => chinese);
+    const text = "/local";
+    for (const language of [true, false]) {
+      chinese = language;
+      for (const args of ["", "Open", "local:/Open", "local://Open", "设置"]) {
+        const input = text + " " + args;
+        const result = (await provider.getSuggestions([input], 0, input.length))!;
+        expect(result.items.map(item => item.label).sort()).toEqual(args && args !== "设置"
+          ? ["Open settings menu"] : args ? ["设置 参数%#?.md"] : ["Open settings menu", "设置 参数%#?.md"]);
+        for (const item of result.items) {
+          const value = "local://" + encodeURIComponent(item.label);
+          expect(item.value).toBe(value);
+          expect(provider.applyCompletion([input], 0, input.length, item, result.prefix))
+            .toEqual({ lines: ["/local " + value], cursorLine: 0, cursorCol: 7 + value.length });
+        }
+      }
+    }
+    artifactsDir = join(directory, "second");
+    const refocused = (await provider.getSuggestions([text + " "], 0, text.length + 1))!;
+    expect(refocused.items).toEqual([{ value: "local://Second%20session.md", label: "Second session.md" }]);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
 });
 
 test("official required subcommand remainder hints stay literal in both languages", async () => {
