@@ -24,6 +24,10 @@ Profile/XDG四组合实测稳定逻辑包路径：cache-v1→v2并删除旧址�
 
 CLI生命周期36项HTTP对照保持原跨Host/Origin200、无CORS授权，judge GET405、缺/错误操作头及身份头伪授权POST403，不发送有效judge；原/包装SSE分别15007/15004ms收到真实keep-alive。原/包装PTY先证ISIG、VINTR03、前台PGID后Ctrl+C均退出0；故意compiled异常1、native/launcher SIGKILL137，父消失后wrapper/native/guard/private回收，孤儿wait状态不伪造。CLI切片含失败历史共17个具名页面创建/17关闭，155PID、34端口、19private最终无残留，专属浏览器/Profile/脚手架回收；保留Puppeteer入口错误及pty.py遮蔽标准库两次fixture失败。
 
+干净GitHub安装首轮超出派生smoke驱动45秒截止，父退出143但嵌入式安装子进程仍存活；其argv含本轮独占已删除root，按此明确归属终止PID49988并确认ESRCH，不把rootRemoved:true误当完整回收。修复scripts/smoke-cli.ts：每条命令创建独占POSIX进程组，先记PID，截止对整组TERM/KILL，finally等待根进程并确认组消失后才记groupClosed；成功路径也清掉迟到后代。修复后独立真实shell后代的正常根退出与加速截止回归均确认后代消失；真实compiled smoke正常及SIGINT/SIGTERM/SIGHUP重跑分别0/130/143/129，新增9页建/9关、5个Stats服务/private回收，38个命令组全关闭。完整frozen/check再次66/0、2611断言通过。
+
+本机按原GitHub来源执行官方plugin upgrade：插件18.12.6→18.13.1，磁盘coding-agent/utils/Stats均18.13.1，doctor5/0/0；来源清单与pi-xcode-mcp0.1.0保持，无需历史候选曾使用的卸载重装。最终SHA的CI与干净GitHub安装仍分别以现场输出核对，不用中间7c56191的CI40531502227替代后续提交。
+
 资源门禁：本轮先建run账本，受管headless正常/人为断言失败清理均恢复空baseline。显式Chrome首次启动报无page target，锁PID随后ESRCH且专属Profile已删，target数量unknown保留。父网页切片及预检共7个已知target创建/7关闭/0已知残留，每阶段复用一个主target，失败才重新建立；驱动的模态遮挡、Node上下文location、窄屏菜单遮挡及hash-only导航误保留旧DOM均保留，未当产品缺陷，关闭/安全恢复后另留正确交互证据。网页六个真实服务退出0、49629端口及四个具名private目录消失，官方单监听器/Bun1.4.4合并--smol/用户preload生效；六次本机身份GET在dispatch前拒绝，POST0。父网页HOME/fixture/临时目录/opener/guard脚手架已删，保留仓库外证据，不退出共享工具浏览器或用户浏览器。
 
 **不发布门禁**：当前桌面screenLocked:true、displayCount0，不能取得可靠原生默认浏览器页面归属及安全关闭条件，未启动默认opener阶段；不以测试子进程URL转交替代，不继承18.12.1例外。不得创建18.13.1 tag/Release；源码候选及本机宿主更新不等于三部分完整验收或发布。后续只能在本轮所有门禁及资源回收、最终提交macOS/Linux CI和精确SHA冷GitHub安装都通过后发布。

@@ -32,6 +32,7 @@ const owned = {
   run: root, rootRemoved: false, cleanupErrors: 0, browserPid: 0, browserExecutable, browserProfile: join(root, "browser-profile"), browserClosed: false,
   baselinePages: [] as string[], pagesCreated: 0, pagesClosed: 0, pages: [] as PageResource[],
   services: [] as { pid: number; nativePid?: number; port: number; closed: boolean; preload?: string }[],
+  commands: [] as { pid: number; groupClosed: boolean }[],
   bridge: undefined as { pid: number; port: number; closed: boolean } | undefined,
   temporaryPaths: [root, home, cwd, temporary, dirname(official), openerDir],
 };
@@ -65,11 +66,42 @@ for (const key of ["HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "http
 for (const key of Object.keys(env)) if (key === "PI_PROXY" || key.startsWith("PI_PROXY_")) delete env[key];
 async function command(binary: string, args: string[], ignoreInterrupt = false) {
   if (!ignoreInterrupt) checkpoint();
-  const child = Bun.spawn([binary, ...args], { cwd, env, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
-  const deadline = setTimeout(() => child.kill("SIGTERM"), 45_000);
+  const child = Bun.spawn([binary, ...args], { cwd, env, detached: true, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
+  const resource = { pid: child.pid, groupClosed: false };
+  owned.commands.push(resource);
+  const signalGroup = (signal: NodeJS.Signals) => {
+    try { process.kill(-child.pid, signal); }
+    catch (error) { if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error; }
+  };
+  let escalation: NodeJS.Timeout | undefined;
+  const deadline = setTimeout(() => {
+    signalGroup("SIGTERM");
+    escalation = setTimeout(() => signalGroup("SIGKILL"), 1000);
+  }, 45_000);
   let code: number, out: string, error: string;
-  try { [code, out, error] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]); }
-  finally { clearTimeout(deadline); }
+  try {
+    await ledger();
+    [code, out, error] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);
+  } finally {
+    clearTimeout(deadline);
+    clearTimeout(escalation);
+    // Every command owns a detached process group. Killing only its root can
+    // leave the compiled plugin installer's child alive after a timeout.
+    signalGroup("SIGKILL");
+    await child.exited;
+    const end = Date.now() + 3000;
+    do {
+      try { process.kill(-child.pid, 0); }
+      catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error;
+        resource.groupClosed = true;
+        break;
+      }
+      await Bun.sleep(25);
+    } while (Date.now() < end);
+    await ledger();
+    if (!resource.groupClosed) throw new Error("Owned command process group survived cleanup: " + child.pid);
+  }
   if (!ignoreInterrupt) checkpoint();
   if (code !== 0) throw new Error(`${binary} ${args.join(" ")} exited ${code}: ${out}\n${error}`);
   return out;

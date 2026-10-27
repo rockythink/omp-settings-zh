@@ -32,6 +32,8 @@
 - 先实测受管页面正常/故意断言失败清理回到baseline；父网页及预检7个已知target创建/7关闭/0已知残留，首次显式Chrome启动target数量unknown保留。模态/菜单遮挡、Node上下文location及hash-only导航错误均如实保留并纠正，不作为产品缺陷或全轮无失败。六个网页服务退出0、原端口与四个私有preload目录回收，脚手架清除，身份GET在dispatch前拒绝、POST0。
 - 真实绝对路径compiled smoke退出0，3页建/3关；三类驱动中断分别130/143/129且每轮2页回收。四种Profile/XDG、物理缓存换址后的新compiled发现、缺SHELL按UID取得/bin/zsh、无Bun透传及不依赖pi-utils动态导入的标准卸载均通过；隔离link doctor3/1/0的manifest警告保留。
 - CLI生命周期36项HTTP原/包装对照及真实15秒SSE heartbeat相同；原/包装PTY先证ISIG/VINTR/前台PGID后Ctrl+C退出0，故意异常、SIGKILL和父消失均按所有权回收。含fixture失败的CLI切片17页建/17关，155PID/34端口/19private无残留，专属浏览器/Profile及脚手架删除；不把父shell的137当孤儿子进程wait状态。
+- 冷GitHub派生驱动的45秒截止暴露命令子进程泄漏：根退出后安装子进程仍存活，按独占root argv认领并终止，确认消失。修复正式smoke驱动为独占POSIX命令进程组、整组截止与finally回收/消失确认；独立正常/超时后代回归通过。修复后compiled smoke及三类中断重跑0/130/143/129，9页全关、38命令组/5服务/private全回收，完整check再通过。
+- 本机官方同源plugin upgrade至18.13.1，三项磁盘依赖同版、doctor5/0/0，保留另一插件及原GitHub来源；不以本机升级或中间提交CI代替最终CI和冷安装。
 - **不发布**：本轮默认opener因桌面锁屏、无可用显示器未验；测试专属opener转交不替代，不继承历史例外。真实TUI、CLI各切片、精确最终macOS/Linux CI、干净GitHub安装及完整资源账本独立按本轮输出记录，任一未过不得tag/Release。Windows PR #1仍为关闭、未合并的独立草稿。
 
 ## [18.12.6] - 2026-10-22
