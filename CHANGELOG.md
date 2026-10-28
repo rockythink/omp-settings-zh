@@ -2,6 +2,34 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.13.3] - 2026-10-28（未发布候选）
+
+### Settings
+
+- 目标官方OMP18.13.3/内嵌Bun1.4.4；开发依赖、锁文件、宿主范围和翻译来源对齐。通过原受管`omp update`升级，SHA-256与官方资产一致；发现外部Homebrew Bun1.4.0低于上游新门槛，按原来源升级1.4.4，同步engines和macOS/Linux CI。
+- 421→426项UI：新增Advisor折叠行数、恢复工作树范围、速率限制遍历回退链、xd://挂载通知、扩展模式控制；复核autoResume在模型恢复失败且禁止回退时不载入旧历史。其余420项/8动态getter不重译，无UI的gc.autoCompress不补造译文。
+- 真实compiled中文搜索、新设置说明、回退链false→true→false原生编辑、en/zh恢复、共享effort英文参数隔离分别实测；保留原type/default/value/group/凭据/保存。
+
+### Commands
+
+- 88定义保持，96→97标识、8→9别名：更新context/hub说明，纳入官方subagents别名；其余86条静态说明及27动态回调不变。完整30命令文件仅session/lifecycle变化，官方resume continuation不复制。
+- 增加真实provider对新描述命中/别名、同步异步排序、descriptionMatch与原插入的消费者回归；不放宽switch/loop之外的静态门禁，不修改补全provider实现。
+- 真实compiled九别名/两技能/Tab展开、Tab/Enter原生命令、纯描述Enter保护、光标移动关闭旧补全、quoted文件、plan/loop/effort、Unicode/ASCII恢复留证；真实SDK子会话聚焦后model/switch/effort跟随Sonnet，Main Opus/high不变。原生picker实际调用Main priority/Child none有效层级；合成perf仅激活显示分支，不冒称测速/参数排序。
+
+### Stats
+
+- 相对18.13.1，179包文件仅package.json/CHANGELOG变化，92源码/73客户端逐字节不变；609键/105模板和DOM/数据边界保持，不重复改译。固定官方commit的92Stats源码及26运行边界逐字节匹配；运行时始终为官方compiled。
+- 十一路由双语、请求/工具Span正文和错误、三图表、390px/键盘、English刷新与同origin重启、双项目自然16→17/SSE、36份完整API与原版等价、15秒心跳和原HTTP权限边界分别实测。
+- **完整Stats门禁未过**：原版及包装18.13.3 compiled均复现首次摄取竞态，SSE版本2先于旧GET0完成、18秒后UI0/API16。对应官方查询in-flight去重/版本effect交错；不复制查询逻辑、加轮询或强制刷新掩盖。默认系统opener的实时控制确认也未获回应，未启动该阶段，测试URL转交不替代。
+
+### 验证与发布边界
+
+- frozen/check：67pass/0fail、2656断言，426/426设置、88/88命令/97标识、两类漂移0；1885显示变更、3次恢复、源码冒烟网络0。
+- 真实绝对路径compiled smoke通过：3页建/3关、两单监听器、flags/preload合并、空格路径0700/0600、正常/断言失败回收、dry-run/标准卸载。四种Profile/XDG与物理缓存换址、新进程发现、缺SHELL账户解析、无Bun透传和无pi-utils动态导入卸载另验。
+- 真实TUI四轮均退出0、78帧，后三轮为本次适配源码；两SDK子会话均dispose。三类冒烟中断130/143/129；原/包装真实PTY Ctrl+C0、异常1、SIGKILL137及父消失回收；即时/延迟350ms DA1 drain均0。驱动失败和unknown孤儿wait/PID记录缺口保留，不冒称全历史无失败。
+- 父网页/预检13个已知target建/关、20个Stats服务顺序复用一端口、12个private及临时root均回收；另一次未取得target的开页前失败单列，不补造全历史总数。CLI冒烟/生命周期/命名Profile切片各有独立账本，不用一个root删除代证所有PID。原生CDP提供冷竞态证据，工具初始化脚本跨导航缺失不当网络证据。
+- 不发布、不继承历史例外；最终提交macOS/Linux CI、干净GitHub安装和本机同源upgrade按精确现场证据另核。Windows PR #1仍CLOSED、未合并草稿，不纳入主线支持；不修改或发布官方二进制。
+
 ## [18.13.1] - 2026-10-27（未发布候选）
 
 ### Settings

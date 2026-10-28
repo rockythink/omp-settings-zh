@@ -607,6 +607,34 @@ test("all official commands and aliases preserve ranking and completion in both 
   expect(await provider.getSuggestions(["/"], 0, 1)).toEqual(original);
 });
 
+test("official context and hub description hits retain browse-only flags while the subagents alias remains runnable", async () => {
+  const native = new CombinedAutocompleteProvider([...BUILTIN_SLASH_COMMAND_DEFS]);
+  let chinese = true;
+  const provider = localizeSlashAutocomplete(native, () => chinese);
+  for (const [query, value, descriptionOnly] of [
+    ["/detailed", "context", true],
+    ["/finished", "hub", true],
+    ["/subagents", "subagents", false],
+  ] as const) {
+    const original = native.trySyncSlashCompletion(query)!;
+    const originalItem = original.items.find(item => item.value === value)!;
+    expect(originalItem).toBeDefined();
+    expect(originalItem.descriptionMatch === true).toBe(descriptionOnly);
+    for (const language of [true, false]) {
+      chinese = language;
+      const result = provider.trySyncSlashCompletion!(query)!;
+      const item = result.items.find(item => item.value === value)!;
+      expect(await provider.getSuggestions([query], 0, query.length)).toEqual(result);
+      expect(result.items.map(item => item.value)).toEqual(original.items.map(item => item.value));
+      expect(item.descriptionMatch).toBe(originalItem.descriptionMatch);
+      expect(item.description === originalItem.description).toBe(!language);
+      expect(provider.applyCompletion([query], 0, query.length, item, result.prefix))
+        .toEqual(native.applyCompletion([query], 0, query.length, originalItem, original.prefix));
+      if (!language) expect(result).toEqual(original);
+    }
+  }
+});
+
 test("known shortcuts may vary but changed surrounding prose and third-party descriptions remain English", async () => {
   for (const name of ["switch", "loop", "effort"]) {
     const command = slashCommandTranslations.find(command => command.name === name)!;

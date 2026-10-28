@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.13.1；最新正式Release为18.12.6，main与源码编号不是发布证据
-- 目标基线：官方OMP18.13.1/内嵌Bun1.4.4；本轮真实默认opener因锁屏未验，测试URL转交不替代，不继承历史例外
+- 实现候选：18.13.3；最新正式Release仍为18.12.6，main与源码编号不是发布证据
+- 目标基线：官方OMP18.13.3/内嵌Bun1.4.4、外部Bun最低1.4.4；默认opener实时控制确认未获回应，测试URL转交不替代，不继承历史例外
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -56,6 +56,8 @@
 
 18.13.1新增`tools.restrictedFolders`和`async.printWake`，睡眠说明改为仅执行轮次保持唤醒；官方Settings新增`restrictedFoldersNotProject`条件，项目级受限列表不得提升全局。翻译仍只覆盖元数据并沿用原生条件/保存，不复制审批、后台唤醒或睡眠实现；8动态getter和选项隔离不变。
 
+18.13.3新增五项UI，复核autoResume在模型恢复失败且禁止回退时不加载旧历史的说明；其余420项/8动态getter不重译。worktreeScope默认repo，rateLimitWalksChain默认false，modeControl关闭后仍可读模式；默认值、values与原生保存不修改。新增无UI的gc.autoCompress不补造面板内容。上游五包最低Bun同步至1.4.4，必须分别验证外部启动器Bun与compiled内嵌Bun。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -70,7 +72,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts` 保存OMP18.13.1的88条官方英文/96个名称别名；新增local，原87条说明、8别名及27回调不变。30命令文件中7份变化：completions/session/registry/control/lifecycle/modes/helpers draft，新增local异步文件补全、pause计数与共享草稿处理由官方承担。model/switch/effort读viewSession，switch仍由session.effectiveServiceTier(model)计算有效层级。公共provider同步/异步/partial/AbortSignal及可选能力、descriptionMatch和原生Enter保护保持；静态门禁仅容许switch/loop已知键位差异，不因effort显示能力放宽原文。local参数文件名、编码URL与当前会话目录不翻译，不执行外部编辑器进行验收。
+`src/translations/slash-commands.ts` 保存OMP18.13.3的88条官方说明/97个名称别名；更新context/hub说明、新增subagents别名，原其余86条、8个既有别名及27回调不变。完整30命令文件中仅session/lifecycle变化，原生resume continuation归官方。model/switch/effort读viewSession，switch由session.effectiveServiceTier(model)计算有效层级；真实compiled的Main priority/Child none回调以合成本地perf激活惰性显示分支后观察，不冒称真实测速或参数ranker排序差异。公共provider同步/异步/partial/AbortSignal及可选能力、descriptionMatch保持；静态门禁仅容许switch/loop已知键位差异。官方editor在纯光标移动等操作关闭旧补全，不由插件重建/接管。参数、local文件名/编码URL及当前会话目录不翻译。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -101,6 +103,8 @@
 - 18.12.5独立审查：Stats179包文件仅package.json变化，92源码/73客户端保持；Stats CLI、openPath、handler/API/SSE合同不变。utils抽取test-runtime与测试日志目录，不改变普通Profile/XDG/Bun启动。实际compiled十一页、双项目16→17自然SSE/React、真实heartbeat、31/34份完整API对照、12项HTTP边界、真实PTY与SIGKILL/父消失清理独立实测；测试opener转交不是默认opener验收。
 - 18.12.6独立审查：179包文件仅package.json变化，92源码/73客户端保持，23份固定commit/npm运行边界来源逐字相同。catalog5900→5901模型、3增2删、保留模型价格不变；Codex持久缓存轴由官方处理，不复制计算。真实compiled十一页双语、请求/工具追踪、图表/390px/键盘、同origin重启、自然17→18更新与heartbeat、37份完整API/12项HTTP对照、PTY及崩溃清理另验；解锁后的独立run已补验真实默认/usr/bin/open的原始URL/次数、单监听器、语言刷新及正常/故意断言失败回收。
 - 18.13.1独立审查：179包文件仅package.json变化，92源码/73客户端保持，118份固定commit/npm来源逐字相同。23运行边界中5份变化不改变既有Stats/openPath调用；catalog5948模型的价格仍由官方计算。真实Bun1.4.4的单原监听器与已有flags/preload合并、十一页双语/抽屉/工具Span/图表/390px/键盘、同origin重启及自然16→17更新、34/36份完整API对照实测；默认opener锁屏门禁单独阻塞，不拿受管URL转交替代。
+- 18.13.3独立审查：179包文件仅package.json/CHANGELOG变化，92源码/73客户端逐字节不变；92份Stats源码及26运行边界与官方固定commit一致。最低外部Bun升至1.4.4，utils postmortem新增可延长cleanup与SIGTERM恢复提示、TUI退出DA1 drain独立验收，不用旧退出时限或尾字节假设。真实compiled十一页双语/请求与工具Span/三图表/390px与键盘、English刷新和同origin重启、自然16→17更新、36份完整API与原版逐值一致及15秒SSE心跳实测；真实默认opener仍因实时控制确认未获回应单独阻塞。catalog5948→5947、保留模型cost对象无变化，计算归官方。
+- 18.13.3首次摄取未过项：原版/包装真实compiled的CDP均记录SSE版本1→2先于首次overview旧结果0完成；18秒后UI0/API16。官方query.ts的run在同键in-flight时返回，版本effect不因旧响应结束重跑，可能错过本次失效；这是官方客户端的查询/实时交错，不由插件重写、轮询或强制刷新规避。源码相同与已有数据/自然后续更新通过均不能证明冷启动门禁通过。
 
 ## 6. 检查与真实验证
 
@@ -121,7 +125,7 @@
 
 ## 7. 发布边界
 
-源码/开发依赖/目标宿主基线为18.13.1，范围 `>=18.13.1 <19`；真实三部分交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。本轮真实默认opener因锁屏未验，不继承18.12.6的既有通过证据或18.12.1例外。历史18.12.3未知原生页不凭同origin认领，初轮失败和unknown计数保留，不把新轮通过冒称全历史零残留。本地/远端仅维护main；Windows PR #1现场CLOSED、未合并草稿，独立归档，不宣称正式支持。
+源码/开发依赖/目标宿主基线为18.13.3，范围`>=18.13.3 <19`，外部Bun最低1.4.4；三部分真实交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。默认opener实时控制确认未获回应，该阶段未启动，不继承18.12.6证据或18.12.1例外。历史未知页与失败/unknown计数保留，不凭同origin认领，不把新轮通过冒称全历史零残留。本地/远端仅维护main；Windows PR #1仍为CLOSED、未合并草稿，独立归档，不宣称正式支持。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

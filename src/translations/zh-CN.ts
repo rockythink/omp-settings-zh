@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.13.1",
+  "sourceOmpVersion": "18.13.3",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -78,9 +78,24 @@ export const zhCN = {
       "description": "在 eval 中启用只读 archive 预置能力：浏览提示词历史、最近项目、过往会话和会话回顾"
     },
     "autoResume": {
-      "sourceHash": "0acb3a94cdc9ddbf65f3529da5f5779ebc8ef1b1c99b7d1c29f1731edacfd300",
+      "sourceHash": "a3dfb4d0f134fab0edeb7d0f55afaa6b4261027f7fcd87e230662a63a04738ea",
       "label": "自动恢复",
-      "description": "自动恢复当前目录中最近的会话"
+      "description": "自动恢复当前目录中最近的会话。若无法恢复其模型且已禁用模型回退，交互式启动会警告，并开始不含已保存历史的新会话"
+    },
+    "session.worktreeScope": {
+      "sourceHash": "8da1655bebff9c14c7b47e2d967e572e9f2954357b21d41555bef257b482822f",
+      "label": "恢复工作树范围",
+      "description": "选择恢复选择器的当前文件夹是否包含其他仓库工作树中的会话",
+      "options": {
+        "directory": {
+          "label": "此目录",
+          "description": "仅包含为此目录保存的会话"
+        },
+        "repo": {
+          "label": "仓库工作树",
+          "description": "同时包含同级工作树中的会话"
+        }
+      }
     },
     "power.sleepPrevention": {
       "sourceHash": "32eb53512a5e74ed241e4937f40802dbadf08dd7965032cca1e980eee3c1fab6",
@@ -954,6 +969,29 @@ export const zhCN = {
       "label": "缓存未命中标记",
       "description": "当某轮助手请求未命中提示词缓存时，在该轮之后显示分隔线"
     },
+    "display.advisorCollapsedLines": {
+      "sourceHash": "ab268e2ae43b49ab27a664de5b2c37d3c895360ecace033eb44af80a875a3b33",
+      "label": "Advisor 折叠行数",
+      "description": "折叠的 Advisor 卡片在标题下方最多显示的备注行数（0 保留完整预览；可用工具输出展开开关展开）",
+      "options": {
+        "0": {
+          "label": "不限制",
+          "description": "默认"
+        },
+        "1": {
+          "label": "1 行"
+        },
+        "2": {
+          "label": "2 行"
+        },
+        "3": {
+          "label": "3 行"
+        },
+        "5": {
+          "label": "5 行"
+        }
+      }
+    },
     "display.collapseCompacted": {
       "sourceHash": "3d1a8035908cf0f4bd1fa97382c6c9d20e0cf5f54a472c975b8c379c163c98f3",
       "label": "折叠已压缩的历史记录",
@@ -1503,6 +1541,11 @@ export const zhCN = {
           "description": "遇到用量限制时等待其解除或报告错误；其他错误则切换模型"
         }
       }
+    },
+    "retry.rateLimitWalksChain": {
+      "sourceHash": "8f81dc2f520c3e1e6b928badb527b59fabcc9f36189b1f73a2a08c75686f8331",
+      "label": "速率限制遍历回退链",
+      "description": "遇到速率限制时，不为思考由失败模型签名的轮次暂缓 retry.fallbackChains 遍历。关闭（默认）时，此类轮次会继续重试该速率受限的模型，直到用尽 retry.maxRetries 后才到达回退链"
     },
     "retry.usageAwareFallback": {
       "sourceHash": "cfba9ba97c575815def45107822d74c1c411ddee22834a1a19c5b479351d04f0",
@@ -3280,6 +3323,11 @@ export const zhCN = {
       "label": "xd:// 内联设备",
       "description": "当“xd:// 提示词文档”设为“仅内置设备”时，内联名称匹配这些 glob 模式的动态设备文档和 schema（例如 mcp__context_mode_*）。“仅目录”会忽略此设置"
     },
+    "tools.xdevNotices": {
+      "sourceHash": "98684129af4ba215a6bf4741b9a91c425c6898ed45029e90d823b15cb4e68974",
+      "label": "xd:// 挂载通知",
+      "description": "当 MCP 或扩展工具挂载或卸载时，显示 `xd://: mounted …` 通知。模型仍会在下一次提示词中获知该变化"
+    },
     "mcp.enableProjectConfig": {
       "sourceHash": "29afcf86b9eacf7a9970e2d5dffaa82de8e08bbf810fa65e3cf04db6e300acfe",
       "label": "MCP 项目配置",
@@ -4229,6 +4277,11 @@ export const zhCN = {
       "sourceHash": "551d60ebd73f65ea6878dd7f2a3f7292931a7f3ea46fea182406d2cfaf6421cb",
       "label": "工具调用处理程序超时（ms）",
       "description": "扩展 tool_call 处理程序在主动工作期间的超时时间，须为有限正数；无效值使用 30000ms，等待 OMP 所有的对话框的时间不计入其中"
+    },
+    "extensionHandlers.modeControl": {
+      "sourceHash": "e229c6143906617714997af05599dd04b50c7243eb50892ab66ad39472af3f77",
+      "label": "扩展模式控制",
+      "description": "允许扩展通过 ctx.sessionModes.set() 进入和退出 plan、vibe、goal 和 loop 模式；读取模式状态仍然可用"
     },
     "dev.autoqa": {
       "sourceHash": "2e0cddc4aea537ccce57783673e733efb69a641d2202909d0286b5511c973616",

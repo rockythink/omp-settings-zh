@@ -18,13 +18,14 @@
 
 ## 当前版本
 
-- 当前源码候选：`18.13.1`；最新正式发布为 [`v18.12.6`](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)。main、源码编号和本机升级不等于 Release，候选完整门禁通过前不发布
-- 目标官方宿主：OMP 18.13.1（真实内嵌 Bun 1.4.4）；通过受支持的受管 `omp update` 从 18.12.6 升级，官方资产 SHA-256 匹配，原二进制位置与 PATH 启动器保留。已有进程不会热加载新代码
-- Settings：421/421 项 UI 元数据，Schema 漂移 0；新增 `tools.restrictedFolders`、`async.printWake`，复核睡眠防护总说明和 `idle` 选项。37 个注册域及导入来源完整复核，8 个动态 getter 不变；显示副本、原生保存及可逆恢复不变
+- 当前源码候选：`18.13.3`；最新正式发布仍为 [`v18.12.6`](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)。完整门禁通过前不发布，main、源码编号和本机升级不等于 Release
+- 目标官方宿主：OMP 18.13.3（内嵌 Bun 1.4.4），通过原受管 `omp update` 从 18.13.1 升级，SHA-256 与官方资产一致。上游最低外部 Bun 升至 1.4.4，项目 engines 与 macOS/Linux CI 同步；已有 Agent 和 Stats 进程不会热加载新代码
+- Settings：426/426 项 UI 元数据，Schema 漂移 0；新增 Advisor 折叠行数、恢复工作树范围、速率限制遍历回退链、xd:// 挂载通知、扩展模式控制；复核 `autoResume` 的模型恢复失败与历史边界。其余 420 项及 8 个动态 getter 不重译，保留选项显示副本、原生保存与恢复
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
-- Commands：88 定义、96 个命令名/别名、8 别名、27 个动态回调；新增 `/local` 顶层说明，原有静态说明与动态回调不变，静态漂移 0。local 文件名、编码 URL、参数及会话目录焦点继续由官方补全处理，不调用外部编辑器进行验收
-- 本轮原生 TUI：真实编译版已验中文搜索、新设置说明、printWake 原生编辑恢复、同进程 en/zh、`/effort` 英文参数隔离；裸 `/`、八别名、Tab/Enter 执行 Settings、两技能、local/quoted 文件、plan/loop、动态键位及查看子会话焦点分别实测。保留驱动预期失败与更正证据，不把静态门禁代替这些交互
-- Stats：实际官方 OMP 18.13.1 编译 CLI；92 源码/73 客户端与 18.12.6 逐字不变，609 键/105 严格模板保持。已实测十一页中英往返、请求/工具 Span、三图表、390px/键盘、同 origin English 刷新与重启、双项目自然 SSE/React 16→17，以及 34/36 份完整 API 对照。当前锁屏、无可用显示器，真实默认 opener 尚未验收；测试专属 opener 转交不替代该门禁，不继承历史例外
+- Commands：88 定义、97 个命令名/别名、9 别名、27 个动态回调；更新 `context`、`hub` 说明并纳入官方 `subagents` 别名。原文/别名漂移 0；动态模板、同步/异步/partial/取消与可选能力合同保持，静态例外仍仅 switch/loop
+- 本轮真实编译版：新增设置中文搜索、回退链开关原生编辑恢复、同进程 en/zh、effort 英文参数隔离；裸 `/`、九别名、两技能数量/Tab 展开、Tab/Enter 原生命令执行、描述命中保护、光标移动关闭旧补全、plan/loop/effort、真实 SDK 子会话焦点与有效层级回调均分别留证。保留驱动预期失败，不把源码测试代替交互
+- Stats：实际官方 18.13.3 编译 CLI；相对 18.13.1 的 92 源码/73 客户端逐字节不变，609 键/105 严格模板保持。实测十一页双语、请求/工具 Span、三图表、390px/键盘、English 刷新/同 origin 重启、双项目自然 16→17 更新、36 份完整 API 与原版等价及真实 SSE 心跳。桌面已解锁，但真实默认 opener 的实时控制确认未获回应，尚未验收；测试专属 URL 转交不替代该门禁，不继承历史例外
+- Stats 冷启动已知阻塞：原始官方及包装版 18.13.3 compiled 都复现首次摄取后 UI 仍为 0、API 已为 16；CDP 见 SSE version 2 先于旧查询完成，18 秒后未重取。已有数据与后续 SSE 更新通过不等于该竞态已修复；不在汉化层复制官方查询、加轮询或强制刷新绕过，因此本候选不发布
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -58,6 +59,7 @@
 | 18.12.5（未发布候选） | 18.12.5（本机 macOS 编译版；默认 opener 实时确认阻塞，完整门禁未通过） | >=18.12.5 <19 |
 | 18.12.6 | 18.12.6（macOS 编译版及 macOS/Linux CI；真实默认 opener 补验通过） | >=18.12.6 <19 |
 | 18.13.1（未发布候选） | 18.13.1（本机 macOS 编译版；完整验收状态见 CONTEXT） | >=18.13.1 <19 |
+| 18.13.3（未发布候选） | 18.13.3（本机 macOS 编译版；默认 opener 实时确认阻塞，分项证据见 CONTEXT） | >=18.13.3 <19 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -69,7 +71,7 @@ Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、�
 
 ## 安装
 
-当前源码候选要求官方 OMP `>=18.13.1 <19`；正式发布 `v18.12.6` 的宿主范围为 `>=18.12.6 <19`。各版本实际验证基线见上表，是否正式发布以 GitHub Release 为准。发布主线仅 macOS/Linux。Windows PR #1现场仍 CLOSED、isDraft:true、mergedAt:null，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端仅维护main工作分支。通过官方插件管理器安装：
+当前源码候选要求官方 OMP `>=18.13.3 <19` 及外部 Bun `>=1.4.4`；正式发布 `v18.12.6` 的宿主范围为 `>=18.12.6 <19`。各版本实际验证基线见上表，是否正式发布以 GitHub Release 为准。发布主线仅 macOS/Linux。Windows PR #1现场仍 CLOSED、isDraft:true、mergedAt:null，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端仅维护main工作分支。通过官方插件管理器安装：
 
 ```sh
 omp plugin install github:rockythink/omp-settings-zh

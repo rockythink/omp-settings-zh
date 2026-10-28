@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.13.1. */
+/* Display-only translations; source-review baseline OMP 18.13.3. */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -208,8 +208,8 @@ export const slashCommandTranslations = [
   },
   {
     "name": "context",
-    "en": "Show estimated context usage breakdown",
-    "zh": "显示上下文用量估算明细"
+    "en": "Browse context usage and detailed content",
+    "zh": "浏览上下文用量和详细内容"
   },
   {
     "name": "extensions",
@@ -236,8 +236,11 @@ export const slashCommandTranslations = [
   },
   {
     "name": "hub",
-    "en": "Open the live Agent Hub",
-    "zh": "打开实时 Agent Hub"
+    "aliases": [
+      "subagents"
+    ],
+    "en": "Open the live Agent Hub (subagents, including finished ones)",
+    "zh": "打开实时 Agent Hub（子智能体，包括已结束的子智能体）"
   },
   {
     "name": "branch",
