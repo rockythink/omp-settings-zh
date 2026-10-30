@@ -55,6 +55,8 @@ Web 模式为 Stats 子进程创建私有预加载 CJS，通过合并 `BUN_OPTIO
 
 18.14.0新增out回复/扩展显示设置仅汉化元数据，不改变会话/导出/模型上下文原文，不介入taskFile的路径/SHA256记录或gitGuard主checkout/worktree防护。Stats新增搜索和追踪空态DOM入口仅处理已识别UI，数据/错误排除不扩张；query/query-store/live相关源码未修复18.13.3已知首次摄取竞态，不以强刷、轮询或后续更新冒称通过。当前screenLocked:true/displayCount0，不启动不能安全认领/回收的默认opener页面。受管工具的具名close曾只释放句柄，同target重用；该独占测试Profile按实际CDP关闭目标后回收进程，计实际唯一target，不把句柄释放或browser.tabs空列表当作页面销毁证明。
 
+18.14.0资源身份新增未过项：omp18140-stats-managed1成功open/observe后tab.run解析失败，未启动服务/driver目录，finally具名close已release；target ID/独占Profile未记录，不能从后续共享CDP空列表推断其独立销毁。9个已知target建/关和35PID/6端口/12目录回收另有证据，未知尝试单列，不冒称全轮零残留，也不擅自认领用户页面；这与默认opener及cold-ingest分别阻止发布。
+
 ## 私密报告
 
 可能导致凭据或配置值泄露、错误修改用户配置、阻止 OMP 启动、执行非预期代码或绕过失败关闭的问题，请通过本仓库 GitHub Security 页面提交私密漏洞报告，不要先创建公开 Issue。

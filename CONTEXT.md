@@ -18,7 +18,19 @@ Stats92→94源码、73→74客户端；12既有源码变化、2新增，客户�
 
 资源预检先于真实验收：正常和人为断言失败均确认实际CDP target销毁并回到基线，原页面不动。显式app.path的具名close只释放句柄、重开复用同target，已报告工具问题；按明确独占Profile认领后实际关闭该target、SIGTERM自有Chrome并证实PID消失/Profile删除。该尝试仅1个实际target，不将两次open计为2页；后续两个清理分支各1页实际关闭。共享受管浏览器不退出。
 
-**硬阻塞仍在**：当前computer为screenLocked:true/displayCount0，默认opener阶段不启动，不以测试URL转交或历史例外替代。官方query.ts/query-store.ts与客户端/服务live.ts均与18.13.3逐字相同，已知首次摄取失效丢失机制未修复；不重跑既有失败求确认，不在插件强刷/轮询规避，完整Stats门禁未过。真实TUI、完整网页、Profile/XDG、生命周期、最终CI及干净GitHub安装各自以本轮证据记录，不由静态或旧候选自动视为通过。
+真实compiled TUI已留证中文搜索、布尔/枚举原生编辑恢复、同进程en/zh与Settings思考中文选项/effort英文参数隔离。裸/、九别名、两技能Tab展开、第三方/quoted文件、descriptionMatch Enter保护及plan/loop/model/switch/effort真实键位均走原provider；force:无异步popup但Enter原生同步fallback可补全，中英一致，输入护栏阻止实际工具执行。官方public root SDK创建零请求idle子会话，原生Hub聚焦后model/switch/effort跟随子会话，主high保持；有效服务层级回调单独观察，不冒称真实测速。
+
+TUI合计5轮、85文字帧、20张实际PTY画面重建PNG（不是桌面截图）；首轮驱动错误后退出-9，其余四轮0，5个PID/PTY/临时root全部回收，SDK子会话已dispose。5轮fetch尝试130、HTTPS request96/Agent拒绝96，实际dispatch0。前四轮未计method/agent_start，不能追认POST0；末轮计数重放agent_start0但有16次/v1/messages POST尝试，全部在连接创建前拒绝，来源未取栈，不擅称warmup。没有实际模型网络发送或费用，不把零dispatch写成零尝试；驱动误拦命令、SDK wildcard导入、/set使用频次误选和force无popup初判均保留。
+
+Profile/XDG四组合严格补验80/80、68命令组回收：物理cache-v1→v2、删除旧址、只更新manager稳定symlink而未relink后，新compiled仍发现插件。缺SHELL/USER/LOGNAME按真实UID读取账户shell；不可用已记录Bun时version/JSON/summary原/包装stdout/stderr/status逐字同。依赖桥正对照后移走，四次pi-utils动态导入明确exit1，再标准卸载全部0；100GET/8HEAD拒绝、POST0。首轮relink-only不冒称缓存升级，祖先依赖桥污染和/var路径驱动失败记录保留。
+
+Stats实际compiled十一页zh/en/zh，37对完整API、24份HTTP边界响应逐值等价；原静态/只读API跨Host/Origin允许与无CORS授权保持，judge405/403及身份头非授权保持，不执行有效评估。原/包装真实15秒心跳、预摄取双项目自然16→17、trace rows2→4/子Agent泳道、三个新入口、同名数据/错误原文、390px/键盘、English刷新/路由/同origin重启已留证。native SIGKILL wrapper137、父manager137后wrapper/native/端口/private回收，孤儿wait仍unknown；不将预摄取与后续更新当作冷启动通过。
+
+**新增本轮资源身份硬阻塞**：具名omp18140-stats-managed1已成功open并observe到about:blank，随后tab.run在任何driver语句前因截断footer语法失败；该次未启动服务或创建driver root。finally具名close返回Released、managed tabs为空，但未取得target ID/独占Profile。后续最终共享CDP remaining[]不能证明它的独立身份闭环，不补造target或把release当销毁。与9个已知target建/关分列，不能宣称全轮零残留；35已知PID、6端口、12目录（含5 private）另有逐项回收证据，不处理用户页面或身份未知历史页。
+
+实现提交1555466de3b995e745b9012c8b5ec2feb5a3e387的CI41079820696已通过macOS/Linux；同SHA正常GitHub源干净安装、源码字节比对、默认启动器、新zsh登录shell直接omp stats、doctor4/0/0、原URL单监听器、语言/刷新与dry-run/标准卸载通过，3页建/关、两private/root回收。此前精确ref安装180秒截止143、1页回收/0服务/两命令组回收独立保留；不把超时伪装产品成功。本机按原GitHub来源upgrade18.13.3→18.14.0，磁盘coding-agent/utils/Stats均18.14.0，doctor5/0/0，pi-xcode-mcp0.1.0未变。后续证据文档提交仍须按最终精确SHA另核CI/干净安装，不用1555466代替。
+
+**不发布**：默认opener锁屏门禁、官方cold-ingest未修复、本轮成功开页缺少target身份闭环三项均未过；不继承历史例外、不缩减验收、不建tag/Release。真实TUI/网页、Profile/XDG、生命周期、最终CI/冷安装分别报告，用户须重启OMP及开启新终端，不能把旧进程当作新宿主。
 
 ## 18.13.3 当前维护候选（未发布）
 

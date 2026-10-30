@@ -26,6 +26,11 @@
 - 真实绝对路径compiled smoke通过：3页建/3关、两单监听器服务/私有目录回收、flags/preload合并、空格路径0700/0600、默认link接入、doctor3/1/0的manifest警告、dry-run与标准卸载；16目录GET/2身份GET/1无凭据HEAD均dispatch前拒绝，推理尝试0。
 - 冒烟驱动SIGINT/SIGTERM/SIGHUP实际分别130/143/129；每轮2页建/2关、服务/端口/private及独占浏览器/root回收。真实TUI、完整网页、Profile/XDG、最终CI和干净GitHub安装各自独立记录，不能由静态或历史验证推断。
 - 正常/断言失败清理预检均确认实际target关闭。具名close只释放句柄的工具差异已报告；按独占Profile关闭真实target并回收自有进程，不将重开同target计作新增页，不碰用户页面。Windows PR #1仍CLOSED草稿、未合并，不纳入主线支持。
+- 真实compiled补验：Settings中文搜索、布尔/枚举恢复、en/zh与effort参数隔离；Commands九别名、技能/第三方/文件、原Tab/Enter、descriptionMatch保护和plan/loop/model/switch/effort均有帧。force:由原生Enter同步fallback补全，实际工具执行由测试输入护栏阻止；SDK零请求idle子会话通过原生Hub聚焦后状态随子会话，主会话保持。
+- TUI共5轮/85文字帧/20张实际PTY重建PNG，首轮驱动错误后-9、其余四轮0，全部PID/PTY/root回收且SDK子会话dispose。实际dispatch0；前四轮无POST/agent_start计数，末轮agent_start0但16次/v1/messages POST尝试全在连接创建前拒绝，不擅称warmup或全程零尝试。
+- 严格Profile/XDG四组合80/80、68命令组回收；物理缓存移动且删除旧址后稳定逻辑链接/新compiled发现通过，无relink补救。无SHELL/账户环境按UID取shell、无Bun透传，以及pi-utils导入负对照exit1后标准卸载0均通过；驱动失败与仅relink证据单列。
+- Stats真实11页双语、37对API、24份HTTP响应、原/包装15秒心跳、双项目16→17与trace2→4、390px/键盘/同origin重启已验。9已知target、35PID、6端口和12目录回收；另一次成功开页未取target ID，仅release，独立身份闭环未过，新增为第三项不发布门禁，不宣称全轮零残留。
+- 实现SHA1555466的macOS/Linux CI与同SHA干净GitHub安装通过；本机原GitHub来源upgrade18.14.0、三项官方依赖同版、doctor5/0/0。证据文档最终SHA仍分别核CI/干净安装，不借实现提交代证。冷安装首轮180秒截止143已回收，失败记录保留。
 
 ## [18.13.3] - 2026-10-28（未发布候选）
 
