@@ -118,6 +118,7 @@ import { invalidateExternalWrites } from "./mutations";
 		if (parent.matches(".frustration-quote > .micro, .frustration-progress-head > .num, .frustration-progress-meta > span, .frustration-progress-meta > span > .num, .frustration-judge > p.muted, .frustration-judge > p.micro.dim, .modal-body > p.micro.dim")) return true;
 		if (parent.matches(".card-title > .badge")) return true;
 		if (parent.matches(".traces-row-meta > .tone-bad")) return true;
+		if (parent.matches(".traces-view > p.muted")) return true;
 		if (parent.matches(".costs-components + p") && cardTitle(parent) === "Where it went") return true;
 		return false;
 	}
@@ -127,6 +128,7 @@ import { invalidateExternalWrites } from "./mutations";
 		if (element.matches(".traces-canvas, .traces-minimap")) return name === "aria-label";
 		if (element.closest(excluded)) return false;
 		if (name === "placeholder") return element.matches(".search input, input.input");
+		if (name === "aria-label" && element.matches(".search > input.input[type='search']")) return true;
 		if (element.matches(".stat")) return !Object.hasOwn(dataStatLabels, statLabel(element));
 		// In the error phase, the sync tooltip contains the original backend error.
 		if (element.matches(".live-chip") && name === "title" && sourceText(element.querySelector("span:not(.dot)")) === "Sync failed") return false;

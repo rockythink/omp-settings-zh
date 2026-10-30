@@ -1,5 +1,25 @@
 # Project Context
 
+## 18.14.0 当前维护候选（未发布）
+
+现场起点：本地/远端main同为437028b4caf30b6641b18f3671a6cec70904069c，package/真实宿主/GitHub来源插件均18.13.3；精确提交CI40719950907的macOS/Linux成功，正式tag/Release仍v18.12.6。Windows PR #1为CLOSED、isDraft:true、mergedAt:null；42项既有未跟踪内容保持，不纳入主线。
+
+通过现有受管`omp update`将真实官方二进制18.13.3→18.14.0；SHA256为608843959ab34295d52460dd09dd7d548b6c903c08a83c67954c2d4c36fd1f5a，与官方darwin-arm64资产digest一致。内嵌及外部Bun均1.4.4；coding-agent/utils/Stats最新稳定版均18.14.0，coding-agent精确依赖同版utils/Stats，最低Bun保持1.4.4。
+
+官方固定tag为31147f9d1a76608549821c3759f8487b4d66c72d。npm的1826份coding-agent源码全部与该commit逐字节一致；官方另四个HTML源码由package.files明确排除，不补造npm同源文件。utils127份、Stats94份、TUI440份源码全部匹配。
+
+Settings569→574定义、426→431UI，新增prewalk.from/prewalk.into/out.enabled/task.file/extensionRenderers.assistantText；复核tui.autoGraph新增auto选项、tui.mouse扩展自有链接动态说明、bash.gitGuard主checkout拒绝与linked worktree保存边界。其余423项不重译；37域7文件变化，8动态getter仅mouse说明变化。官方autoGraph默认always→auto及openaiLiveSteering默认true→false由宿主执行，翻译层不修改默认值/原value/group/保存；共享思考原文与显示副本保持。
+
+Commands88定义/97标识/9别名/27动态回调不变；顶层静态说明及动态函数体逐字一致，不重译。完整30命令文件仅builtin-modes变化，独立审阅/prewalk restart的模型参数及hint，参数仍原文。裸/、折叠skill同步路径、同步/异步/partial/取消/可选能力、viewSession/effectiveServiceTier/effort真实键位与descriptionMatch保持；静态例外仍仅switch/loop。永久回归保留真实provider参数/插入边界比较，不钉死上游措辞或词典副本。
+
+Stats92→94源码、73→74客户端；12既有源码变化、2新增，客户端5改1增。新增Search spans/Filter/追踪空态三条文案，609→612键、105模板保持；browser仅加入对应搜索aria-label和追踪空态DOM入口，mutations/preload不改。不固定npm运行时，不复制计算或查询逻辑。
+
+冻结安装及完整check通过：67pass/0fail、2687断言，431/431设置、88/88命令/97标识、两类漂移0；1896显示元数据变更、3次恢复、源码冒烟网络0。真实绝对路径compiled smoke通过：内嵌Bun1.4.4，3页建/3关、两单监听器服务/私有目录回收，flags/preload合并、空格路径0700/0600、默认link接入、doctor3/1/0的manifest警告、dry-run/标准卸载如实留证；16目录GET/2身份GET/1无凭据HEAD均dispatch前拒绝，推理尝试0。
+
+资源预检先于真实验收：正常和人为断言失败均确认实际CDP target销毁并回到基线，原页面不动。显式app.path的具名close只释放句柄、重开复用同target，已报告工具问题；按明确独占Profile认领后实际关闭该target、SIGTERM自有Chrome并证实PID消失/Profile删除。该尝试仅1个实际target，不将两次open计为2页；后续两个清理分支各1页实际关闭。共享受管浏览器不退出。
+
+**硬阻塞仍在**：当前computer为screenLocked:true/displayCount0，默认opener阶段不启动，不以测试URL转交或历史例外替代。官方query.ts/query-store.ts与客户端/服务live.ts均与18.13.3逐字相同，已知首次摄取失效丢失机制未修复；不重跑既有失败求确认，不在插件强刷/轮询规避，完整Stats门禁未过。真实TUI、完整网页、Profile/XDG、生命周期、最终CI及干净GitHub安装各自以本轮证据记录，不由静态或旧候选自动视为通过。
+
 ## 18.13.3 当前维护候选（未发布）
 
 现场起点：本地/远端main同为72161230d530ec94550e8c2e67124ec615b79c6c，package/真实宿主/GitHub来源插件均18.13.1，doctor5/0/0；该精确提交CI40533171151的macOS/Linux成功。最新正式tag/Release仍v18.12.6。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项用户未跟踪内容不提交、不清理，草稿不纳入主线。

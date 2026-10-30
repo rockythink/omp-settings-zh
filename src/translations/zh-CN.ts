@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.13.3",
+  "sourceOmpVersion": "18.14.0",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -10,10 +10,14 @@ export const zhCN = {
       "description": "引导 Agent 使用 SVG 绘制示意图和图表，在支持图形显示的终端中以内嵌图片呈现"
     },
     "tui.autoGraph": {
-      "sourceHash": "e6a3b5a7655fa4a0b15546195b29a084d33d0f0629ff0d737619783928b35e6b",
+      "sourceHash": "622829046e1f74700ab00e5524b58f6e32d8f0eb05b7ceee19ddfb7dfa240ae6",
       "label": "表格自动图表",
       "description": "在支持图形显示的终端中，使用主题配色在 Agent 回答的数值表格下方绘制图表",
       "options": {
+        "auto": {
+          "label": "自动",
+          "description": "judge 角色解析为原生 TypeSafe jev 模型时使用“智能”，否则使用“始终”"
+        },
         "smart": {
           "label": "智能",
           "description": "由 judge 模型细化每张图表的类型、列、行名称与分组、刻度、数值优劣方向和标题"
@@ -129,6 +133,16 @@ export const zhCN = {
       "sourceHash": "216aa6a231a0c76446686388a1c9695577c3f6a126834d97294ea8ce835360c0",
       "label": "启用 Prewalk",
       "description": "先使用当前模型启动，然后在规划提示的待办列表生成后，于首次编辑/写入时切换到快速/低成本模型（默认为“smol”角色）——由高能力模型制定计划、确认待办事项并开始实现，然后再交接。每个会话可通过 --prewalk / --no-prewalk 覆盖此设置"
+    },
+    "prewalk.from": {
+      "sourceHash": "beaf35c75534ffa16235467bfb447cbef3619536ed4455ff4b08b9dd33cbeaff",
+      "label": "Prewalk 规划模型",
+      "description": "/prewalk restart 返回进行规划时使用的模型或角色（默认为 @default）"
+    },
+    "prewalk.into": {
+      "sourceHash": "ab46613debe8ee020ce16154b27faae4af5680624f3e0afe8bb5eb91b5dc5faf",
+      "label": "Prewalk 目标",
+      "description": "Prewalk 在首次编辑/写入时交接到的模型或角色（默认为 @smol）：适用于 /prewalk、/prewalk restart、“启用 Prewalk”和 --prewalk。自动 Prewalk 使用其独立目标"
     },
     "prewalk.auto": {
       "sourceHash": "54269b1af40b805a6183d75f94c36b39d92ec6a3a5bda5e05c648e4a988a0d5a",
@@ -3209,6 +3223,11 @@ export const zhCN = {
       "label": "Ask",
       "description": "启用 ask 工具以交互方式向用户提问"
     },
+    "out.enabled": {
+      "sourceHash": "afbaa943de4d1b1bb82af76e9e87d842642c48ab57fc5aaecc266cdbabe76774",
+      "label": "Out",
+      "description": "允许 Agent 在任务进行中通过写入 out:// 回复，像响应一样显示，但不结束其轮次。未设置时：交互式 TUI 中开启，print、RPC 和 ACP 中关闭"
+    },
     "browser.enabled": {
       "sourceHash": "9a40a3d49291aca625cad9b74b5cefdf7a8226e527286f22819835830e252129",
       "label": "浏览器",
@@ -3441,6 +3460,11 @@ export const zhCN = {
       "sourceHash": "17bcb5f41d9b1a207ef70fb90e66837f42e4d09f881b8b4aaec9d1fc9a82c791",
       "label": "批量任务调用",
       "description": "将 task 工具切换为批处理结构：一次调用携带 { context, tasks[] }——每个条目对应一个子代理，可为每个条目指定可选的 agent（默认为会话的 spawn-policy agent）和隔离设置，并且必须提供共享上下文以添加到每项任务之前。启用 async.enabled=true 时，每次 spawn 都会作为独立的后台代理运行，并采用正常的空闲/停放生命周期；否则调用会阻塞，直至获得合并结果。禁用后恢复扁平的单次 spawn schema"
+    },
+    "task.file": {
+      "sourceHash": "673eb7a72f4a1c47ae71cc716c83af8d177ac6cff01671d2cdf880e20405065d",
+      "label": "从文件读取任务指令",
+      "description": "允许 task 工具从文件（taskFile）读取子代理指令，并记录其路径和 SHA-256"
     },
     "task.structured": {
       "sourceHash": "3ec811e3e67ce6ad912560be364f9c7b5b0c6070d9827b0a4f355537dc2d2e1f",
@@ -4283,6 +4307,11 @@ export const zhCN = {
       "label": "扩展模式控制",
       "description": "允许扩展通过 ctx.sessionModes.set() 进入和退出 plan、vibe、goal 和 loop 模式；读取模式状态仍然可用"
     },
+    "extensionRenderers.assistantText": {
+      "sourceHash": "f96bed6b9133fe121a1bb775dfe1f12e1121590479f8b7f9020e2a893fc337fe",
+      "label": "扩展回复渲染器",
+      "description": "允许扩展改变助手回复的绘制方式、原位重绘回复，并接收其自身链接上的点击；会话、导出和模型上下文仍保留原始回复"
+    },
     "dev.autoqa": {
       "sourceHash": "2e0cddc4aea537ccce57783673e733efb69a641d2202909d0286b5511c973616",
       "label": "自动 QA",
@@ -4327,10 +4356,10 @@ export const zhCN = {
       }
     },
     "tui.mouse": {
-      "sourceHash": "fdc0edf9b46864674950977c195887b450e0b3bd2256f48efaca086c5cdd80d5",
+      "sourceHash": "6d1ddee15769b420ca1d7ef313cf7a895922d7c5fbae52f4943aa6ed450e5ac1",
       "label": "鼠标点击聚焦",
-      "description": "在主会话中捕获鼠标点击，使实时子 Agent 卡片和 HUD 行可通过点击聚焦，并在悬停时高亮目标。开启后，原生文本选择改为 {shift}+拖动，滚轮滚动改为 {shift}+滚轮",
-      "descriptionSource": "Capture mouse clicks in the main session so live subagent cards and HUD rows focus on click, with a hover highlight on the target. Native text selection becomes {shift}+drag and wheel scroll becomes {shift}+wheel while on"
+      "description": "在主会话中捕获鼠标点击，使实时子 Agent 卡片和 HUD 行可通过点击聚焦，并在悬停时高亮目标；扩展所属链接上的点击会传给对应扩展（也可用链接提示键而不使用鼠标来选择链接）。开启后，原生文本选择改为 {shift}+拖动，滚轮滚动改为 {shift}+滚轮",
+      "descriptionSource": "Capture mouse clicks in the main session so live subagent cards and HUD rows focus on click, with a hover highlight on the target, and clicks on extension-owned links reach their extension (the link-hint key picks them without the mouse). Native text selection becomes {shift}+drag and wheel scroll becomes {shift}+wheel while on"
     },
     "display.pinnedAgents": {
       "sourceHash": "01fb7f1651c02d82ca1765bf78b136248dd7cb94fe686af3beb2451d8bf3c16c",
@@ -4874,9 +4903,9 @@ export const zhCN = {
       "description": "通过 OSC 7501 报告 Agent 正在工作、等待用户、已完成或失败的状态，供终端页签指示器和 Agent 收件箱使用"
     },
     "bash.gitGuard": {
-      "sourceHash": "86f367253f6c8a95b715f6acaf02da583814e69861937abfad1af129aa1f2c6b",
+      "sourceHash": "e8b82c6c1ccfbe93376bb7fdd3c1f90f8037d0d04d2a98a68c3c79ce29280257",
       "label": "Git 防护",
-      "description": "在 bash 工具中拒绝会丢弃或移动共享工作的 Git 命令：stash、reset --hard 或重置到另一提交，以及非合并或 rebase 冲突期间的 checkout/switch/restore"
+      "description": "在仓库的主检出目录中拒绝会丢弃或移动共享工作的 Git 命令：stash、reset --hard 或重置到另一提交，以及非合并或 rebase 冲突期间的 checkout/switch/restore。在关联工作树中允许执行，但会先保存这些命令将丢弃的未提交更改"
     },
     "worktree.onStart": {
       "sourceHash": "eb75fe3d4c29d8239f30e8668bdb130bb3d03544ba2b63b8db5580dfbdcec3e6",

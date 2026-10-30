@@ -2,6 +2,31 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.14.0] - 2026-10-30（未发布候选）
+
+### Settings
+
+- 对齐官方OMP18.14.0、开发依赖/锁文件/宿主范围及来源；受管`omp update`从18.13.3升级，SHA-256与官方darwin-arm64资产一致，内嵌与外部Bun均1.4.4。
+- 426→431项UI，新增prewalk.from/prewalk.into/out.enabled/task.file/extensionRenderers.assistantText；复核autoGraph的auto选项、mouse扩展链接动态说明、gitGuard主checkout拒绝与linked worktree保存边界。其余423项不重译，官方默认值变化不由翻译层修改。
+
+### Commands
+
+- 88定义/97标识/9别名/27动态回调不变，静态说明与动态函数体逐字一致，不重复改译。30命令文件仅builtin-modes变化，独立审阅prewalk restart的[from] [into]、剩余参数提示与原插入边界。
+- 裸/、折叠skill同步、sync/async/partial/取消/可选能力、viewSession、有效层级、effort动态键位及descriptionMatch保持；静态例外仍仅switch/loop。回归比较真实provider的参数/提示/插入行为，不钉上游措辞或词典副本。
+
+### Stats
+
+- 独立审阅94源码/74客户端；12既有源码变化、2新增，客户端5改1增。新增Search spans、Filter及追踪空态三条文案，612键/105严格模板；仅增加对应搜索aria-label和追踪空态DOM入口，保留数据/正文/错误/数值。
+- 固定官方commit与npm的1826份coding-agent、127份utils、94份Stats、440份TUI源码逐字一致；官方另4个HTML源由package.files排除，不补造来源。实际运行时仍为官方compiled，不复制计算、查询或SSE逻辑。
+- **不发布**：当前锁屏/displayCount0阻止默认opener安全归属/回收验收；18.13.3已实测的冷摄取失效丢失机制，其query/query-store/live相关源码在18.14.0未修复，不重跑旧失败求确认，也不在插件强刷/轮询规避。
+
+### 验证与发布边界
+
+- frozen/check通过：67pass/0fail、2687断言，431/431设置、88/88命令/97标识、Schema/命令漂移0；1896显示变更、3恢复、源码冒烟网络0。
+- 真实绝对路径compiled smoke通过：3页建/3关、两单监听器服务/私有目录回收、flags/preload合并、空格路径0700/0600、默认link接入、doctor3/1/0的manifest警告、dry-run与标准卸载；16目录GET/2身份GET/1无凭据HEAD均dispatch前拒绝，推理尝试0。
+- 冒烟驱动SIGINT/SIGTERM/SIGHUP实际分别130/143/129；每轮2页建/2关、服务/端口/private及独占浏览器/root回收。真实TUI、完整网页、Profile/XDG、最终CI和干净GitHub安装各自独立记录，不能由静态或历史验证推断。
+- 正常/断言失败清理预检均确认实际target关闭。具名close只释放句柄的工具差异已报告；按独占Profile关闭真实target并回收自有进程，不将重开同target计作新增页，不碰用户页面。Windows PR #1仍CLOSED草稿、未合并，不纳入主线支持。
+
 ## [18.13.3] - 2026-10-28（未发布候选）
 
 ### Settings

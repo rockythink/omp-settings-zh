@@ -1,7 +1,7 @@
 /**
- * Display-only copy reviewed against @oh-my-pi/omp-stats 18.13.1. All 92 Stats
- * source files, including all 73 client files, are unchanged from 18.12.6.
- * The published package changes only its version and official dependencies.
+ * Display-only copy reviewed against @oh-my-pi/omp-stats 18.14.0. The 94 Stats
+ * source files include 74 client files; shared trace UI adds a live empty state
+ * and SearchInput accessibility labels. Offline exports are not injected.
  * Apply only to known UI text/attributes, never journal payloads,
  * identifiers, or arbitrary data cells.
  * Protocol names, command names, currencies, and brands remain unchanged.
@@ -441,6 +441,9 @@ export const statsZh: Record<string, string> = {
 	Bg: "后台",
 	"Compress idle": "压缩空闲时段",
 	"Search spans…": "搜索事件区段…",
+	"Search spans": "搜索事件区段",
+	Filter: "筛选",
+	"No spans recorded in this session.": "此会话尚未记录事件区段。",
 	"Previous match": "上一个匹配项",
 	"Next match": "下一个匹配项",
 	Transcript: "事件记录",

@@ -27,8 +27,8 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前源码/目标宿主候选18.13.3，内嵌与最低外部Bun均1.4.4；最新正式发布仍v18.12.6。桌面已解锁，但真实默认opener控制确认未获回应，未启动该阶段；受管headless自动URL转交不替代，不继承历史例外。Settings/Commands/Stats真实compiled、逐资源回收、精确最终macOS/Linux CI与干净GitHub安装分别验收，全部通过前禁止创建18.13.3 tag/Release。历史未知页及初轮失败/unknown计数保留，不擅自认领或宣称全历史零残留。
-- 18.13.3另有实测阻塞：原官方与包装compiled均复现首次摄取UI0/API16，CDP记录SSE version2先于旧GET0完成，18秒后未重取。完整Stats门禁未过，即使默认opener随后可验也不得发布；不能在插件复制查询逻辑或强制刷新、改门禁把异常伪装通过。
+- 当前源码/目标宿主候选18.14.0，内嵌与最低外部Bun均1.4.4；最新正式发布仍v18.12.6。当前screenLocked:true/displayCount0，无法建立真实默认opener页面归属与安全回收，阶段未启动；受管headless自动URL转交不替代，不继承历史例外。Settings/Commands/Stats真实compiled、逐资源回收、精确最终macOS/Linux CI与干净GitHub安装分别验收，全部通过前禁止创建18.14.0 tag/Release。历史未知页及失败/unknown计数保留，不擅自认领或宣称全历史零残留。
+- 18.13.3实测的原官方/包装compiled首次摄取UI0/API16竞态，其query/query-store及客户端/服务live源码在18.14.0逐字未变，未包含对应修复；不为确认旧失败重复运行，不在插件复制查询、轮询、强刷或修改门禁掩盖。完整Stats门禁仍未过，默认opener可验也不能单独解除发布阻塞。
 - 18.12.3首个Stats登录shell驱动被path_helper重排，潜在调用系统open；`http://127.0.0.1:52700`的潜在原生页存在/target/关闭均unknown，详见CONTEXT与SECURITY。已知自有资源全部回收或安全重跑通过仍不能替代该轮零残留门禁；保持未发布候选，不创建tag/Release。
 - **18.12.1单次授权例外（2026-10-19）**：维护者明确批准仅豁免真实系统默认浏览器的打开/失败回收验收，允许完成实际tag与GitHub Release。该项仍为未验证，Release必须显著列出；不申请或绕过桌面控制，不以测试专属opener转交当作默认opener证据。其余版本一致性、Settings、Commands、Stats headless、资源回收、最终CI和冷安装门禁全部保留；后续版本不自动继承本例外。
 - GitHub Release、Git tag 和 `package.json` 版本必须一致。

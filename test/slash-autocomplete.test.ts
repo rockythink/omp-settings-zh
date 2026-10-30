@@ -319,7 +319,7 @@ test("official effort arguments follow live model selectors and retain current m
   expect(refocused.items[0]!.description).toEndWith(" (current)");
 });
 
-test("official prewalk cancellation copy translates only the command, preserving new off arguments and insertion", async () => {
+test("official prewalk model handoff arguments and restart hints stay literal in both languages", async () => {
   const command = buildTuiBuiltinSlashCommands({} as TuiSlashCommandRuntime).find(command => command.name === "prewalk")!;
   const native = new CombinedAutocompleteProvider([command]);
   let chinese = true;
@@ -327,13 +327,12 @@ test("official prewalk cancellation copy translates only the command, preserving
   const text = "/prewalk";
   const original = native.trySyncSlashCompletion(text)!;
   const localized = provider.trySyncSlashCompletion!(text)!;
-  expect(localized.items[0]!.description).toBe("启用、重新启动或取消一次性模型交接");
   expect(await provider.getSuggestions([text], 0, text.length)).toEqual(localized);
   expect(provider.applyCompletion([text], 0, text.length, localized.items[0]!, localized.prefix))
     .toEqual(native.applyCompletion([text], 0, text.length, original.items[0]!, original.prefix));
   for (const language of [true, false]) {
     chinese = language;
-    for (const args of ["", "o", "off", "r"]) {
+    for (const args of ["", "o", "off", "r", "restart", "restart ", "restart @planning ", "restart @planning provider/model:high", "provider/model:high"]) {
       const input = text + " " + args;
       const originalArgs = await native.getSuggestions([input], 0, input.length);
       const localizedArgs = await provider.getSuggestions([input], 0, input.length);
