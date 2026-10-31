@@ -6,7 +6,7 @@
 
 ## 内置斜杠补全译文边界
 
-- 当前来源OMP18.14.0官方BUILTIN_SLASH_COMMAND_DEFS；88条说明、97名称/别名、9别名及27动态回调相对18.13.3不变，不重译。完整30命令文件仅builtin-modes变化，单独审阅prewalk restart的[from] [into]及提示，参数/原文由官方provider保留。viewSession、switch有效层级、effort键位、descriptionMatch与原生Enter保护保持；同步/异步/partial/取消/可选能力仍需行为回归和compiled验收，不把静态覆盖替代动态证据。
+- 当前来源OMP18.14.1官方BUILTIN_SLASH_COMMAND_DEFS；88条说明、97名称/别名、9别名及27动态回调相对18.14.0保持，不重译。30命令文件仅builtin-lifecycle/types的compact follow-up队列合同变化，执行与草稿/会话位置保护仍归宿主。viewSession、switch有效层级、effort键位、descriptionMatch与原生Enter保护保持；同步/异步/partial/取消/可选能力仍需行为回归和compiled验收，不把静态覆盖替代动态证据。
 - 只翻译顶层补全的说明与实时状态、`skill:` 数量；参数提示、命令名、别名、模型／提供商 ID、路径与目标正文保持原样。
 - `switch` / `loop` / `effort` 的动态快捷键按宿主实际显示捕获，中文保留原键位。除键位占位外必须匹配官方原文，第三方覆盖、技能说明和未知文案不改。
 - `/settings-language en` 恢复官方补全结果；中文与英文都须验证排序、Tab／Enter 插入和实际官方编译版，不能用静态表检查代替。
@@ -14,7 +14,7 @@
 
 ## Stats Web 译文边界
 
-- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.14.0`；94源码/74客户端，新增Search spans、Filter及追踪空态三条显示文案，612键/105模板。仅为对应搜索aria-label与追踪空态新增DOM入口，不扩大数据区；signed saved百分比保留符号、数值及百分号。实际运行时仍是官方编译CLI，不能固定或复制npm Stats替代，也不复制计算/评估/查询。
+- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.14.1`；94源码/74客户端与18.14.0逐字节一致，612键/105模板不重译。搜索/追踪空态的对应DOM入口与数据排除保持；signed saved百分比保留符号、数值及百分号。实际运行时仍是官方编译CLI，不能固定或复制npm Stats替代，也不复制计算/评估/查询。相关官方冷摄取竞态源码未修，不用强刷或轮询规避门禁。
 - `src/stats/translations.ts` 只包含原文键、中文值及严格锚定的动态模板；浏览器端必须先通过官方 UI 区域白名单，不能在整页全局替换英文。
 - 保留模型、提供商、工具、项目与账户名称、路径、请求与会话正文、错误原文、协议、数字和模板中的实际数据；未知文案与 canvas 内绘制内容保持官方原文。Window utilization 普通 tooltip series 标签是账户数据，即使为 Requests／Other (3) 也不译；仅官方带 tone-bad 的 Exhausted 注记与 total 固定标签属于 UI。
 - 切回 English 恢复原始文本与显示属性；验证 React 异步更新、路由复用与译文键同名的数据值，不只检查首页。外部写入即使与插件上次显示相同，也须失效旧来源；一批外部文本／属性写入全部失效后才渲染，不能误恢复真实数据。表头复用须重新判断整表单元格的 UI／数据身份。同 origin 的偏好跨刷新、路由与服务重启保留，首次默认中文；网页语言独立于 /settings-language。页面脚本在原 Stats 服务同端口加载，不增加代理。
@@ -187,7 +187,7 @@ Settings 选项显示副本与宿主共享原文源必须隔离；不能因设�
 
 活动翻译只以目标版本 OMP 官方设置注册表的英文显示元数据为语义来源：
 
-1. 从锁定的`@oh-my-pi/pi-coding-agent@18.14.0`完整37个分领域注册表及导入选项来源提取英文；431项UI，新增prewalk.from/prewalk.into/out.enabled/task.file/extensionRenderers.assistantText，复核autoGraph/mouse/gitGuard三项；其余423项不重译。8动态getter仅mouse说明变化。固定官方commit与npm的1826份coding-agent源码逐字节一致，官方另4个HTML源按package.files排除，不补造npm来源；utils127/Stats94/TUI440份源码亦逐字一致。不得用设置目录局部比较替代导入选项与完整依赖复核；
+1. 从锁定的`@oh-my-pi/pi-coding-agent@18.14.1`完整37个分领域注册表及导入来源提取英文；433项UI，新增providers.openai-codex.daybreak及utils/title-settings.ts导入注册的title.refreshAfterPrompts，其余431项不重译。明确OpenAI可能使用Daybreak Blue会话改进模型、专用模型例外，以及标题刷新调用judge；不改默认值/原选项。8动态getter保持。固定官方commit的Git blob身份与npm全部1830份coding-agent源码匹配，另4个HTML按package.files排除；utils127/Stats94/TUI440份亦匹配。不得只查config目录、37域文件或入口，忽略导入模块新增注册；
 2. 使用本项目自己的 LLM 能力按本规范生成初稿，不输入或复用第三方中文译文；
 3. 按设置路径和选项 `value` 校验完整性；
 4. 用英文原文哈希标记待复核的上游语义变化；

@@ -1,7 +1,7 @@
 /**
- * Display-only copy reviewed against @oh-my-pi/omp-stats 18.14.0. The 94 Stats
- * source files include 74 client files; shared trace UI adds a live empty state
- * and SearchInput accessibility labels. Offline exports are not injected.
+ * Display-only copy reviewed against @oh-my-pi/omp-stats 18.14.1. All 94 Stats
+ * source files, including 74 client files, are byte-identical to 18.14.0.
+ * Offline exports are not injected; the known upstream cold-ingest race remains.
  * Apply only to known UI text/attributes, never journal payloads,
  * identifiers, or arbitrary data cells.
  * Protocol names, command names, currencies, and brands remain unchanged.

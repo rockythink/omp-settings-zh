@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.14.0",
+  "sourceOmpVersion": "18.14.1",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -66,6 +66,18 @@ export const zhCN = {
         }
       }
     },
+    "title.refreshAfterPrompts": {
+      "sourceHash": "eeba1da0aafd573869a7a28739dd81d79b5147fdb2f11d31d4c262db505adec9",
+      "label": "按提示次数刷新标题",
+      "description": "每收到指定次数的操作者提示，就询问 judge 模型自动生成的会话标题是否仍符合对话；若不符合则重新生成",
+      "options": {
+        "0": { "label": "关闭", "description": "默认" },
+        "1": { "label": "每次提示" },
+        "3": { "label": "每 3 次提示" },
+        "5": { "label": "每 5 次提示" },
+        "10": { "label": "每 10 次提示" }
+      }
+    },
     "expandThinkingBlocks": {
       "sourceHash": "ff0f00499f3fe3b369f6751f4993be866998e6b06a90384bd0dfa908f577ded2",
       "label": "保持思考块展开",
@@ -75,6 +87,11 @@ export const zhCN = {
       "sourceHash": "f755c8db46c1d1959dfd7406f56422b7145c6c65eb3df59fe5d009bcb07342a2",
       "label": "Muse Code 响应存储",
       "description": "将 Muse Code 结果存储在 Meta 服务器上，使连接中断的轮次可以恢复而非重新运行。启用存储的运行会将提示词和输出保留在 Meta 端"
+    },
+    "providers.openai-codex.daybreak": {
+      "sourceHash": "cd3543d7640e740d3d806d6c617541fde42745b21a62fccbf907a8611cf8ee23",
+      "label": "Codex Daybreak Blue",
+      "description": "对符合资格的 ChatGPT 账户自动请求加入 Daybreak Blue 网络安全能力访问计划。OpenAI 可能使用 Daybreak Blue 会话的内容改进模型。不涵盖专用 Daybreak Blue 模型（gpt-daybreak-blue-*）；这些模型仍可能以 Daybreak 会话运行"
     },
     "archive.enabled": {
       "sourceHash": "49a6eda3b78dc5bb8c78a1e13eac1fe8c4d40dcd9e54650a271af74416883467",

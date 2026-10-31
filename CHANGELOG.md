@@ -2,6 +2,33 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.14.1] - 2026-10-31（未发布候选）
+
+### Settings
+
+- 通过既有受管`omp update`将官方宿主18.14.0→18.14.1；SHA-256与官方darwin-arm64资产一致，内嵌及外部Bun1.4.4。开发依赖、锁文件、宿主范围和翻译来源对齐。
+- 576定义/433项UI，新增`providers.openai-codex.daybreak`和导入模块中的`title.refreshAfterPrompts`；其余431项不重译。前者保留OpenAI可能使用会话改进模型、专用模型例外，后者明确judge调用；默认true/0及0/1/3/5/10原选项、保存逻辑不变。
+- 首轮局部注册域审阅漏掉title-settings导入注册，完整check以66pass/1fail检出；补齐后67pass/0fail、2687断言，433/433与Schema漂移0。不放宽覆盖门禁或改写旧译文掩盖。
+
+### Commands
+
+- 88定义/97标识/9别名/27动态回调保持，静态漂移0，不重译；公共补全接口、裸/与折叠skill同步路径、partial/取消/可选能力、viewSession/有效服务层级/effort真实键位及descriptionMatch继续分别验证。
+- 独立审阅compact follow-up排队、会话位置保护与viewOnly焦点清理；执行逻辑仍归宿主，显示层不接管、不扩大switch/loop之外的静态原文例外。
+
+### Stats
+
+- 94源码/74客户端与18.14.0逐字节不变，612键/105模板、DOM白名单、数据排除和React节点复用处理保持。官方固定Git树blob身份与npm全部1830份coding-agent、127份utils、94份Stats、440份TUI源码匹配，4个HTML源按package.files排除。
+- 实际官方编译版单监听器、已有flags/用户preload与含空格路径、十一页双语、请求抽屉/正文/错误、追踪、三种图表、390px/键盘、English刷新/路由/同origin重启分别留证；12对完整API、14份HTTP边界响应与原/包装15002ms真实SSE心跳对照通过。预摄取的双项目16请求不冒称冷摄取通过。
+- **不发布**：已知官方首次摄取竞态相关源码未修；当前桌面解锁但原生Chrome窗口不可检查，旧relay对稳定target枚举返回Not allowed，未改权限或启动默认opener。历史未知资源保持单列，不以受管URL转交、刷新或轮询绕过门禁。
+
+### 安装与资源
+
+- 四种Profile/XDG的173项断言通过：物理cache-v1→v2且删除旧址、仅更新稳定manager链接后新compiled仍发现插件，无relink补救；缺SHELL/USER/LOGNAME按真实UID读取账户shell，无Bun透传12对一致，依赖导入负对照失败后4次标准卸载仍成功，shell内容/0640保持。
+- 真实绝对路径compiled smoke通过，3页创建/关闭、两个原单监听器服务、私有目录及17命令组回收；隔离link doctor3/1/0的manifest警告保留。16目录GET、2身份GET、1无凭据HEAD均分发前拒绝，无推理尝试。
+- 网页驱动首次错误将网络护栏施于opener自身，bridge请求被拒；已知页/服务端口回收，但native/private身份记录缺失单列。修正仅对真实official execPath安装护栏后，后续自动URL交付、逐target/端口/private清理各有证据；不把新轮通过追认为首轮闭环。
+- 真实TUI三轮85文字帧/90张PTY重建PNG：两新增设置、中文搜索、原生布尔/枚举保存恢复、en/zh与effort参数隔离，原Tab/Enter及descriptionMatch保护、两技能/第三方/quoted文件边界、plan/loop和SDK idle子会话Hub焦点均留证。force:在no-tools下无异步popup，有效tier为undefined，不冒称所有别名popup或真实tier排序。53GET/9HEAD均拒绝，POST0/agent_start0；native退出143/0/0，PID/PGID/PTY/root及两child回收，九项驱动失败另存。
+- 最终精确提交macOS/Linux CI、干净GitHub安装及本机原来源升级须分别现场核对，不预先宣称通过。Windows PR #1仍CLOSED、draft、未合并，42项用户未跟踪内容保持，不纳入正式支持。
+
 ## [18.14.0] - 2026-10-30（未发布候选）
 
 ### Settings

@@ -1,5 +1,33 @@
 # Project Context
 
+## 18.14.1 当前维护候选（未发布）
+
+现场起点：本地main、origin/main与远端main均1195921c0c5020f7296b36853c8d8c47d635130a，package/真实宿主/GitHub来源插件均18.14.0；该精确提交CI41081721445的macOS/Linux成功。正式tag/Release仍v18.12.6；Windows PR #1为CLOSED、isDraft:true、mergedAt:null，42项未跟踪用户内容不清理、不提交。
+
+受管`omp update`实际将官方18.14.0→18.14.1，原二进制位置不变，SHA256为1cef852c6cb00a86b555efd703efe5192200d302601ff29048e152495362bff9，与官方darwin-arm64资产digest一致；实际compiled内嵌及外部Bun均1.4.4。coding-agent/utils/Stats最新稳定版均18.14.1，coding-agent精确依赖同版utils/Stats，最低Bun保持1.4.4。
+
+官方固定tag为c29f7c56f5530d805bb2887ade964aa55970d8e1。完整递归Git树的blob身份与npm全部1830份coding-agent、127份utils、94份Stats、440份TUI源码匹配；4个HTML源由package.files排除。源码tar下载90秒截止保留为驱动失败，改用官方Git对象身份逐文件核验，不冒称下载成功或只比关键文件。
+
+Settings574→576定义、431→433UI，新增providers.openai-codex.daybreak与utils/title-settings.ts导入注册的title.refreshAfterPrompts；其余431项原文/选项哈希不变，不重译。首轮只考虑37域漏掉title导入，完整check66pass/1fail后补齐；最终frozen/check67pass/0fail、2687断言，433/433、Schema0、1906显示变更/3恢复/源码网络0。Daybreak说明保留OpenAI训练用途和专用模型例外，标题说明保留judge调用；默认true/0、0/1/3/5/10原选项、8动态getter与共享effort隔离保持。
+
+Commands88定义/97标识/9别名/27动态回调保持，静态漂移0。30命令文件仅builtin-lifecycle/types的compact follow-up队列变化，独立审阅会话位置保护、viewOnly子会话焦点清理及相关controller；注册表、动态说明模块、公共provider、裸/与折叠skill同步路径保持。显示层不复制压缩执行或放宽静态门禁；partial/取消/可选能力及viewSession/有效层级/effort由本轮行为回归补充，不冒称静态检查覆盖动态状态或源码测试替代真实compiled UI。
+
+Stats94源码/74客户端逐字节不变，612键/105模板及browser/preload/mutations不改。实际compiled新zsh登录shell在path_helper之后断言自有opener与wrapper，复用阶段主target；十一页zh/en、请求抽屉原始正文/错误、追踪时间线、三种图表、390px/Tab、English刷新/路由/同origin重启均实测。双项目4会话/16请求为预摄取夹具，12对完整API与原版逐值相同，7组HTTP边界原/包装共14响应一致：原跨Host/Origin静态/只读API200、无CORS授权保持，judge405/403及身份头非授权保持；两者真实15002ms心跳留证，不发送有效judge。
+
+资源预检：独占headless浏览器保留其初始baseline，正常及人为断言失败各一新target实际销毁后baseline不动，再关闭自有浏览器并证PID消失/Profile删除；此前两次依赖导入失败均未启动浏览器。网页首轮网络护栏错误作用于opener，bridge POST被拒；已知target/服务端口回收，但native/private身份未能记录，私有目录闭环缺证。后续护栏限定真实official execPath，自动开页前记录native/private，两个成功网页阶段按实际target、PID、端口与目录回收；该首轮缺口不借后续通过追认。
+
+命名Profile/XDG正式轮173项断言：四组合先由真实compiled的getPluginsNodeModules()取得稳定路径；cache-v1物理移动到v2、删除旧址、只更新manager稳定symlink且不relink后，新compiled仍发现插件，state.main保持逻辑路径。缺SHELL/USER/LOGNAME按UID501取id/dscl账户shell；无Bun时version/JSON/summary共12对原/包装stdout/stderr/status相同，依赖桥移除且4次动态import真实exit1后4次标准卸载均0、dry-run保留、shell内容/0640保持。含首轮stdin过早EOF驱动失败共64命令组/94已知子PID均ESRCH，两个driver及额外账户查询也回收，runtime root/脚本ENOENT；不冒称真实GUI启动。
+
+真实绝对路径scripts/smoke-cli.ts通过：默认link加载/launcher、doctor3/1/0的manifest警告、JSON等价、两次原URL单监听器、flags/用户preload合并、空格路径0700/0600、语言/刷新、dry-run/标准卸载；3页建/3关、两服务/private/17命令组和独占浏览器/root回收。16目录GET、2身份GET、1无凭据HEAD在dispatch前拒绝，无推理尝试；测试专属opener转交不代替默认opener。
+
+**不发布**：官方query/query-store/live与18.14.0相同，18.13.3已知cold-ingest失效丢失机制未修，不重复旧失败求确认、不在插件加轮询或强刷。当前桌面解锁/displayCount2，但原生Chrome无可检查窗口；旧relay可列URL却不提供稳定ID，借用只读句柄的Target.getTargets被provider拒绝Not allowed，已释放、不导航或关闭用户页、不升级扩展/改权限。默认opener阶段未启动；首轮private记录缺口及历史身份未知页另列，不能称全轮或全历史零残留。
+
+真实compiled TUI三次新启动，85文字帧/90张PTY屏幕重建PNG（非desktop截图）：新增两设置及完整风险/judge说明可见，标题保持0；回退链false→true→false、autoGraph auto→off→auto经原生控件保存恢复；同进程en/zh及Settings中文思考选项与effort英文参数隔离实测。裸/、八个普通别名、两skill数量/Tab展开与原说明、第三方/quoted文件、Tab/Enter执行Settings及纯描述/menu的Enter保护留证；force:在no-tools下无异步popup，不冒称九完整别名均有popup。plan/loop真实开关/暂停/恢复；两次公共SDK创建零请求idle子会话，经原生Hub聚焦后model/switch/effort随Sonnet子会话，low→high→low及真实Shift+Tab low→medium恢复，Alt+P原生picker正常，Main Opus/high保持。真实有效tier为undefined，不冒称tier差异排序/测速；partial/取消/可选能力仅由本轮行为回归补充。
+
+TUI三native wait状态143/0/0，PID/PGID全部ESRCH、三PTY关闭、runtime ENOENT、监听器扫描空，两child dispose/unregister；53GET（48模型/本机发现、2catalog、3update）及9HEAD/9异步Agent拒绝，POST0/agent_start0/dispatch0。九项驱动失败保留，包括PATH/护栏/焦点/观察器、技能/文件/描述查询、Eval截止及未drain等待超时；正确路径另验，不补造首轮正常退出或抹除历史。
+
+本轮最终提交CI、干净GitHub安装与本机原GitHub来源升级分别按最终精确现场输出核对；不借初始1195921的CI代证，不建tag/Release。TUI交互与退出/资源最终计数按本轮独立证据补记；重启OMP及新终端后才加载新宿主/插件，不把仍运行的旧Agent当新版。
+
 ## 18.14.0 当前维护候选（未发布）
 
 现场起点：本地/远端main同为437028b4caf30b6641b18f3671a6cec70904069c，package/真实宿主/GitHub来源插件均18.13.3；精确提交CI40719950907的macOS/Linux成功，正式tag/Release仍v18.12.6。Windows PR #1为CLOSED、isDraft:true、mergedAt:null；42项既有未跟踪内容保持，不纳入主线。

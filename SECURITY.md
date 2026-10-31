@@ -22,6 +22,7 @@
 | 18.13.1（候选） | 18.13.1 | 真实compiled Bun1.4.4；当前默认opener因锁屏未验，完整门禁未过，不发布、不继承历史例外 |
 | 18.13.3（候选） | 18.13.3 | 官方compiled与外部Bun均1.4.4；真实默认opener控制确认未获回应，未发布，不继承历史例外 |
 | 18.14.0（候选） | 18.14.0 | 官方compiled与外部Bun均1.4.4；默认opener因锁屏无法安全验收，官方冷摄取竞态相关源码未修复，不发布 |
+| 18.14.1（候选） | 18.14.1 | 两项设置新增；完整静态门禁及实际编译版分项验收，官方冷摄取竞态未修、默认opener页面身份受限，未发布 |
 
 同一主版本的后续 OMP 版本会执行结构预检，但在完成 CI 和真实 `/settings` 验证前不视为正式支持。OMP 19 及以上版本默认失败关闭。
 
@@ -56,6 +57,10 @@ Web 模式为 Stats 子进程创建私有预加载 CJS，通过合并 `BUN_OPTIO
 18.14.0新增out回复/扩展显示设置仅汉化元数据，不改变会话/导出/模型上下文原文，不介入taskFile的路径/SHA256记录或gitGuard主checkout/worktree防护。Stats新增搜索和追踪空态DOM入口仅处理已识别UI，数据/错误排除不扩张；query/query-store/live相关源码未修复18.13.3已知首次摄取竞态，不以强刷、轮询或后续更新冒称通过。当前screenLocked:true/displayCount0，不启动不能安全认领/回收的默认opener页面。受管工具的具名close曾只释放句柄，同target重用；该独占测试Profile按实际CDP关闭目标后回收进程，计实际唯一target，不把句柄释放或browser.tabs空列表当作页面销毁证明。
 
 18.14.0资源身份新增未过项：omp18140-stats-managed1成功open/observe后tab.run解析失败，未启动服务/driver目录，finally具名close已release；target ID/独占Profile未记录，不能从后续共享CDP空列表推断其独立销毁。9个已知target建/关和35PID/6端口/12目录回收另有证据，未知尝试单列，不冒称全轮零残留，也不擅自认领用户页面；这与默认opener及cold-ingest分别阻止发布。
+
+18.14.1新增Codex Daybreak Blue设置必须保留OpenAI可能使用会话内容改进模型及专用Daybreak模型例外的风险说明；标题刷新明确调用judge，默认0保持，不为验证运行付费评估。Stats94源码/74客户端逐字不变，冷摄取缺陷仍是硬阻塞。当前桌面虽解锁，但原生Chrome无可检查窗口，旧relay对Target.getTargets返回Not allowed；仅借用只读句柄后释放，不导航或关闭用户页面，不升级扩展或修改权限，默认opener阶段未启动。受管headless网页在测试子进程专属opener交付真实URL后验收，不冒充系统默认打开合同。
+
+本轮网页驱动首轮把网络护栏错误地应用到测试opener自身，导致bridge POST被拒；未打开默认页。其已知target/服务端口均回收，但native/preload身份在转交前未成功记录，私有目录闭环缺少证据，失败保留而非称全轮零残留。后续驱动仅在真实官方execPath安装护栏，先记录native/preload再转交，单监听器/逐目录清理另验。历史身份未知页仍不触碰。
 
 ## 私密报告
 
