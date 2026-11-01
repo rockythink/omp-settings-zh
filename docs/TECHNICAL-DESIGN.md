@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.14.1；最新正式Release仍为18.12.6，main与源码编号不是发布证据
-- 目标基线：官方OMP18.14.1/内嵌Bun1.4.4、外部Bun最低1.4.4；当前解锁但原生默认页身份枚举受限，默认opener未验，测试URL转交不替代，不继承历史例外
+- 实现候选：18.15.0；最新正式Release仍为18.12.6，main与源码编号不是发布证据
+- 目标基线：官方OMP18.15.0/内嵌Bun1.4.4、外部Bun最低1.4.4；当前原生Chrome可见但relay无稳定target ID，默认opener未验，测试URL转交不替代，不继承历史例外
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -60,7 +60,7 @@
 
 18.14.0新增prewalk.from/prewalk.into/out.enabled/task.file/extensionRenderers.assistantText五项UI；复核autoGraph的auto选项、mouse扩展自有链接动态说明、gitGuard主checkout与linked worktree边界。574定义/431UI，37域7文件变化，8动态getter仅mouse原文变化；官方autoGraph和openaiLiveSteering默认值变化不由插件复制。registry/all-settings和原生面板合同保持，Settings显示选项仍与effort共享原文隔离。
 
-18.14.1新增`providers.openai-codex.daybreak`（boolean/default true）与导入模块`utils/title-settings.ts`中的`title.refreshAfterPrompts`（number/default 0，0/1/3/5/10显示选项）。576定义/433UI，其余431项原文/选项哈希保持；37注册域中session/settings变更，另须审查导入的title-settings，不能把all-settings入口或领域文件未变当完整注册图未变。8动态getter、显示选项与共享effort边界保持；OpenAI训练用途/专用模型例外及judge调用语义均保留，翻译层不启用服务或修改默认值。
+18.15.0完整注册图579定义/435UI：新增task.perCallModel（enum off/eval/on，默认off）与task.perCallModelAllow（array，默认[]）；复核async.widgets、task.maxEffort及导入service-tier后的tier.openai ultrafast/relay说明，其余430项不重译。37直接域递归59文件，all-settings/registry未变不能替代导入审查；8动态getter、六类控件、JSON编辑、凭据与原生保存边界保持。无UI的judgment.attemptTimeoutMs不补译。项目来源允许列表隐藏，避免提升为全局授权；插件不复制grantAuthority或模型审批。
 
 ## 5. Extension 生命周期与语言命令
 
@@ -76,12 +76,12 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts`保存OMP18.14.1的88条官方说明/97个名称别名；相对18.14.0静态原文、9别名及27动态回调保持，不重译。model/switch/effort继续读viewSession，switch由session.effectiveServiceTier(model)计算有效层级，effort实际键位来自formatKeyHint；公共provider同步/异步/partial/AbortSignal及可选能力、descriptionMatch保持。静态例外仍仅switch/loop；参数、路径、模型ID保持原文。compact follow-up执行合同变化独立审阅如下，不由显示层实现。
+`src/translations/slash-commands.ts`保存OMP18.15.0的88条官方说明/97个名称别名；相对18.14.1静态原文、9别名及27动态回调保持，不重译。model/switch/effort继续读viewSession，switch picker与参数ranker的effectiveServiceTier接线保持区分，effort实际键位来自formatKeyHint；公共provider同步/异步/partial/AbortSignal及可选能力、descriptionMatch保持。静态例外仍仅switch/loop；参数、路径、模型ID保持原文。fast ultra英文参数新增relay，jobs full可能请求模型，Stats/trace优先Tern，均不由显示层接管。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
 
-18.14.1的30个命令文件仅builtin-lifecycle/types变化：`/compact`可随follow-up排队，记录提交时的会话位置，在切换/树导航后恢复草稿而非压缩错误会话。interactive-mode与focus/input/command/event控制器维护该队列；查看子会话的viewOnly清理不丢主会话队列。注册表、全部静态原文/别名及动态说明生成模块不变；provider公共接口、裸/与折叠skill同步路径和原生补全实现保持。显示层不介入压缩执行或扩大原文门禁。
+18.15.0的30个命令文件27份字节不变，仅builtin-modes/builtin-session/helpers/stats-dashboard变化：`/fast ultra`参数说明扩展Codex及relay，必须保持英文；`/jobs full`调用requestJobCaptions，可能发起模型工作，不用于零请求验收；会话`/stats`、`/trace`优先openTernPage beside并断开客户端，失败回退openPath。注册表、动态回调、provider接口、裸/与折叠skill同步路径及原生补全保持。显示层不介入执行、模型选择或页面生命周期。
 
 ## Stats Web 显示适配
 
@@ -89,7 +89,7 @@
 - `src/cli/install.ts` 在独立目录生成启动器、私有安装状态与可撤销的 zsh/Bash PATH 块。记录实际写出的 wrapper，以允许未来代码升级但拒绝覆盖用户改动；稳定的逻辑包路径不绑定 Git 缓存。无 SHELL 时读取账户登录 shell；macOS 的 Bun 在 USER／LOGNAME 缺失时会报告 unknown 名称，此时用 id 按真实 UID 解析后查询 dscl，Linux 按 UID 查询 getent，不猜测 shell。非 Stats、JSON、摘要和帮助直接 exec 原 OMP；只有本插件的原生 uninstall 经 main 预检所有权、执行原命令并清理自己的 PATH，dry-run 不清理。
 - 安装阶段动态导入官方 `pi-utils.getPluginsNodeModules()`，与官方插件管理器使用同一活动 Profile／XDG 目录解析，恢复稳定 package link；只有该路径 realpath 与当前模块一致才使用，不复制目录业务逻辑。卸载阶段不加载此依赖。
 - 官方 `update` 按 PATH 中 `omp` 的位置选择二进制替换目标；启动器只在透传 update 前将已记录官方二进制目录置于 PATH 最前，再 exec 原二进制，保留 argv/stdio。不得将受管 wrapper 作为官方更新目标。
-- `main.ts` / `run.ts` 运行实际官方 `omp stats`，不导入固定 Stats 包。Web 预先构建 browser.ts 并生成私有 CJS，以合并的 `BUN_OPTIONS --preload` 加载；原 argv、cwd、Profile、stdio、port/host、浏览器打开和独立 judge 保持。没有额外代理、打开器替换或第二个 URL；信号与守护清理子进程和临时文件。
+- `main.ts` / `run.ts` 运行实际官方 `omp stats`，不导入固定 Stats 包。Web 预先构建 browser.ts 并生成私有 CJS，以合并的 `BUN_OPTIONS --preload` 加载；原 argv、cwd、Profile、stdio、port/host、官方打开策略和独立 judge 保持。没有额外代理、打开器替换或第二个 URL；信号与守护清理子进程和临时文件。18.15.0官方CLI优先Tern over，失败才用原系统opener；现有3秒强制终止与Tern5秒关闭时限的交错仅是源码推断，未动态复现，不据此修改run.ts。
 - `src/stats/preload.ts` 生成自包含启动 Hook，包装 `Bun.serve(options.fetch)`，先执行原 handler；只有成功 HTML 且有官方 Stats 身份标记才注入 `/__omp-settings-zh.js`，同一监听器提供脚本。非 Stats 服务、API/SSE、拒绝/错误、方法、Host/Origin 与 CORS 行为保持。身份头不是授权；修改后的 HTML/脚本 no-store，不保留失效长度或 ETag。Bun 不可靠解析预加载的引号/空格路径，使用安全字符的私有临时路径；不改用户其它预加载参数。
 - `browser.ts` 使用官方 DOM 类白名单与数据区域排除规则，译文来自 translations.ts；只修改文本节点和显示属性。WeakMap 记录原文，MutationObserver 跟随异步渲染/节点复用，切回 English 恢复。自有写入在 observer 断开期间完成；`mutations.ts` 在处理外部整批写入前失效对应来源，即使真实数据与上次中文显示相同也不恢复旧英文。表头变化重扫整表，stat 标签／chart 模式变化重扫其邻接区域；追踪 Minimap 仅翻译固定 aria-label，canvas 像素不改。
 - localStorage key 为 `omp-settings-zh.stats.language`，首次默认中文；同 origin 跨刷新、路由和服务重启保留，地址改变则使用新 origin 的偏好。未知文案、API 原文、数据标识、错误与 canvas 保留。
@@ -113,6 +113,9 @@
 - 18.13.3首次摄取未过项：原版/包装真实compiled的CDP均记录SSE版本1→2先于首次overview旧结果0完成；18秒后UI0/API16。官方query.ts的run在同键in-flight时返回，版本effect不因旧响应结束重跑，可能错过本次失效；这是官方客户端的查询/实时交错，不由插件重写、轮询或强制刷新规避。源码相同与已有数据/自然后续更新通过均不能证明冷启动门禁通过。
 - 18.14.0独立审查：94源码/74客户端，12既有源码变化与2新增，其中客户端5改1增；新增Search spans/Filter/追踪空态三键，612键/105严格模板，仅新增搜索aria-label与追踪空态的对应DOM入口。server/port-conflict变更启动与端口争用处理，探针500→3000ms；未确认/无响应/无法停止的holder不擅杀，fallback临时端口，缓存requested/bound两键复用原listener。原handler/API/SSE及live摄取不变；trace离线snapshot共享组装及ETag版本3→4、parser/db变化仍归官方。query/query-store及客户端/服务live源码与18.13.3逐字相同，首次摄取失效丢失机制未修复，不重跑旧失败求确认、也不在插件强刷/轮询规避。完整网页/API/SSE/生命周期与单监听器仍各自实测，不借源码相同代证。
 - 18.14.1独立审查：94份Stats源码（含74客户端）与18.14.0逐字节一致；stats-cli/openPath/commands stats保持，612键/105模板及DOM/数据边界不改。utils仅新增非获取式锁探测，plugin manager的变更不改变getPluginsNodeModules稳定目录及标准卸载边界。固定官方Git树的blob身份与npm全部1830份coding-agent、127份utils、94份Stats、440份TUI源码匹配，4个HTML源由package.files排除。query/query-store/live机制未修，原官方冷摄取门禁仍阻塞；真实编译版单监听器、原/包装API/HTTP/SSE、多页双语、抽屉/追踪/图表及资源回收另验。
+- 18.15.0独立审查：97源码/77客户端，既有10改、新增CloseButton/keys/react-css类型；页面路由、10个route及追踪实现字节不变。新增关闭tooltip，613键/105模板；Card/Drawer/Stat/TranscriptList仅去CSS类型断言，不新增白名单或数据排除。browser/mutations/preload保持。
+- 官方新增GET/POST `/api/close`：closable布尔、非GET/POST405、缺/错操作头403、无handler404、调用handler后202；身份头不能替代`X-Omp-Stats-Action:1`。parser排除synthetic且未执行的工具错误，db回填v2→v3，计算仍归官方。query/query-store/live逐字节未修，冷摄取门禁保持。
+- Tern只认`TERN_PANE_SOCKET`+数字`TERN_PANE`，不读`PI_BROWSER_TERN`或`browser.tern`；测试opener bridge不能拦截Tern。CLI over管理关闭，会话beside成功后断开且页面归用户；两者不得混用回收规则。源码推断的注册窗口、迟到block及3秒wrapper/5秒close差异不是复现，不添加产品shim。真实compiled页面、API、信号130与block回收另验。
 
 ## 6. 检查与真实验证
 
@@ -125,7 +128,7 @@
 - Commands：实际官方编译版检查顶层补全及别名、动态状态/键位、中英文恢复、参数/文件/第三方边界与 Tab/Enter 插入和原命令执行；静态门禁不能代替动态模板和交互证明。
 - Stats：真实编译版验证 BUN_OPTIONS 预加载、现有参数合并与安全临时路径；从新 shell 直接 `omp stats` 确认仅原服务一个监听器，测试语言/路由/刷新/同地址重启、原 API/SSE、原授权/静态请求行为、JSON/summary、port/host、退出及默认安装/卸载。不使用源码运行代替编译版，也不触发付费评估。
 - 验收资源：先登记 run、页面身份基线、专属浏览器 Profile/PID、服务 PID/port、临时路径及清理入口。冒烟用 CDP Target.getTargetInfo 登记真实 target ID，记录原自动 URL、launcher/official PID、opener bridge 端口与私有 preload 路径；实测 0700/0600、已有 --smol/用户 preload 在实际 compiled Bun 中执行、退出后私有目录消失。复用一个主标签，默认 headless；官方自动开页也计入归属。测试专属 opener 必须真实交付 URL 并观察页面，默认 /usr/bin/open 另记录真实调用/URL/新增页数；不假设 BROWSER 或不存在的 --no-open。try/finally 逐阶段先关自有页面、再停止服务并验证端口、最后回收临时目录；正常及人为断言失败分支先实测，残留阻止发布。
-- 驱动信号所有权：读取VERSION使用公开pi-utils/dirs子路径，不经包根引入postmortem的异步cleanup→native exit；Puppeteer默认SIGINT会process.exit(130)，launch必须关闭handleSIGINT/handleSIGTERM/handleSIGHUP，由本驱动统一捕获并进入finally。Chrome使用清除真实凭据/代理的隔离env。实测三类信号非成功退出130/143/129且页面/服务/端口/私有目录闭合；不能只检查exit130就假定finally已执行。
+- 驱动信号所有权：读取VERSION使用公开pi-utils/dirs子路径，不经包根引入postmortem的异步cleanup→native exit；Puppeteer默认SIGINT会process.exit(130)，launch必须关闭handleSIGINT/handleSIGTERM/handleSIGHUP，由本驱动统一捕获并进入finally。Chrome使用清除真实凭据/代理的隔离env。18.15.0官方合同为SIGINT130/SIGTERM143/SIGHUP129，正常关闭页面或API为0；旧驱动期待SIGINT0已按实测130修正，失败账本cleanupErrors保留。页面/服务/端口/私有目录及Tern block须分别闭合，不能只检查exit130就假定finally已执行。
 - 冒烟普通命令也拥有独立POSIX进程组，必须先记根PID再等待；截止向整组TERM并升级KILL，finally等待根进程及确认整组消失后才记groupClosed。成功根退出也不允许留下后代。冷GitHub派生驱动曾在根退出143后留下嵌入式安装子进程；仅按独占run argv认领回收，不把rootRemoved:true当PID回收证明。修复以真实shell后代正常/超时回归及真实compiled正常/三类中断另验。
 - 18.12.1编译网络隔离：显式选择真实Anthropic模型触发无凭据暖连；仅global fetch不足，Node HTTPS经标准Agent.createConnection异步callback拒绝，不创建Socket且返回真实ClientRequest，防止同步throw触发Cowork的abort TDZ。net/TLS仍fail-closed，实际compiled35秒与TUI验证；代理分支的fetch HEAD另验。目录GET、Stats本地身份GET、HEAD分别归类；任何推理POST尝试单列，不能以agent_start handler throw充当取消。
 - 私有目录必须在自动URL转交之前登记：测试user preload在真实compiled入口写入PID/argv/BUN_OPTIONS，opener bridge先读取该marker并记录native PID及私有preload，再导航唯一自有页面。后续lsof/guard argv再次对照；清理逐路径确认ENOENT，缺少归属则保留run账本报错。实测中断回归先见0700/0600和匹配PID、再见目录消失；旧的仅页/端口/root信号记录不当作逐目录证明。
@@ -133,9 +136,11 @@
 
 ## 7. 发布边界
 
-源码/开发依赖/目标宿主基线为18.14.1，范围`>=18.14.1 <19`，外部Bun最低1.4.4；三部分真实交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。当前桌面解锁，但原生Chrome无可检查窗口，旧relay对Target.getTargets返回Not allowed，不能取得安全稳定页面身份；未升级扩展或修改权限，不启动默认opener。另有官方首次摄取竞态机制未修，两者独立阻止发布。不继承18.12.6证据或18.12.1例外。历史未知页及失败/unknown计数保留，不凭同origin认领，不把新轮通过冒称全历史零残留。本地/远端仅维护main，Windows PR #1仍CLOSED、未合并草稿，不宣称正式支持。
+源码/开发依赖/目标宿主基线为18.15.0，范围`>=18.15.0 <19`，外部Bun最低1.4.4；三部分真实交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。当前原生Chrome可见，但relay仅列URL、不能取得稳定target ID；未升级扩展或修改权限，不启动默认opener。官方首次摄取竞态机制未修，新Tern生命周期未实测，三项独立阻止发布。不继承18.12.6证据或18.12.1例外。历史未知页及失败/unknown计数保留，不凭同origin认领，不把新轮通过冒称全历史零残留。本地/远端仅维护main，Windows PR #1仍CLOSED、未合并草稿，不宣称正式支持。
 
-18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.14.1新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
+18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
+
+18.15.0官方Tern与系统fallback是不同入口：前者需要pane socket/pane/block身份及实际关闭证据，后者仍需稳定浏览器target ID；测试URL转交、系统fallback成功或进程/private消失都不能互相代证。源码推断的清理注册窗口、迟到block和3秒wrapper/5秒Tern关闭时限差异未动态复现，不添加shim或改写官方时限。
 
 每次适配先对齐开发依赖与实际宿主，独立审查 Settings、Commands、Stats；检查设置路径/原文/选项、全量命令/别名/静态原文/动态生成逻辑/接口、Stats 实际运行时变化，再复核译文并执行自动门禁和真实编译版验证，更新 README、CHANGELOG 与第三方来源说明。沿用现有 Orca 任务（Settings + Commands + Stats），三部分独立报告；保持每日 23:00 Asia/Shanghai、原工作区及既有授权，不新增仓库调度器。无变化不空提交或空发布；任一部分未验证不得发布。
 

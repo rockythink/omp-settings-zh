@@ -1,6 +1,32 @@
 # Project Context
 
-## 18.14.1 当前维护候选（未发布）
+## 18.15.0 当前维护候选（未发布）
+
+现场起点：本地/远端main均651e800606d554805975ad4c9f3dc0d2501dce22，package/真实宿主/GitHub来源插件均18.14.1，doctor5/0/0；精确提交CI41215037729的macOS/Linux成功。正式tag/Release仍v18.12.6。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项用户未跟踪内容不提交、不清理。
+
+受管`omp update`实际将官方18.14.1→18.15.0，原二进制位置不变，SHA256为d36dfabf0ee52d6f08efadb59c46f0349545c6f6975522417adae29646e73e34，与官方darwin-arm64资产digest一致；实际compiled内嵌及外部Bun均1.4.4。coding-agent/utils/Stats最新稳定版均18.15.0，coding-agent精确依赖同版utils/Stats，最低Bun保持1.4.4。
+
+官方固定commit为3fedf8d53267e32a6d7521ce725fdcc4a36fdc67。四包全部src Git blob与npm核验无mismatch：1836份coding-agent、127份utils、97份Stats、440份TUI；4个HTML源由package.files排除。npm只作审阅来源，运行时仍是真实官方compiled，不复制计算、查询或生命周期。
+
+Settings576→579定义、433→435UI：新增task.perCallModel（off/eval/on，默认off）与task.perCallModelAllow（默认[]）；复核async.widgets、task.maxEffort及tier.openai ultrafast/relay说明，其余430项不重译，8动态getter不变。无UI的judgment.attemptTimeoutMs不补译。允许列表只约束配置已授权模型，项目设置不能授予或启用模型；默认值、原选项、凭据和保存逻辑不变。
+
+Commands88定义/97标识/9别名/27动态回调保持，静态漂移0。30命令文件3改：fast ultra英文参数扩展relay、jobs full可能请求模型caption、会话stats/trace优先Tern。viewSession、有效层级、真实键位、descriptionMatch及公共provider边界保持；不执行jobs full求验收，静态例外仍仅switch/loop。
+
+Stats94→97源码、74→77客户端；新增关闭tooltip，613键/105模板，browser/mutations/preload不改。官方新增/api/close、Tern over/beside及parser/db v3工具错误修正，插件不复制。query/query-store/live与18.14.1逐字节相同，18.13.3已知cold-ingest失效丢失机制未修；不重跑旧失败、不加轮询或强刷。
+
+**Tern生命周期为INFERENCE，非动态复现**：源码显示清理注册窗口、迟到block及现有3秒wrapper/5秒Tern关闭时限差异，但不据此添加产品shim。CLI over与会话beside生命周期不同；系统fallback、测试opener转交、进程退出或private消失都不能证明Tern block关闭。Tern只认TERN_PANE_SOCKET与数字TERN_PANE，测试bridge不能拦截。
+
+首次完整check通过：67pass/0fail、2687断言，435/435、88/88命令/97标识、两类漂移0；1917显示元数据变更、3次恢复、源码网络0。该结果不代替最终精确提交CI。实际compiled smoke首次期待旧SIGINT0失败、实际130；驱动改新合同130并保留cleanupErrors后重跑通过：3页建/3关、两单监听器/private、17命令组/root回收。
+
+Profile正式轮134断言/4组合：稳定逻辑cache-v1→v2、不relink后新compiled仍发现插件；缺SHELL按UID501 id/dscl解析，无Bun时12对stdout/stderr/status相同。依赖桥4次负import真实exit1后4次卸载0、dry-run保持；两轮68命令组/102已知PID全gone、脚手架deleted。首轮未禁自动安装导致负控超时的失败保留，不冒称真实GUI启动。
+
+网页十一页zh/en/zh共33路由记录：请求抽屉原始错误/输出、trace三mode及键盘、tool span的Overview工具名/原参数/Requests结果保持；overview三图表、390px菜单/Tab、English刷新/route/同origin服务重启保持。预摄取双项目16→17自然SSE/React、随后工具夹具到19，不是cold ingest。33对完整API（含16详情/4 trace）与原版逐值一致；11组HTTP边界原/包装22响应一致，含新close false/405/403/404及原跨Host/Origin200无CORS；原/包装真实heartbeat15004/15003ms。四阶段各复用1个target；前3个驱动错误（.page等待、错误nth selector、错误Close navigation label）均先关页停服务再重跑。已知4页全关、7服务/native/private/root回收。最后阶段复用1个target完成4次服务启动（含3次同origin重启），每次原URL一次测试opener转交，并非系统默认。
+
+真实compiled TUI完成169个PTY文字重建帧（非desktop截图），两进程退出143/0。Settings enum/boolean原生保存恢复、中英切换与effort参数隔离、9别名、2 skill、第三方/文件、Tab/Enter、plan/loop及子会话focus均留证。effectiveServiceTier实际undefined，不造tier差异；POST0/agent_start0/dispatch0。账本精确PTY/native PID在Popen后、首次交互前写入，不能宣称pre-exec PTY身份全门禁通过。
+
+**不发布**：官方冷摄取核心未修；当前原生Chrome可见，但relay targets仍仅URL、无稳定ID，默认opener未启动；新Tern生命周期未实测。三项独立阻塞，历史身份未知页及失败账本继续单列，不建tag/Release。最终精确提交macOS/Linux CI、干净GitHub安装、本机原来源升级及完整资源动态闭环由后续现场证据补记；不借起点651e800的CI代证。
+
+## 18.14.1 历史维护候选（未发布）
 
 现场起点：本地main、origin/main与远端main均1195921c0c5020f7296b36853c8d8c47d635130a，package/真实宿主/GitHub来源插件均18.14.0；该精确提交CI41081721445的macOS/Linux成功。正式tag/Release仍v18.12.6；Windows PR #1为CLOSED、isDraft:true、mergedAt:null，42项未跟踪用户内容不清理、不提交。
 

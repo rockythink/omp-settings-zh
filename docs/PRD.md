@@ -1,10 +1,10 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.14.1维护候选；官方首次摄取竞态未修复、真实默认opener无法取得安全页面身份，未过完整门禁，不发布。最新正式Release仍为18.12.6
-- 基线版本：OMP 18.14.1（内嵌 Bun 1.4.4；外部 Bun 最低1.4.4）
-- 文档日期：2026-10-31
+- 状态：18.15.0维护候选；官方首次摄取竞态未修复、默认opener稳定页面身份未取得、新Tern生命周期未实测，未过完整门禁，不发布。最新正式Release仍为18.12.6
+- 基线版本：OMP 18.15.0（内嵌 Bun 1.4.4；外部 Bun 最低1.4.4）
+- 文档日期：2026-11-01
 
-相对18.14.0：Settings431→433项，新增Codex Daybreak Blue与按提示次数刷新标题；其余431项不重译。Commands88定义/97标识/9别名及27动态回调保持，独立审阅compact follow-up排队与会话位置保护；Stats94源码/74客户端逐字不变，612键/105模板保持。真实compiled交互、精确最终CI、冷GitHub安装、真实默认opener与资源回收分别验收，任何未验不借历史证据视为通过。
+相对18.14.1：Settings433→435项，新增task.perCallModel/Allow，复核widgets/maxEffort/ultrafast relay，其余430项与8动态getter保持。Commands88定义/97标识/9别名/27动态回调保持，fast ultra参数英文不译，jobs full可能发起caption模型调用，不执行以求验收。Stats94→97源码/74→77客户端，613键/105模板，新增关闭tooltip；关闭API、Tern及工具错误统计由官方实现。源码审阅、已完成compiled分项、未验Tern/default opener与未修冷摄取分别记录；最终精确提交CI、冷GitHub安装及本机原来源升级不预先宣称通过。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 
@@ -100,7 +100,8 @@ OMP 的 `/settings` 面板由领域设置注册表驱动，包含大量影响模
 3. 非 Stats、JSON、summary、help 直接官方执行；Web 的 argv、cwd、Profile、stdio、port/host、浏览器打开与独立评估保持。Bun 启动预加载在同一监听器注入脚本，不增加第二服务或地址；已有 BUN_OPTIONS 保留。
 4. 仅翻译识别的 DOM 文案，不翻译数据、标识、错误或 canvas。原 handler 先执行，API/SSE、授权拒绝、错误、Host/Origin、方法与 CORS 保持；服务身份头不作为权限判断。
 5. Ctrl+C 或退出关闭服务与临时资源；默认安装幂等，正常插件卸载自动撤销自有启动器与 PATH 块，dry-run 不修改。所有权预检保护原 OMP 与无关配置。
-6. 会话 `/stats` 不接管。同数据目录下两入口均统计多个项目与会话；会话评估绑定当前会话，CLI 独立。
+6. 会话 `/stats`、`/trace` 不接管：官方优先Tern beside，断开客户端不等于关闭页面；CLI优先Tern over并管理其关闭，失败才回退系统opener。同数据目录下两入口均统计多个项目与会话；会话评估绑定当前会话，CLI独立。新Tern实测不能由系统fallback通过代证。
+7. 官方18.15.0可关闭页面通过`/api/close`提供Close/Esc，系统fallback不显示；插件只翻译已识别label/title，不更改API权限或关闭操作。SIGINT退出合同为130，不再沿用历史0；SIGTERM143/SIGHUP129与正常关闭0分别记录。Tern block与浏览器target都必须有实际身份和销毁证据；源码推断的注册窗口、迟到block及3s wrapper/5s Tern关闭时限风险尚未动态复现，不据此添加产品shim。
 
 ## 6. 功能需求
 

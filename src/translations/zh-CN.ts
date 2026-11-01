@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.14.1",
+  "sourceOmpVersion": "18.15.0",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -1376,7 +1376,7 @@ export const zhCN = {
       }
     },
     "tier.openai": {
-      "sourceHash": "02b486b4e7c98a2fbb784ec5e8d578036eacceabd47bc83daeb981ebf953eb44",
+      "sourceHash": "0879d5736b87d113f9702ca9034b53df6b2adae6e5e580bb34cf8cfef400b4f8",
       "label": "服务层级 — OpenAI",
       "description": "OpenAI / OpenAI-Codex 请求以及通过 OpenRouter 路由的 OpenAI 系列模型所用的处理层级（`none` = 省略），以 `service_tier` 发送",
       "options": {
@@ -1406,7 +1406,7 @@ export const zhCN = {
         },
         "ultrafast": {
           "label": "Ultrafast",
-          "description": "延迟最低的服务；适用于拥有 OpenAI API 预览访问权限的请求，或声明支持此层级的 Codex 模型"
+          "description": "延迟最低的服务；适用于拥有 OpenAI API 预览访问权限的请求，或声明支持此层级的 Codex 和 relay 模型"
         }
       }
     },
@@ -3326,9 +3326,9 @@ export const zhCN = {
       "description": "在打印模式（-p、--mode json）下，最后一条提示词处理完毕后，只要本次运行的后台任务仍在活动就继续运行，并在同一会话中为每个任务结果启动新轮次；没有待处理的任务或结果时退出。关闭时，打印模式在处理完提示词后退出，并取消运行中的任务"
     },
     "async.widgets": {
-      "sourceHash": "5ec5f39435cb287e86bdeb5e77efb303cd65a70d7a6ef3a3acedd2caf9c2ef0b",
+      "sourceHash": "44d9a52cfcf2aa8f3c48b981bc15c934a831bf472976f1e8525e9ac6a1edf20a",
       "label": "实时任务组件",
-      "description": "在等待卡片、任务状态胶囊和任务面板中，为每个运行中的后台任务绘制实时组件（根据输出生成图表、进度条和状态网格）。由 `widget` 模型角色（默认使用 `smol`）为每个任务编写一份规格，后续更新无需再次调用模型"
+      "description": "在等待卡片、任务状态胶囊和任务面板中，为每个运行中的后台任务绘制实时组件（根据输出生成图表、进度条和状态网格），并用一行文字说明较长的 Shell 命令的作用。由 `widget` 模型角色（默认使用 `smol`）为每个任务编写一份规格和至多一条命令说明，后续更新无需再次调用模型"
     },
     "tools.xdev": {
       "sourceHash": "aef279287594846271d548c41381f6c9a662df6427ebfe27ebde5790c1b921c7",
@@ -3493,6 +3493,30 @@ export const zhCN = {
       "label": "每任务 Effort",
       "description": "在任务 spawn 中提供可选的 effort 参数，让调用方可以覆盖每个子代理的思考级别"
     },
+    "task.perCallModel": {
+      "sourceHash": "605f39a73761a73d17fad7130199456e2a08c8ecc829a66fee123402fbb9b892",
+      "label": "按调用选择模型",
+      "description": "是否允许子代理调用通过一个精确的 provider/model-id[@upstream][:level] 选择器指定模型。@upstream 固定路由属于模型身份的一部分，仅聚合服务支持。只接受配置已路由到的模型；项目设置只能关闭、不能开启此能力，也绝不能批准模型",
+      "options": {
+        "off": {
+          "label": "关闭",
+          "description": "拒绝 task 条目及 eval agent()/workpool() 中的 `model`"
+        },
+        "eval": {
+          "label": "仅 Eval",
+          "description": "仅在 eval agent() 和 workpool() 中接受 `model`"
+        },
+        "on": {
+          "label": "开启",
+          "description": "在 task 条目及 eval agent()/workpool() 中接受 `model`"
+        }
+      }
+    },
+    "task.perCallModelAllow": {
+      "sourceHash": "797fe0a63e0fd588edc72396db41d987786539eeddce0cb9a64bfc240c0d8148",
+      "label": "按调用选择模型的允许列表",
+      "description": "精确选择器列表：`provider/model-id`，仅在固定 OpenRouter/Vercel 路由时包含 `@upstream`（如 `openrouter/x@y`）。设置后，按调用指定的模型还必须在此列表中；为空时，允许配置已授权的所有模型。项目列表只能进一步缩小此列表的范围"
+    },
     "task.maxConcurrency": {
       "sourceHash": "ce17d1cc5a19a4ca6fc5aa40ba6e5a029f71a3b6134872f9bec8944af8ba2085",
       "label": "最大并发任务数",
@@ -3605,9 +3629,9 @@ export const zhCN = {
       "description": "子代理超出软请求预算时注入一次引导通知，要求其在达到 1.5 倍预算并被强制停止、交出结果前完成收尾"
     },
     "task.maxEffort": {
-      "sourceHash": "60bcb5e4c2ba6ad9559407914d34a072ed21bf640595a261e53eb2cb55c0571d",
+      "sourceHash": "d5a5e0eee8c273c49e53710f0f7138c114404fc9a3a24860db35a1b7ffcf95ce",
       "label": "每次 Spawn 的最大 Effort",
-      "description": "task 工具每次 spawn 的 effort 提示所允许的最大推理强度。较低的值可防止调用方将子代理提升到此上限以上；默认值会保留模型支持的完整范围",
+      "description": "task 工具每次 spawn 的 effort 提示或按调用指定的模型所允许的最大推理强度。显式 `:level` 会被限制为不高于此上限且模型支持的最高强度；省略 `:level` 时继承代理的思考级别，并受此上限约束；冷恢复时会重新应用上限。未设置、`:inherit` 和 `:off` 保持原有含义。按调用指定的模型必须支持不高于此上限的某个强度；默认值保留模型支持的完整范围",
       "options": {
         "minimal": {
           "label": "最小",

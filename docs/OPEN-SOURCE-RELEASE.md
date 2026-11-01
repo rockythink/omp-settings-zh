@@ -27,9 +27,10 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前源码/目标宿主候选18.14.1，内嵌与最低外部Bun均1.4.4；最新正式发布仍v18.12.6。当前解锁，但原生Chrome无可检查窗口，旧relay的稳定target枚举被provider拒绝，不能建立默认opener的安全页面归属；阶段未启动，不修改扩展权限、不以受管URL转交替代。Settings/Commands/Stats真实compiled、逐资源回收、精确最终macOS/Linux CI与干净GitHub安装分别验收，全部通过前禁止创建18.14.1 tag/Release。历史未知页及失败/unknown计数保留，不擅自认领或宣称全历史零残留。
-- 18.13.3实测的原官方/包装compiled首次摄取UI0/API16竞态，其query/query-store及客户端/服务live源码在18.14.1仍未变，未包含对应修复；不为确认旧失败重复运行，不在插件复制查询、轮询、强刷或修改门禁掩盖。完整Stats门禁仍未过，默认opener可验也不能单独解除发布阻塞。
+- 当前源码/目标宿主候选18.15.0，内嵌与最低外部Bun均1.4.4；最新正式发布仍v18.12.6。当前原生Chrome可见，但relay不能提供稳定target ID，不能建立默认opener的安全页面归属；阶段未启动，不修改扩展权限、不以受管URL转交替代。Settings/Commands/Stats真实compiled、逐资源回收、精确最终macOS/Linux CI与干净GitHub安装分别验收，全部通过前禁止创建18.15.0 tag/Release。历史未知页及失败/unknown计数保留，不擅自认领或宣称全历史零残留。
+- 18.13.3实测的原官方/包装compiled首次摄取UI0/API16竞态，其query/query-store及客户端/服务live源码在18.15.0仍未变，未包含对应修复；不为确认旧失败重复运行，不在插件复制查询、轮询、强刷或修改门禁掩盖。完整Stats门禁仍未过，默认opener或Tern可验也不能单独解除发布阻塞。
 - 18.14.0另有资源身份未过项：omp18140-stats-managed1成功open/observe后，tab.run解析失败；该次没有服务/driver目录，但具名close仅返回Released，未取得target ID/独占Profile。9个已知target及最终共享CDP空列表不能补造该页独立销毁证明；单列未知身份，不宣称全轮零残留，同样阻止发布。
+- 18.15.0新增Tern优先入口尚未实测：CLI `over`与会话`beside`生命周期不同，系统fallback、测试opener bridge及进程/private消失不能证明Tern block关闭。源码推断的清理注册窗口、迟到block及现有3秒wrapper/5秒Tern关闭时限差异不是动态复现，不据此添加产品shim或放宽账本。
 - 18.12.3首个Stats登录shell驱动被path_helper重排，潜在调用系统open；`http://127.0.0.1:52700`的潜在原生页存在/target/关闭均unknown，详见CONTEXT与SECURITY。已知自有资源全部回收或安全重跑通过仍不能替代该轮零残留门禁；保持未发布候选，不创建tag/Release。
 - **18.12.1单次授权例外（2026-10-19）**：维护者明确批准仅豁免真实系统默认浏览器的打开/失败回收验收，允许完成实际tag与GitHub Release。该项仍为未验证，Release必须显著列出；不申请或绕过桌面控制，不以测试专属opener转交当作默认opener证据。其余版本一致性、Settings、Commands、Stats headless、资源回收、最终CI和冷安装门禁全部保留；后续版本不自动继承本例外。
 - GitHub Release、Git tag 和 `package.json` 版本必须一致。
@@ -76,7 +77,7 @@
 11. 在实际官方编译版验证模块共享，不把源码运行成功当作编译版兼容；
 12. 更新第三方来源的固定版本和许可证；
 13. 从干净目录按 README 重走安装流程；
-14. 正常安装验证 Stats 默认接入、无独立启用命令；新 shell 直接运行实际编译版 `omp stats`，确认原 host/port 仅一个监听器并在原 URL 显示语言按钮。验证中文/English、刷新/路由/同地址重启、API/SSE、原静态/授权规则、窄屏、已有 BUN_OPTIONS 合并、临时路径空格处理、JSON/summary、退出、默认安装幂等/原生卸载/dry-run与稳定包路径，不触发付费评估。
+14. 正常安装验证 Stats 默认接入、无独立启用命令；新 shell 直接运行实际编译版 `omp stats`，确认原 host/port 仅一个监听器并在原 URL 显示语言按钮。验证中文/English、刷新/路由/同地址重启、API/SSE（含`/api/close`权限边界）、原授权/静态请求行为、窄屏、已有 BUN_OPTIONS 合并、临时路径空格处理、JSON/summary、退出、默认安装幂等/原生卸载/dry-run与稳定包路径，不触发付费评估。系统fallback与Tern入口分别验收，不能互相替代。
 15. `bun run commands:check` 全量覆盖通过，新增/删除、静态英文/别名漂移、空译文及标识冲突为零；先核对锁定开发依赖与实际宿主一致。动态状态模板、快捷键占位及公共补全接口须从目标官方源码独立审查并通过行为回归。
 16. 真实官方编译版验证 `/` 顶层列表、别名、计划/模型/循环实时状态和动态键位；同进程 `/settings-language en/zh` 切换后重新打开列表，Tab/Enter 接受补全并执行无外部副作用的原生命令；参数/文件/第三方说明、模型 ID、原值/排序/插入/执行保持不变，不发送模型请求。
    18.12.3新增descriptionMatch保护：未主动选择的纯描述命中不得因Enter误执行，Tab/主动选择仍交回原provider。model/switch/effort的viewSession焦点切换须独立回归，不以主会话静态列表覆盖替代。
@@ -89,7 +90,7 @@
 
 目录逻辑路径须使用实际活动 Profile／XDG 的官方解析结果，并在新进程验证，不以默认 Profile 通过替代命名 Profile。终端退出证据记录 ISIG、VINTR 和 foreground process group；只写 0x03 而未证明产生 SIGINT 的超时须保留，不能伪称代码修复或用 SIGTERM 成功替代正常 Ctrl+C。
 
-冒烟驱动本身也须实测捕获中断：避免pi-utils包根postmortem和Puppeteer默认SIGINT抢先退出；版本常量用官方公开dirs子路径，关闭Puppeteer三类signal handler后由自身finally回收。真实SIGINT/SIGTERM/SIGHUP分别保留130/143/129、页面target关闭与Stats/bridge端口空结果，不能只看退出码认定清理完成。SIGKILL不能保证finally，下次只凭明确run/Profile/target/PID账本回收，未知身份只报告。
+冒烟驱动本身也须实测捕获中断：避免pi-utils包根postmortem和Puppeteer默认SIGINT抢先退出；版本常量用官方公开dirs子路径，关闭Puppeteer三类signal handler后由自身finally回收。18.15.0官方合同为SIGINT130/SIGTERM143/SIGHUP129，正常关闭页面或API为0；旧期待SIGINT0已按实测130修正，失败账本cleanupErrors保留。页面target、Tern block、Stats/bridge端口与private目录均须闭合，不能只看退出码认定清理完成。SIGKILL不能保证finally，下次只凭明确run/Profile/target/block/PID账本回收，未知身份只报告。
 
 private preload不能等正常流程后期ps审计才登记；自动opener bridge转交URL前，先从真实compiled marker记录native PID、BUN_OPTIONS中的私有路径，再打开自有页。中断回归同时证明目录/文件0700/0600与退出后该路径ENOENT；归属未知时保留账本失败关闭，不因端口已关闭就删掉唯一追踪记录。
 

@@ -2,6 +2,35 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.15.0] - 2026-11-01（未发布候选）
+
+### Settings
+
+- 通过既有受管`omp update`将官方宿主18.14.1→18.15.0；SHA-256与官方darwin-arm64资产一致，内嵌及外部Bun1.4.4。开发依赖、锁文件、宿主范围和翻译来源对齐。
+- 579定义/435项UI，新增`task.perCallModel`（off/eval/on，默认off）与`task.perCallModelAllow`（默认空数组）；复核`async.widgets`、`task.maxEffort`和`tier.openai`的ultrafast relay说明。其余430项不重译，8动态getter不变；无UI的`judgment.attemptTimeoutMs`不补译。
+- 译文保留精确selector、已授权模型、项目只能缩窄授权及effort上限；不修改默认值、原选项、凭据或保存逻辑，不把允许列表写成授权入口。
+
+### Commands
+
+- 88定义/97标识/9别名/27动态回调保持，静态漂移0。30命令文件3改：`/fast ultra`英文参数扩展relay，`/jobs full`可能请求caption模型，`/stats`、`/trace`优先Tern。显示层不复制执行、不执行`/jobs full`求验收。
+- viewSession、有效层级、真实键位、descriptionMatch、partial/取消/可选能力及原生Tab/Enter边界保持；静态例外仍仅switch/loop。
+
+### Stats
+
+- 94→97源码/74→77客户端；新增关闭tooltip，613键/105模板，browser/mutations/preload不改。官方新增`/api/close`、Tern over/beside及parser/db v3工具错误修正，插件不复制API、查询、计算或关闭生命周期。
+- query/query-store/live仍与18.14.1逐字节相同，18.13.3已知首次摄取失效丢失机制未修；不重跑旧失败求确认，不加轮询或强刷。
+- **新Tern未验**：源码推断清理注册窗口、迟到block及现有3秒wrapper/5秒Tern关闭时限差异，但均非动态复现，不据此添加产品shim。系统fallback通过不能证明Tern入口或block回收。
+
+### 已有验证与发布边界
+
+- 首次完整check通过：67pass/0fail、2687断言，435/435、88/88命令/97标识、两类漂移0；1917显示元数据变更、3次恢复、源码网络0。该结果不代替最终精确提交CI。
+- 实际compiled smoke首次因期待旧SIGINT0失败，实际130；驱动改用新合同130并保留cleanupErrors后重跑通过：3页建/3关、两单监听器/private、17命令组/root回收。
+- Profile正式轮134断言/4组合，稳定逻辑cache-v1→v2不relink后新compiled仍发现插件；缺SHELL按UID501 id/dscl解析，无Bun12对stdout/stderr/status相同。依赖桥4次负import exit1后4次卸载0、dry-run保持；两轮68命令组/102已知PID全gone、脚手架deleted。首轮未禁自动安装导致负控超时的失败保留。
+- 网页十一页zh/en/zh共33路由、33对完整API与11组HTTP边界已对照；预摄取16→17及工具夹具到19不是cold ingest。四阶段各复用1个target，前3个驱动错误先清理再重跑，已知4页/7服务/native/private/root回收；最后4次启动（含3次同origin重启）均为测试opener转交，不是系统默认，不写完整Stats通过。
+- 真实TUI完成169个PTY文字重建帧（非截图），两进程143/0；Settings原生保存恢复、中英/effort隔离、9别名、2 skill、第三方/文件、Tab/Enter、plan/loop及子会话focus留证。effectiveServiceTier实际undefined，POST0/agent_start0/dispatch0。PTY/native PID在Popen后首次交互前写入，不宣称pre-exec身份全门禁通过。
+- 当前原生Chrome可见，但relay targets仍仅URL、无稳定ID，默认opener未启动。Windows PR #1仍CLOSED、draft、未合并，42项用户未跟踪内容保持。
+- 最终精确提交macOS/Linux CI、干净GitHub安装、本机原来源升级及Tern/default opener分别现场核对，不预先宣称通过、不建tag/Release。
+
 ## [18.14.1] - 2026-10-31（未发布候选）
 
 ### Settings

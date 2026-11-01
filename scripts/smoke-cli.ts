@@ -60,6 +60,10 @@ let opened = false;
 let installed = false;
 let bridge: Bun.Server<undefined> | undefined;
 const env: Record<string, string | undefined> = { ...process.env, HOME: home, ZDOTDIR: home, SHELL: "/bin/bash", PI_CODING_AGENT_DIR: join(home, ".omp/agent"), XDG_CONFIG_HOME: "", XDG_DATA_HOME: "", XDG_STATE_HOME: "", XDG_CACHE_HOME: "", OMP_PROFILE: "", PI_PROFILE: "", BUN_OPTIONS: "", TMPDIR: temporary };
+// This smoke owns a browser opener bridge, not a Tern pane. The separate Tern
+// acceptance gate must track actual pane/block identities before opening there.
+delete env.TERN_PANE_SOCKET;
+delete env.TERN_PANE;
 for (const key of Object.keys(env)) if (/API_KEY|TOKEN|SECRET|CREDENTIAL/i.test(key)) delete env[key];
 // Exercise native HTTPS warm-up without inheriting a real proxy.
 for (const key of ["HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"]) delete env[key];
@@ -124,7 +128,7 @@ async function closeStage() {
     if (service) {
       if (service.exitCode === null) service.kill("SIGINT");
       const code = await service.exited;
-      if (code !== 0) throw new Error("Stats SIGINT exit " + code);
+      if (code !== 130) throw new Error("Stats SIGINT exit " + code);
       service = undefined;
     }
   } catch (error) { errors.push(error); }
@@ -316,6 +320,7 @@ require('node:module').syncBuiltinESMExports?.();
     try { await rm(root, { recursive: true, force: true }); owned.rootRemoved = true; } catch (error) { errors.push(error); }
   }
   owned.cleanupErrors = errors.length;
+  if (errors.length) await ledger();
   console.log("Resource cleanup:", JSON.stringify(owned));
   process.off("SIGINT", onSigint);
   process.off("SIGTERM", onSigterm);

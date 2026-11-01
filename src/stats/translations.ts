@@ -1,7 +1,7 @@
 /**
- * Display-only copy reviewed against @oh-my-pi/omp-stats 18.14.1. All 94 Stats
- * source files, including 74 client files, are byte-identical to 18.14.0.
- * Offline exports are not injected; the known upstream cold-ingest race remains.
+ * Display-only copy reviewed against @oh-my-pi/omp-stats 18.15.0 (97 Stats
+ * source files, including 77 client files). The optional dashboard Close
+ * control is translated; the known upstream cold-ingest race remains.
  * Apply only to known UI text/attributes, never journal payloads,
  * identifiers, or arbitrary data cells.
  * Protocol names, command names, currencies, and brands remain unchanged.
@@ -66,6 +66,7 @@ export const statsZh: Record<string, string> = {
 	"Show fewer": "收起",
 	"Filter…": "筛选…",
 	Close: "关闭",
+	"Close the dashboard (Esc)": "关闭仪表板（Esc）",
 	Cancel: "取消",
 	Copy: "复制",
 	Copied: "已复制",
