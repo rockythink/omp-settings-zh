@@ -2,6 +2,10 @@
 
 ## 18.15.0 发布阻塞处理（2026-11-02，仍未发布）
 
+后续范围确认：维护者确认Tern不是插件依赖，正式发布验收限定macOS/Linux普通终端与系统浏览器路径；Tern未安装/未获邀不再阻止该范围发布，保留官方行为并在Release标注未验证、不宣称支持。此前“必须取得真实Tern环境”的决定由本确认替代，不追认旧未验项通过。冷摄取#17754/#17758、三面真实交互、权限/API/SSE、资源回收、最终CI与冷安装门禁不变。
+
+现有Orca任务`d37c4d51-ad01-4c0c-85ca-c2689cee3b08`已现场核验并仅更新prompt；仍启用、原existing工作区、OMP provider、每日23:00 Asia/Shanghai、新会话。最高优先范围段明确Tern可选、已有未发布候选必须继续验收而非因当天上游无变化退出、区分五类阻塞并按恢复条件推进。调度/工作区/provider等21项配置独立回读无漂移；未手动触发完整维护run，不把配置持久化当作发布证据。
+
 起点本地/远端main均a7e98337b4e83551307383efc2ad71766f11a9e6，精确CI41321620258的macOS/Linux均成功；package、真实官方宿主、GitHub来源插件及三项官方依赖均18.15.0，doctor5/0/0。实际受管`omp update`报告Already up to date，官方二进制SHA256仍与18.15.0资产一致。Windows PR #1仍CLOSED、draft、未合并；42项用户未跟踪内容保持。
 
 冷摄取已建立上游闭环入口：[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)，上游独立复现并创建[PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)。本轮对未修改main 686b5e2fb542848dc3ff1a9e36a42a8fefdd2278的合成源码调度实测0/1次请求，局部候选修复为16/2次请求，15项查询回归及Stats双类型检查通过；这些不是18.15.0 compiled冷摄取重新复现或修复验收。遵守上游贡献规范，只报障，不代人类提交实现PR；不把局部修复写入插件或官方安装。仍需官方含修复制品及新进程验收，不能只凭PR/源码通过解除门禁。
@@ -12,7 +16,7 @@
 
 `scripts/smoke-cli.ts`固化绝对路径、CDP target身份/销毁、实际正常与人为失败预检、launcher/native/guard组及bridge端口回收；账本置于运行树外，清理失败不可被最终重试抹掉。Bun信号退出可能exitCode仍null，统一用exited结算状态判断/升级，不再轮询exitCode。首轮误用exitCode造成的超时账本保留，已知PID/端口回收后由父定向删除临时树；修正后的真实compiled smoke通过，5页创建/关闭、两服务/private和独占浏览器/root回收。支持OMP_SMOKE_GITHUB_REF指定精确40位SHA冷安装，避免再复制临时驱动。
 
-Tern门禁明确保留：本机无应用/命令及TERN_PANE_SOCKET/TERN_PANE；[官方页面](https://stencil.so/tern)标为CLOSED BETA。未注册waitlist、未改账户/权限，不用假socket替代真实pane/block。原系统浏览器补验不能代证Tern；仍需获得实际环境。外部前提未解除时只推进必要修复/检查，不重复整套最终发布矩阵；前提满足后重新固定目标版本并完整验收，绝不缩小三面范围。
+Tern情况：本机无应用/命令及TERN_PANE_SOCKET/TERN_PANE；[官方页面](https://stencil.so/tern)标为CLOSED BETA，现有账户仍需登录下载。未注册waitlist、未改账户/权限，不用假socket替代真实pane/block。系统浏览器补验不代证Tern，但缺少Tern不再是明确非Tern发布范围的阻塞。外部冷摄取等前提未解除时只推进必要检查，不重复整套最终发布矩阵；满足后仍完整验收适用三面范围。
 
 本轮插件运行代码/译文、package版本及锁定依赖未变；Settings435/435、Schema0，Commands88/88、97标识、漂移0，67测试/2687断言和源码3轮恢复通过。真实TUI/全页/命名Profile的历史证据不冒充本轮重验；最终精确提交CI和干净GitHub安装仍按实际输出核定。最新正式tag/Release仍v18.12.6，不空升候选、不创建发布；重启OMP与新终端的限制不变。
 

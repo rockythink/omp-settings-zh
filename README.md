@@ -23,9 +23,9 @@
 - Settings：579 定义/435 项 UI，新增 `task.perCallModel` 与 `task.perCallModelAllow`，复核 `async.widgets`、`task.maxEffort` 与 `tier.openai` 的 ultrafast/relay 说明；其余 430 项不重译、8 个动态 getter 不变。允许列表只能约束配置已授权的模型，项目设置不能授予或启用模型；无 UI 的 `judgment.attemptTimeoutMs` 不补译
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
 - Commands：88 定义、97 个命令名/别名、9 别名、27 个动态回调保持；静态漂移 0。`/fast ultra` 参数说明新增 relay，仍保留英文；`/jobs full` 可能请求模型生成 caption，不用于零模型请求验收；`/stats`、`/trace` 的官方 Tern 优先入口不由插件接管
-- 初轮适配证据：67 测试、2687 断言，435/435、Schema 漂移 0，1917 项显示元数据变更/3 次恢复/源码网络 0；TUI 169 个 PTY 文字帧及网页 33 路由/API/HTTP 分项另见 CONTEXT。后续维护已补验真实默认 opener 并加固 compiled smoke；历史记录不代替最终精确提交 CI、目标宿主真实交互与 Tern 验收
+- 初轮适配证据：67 测试、2687 断言，435/435、Schema 漂移 0，1917 项显示元数据变更/3 次恢复/源码网络 0；TUI 169 个 PTY 文字帧及网页 33 路由/API/HTTP 分项另见 CONTEXT。后续维护已补验真实默认 opener 并加固 compiled smoke；历史记录不代替最终精确提交 CI 和目标宿主的适用真实交互
 - Stats：实际官方 18.15.0 编译 CLI；94→97 源码、74→77 客户端，新增关闭按钮 tooltip 译文，613 键/105 严格模板；browser/mutations/preload 保持。官方新增 `/api/close`、Tern 打开/关闭及合成未执行工具错误统计修正，插件不复制 API、计算或生命周期逻辑
-- **仍未发布**：官方冷摄取竞态已报 [#17754](https://github.com/can1357/oh-my-pi/issues/17754)，上游复现并创建修复 [#17758](https://github.com/can1357/oh-my-pi/pull/17758)；须取得包含修复的官方编译制品后重新验收，不能用源码修复代替。真实默认 `/usr/bin/open` 的原 URL/一次调用、中文/English/刷新及正常/失败定向回收已补验通过；Tern 真实门禁经维护者确认保留，目前缺少其闭测应用/pane 环境。历史身份未知尝试继续单列，不宣称全历史零残留
+- **仍未发布**：官方冷摄取竞态已报 [#17754](https://github.com/can1357/oh-my-pi/issues/17754)，上游复现并创建修复 [#17758](https://github.com/can1357/oh-my-pi/pull/17758)；须取得包含修复的官方编译制品后重新验收，不能用源码修复代替。真实默认 `/usr/bin/open` 的原 URL/一次调用、中文/English/刷新及正常/失败定向回收已补验通过。Tern 是可选宿主，未安装或未获邀不再阻止 macOS/Linux 普通终端＋系统浏览器范围的发布；其路径未验证、不宣称支持。历史身份未知尝试继续单列，不宣称全历史零残留
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -62,7 +62,7 @@
 | 18.13.3（未发布候选） | 18.13.3（本机 macOS 编译版；默认 opener 实时确认阻塞，分项证据见 CONTEXT） | >=18.13.3 <19 |
 | 18.14.0（未发布候选） | 18.14.0（本机 macOS 编译版；默认 opener 与官方冷摄取门禁未过，分项证据见 CONTEXT） | >=18.14.0 <19 |
 | 18.14.1（未发布候选） | 18.14.1（本机 macOS 编译版；完整验收及精确提交 CI 另核，Stats 门禁未过） | >=18.14.1 <19 |
-| 18.15.0（当前未发布候选） | 18.15.0（本机 macOS 编译版分项证据见 CONTEXT；Tern/default opener/冷摄取门禁未过，最终 CI 另核） | >=18.15.0 <19 |
+| 18.15.0（当前未发布候选） | 18.15.0（非 Tern 路径分项及默认 opener 补验证据见 CONTEXT；冷摄取门禁未过，最终 CI 按提交核对） | >=18.15.0 <19 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -111,6 +111,8 @@ omp stats --summary       # 官方终端摘要，直接透传
 启动器保留原始 argv、cwd、Profile、stdio 与官方 CLI 的独立评估上下文；非 Stats、JSON、摘要和帮助直接执行原 OMP。Web 模式先构建本地翻译脚本，通过 `BUN_OPTIONS --preload` 包装该子进程的 `Bun.serve` 页面响应：仅在官方 Stats HTML 注入同源脚本，在同一个监听器提供 JS，API 与 SSE 保持原处理器。**只有原官方 Stats 服务，原 `--port` / `-p`、`--host`、打开策略和 URL 均由宿主决定**；默认地址 `http://127.0.0.1:3847` 直接显示语言按钮，不输出第二个代理地址。现有 `BUN_OPTIONS` 保留。
 
 18.15.0 官方 CLI 优先通过 `TERN_PANE_SOCKET` / `TERN_PANE` 打开 Tern `over` 页面，否则回退原系统 opener；`BROWSER` 或测试 opener bridge 不能拦截 Tern 路径。源码中只有可关闭的 Tern CLI 页面才提供 Close/关闭与 Esc，通过原 `/api/close` 退出；系统浏览器回退时按钮隐藏。官方信号合同改为 SIGINT=130、SIGTERM=143、SIGHUP=129，关闭页面/API 的正常退出为 0；Tern 页面实际回收仍未验，不能仅凭进程/私有目录消失宣称成功。
+
+本次正式验收范围为 macOS/Linux 普通终端＋系统浏览器。Tern 不是插件依赖，缺少它不阻止该范围发版；保留上述官方路径，但 Tern 未经独立验证，不宣称支持。以后明确纳入时再验证真实 pane/block 生命周期，不用系统浏览器代证。
 
 会话里的 `/stats` 不被接管，仍为官方入口：18.15.0 优先 Tern `beside`，成功后断开客户端而不套用 CLI `over` 的关闭生命周期，失败才用系统 opener。与终端 `omp stats` 使用相同 Profile / Agent 数据目录时，两者都汇总该目录内的多个项目与会话，不是全局与单会话的区别；`/stats` 的付费评估绑定当前会话，而 CLI 使用独立上下文。`/trace` 是当前会话的追踪深链接，沿用会话打开策略。
 

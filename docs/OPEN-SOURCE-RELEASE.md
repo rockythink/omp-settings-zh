@@ -27,10 +27,10 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前源码/目标宿主候选18.15.0，内嵌与最低外部Bun均1.4.4；最新正式发布仍v18.12.6。2026-11-02真实默认opener已通过原生稳定tab ID、原URL/一次调用/退出0、语言刷新与正常/失败定向回收补验；此前relay断线及unknown尝试继续单列，不抹去失败。冷摄取跟踪[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)/[修复PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)，仍须含修复的官方compiled；真实Tern门禁由维护者明确保留，当前缺少闭测应用/pane环境。Settings/Commands/Stats真实compiled、逐资源回收、精确最终macOS/Linux CI与干净GitHub安装分别验收，全部通过前禁止创建tag/Release。
+- 当前源码/目标宿主候选18.15.0，内嵌与最低外部Bun均1.4.4；最新正式发布仍v18.12.6。真实默认opener已补验；此前relay断线及unknown尝试继续单列，不抹去失败。冷摄取跟踪[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)/[修复PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)，仍须含修复的官方compiled。正式验收范围由维护者确认为macOS/Linux普通终端＋系统浏览器；Tern可选，缺少闭测资格/环境不阻止该范围发布，其路径未验证、不宣称支持。原范围内三面真实compiled、安全/资源回收、精确最终macOS/Linux CI与冷安装门禁不变，全部通过前禁止创建tag/Release。
 - 18.13.3实测的原官方/包装compiled首次摄取UI0/API16竞态，其query/query-store及客户端/服务live源码在18.15.0仍未变，未包含对应修复；不为确认旧失败重复运行，不在插件复制查询、轮询、强刷或修改门禁掩盖。完整Stats门禁仍未过，默认opener或Tern可验也不能单独解除发布阻塞。
 - 18.14.0另有该轮资源身份未过项：omp18140-stats-managed1成功open/observe后tab.run解析失败，该次没有服务/driver目录，具名close仅返回Released，未取得target ID/独占Profile。已知target和共享CDP空列表不能补造其独立销毁证明，该轮不发布。历史缺证必须保留，但不等于已证实后续轮持续泄漏；后续轮须建立独立基线并证明本轮所有资源闭环，不能凭旧地址认领页面或宣称全历史零残留。
-- 18.15.0新增Tern优先入口尚未实测：CLI `over`与会话`beside`生命周期不同，系统fallback、测试opener bridge及进程/private消失不能证明Tern block关闭。源码推断的清理注册窗口、迟到block及现有3秒wrapper/5秒Tern关闭时限差异不是动态复现，不据此添加产品shim或放宽账本。
+- 官方Tern `over`/`beside`是可选且不同的生命周期，当前未验证、不宣称支持。未安装Tern不阻止明确非Tern范围发版，也不为验收修改官方打开行为；以后明确纳入时才补齐真实环境、pane/block身份和关闭证明，系统fallback及测试opener不可代证。源码推断的注册窗口/迟到block/关闭时限差异不是动态复现，不据此添加shim。
 - 18.12.3首个Stats登录shell驱动被path_helper重排，潜在调用系统open；`http://127.0.0.1:52700`的潜在原生页存在/target/关闭均unknown，详见CONTEXT与SECURITY。已知自有资源全部回收或安全重跑通过仍不能替代该轮零残留门禁；保持未发布候选，不创建tag/Release。
 - **18.12.1单次授权例外（2026-10-19）**：维护者明确批准仅豁免真实系统默认浏览器的打开/失败回收验收，允许完成实际tag与GitHub Release。该项仍为未验证，Release必须显著列出；不申请或绕过桌面控制，不以测试专属opener转交当作默认opener证据。其余版本一致性、Settings、Commands、Stats headless、资源回收、最终CI和冷安装门禁全部保留；后续版本不自动继承本例外。
 - GitHub Release、Git tag 和 `package.json` 版本必须一致。
@@ -77,7 +77,7 @@
 11. 在实际官方编译版验证模块共享，不把源码运行成功当作编译版兼容；
 12. 更新第三方来源的固定版本和许可证；
 13. 从干净目录按 README 重走安装流程；
-14. 正常安装验证 Stats 默认接入、无独立启用命令；新 shell 直接运行实际编译版 `omp stats`，确认原 host/port 仅一个监听器并在原 URL 显示语言按钮。验证中文/English、刷新/路由/同地址重启、API/SSE（含`/api/close`权限边界）、原授权/静态请求行为、窄屏、已有 BUN_OPTIONS 合并、临时路径空格处理、JSON/summary、退出、默认安装幂等/原生卸载/dry-run与稳定包路径，不触发付费评估。系统fallback与Tern入口分别验收，不能互相替代。
+14. 正常安装验证Stats默认接入、无独立启用命令；新shell直接运行真实compiled `omp stats`，原host/port单监听器、原URL语言按钮、中文/English、刷新/路由/同地址重启、API/SSE（含`/api/close`权限）、原授权/静态请求行为、窄屏、BUN_OPTIONS合并、空格路径、JSON/summary、退出、默认安装/卸载/dry-run及稳定包路径全部验收，不触发付费评估。本次验收系统浏览器非Tern路径；Tern未验证须披露，但不要求取得该可选环境，也不以系统浏览器结果宣称Tern通过。
 15. `bun run commands:check` 全量覆盖通过，新增/删除、静态英文/别名漂移、空译文及标识冲突为零；先核对锁定开发依赖与实际宿主一致。动态状态模板、快捷键占位及公共补全接口须从目标官方源码独立审查并通过行为回归。
 16. 真实官方编译版验证 `/` 顶层列表、别名、计划/模型/循环实时状态和动态键位；同进程 `/settings-language en/zh` 切换后重新打开列表，Tab/Enter 接受补全并执行无外部副作用的原生命令；参数/文件/第三方说明、模型 ID、原值/排序/插入/执行保持不变，不发送模型请求。
    18.12.3新增descriptionMatch保护：未主动选择的纯描述命中不得因Enter误执行，Tab/主动选择仍交回原provider。model/switch/effort的viewSession焦点切换须独立回归，不以主会话静态列表覆盖替代。
@@ -101,8 +101,9 @@ private preload不能等正常流程后期ps审计才登记；自动opener bridg
 - 每轮先核验真实版本/来源、上游缺陷跟踪、浏览器身份/清理能力和必要真实终端环境。记录具体状态、证据及解除条件；区分产品失败、环境未验、驱动失败和历史unknown，不混写为“发布命令失败”。
 - 外部前提明确不满足时，继续完成必要适配、驱动修复和定向回归；不反复运行无法改变发布结论的完整最终矩阵。前提解除后重新固定目标宿主/提交，再完成原有三面、CI、冷安装和回收门禁，不缩小范围、不继承旧通过记录。
 - 冷摄取须核验官方合并及实际含修复的官方构建、版本/checksum和嵌入客户端；上游PR绿色、自编译、局部源码回归或插件强刷均不代证。遵守上游贡献要求，不冒充维护者亲自review/测试或自主代发实现PR。
-- Tern当前为[官方闭测产品](https://stencil.so/tern)，必须取得真实应用、pane/socket和block身份；不自动注册waitlist、接受条款或改账户权限，不以假服务或系统浏览器替代。没有环境就明确阻塞，除非维护者另行明确批准范围变化；本次维护者选择保留门禁。
+- Tern为[官方闭测的可选产品](https://stencil.so/tern)，不是插件依赖；后续范围确认已撤销此前“缺少Tern就不发布”的要求。本次正式验收非Tern macOS/Linux普通终端＋系统浏览器，Release标注Tern未验证、不宣称支持。以后明确纳入时才要求真实应用/pane/socket/block；不得造假环境、自动注册waitlist/登录/接受条款/改变权限，产品仍原样保留官方打开行为。
 - 编译版smoke默认本地link；设置`OMP_SMOKE_GITHUB_REF=<最终40位SHA>`执行真实干净GitHub安装，禁止复制工具输出生成派生脚本。运行账本保留于树外`<run>.resources.json`；成功/人为失败预检先于安装及Stats，观察真实target/PID/组/端口/private销毁。清理失败记录不可被重试抹掉，父只在逐项核对明确所有权后回收遗留脚手架。
+- 检查待发布内容以最后正式tag/Release为基线，而不是只看今天上游是否更新。已有未发布候选时继续验收，全部适用门禁通过后实际创建tag与Release；仅当无新变化且无待发布候选才不空提交/空发布。Orca最终结果明确区分“已发布（真实链接/提交）”“无变化且无候选”“未发布（精确阻塞/恢复条件）”，不以completed代证。
 
 
 ## 5. 安装契约
