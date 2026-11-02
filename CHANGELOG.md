@@ -4,6 +4,13 @@
 
 ## [18.15.0] - 2026-11-01（未发布候选）
 
+### 2026-11-02 发布阻塞处理
+
+- 将官方冷摄取问题报告为上游 [#17754](https://github.com/can1357/oh-my-pi/issues/17754)，由上游独立复现并创建修复 [#17758](https://github.com/can1357/oh-my-pi/pull/17758)。局部源码修复/合成回归不作为官方编译版通过证据，不在插件添加轮询、强刷或查询实现。
+- 真实系统默认 opener 补验通过：新登录 shell 的原 `/usr/bin/open` 对原 URL 调用一次且退出0；原生数字 tab ID、单官方监听器、默认中文/English/刷新/切回、API一致及正常/故意失败回收留证。首次 relay 断线和浏览器恢复、驱动错误保留，不冒称全轮无失败。
+- 加固现有 compiled smoke：绝对二进制路径、target 身份与实际销毁、开始验收前的正常/断言失败清理预检、native/guard组与bridge端口观察；树外账本保留失败。信号退出观察使用 `exited`，避免 Bun 的 `exitCode:null` 导致误超时。新增 `OMP_SMOKE_GITHUB_REF` 精确提交冷安装模式。
+- 保留真实 Tern 门禁；其官方产品仍为闭测，本机没有可验 pane/socket。未提供含冷摄取修复的官方制品及 Tern 环境前不发布。Settings、Commands、Stats 运行代码与译文未改，不空升候选编号；先解除外部阻塞，再跑固定候选的完整最终发布验收。
+
 ### Settings
 
 - 通过既有受管`omp update`将官方宿主18.14.1→18.15.0；SHA-256与官方darwin-arm64资产一致，内嵌及外部Bun1.4.4。开发依赖、锁文件、宿主范围和翻译来源对齐。

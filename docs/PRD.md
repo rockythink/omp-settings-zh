@@ -1,12 +1,14 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.15.0维护候选；官方首次摄取竞态未修复、默认opener稳定页面身份未取得、新Tern生命周期未实测，未过完整门禁，不发布。最新正式Release仍为18.12.6
+- 状态：18.15.0维护候选；默认系统opener独立补验通过，冷摄取需含修复的官方制品、真实Tern环境仍缺，未过完整门禁，不发布。最新正式Release仍为18.12.6
 - 基线版本：OMP 18.15.0（内嵌 Bun 1.4.4；外部 Bun 最低1.4.4）
-- 文档日期：2026-11-01
+- 文档日期：2026-11-02
 
-相对18.14.1：Settings433→435项，新增task.perCallModel/Allow，复核widgets/maxEffort/ultrafast relay，其余430项与8动态getter保持。Commands88定义/97标识/9别名/27动态回调保持，fast ultra参数英文不译，jobs full可能发起caption模型调用，不执行以求验收。Stats94→97源码/74→77客户端，613键/105模板，新增关闭tooltip；关闭API、Tern及工具错误统计由官方实现。源码审阅、已完成compiled分项、未验Tern/default opener与未修冷摄取分别记录；最终精确提交CI、冷GitHub安装及本机原来源升级不预先宣称通过。
+相对18.14.1：Settings433→435项，新增task.perCallModel/Allow，复核widgets/maxEffort/ultrafast relay，其余430项与8动态getter保持。Commands88定义/97标识/9别名/27动态回调保持，fast ultra参数英文不译，jobs full可能发起caption模型调用，不执行以求验收。Stats94→97源码/74→77客户端，613键/105模板，新增关闭tooltip；关闭API、Tern及工具错误统计由官方实现。初轮源码/compiled分项与后续默认opener补验分别记录；未验Tern、待修冷摄取及最终精确提交CI/冷安装均不得由旧证据代证。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
+
+冷摄取追踪：[上游Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)与[修复PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)。默认opener原URL/次数、原生稳定ID与正常/失败回收已实测；Tern门禁不取消。维护先检查外部阻塞及恢复条件，前提不满足时推进必要适配和定向回归，不反复运行不能改变发布结论的最终矩阵；取得真实前提后仍须完整验收，不能以fail-fast缩小范围。
 
 ## 1. 背景
 

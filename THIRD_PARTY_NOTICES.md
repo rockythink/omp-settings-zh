@@ -8,6 +8,8 @@
 
 `src/stats/translations.ts`审阅基线为官方`@oh-my-pi/omp-stats@18.15.0`；94→97源码/74→77客户端，新增Close tooltip译文，613键/105模板，browser白名单/数据排除及React异步处理不改。新增关闭API/Tern及parser/db修正仍归官方；源码审阅不等于新Tern真实验收。npm仅作审阅来源，运行时仍为实际官方编译CLI，在原监听器同源注入。固定官方Git树blob身份与npm全部1836份coding-agent、127份utils、97份Stats、440份TUI源码匹配；另4个HTML源由package.files排除，不补造npm来源。不重新分发Stats实现或二进制。
 
+冷摄取问题另以官方main `686b5e2fb542848dc3ff1a9e36a42a8fefdd2278`进行源码级诊断，跟踪[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)与[PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)。诊断及局部修复不替代上述翻译来源/官方运行基线，不作为插件源码或第三方构建产物分发；上游贡献遵守其人工审阅要求，不由代理冒充维护者亲自验证。
+
 ## Oh My Pi
 
 本项目面向并依赖 Oh My Pi，但不计划重新分发其二进制或功能源码。

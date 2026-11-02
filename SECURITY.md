@@ -23,7 +23,7 @@
 | 18.13.3（候选） | 18.13.3 | 官方compiled与外部Bun均1.4.4；真实默认opener控制确认未获回应，未发布，不继承历史例外 |
 | 18.14.0（候选） | 18.14.0 | 官方compiled与外部Bun均1.4.4；默认opener因锁屏无法安全验收，官方冷摄取竞态相关源码未修复，不发布 |
 | 18.14.1（候选） | 18.14.1 | 两项设置新增；完整静态门禁及实际编译版分项验收，官方冷摄取竞态未修、默认opener页面身份受限，未发布 |
-| 18.15.0（当前候选） | 18.15.0 | 两项任务模型设置新增；冷摄取未修、默认opener稳定ID未取得、Tern生命周期未实测，未发布 |
+| 18.15.0（当前候选） | 18.15.0 | 默认系统opener补验通过；冷摄取待含修复官方制品、真实Tern门禁保留，未发布；失败/unknown尝试单列 |
 
 同一主版本的后续 OMP 版本会执行结构预检，但在完成 CI 和真实 `/settings` 验证前不视为正式支持。OMP 19 及以上版本默认失败关闭。
 
@@ -65,7 +65,13 @@ Web 模式为 Stats 子进程创建私有预加载 CJS，通过合并 `BUN_OPTIO
 
 18.15.0新增按调用选择模型及允许列表只翻译官方授权边界：精确selector、配置已授权模型、项目只能缩窄授权，不能把列表写成可启用任意模型；maxEffort/widgets/ultrafast relay说明保留官方限制，不为验证生成job caption或提交prompt。关闭按钮只在官方可关闭页面出现，Close/title翻译不改变Esc、`/api/close`权限或关闭行为；系统fallback隐藏按钮，不能用该路径替代Tern验收。
 
-18.15.0冷摄取query/query-store/live源码仍未修。当前原生Chrome可见，但relay只提供URL、没有稳定target ID，默认opener未启动；不升级扩展、不改权限、不关闭用户页。新Tern清理注册窗口、迟到block及3秒wrapper/5秒Tern关闭时限差异是源码推断，尚未动态复现，不据此添加shim。身份不明或清理失败继续阻止发布。
+18.15.0初轮记录：冷摄取query/query-store/live源码未修；当时relay只有URL、未取得稳定target ID，默认opener未启动。新Tern清理注册窗口、迟到block及3秒wrapper/5秒Tern关闭时限差异是源码推断，非动态复现，不据此添加shim。
+
+2026-11-02补验：原生窗口接口失败后按Chrome原生数字tab ID建立基线；首个relay调用期间断线、浏览器进程更换，原因未确认，不擅自归因产品或关闭用户页。取得维护者明确恢复授权后恢复原窗口，登录重定向不自动认证。该次无自有target ID的尝试保持unknown；后续原生预检及真实系统open的正常/人为失败路径按新ID+精确origin回收，不把页面路由/hash变化误认为不同origin。只记录后原样委托Bun.spawn，原/usr/bin/open对原URL调用一次且退出0；单官方监听器、语言/刷新/API一致及page/port/private/root回收有证据，不修改默认浏览器/全局PATH/权限。
+
+上游冷摄取问题已报[#17754](https://github.com/can1357/oh-my-pi/issues/17754)，上游独立复现并创建修复[#17758](https://github.com/can1357/oh-my-pi/pull/17758)。不上传真实会话、凭据或用户浏览器资料，不在插件复制查询或轮询；源码级修复回归不替代官方compiled验收。真实Tern门禁经维护者确认保留，缺少其闭测环境，未注册waitlist或改变账户授权，未通过前不发布。
+
+smoke账本保留在运行树外，清理失败永久留证；实际观察CDP target消失、浏览器PID及Stats native/guard组、端口和private目录回收。Bun的exited结算状态为退出观察依据，不以信号退出后可能仍为null的exitCode反复等待或重发kill。历史身份缺证继续单列，不等同已证实持续泄漏；每个新run仍须独立证明全部自有资源闭环，不抹去原失败。
 
 ## 私密报告
 

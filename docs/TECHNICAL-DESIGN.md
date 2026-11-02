@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
 - 实现候选：18.15.0；最新正式Release仍为18.12.6，main与源码编号不是发布证据
-- 目标基线：官方OMP18.15.0/内嵌Bun1.4.4、外部Bun最低1.4.4；当前原生Chrome可见但relay无稳定target ID，默认opener未验，测试URL转交不替代，不继承历史例外
+- 目标基线：官方OMP18.15.0/内嵌Bun1.4.4、外部Bun最低1.4.4；真实默认opener已用原生稳定tab ID补验，仍需含冷摄取修复的官方制品与真实Tern环境
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -133,10 +133,13 @@
 - 18.12.1编译网络隔离：显式选择真实Anthropic模型触发无凭据暖连；仅global fetch不足，Node HTTPS经标准Agent.createConnection异步callback拒绝，不创建Socket且返回真实ClientRequest，防止同步throw触发Cowork的abort TDZ。net/TLS仍fail-closed，实际compiled35秒与TUI验证；代理分支的fetch HEAD另验。目录GET、Stats本地身份GET、HEAD分别归类；任何推理POST尝试单列，不能以agent_start handler throw充当取消。
 - 私有目录必须在自动URL转交之前登记：测试user preload在真实compiled入口写入PID/argv/BUN_OPTIONS，opener bridge先读取该marker并记录native PID及私有preload，再导航唯一自有页面。后续lsof/guard argv再次对照；清理逐路径确认ENOENT，缺少归属则保留run账本报错。实测中断回归先见0700/0600和匹配PID、再见目录消失；旧的仅页/端口/root信号记录不当作逐目录证明。
 - 18.10.2历史编译生命周期十项通过：原版/包装PTY实际Ctrl+C（未改termios）、官方子进程异常、launcher SIGKILL、父进程消失、等号/短参数、无效/占用端口及恢复；私有目录/端口/PID回收，SIGKILL独立guard3.816秒清理。旧fetch审计及15个GET的归类不能作为18.12.1“只有目录GET”的证明；早期允许本机目录GET的脚手架也不能证明未访问既有本机服务，失败记录不隐藏。
+- compiled smoke账本固定写到运行树旁的`<run>.resources.json`，不因树删除丢失证据；任何清理失败永久记录，不由最终重试覆盖。关闭页面后查询CDP target实际消失，关闭浏览器后观察自有PID退出；服务同时验证launcher/native/guard进程组、原端口与private目录，bridge单独验端口。Bun的信号退出可能仍显示exitCode:null，启动时登记exited promise，以其结算状态统一驱动等待与升级，不反复向已退出进程发信号。
+- `OMP_SMOKE_GITHUB_REF=<40位SHA>`切换到干净GitHub安装；未提供则仍走本地link。只有公开插件/依赖安装阶段允许其正常网络，之后真实compiled探针恢复无dispatch护栏；普通命令45秒、冷安装120秒截止均回收独占进程组，不复制驱动或放宽模型请求边界。
+
 
 ## 7. 发布边界
 
-源码/开发依赖/目标宿主基线为18.15.0，范围`>=18.15.0 <19`，外部Bun最低1.4.4；三部分真实交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。当前原生Chrome可见，但relay仅列URL、不能取得稳定target ID；未升级扩展或修改权限，不启动默认opener。官方首次摄取竞态机制未修，新Tern生命周期未实测，三项独立阻止发布。不继承18.12.6证据或18.12.1例外。历史未知页及失败/unknown计数保留，不凭同origin认领，不把新轮通过冒称全历史零残留。本地/远端仅维护main，Windows PR #1仍CLOSED、未合并草稿，不宣称正式支持。
+源码/开发依赖/目标宿主基线为18.15.0，范围`>=18.15.0 <19`，外部Bun最低1.4.4；三部分真实交互、精确最终macOS/Linux CI、冷GitHub安装和完整资源账本分别构成门禁。2026-11-02真实默认opener已用Chrome原生稳定tab ID补验；首次relay断线/进程更换、经批准恢复用户窗口和驱动失败单列，不以之后通过抹去。官方冷摄取跟踪#17754/修复#17758，仍须含修复的官方compiled；Tern真实门禁保留，本机无其闭测pane环境。不继承历史例外，不把历史证据缺失等同已证实持续泄漏，也不伪造全历史零残留。本地/远端仅维护main，Windows PR #1仍CLOSED、未合并草稿，不宣称正式支持。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

@@ -27,9 +27,9 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前源码/目标宿主候选18.15.0，内嵌与最低外部Bun均1.4.4；最新正式发布仍v18.12.6。当前原生Chrome可见，但relay不能提供稳定target ID，不能建立默认opener的安全页面归属；阶段未启动，不修改扩展权限、不以受管URL转交替代。Settings/Commands/Stats真实compiled、逐资源回收、精确最终macOS/Linux CI与干净GitHub安装分别验收，全部通过前禁止创建18.15.0 tag/Release。历史未知页及失败/unknown计数保留，不擅自认领或宣称全历史零残留。
+- 当前源码/目标宿主候选18.15.0，内嵌与最低外部Bun均1.4.4；最新正式发布仍v18.12.6。2026-11-02真实默认opener已通过原生稳定tab ID、原URL/一次调用/退出0、语言刷新与正常/失败定向回收补验；此前relay断线及unknown尝试继续单列，不抹去失败。冷摄取跟踪[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)/[修复PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)，仍须含修复的官方compiled；真实Tern门禁由维护者明确保留，当前缺少闭测应用/pane环境。Settings/Commands/Stats真实compiled、逐资源回收、精确最终macOS/Linux CI与干净GitHub安装分别验收，全部通过前禁止创建tag/Release。
 - 18.13.3实测的原官方/包装compiled首次摄取UI0/API16竞态，其query/query-store及客户端/服务live源码在18.15.0仍未变，未包含对应修复；不为确认旧失败重复运行，不在插件复制查询、轮询、强刷或修改门禁掩盖。完整Stats门禁仍未过，默认opener或Tern可验也不能单独解除发布阻塞。
-- 18.14.0另有资源身份未过项：omp18140-stats-managed1成功open/observe后，tab.run解析失败；该次没有服务/driver目录，但具名close仅返回Released，未取得target ID/独占Profile。9个已知target及最终共享CDP空列表不能补造该页独立销毁证明；单列未知身份，不宣称全轮零残留，同样阻止发布。
+- 18.14.0另有该轮资源身份未过项：omp18140-stats-managed1成功open/observe后tab.run解析失败，该次没有服务/driver目录，具名close仅返回Released，未取得target ID/独占Profile。已知target和共享CDP空列表不能补造其独立销毁证明，该轮不发布。历史缺证必须保留，但不等于已证实后续轮持续泄漏；后续轮须建立独立基线并证明本轮所有资源闭环，不能凭旧地址认领页面或宣称全历史零残留。
 - 18.15.0新增Tern优先入口尚未实测：CLI `over`与会话`beside`生命周期不同，系统fallback、测试opener bridge及进程/private消失不能证明Tern block关闭。源码推断的清理注册窗口、迟到block及现有3秒wrapper/5秒Tern关闭时限差异不是动态复现，不据此添加产品shim或放宽账本。
 - 18.12.3首个Stats登录shell驱动被path_helper重排，潜在调用系统open；`http://127.0.0.1:52700`的潜在原生页存在/target/关闭均unknown，详见CONTEXT与SECURITY。已知自有资源全部回收或安全重跑通过仍不能替代该轮零残留门禁；保持未发布候选，不创建tag/Release。
 - **18.12.1单次授权例外（2026-10-19）**：维护者明确批准仅豁免真实系统默认浏览器的打开/失败回收验收，允许完成实际tag与GitHub Release。该项仍为未验证，Release必须显著列出；不申请或绕过桌面控制，不以测试专属opener转交当作默认opener证据。其余版本一致性、Settings、Commands、Stats headless、资源回收、最终CI和冷安装门禁全部保留；后续版本不自动继承本例外。
@@ -95,6 +95,15 @@
 private preload不能等正常流程后期ps审计才登记；自动opener bridge转交URL前，先从真实compiled marker记录native PID、BUN_OPTIONS中的私有路径，再打开自有页。中断回归同时证明目录/文件0700/0600与退出后该路径ENOENT；归属未知时保留账本失败关闭，不因端口已关闭就删掉唯一追踪记录。
 
 模型请求隔离不能只覆盖global fetch：目标compiled显式模型的原生HTTPS暖连须到达标准Agent异步无Socket拒绝，并跨abort timeout存活；代理fetch分支独立检查。目录GET、Stats身份GET、无凭据HEAD、被拒POST尝试分别记账。技能描述fixture预置官方格式缓存，不调用后台生成；未知输入在input阶段handled，不靠agent_start throw阻止费用。
+
+### 4.1 阻塞前置与恢复
+
+- 每轮先核验真实版本/来源、上游缺陷跟踪、浏览器身份/清理能力和必要真实终端环境。记录具体状态、证据及解除条件；区分产品失败、环境未验、驱动失败和历史unknown，不混写为“发布命令失败”。
+- 外部前提明确不满足时，继续完成必要适配、驱动修复和定向回归；不反复运行无法改变发布结论的完整最终矩阵。前提解除后重新固定目标宿主/提交，再完成原有三面、CI、冷安装和回收门禁，不缩小范围、不继承旧通过记录。
+- 冷摄取须核验官方合并及实际含修复的官方构建、版本/checksum和嵌入客户端；上游PR绿色、自编译、局部源码回归或插件强刷均不代证。遵守上游贡献要求，不冒充维护者亲自review/测试或自主代发实现PR。
+- Tern当前为[官方闭测产品](https://stencil.so/tern)，必须取得真实应用、pane/socket和block身份；不自动注册waitlist、接受条款或改账户权限，不以假服务或系统浏览器替代。没有环境就明确阻塞，除非维护者另行明确批准范围变化；本次维护者选择保留门禁。
+- 编译版smoke默认本地link；设置`OMP_SMOKE_GITHUB_REF=<最终40位SHA>`执行真实干净GitHub安装，禁止复制工具输出生成派生脚本。运行账本保留于树外`<run>.resources.json`；成功/人为失败预检先于安装及Stats，观察真实target/PID/组/端口/private销毁。清理失败记录不可被重试抹掉，父只在逐项核对明确所有权后回收遗留脚手架。
+
 
 ## 5. 安装契约
 

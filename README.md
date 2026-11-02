@@ -23,9 +23,9 @@
 - Settings：579 定义/435 项 UI，新增 `task.perCallModel` 与 `task.perCallModelAllow`，复核 `async.widgets`、`task.maxEffort` 与 `tier.openai` 的 ultrafast/relay 说明；其余 430 项不重译、8 个动态 getter 不变。允许列表只能约束配置已授权的模型，项目设置不能授予或启用模型；无 UI 的 `judgment.attemptTimeoutMs` 不补译
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
 - Commands：88 定义、97 个命令名/别名、9 别名、27 个动态回调保持；静态漂移 0。`/fast ultra` 参数说明新增 relay，仍保留英文；`/jobs full` 可能请求模型生成 caption，不用于零模型请求验收；`/stats`、`/trace` 的官方 Tern 优先入口不由插件接管
-- 已有本轮证据：首次完整检查通过，67 测试、2687 断言，435/435、Schema 漂移 0，1917 项显示元数据变更/3 次恢复/源码网络 0。实际 compiled smoke 在适配官方 SIGINT 退出 130 合同后通过；TUI 169 个 PTY 文字帧及网页 33 路由/API/HTTP 分项另见 CONTEXT。这些不代替最终精确提交 CI、Tern 或默认 opener 验收
+- 初轮适配证据：67 测试、2687 断言，435/435、Schema 漂移 0，1917 项显示元数据变更/3 次恢复/源码网络 0；TUI 169 个 PTY 文字帧及网页 33 路由/API/HTTP 分项另见 CONTEXT。后续维护已补验真实默认 opener 并加固 compiled smoke；历史记录不代替最终精确提交 CI、目标宿主真实交互与 Tern 验收
 - Stats：实际官方 18.15.0 编译 CLI；94→97 源码、74→77 客户端，新增关闭按钮 tooltip 译文，613 键/105 严格模板；browser/mutations/preload 保持。官方新增 `/api/close`、Tern 打开/关闭及合成未执行工具错误统计修正，插件不复制 API、计算或生命周期逻辑
-- **不发布**：官方首次摄取竞态的 query/query-store/live 源码仍未修复，不以强刷或轮询掩盖；当前原生 Chrome 可见，但 relay 尚不能提供稳定 target ID，默认 opener 未启动验收；新 Tern 生命周期未实测。历史身份未知页继续单列，不擅自认领，不宣称全历史零残留
+- **仍未发布**：官方冷摄取竞态已报 [#17754](https://github.com/can1357/oh-my-pi/issues/17754)，上游复现并创建修复 [#17758](https://github.com/can1357/oh-my-pi/pull/17758)；须取得包含修复的官方编译制品后重新验收，不能用源码修复代替。真实默认 `/usr/bin/open` 的原 URL/一次调用、中文/English/刷新及正常/失败定向回收已补验通过；Tern 真实门禁经维护者确认保留，目前缺少其闭测应用/pane 环境。历史身份未知尝试继续单列，不宣称全历史零残留
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -149,6 +149,7 @@ omp plugin link . --scope project
 - `bun run drift:check`：设置路径、选项值和英文原文哈希漂移。
 - `bun run commands:check`：全量内置命令覆盖、新增/删除、原文、别名及标识冲突门禁；已纳入 `bun run check`。复用运行时的原文匹配规则，仅允许已知动态快捷键占位变化。
 - `bun run smoke`：真实宿主元数据的三轮应用/撤销、原生面板派生、行为元数据不变和零网络请求检查。
+- 实际编译版与干净 GitHub 安装复用 `scripts/smoke-cli.ts`：传入真实官方 OMP 和 Chrome 的绝对路径；`OMP_SMOKE_GITHUB_REF=<40位提交SHA>`选择该精确提交的干净 GitHub 安装，未提供则验证本地 link。每次先证明正常/人为失败回收，再执行探针；树外资源账本在运行结束后保留。测试专属 opener 仍不代替系统默认 opener 或 Tern 真实验收。
 
 面板或宿主适配变化还必须在**实际使用的官方编译版**中验证加载、中文搜索、设置编辑和同进程语言切换。源码模式通过不代表编译版共享对象可用。
 命令补全适配须另在真实编译版验证 `/` 列表、别名、动态状态/键位、中英文往返及 Tab/Enter 插入和执行。静态命令门禁只检查锁定开发依赖，不代替升级后的宿主注册表、动态模板源码审查或实际 UI 验证。Stats 也需独立完成实际官方 CLI 与浏览器验证。

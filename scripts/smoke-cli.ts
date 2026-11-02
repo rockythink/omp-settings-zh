@@ -1,6 +1,6 @@
 import { copyFile, mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { dirname, isAbsolute, join, resolve } from "node:path";
 import puppeteer, { type Browser, type Page } from "puppeteer-core";
 // The package root installs postmortem signal exits; this driver owns cleanup.
 import { VERSION } from "@oh-my-pi/pi-utils/dirs";
@@ -8,7 +8,10 @@ import { VERSION } from "@oh-my-pi/pi-utils/dirs";
 // Explicit official compiled executable; npm/source imports are not the runtime.
 const input = Bun.argv[2];
 const browserExecutable = process.env.OMP_SMOKE_BROWSER;
+const githubRef = process.env.OMP_SMOKE_GITHUB_REF;
+if (githubRef && !/^[0-9a-f]{40}$/.test(githubRef)) throw new Error("OMP_SMOKE_GITHUB_REF must be an exact 40-character lowercase commit SHA");
 if (!input || !browserExecutable) throw new Error("Usage: OMP_SMOKE_BROWSER=<Chrome executable> bun scripts/smoke-cli.ts <official omp absolute path>");
+if (!isAbsolute(input) || !isAbsolute(browserExecutable)) throw new Error("Official OMP and browser executables must be absolute paths");
 if (process.platform !== "darwin" && process.platform !== "linux") throw new Error("Main release gate supports macOS/Linux only; Windows remains a separate draft.");
 let interruption: Error | undefined;
 let signalExitCode = 0;
@@ -20,6 +23,9 @@ process.on("SIGTERM", onSigterm);
 process.on("SIGHUP", onSighup);
 const checkpoint = () => { if (interruption) throw interruption; };
 const root = await mkdtemp(join(tmpdir(), "omp-native-posix-"));
+// Keep evidence outside the disposable tree: a failed recursive removal must
+// never remove the only ownership/cleanup ledger.
+const resourceLedger = root + ".resources.json";
 const home = join(root, "home 空格");
 const cwd = join(root, "project 空格");
 const temporary = join(root, "temp 空格");
@@ -29,15 +35,15 @@ const wrapper = join(home, ".local/share/omp-settings-zh/bin/omp");
 const repo = resolve(import.meta.dir, "..");
 interface PageResource { targetId: string; url: string; closed: boolean }
 const owned = {
-  run: root, rootRemoved: false, cleanupErrors: 0, browserPid: 0, browserExecutable, browserProfile: join(root, "browser-profile"), browserClosed: false,
-  baselinePages: [] as string[], pagesCreated: 0, pagesClosed: 0, pages: [] as PageResource[],
-  services: [] as { pid: number; nativePid?: number; port: number; closed: boolean; preload?: string }[],
+  run: root, resourceLedger, rootRemoved: false, cleanupErrors: 0, cleanupFailures: [] as string[], browserPid: 0, browserExecutable, browserProfile: join(root, "browser-profile"), browserLaunchAttempted: false, browserClosed: false,
+  baselinePages: [] as string[], baselineVerified: false, pagesCreated: 0, pagesClosed: 0, pages: [] as PageResource[],
+  services: [] as { pid: number; nativePid?: number; guardPid?: number; port: number; closed: boolean; preload?: string }[],
   commands: [] as { pid: number; groupClosed: boolean }[],
   bridge: undefined as { pid: number; port: number; closed: boolean } | undefined,
   temporaryPaths: [root, home, cwd, temporary, dirname(official), openerDir],
 };
 const pageResources = new WeakMap<Page, PageResource>();
-const ledger = () => writeFile(join(root, "resources.json"), JSON.stringify(owned));
+const ledger = () => writeFile(resourceLedger, JSON.stringify(owned));
 async function recordPage(target: Page) {
   const client = await target.createCDPSession();
   try {
@@ -47,14 +53,35 @@ async function recordPage(target: Page) {
     await ledger();
   } finally { await client.detach(); }
 }
+async function pageTargetIds() {
+  if (!browser) throw new Error("Owned browser is unavailable for target observation");
+  const client = await browser.target().createCDPSession();
+  try {
+    const { targetInfos } = await client.send("Target.getTargets");
+    return targetInfos.filter(target => target.type === "page").map(target => target.targetId).sort();
+  } finally { await client.detach(); }
+}
+async function assertPageBaseline() {
+  if (!owned.baselineVerified || !Bun.deepEquals(await pageTargetIds(), owned.baselinePages)) throw new Error("Owned page target identities did not return to the verified baseline");
+}
 async function closePage(target: Page) {
-  if (!target.isClosed()) await target.close();
   const resource = pageResources.get(target);
-  if (resource && !resource.closed) { resource.closed = true; owned.pagesClosed++; }
+  if (!resource) throw new Error("Cannot close a page without a recorded target identity");
+  if (!target.isClosed()) await target.close();
+  await until(async () => target.isClosed() && !(await pageTargetIds()).includes(resource.targetId) ? true : undefined, "owned page target destroyed: " + resource.targetId, true);
+  if (!resource.closed) { resource.closed = true; owned.pagesClosed++; }
+  await ledger();
+}
+function processGone(pid: number) {
+  if (!Number.isSafeInteger(pid) || pid <= 0) throw new Error("Missing owned process identity");
+  try { process.kill(pid, 0); return false; }
+  catch (error) { if ((error as NodeJS.ErrnoException).code === "ESRCH") return true; throw error; }
 }
 let browser: Browser | undefined;
 let page: Page | undefined;
 let service: Bun.Subprocess<"ignore", "pipe", "pipe"> | undefined;
+let serviceExited = false;
+let serviceCompletion: Promise<number> | undefined;
 let expectedUrl = "";
 let opened = false;
 let installed = false;
@@ -68,7 +95,7 @@ for (const key of Object.keys(env)) if (/API_KEY|TOKEN|SECRET|CREDENTIAL/i.test(
 // Exercise native HTTPS warm-up without inheriting a real proxy.
 for (const key of ["HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"]) delete env[key];
 for (const key of Object.keys(env)) if (key === "PI_PROXY" || key.startsWith("PI_PROXY_")) delete env[key];
-async function command(binary: string, args: string[], ignoreInterrupt = false) {
+async function command(binary: string, args: string[], ignoreInterrupt = false, timeoutMs = 45_000) {
   if (!ignoreInterrupt) checkpoint();
   const child = Bun.spawn([binary, ...args], { cwd, env, detached: true, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
   const resource = { pid: child.pid, groupClosed: false };
@@ -81,7 +108,7 @@ async function command(binary: string, args: string[], ignoreInterrupt = false) 
   const deadline = setTimeout(() => {
     signalGroup("SIGTERM");
     escalation = setTimeout(() => signalGroup("SIGKILL"), 1000);
-  }, 45_000);
+  }, timeoutMs);
   let code: number, out: string, error: string;
   try {
     await ledger();
@@ -122,20 +149,31 @@ async function until<T>(check: () => Promise<T | undefined>, description: string
 }
 async function closeStage() {
   const errors: unknown[] = [];
-  try { if (page) await closePage(page); } catch (error) { errors.push(error); }
-  page = undefined;
+  try { if (page) { await closePage(page); page = undefined; } } catch (error) { errors.push(error); }
   try {
     if (service) {
-      if (service.exitCode === null) service.kill("SIGINT");
-      const code = await service.exited;
-      if (code !== 130) throw new Error("Stats SIGINT exit " + code);
+      const stopping = service;
+      const exited = serviceCompletion;
+      if (!exited) throw new Error("Owned Stats exit observation is missing");
+      if (!serviceExited) stopping.kill("SIGINT");
+      const escalation = setTimeout(() => { if (!serviceExited) stopping.kill("SIGKILL"); }, 5000);
+      try { await until(async () => serviceExited ? true : undefined, "owned Stats launcher exited", true); }
+      finally { clearTimeout(escalation); }
+      const code = await exited;
       service = undefined;
+      if (code !== 130) throw new Error("Stats SIGINT exit " + code);
     }
   } catch (error) { errors.push(error); }
   try {
     if (expectedUrl) await until(async () => { try { await fetch(expectedUrl, { signal: AbortSignal.timeout(1000) }); } catch { return true; } }, "owned Stats port closed", true);
     const resource = owned.services.at(-1);
     if (resource) {
+      if (!resource.nativePid || !resource.guardPid) throw new Error("Compiled Stats/guard process ownership was not captured; preserve the run ledger");
+      await until(async () => {
+        if (!processGone(resource.pid) || !processGone(resource.nativePid!) || !processGone(resource.guardPid!)) return;
+        try { process.kill(-resource.guardPid!, 0); }
+        catch (error) { if ((error as NodeJS.ErrnoException).code === "ESRCH") return true; throw error; }
+      }, "owned Stats processes and detached guard group exited", true);
       if (!resource.preload) throw new Error("Private preload ownership was not captured; preserve the run ledger");
       try { await stat(resource.preload); throw new Error("Owned private preload directory survived Stats exit"); }
       catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; }
@@ -143,7 +181,12 @@ async function closeStage() {
     }
     await ledger();
   } catch (error) { errors.push(error); }
-  if (errors.length) throw new AggregateError(errors, "Stage resource cleanup failed");
+  try { if (owned.baselineVerified && browser?.connected) await assertPageBaseline(); } catch (error) { errors.push(error); }
+  if (errors.length) {
+    owned.cleanupFailures.push(...errors.map(String)); owned.cleanupErrors = owned.cleanupFailures.length;
+    await ledger();
+    throw new AggregateError(errors, "Stage resource cleanup failed");
+  }
 }
 try {
   checkpoint();
@@ -152,12 +195,32 @@ try {
   env.PATH = dirname(official) + ":" + (process.env.PATH ?? "");
   await ledger(); // Ownership exists before any command capable of opening a page.
   // Puppeteer's default SIGINT handler calls process.exit(130), bypassing our cleanup.
+  owned.browserLaunchAttempted = true; await ledger();
   browser = await puppeteer.launch({ executablePath: browserExecutable, headless: true, userDataDir: owned.browserProfile, env, handleSIGINT: false, handleSIGTERM: false, handleSIGHUP: false, args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   owned.browserPid = browser.process()?.pid ?? 0;
+  await ledger();
+  if (!owned.browserPid) throw new Error("Owned browser process identity is missing");
   const initialPages = await browser.pages();
   // This browser/profile belongs exclusively to this run, including its initial blank page.
   for (const initial of initialPages) { await recordPage(initial); await closePage(initial); }
+  owned.baselinePages = await pageTargetIds();
+  if (owned.baselinePages.length) throw new Error("Browser preflight did not establish an empty page-target baseline");
+  owned.baselineVerified = true;
   await ledger();
+  // Prove both cleanup paths before installing the plugin or starting Stats.
+  for (const failAssertion of [false, true]) {
+    page = await browser.newPage();
+    await recordPage(page);
+    try {
+      if (failAssertion) throw new Error("intentional preflight assertion");
+    } catch (error) {
+      if (!failAssertion || !(error instanceof Error) || error.message !== "intentional preflight assertion") throw error;
+    } finally {
+      await closeStage();
+    }
+    await assertPageBaseline();
+    console.log(failAssertion ? "Assertion-failure preflight cleanup passed" : "Success preflight cleanup passed");
+  }
   bridge = Bun.serve({ hostname: "127.0.0.1", port: 0, async fetch(request) {
     const url = await request.text();
     if (request.method !== "POST" || url.replace(/\/$/, "") !== expectedUrl || !page) return new Response("unowned URL", { status: 400 });
@@ -222,7 +285,17 @@ require('node:module').syncBuiltinESMExports?.();
   env.BUN_OPTIONS = "--smol --preload=" + userPreload;
   owned.temporaryPaths.push(userPreload, hostMarker, fetchAudit, connectionAudit); await ledger();
   if ((await command(official, ["--version"])).trim() !== "omp/" + VERSION) throw new Error("Actual host differs from locked development dependency");
-  await command(official, ["plugin", "link", repo]);
+  if (githubRef) {
+    // Only package installation may access its public source/dependencies.
+    // Runtime probes below retain the compiled no-dispatch guard.
+    const options = env.BUN_OPTIONS;
+    env.BUN_OPTIONS = "";
+    try { await command(official, ["plugin", "install", "github:rockythink/omp-settings-zh#" + githubRef], false, 120_000); }
+    finally { env.BUN_OPTIONS = options; }
+    console.log("Clean GitHub installation:", githubRef);
+  } else {
+    await command(official, ["plugin", "link", repo]);
+  }
   const marker = join(root, "settings.json");
   const probe = join(root, "probe.ts");
   await writeFile(probe, `import {orderedSettings} from '@oh-my-pi/pi-coding-agent/config/all-settings';import {VERSION,getPluginsNodeModules} from '@oh-my-pi/pi-utils';export default function(pi){pi.on('session_start',(_event,context)=>{setTimeout(async()=>{const s=orderedSettings();const label=s.find(x=>x.id==='autoResume').definition.ui.label;const option=s.find(x=>x.id==='tui.vimModeDisplay').definition.ui.options.find(x=>x.value==='text');await Bun.write(${JSON.stringify(marker)},JSON.stringify({version:VERSION,label,option,model:{provider:context.model?.provider,id:context.model?.id},plugins:getPluginsNodeModules()}));process.exit(label==='自动恢复'&&option.description==='完整模式名称：NORMAL、INSERT、VISUAL、V-LINE、REPLACE'?0:1);},0);});}`);
@@ -243,11 +316,13 @@ require('node:module').syncBuiltinESMExports?.();
     expectedUrl = `http://127.0.0.1:${port}`; opened = false;
     page = await browser.newPage(); await recordPage(page);
     service = Bun.spawn([wrapper, "stats", "--port", String(port), "--host", "127.0.0.1"], { cwd, env, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
+    serviceExited = false;
+    serviceCompletion = service.exited.then(code => { serviceExited = true; return code; });
     owned.services.push({ pid: service.pid, port, closed: false }); await ledger();
     const stdout = new Response(service.stdout).text(); const stderr = new Response(service.stderr).text();
     let intentional = false;
     try {
-      await until(async () => { if (service!.exitCode !== null) throw new Error(await stderr); return opened ? true : undefined; }, "official automatic URL observed in owned page");
+      await until(async () => { if (serviceExited) throw new Error(await stderr); return opened ? true : undefined; }, "official automatic URL observed in owned page");
       const listeners = (await command("lsof", ["-nP", "-iTCP:" + port, "-sTCP:LISTEN", "-Fp"])).split("\n").filter(line => line.startsWith("p"));
       if (listeners.length !== 1) throw new Error("Expected exactly one official Stats listener");
       const nativePid = listeners[0]!.slice(1);
@@ -256,9 +331,16 @@ require('node:module').syncBuiltinESMExports?.();
       const resource = owned.services.at(-1)!;
       if (resource.nativePid !== Number(nativePid)) throw new Error("Stats listener does not match compiled startup ownership");
       const childPids = (await command("pgrep", ["-P", String(service!.pid)])).trim().split(/\s+/);
-      const processArgs = await command("ps", ["-ww", "-p", childPids.join(","), "-o", "args="]);
-      const privateDirectory = processArgs.match(/omp-stats-guard \d+ \d+ (\S+)$/m)?.[1];
-      if (!privateDirectory) throw new Error("Cannot identify owned private preload directory");
+      let privateDirectory: string | undefined;
+      for (const childPid of childPids) {
+        const processArgs = await command("ps", ["-ww", "-p", childPid, "-o", "args="]);
+        const guard = processArgs.trim().match(/omp-stats-guard (\d+) (\d+) (\S+)$/);
+        if (!guard) continue;
+        if (resource.guardPid || Number(guard[1]) !== service!.pid || Number(guard[2]) !== Number(nativePid)) throw new Error("Stats guard process identity does not match its launcher/native owner");
+        resource.guardPid = Number(childPid); privateDirectory = guard[3];
+        await ledger();
+      }
+      if (!privateDirectory) throw new Error("Cannot identify owned private preload directory and guard process");
       if (resource.preload !== privateDirectory) throw new Error("Guard private directory does not match compiled startup ownership");
       if (((await stat(privateDirectory)).mode & 0o777) !== 0o700 || ((await stat(join(privateDirectory, "preload.cjs"))).mode & 0o777) !== 0o600) throw new Error("Private preload permissions changed");
       const compiled = JSON.parse(await readFile(hostMarker, "utf8"));
@@ -277,7 +359,7 @@ require('node:module').syncBuiltinESMExports?.();
       console.log("Compiled Stats: automatic opener URL, Chinese/English, refresh, same-origin API and original host/port", expectedUrl);
     } catch (error) { if (!intentional || !(error instanceof Error) || error.message !== "intentional cleanup assertion") throw error; }
     finally { await closeStage(); await Promise.all([stdout, stderr]); }
-    if ((await browser.pages()).length !== 0) throw new Error("Owned page did not return to baseline");
+    await assertPageBaseline();
     console.log(failure ? "Assertion-failure cleanup passed" : "Success cleanup passed", JSON.stringify(owned));
   }
   await command(wrapper, ["plugin", "uninstall", "omp-settings-zh", "--dry-run"]);
@@ -313,17 +395,35 @@ require('node:module').syncBuiltinESMExports?.();
 } finally {
   const errors: unknown[] = [];
   try { await closeStage(); } catch (error) { errors.push(error); }
-  try { bridge?.stop(true); if (owned.bridge) owned.bridge.closed = true; await ledger(); } catch (error) { errors.push(error); }
-  try { await browser?.close(); owned.browserClosed = true; for (const resource of owned.pages) if (!resource.closed) { resource.closed = true; owned.pagesClosed++; } await ledger(); } catch (error) { errors.push(error); }
+  try {
+    if (bridge && owned.bridge) {
+      await bridge.stop(true);
+      const url = "http://127.0.0.1:" + owned.bridge.port;
+      await until(async () => { try { await fetch(url, { signal: AbortSignal.timeout(1000) }); } catch { return true; } }, "owned opener bridge port closed", true);
+      owned.bridge.closed = true; await ledger();
+    }
+  } catch (error) { errors.push(error); }
+  try {
+    if (browser) {
+      await browser.close();
+      await until(async () => processGone(owned.browserPid) ? true : undefined, "owned browser process exited", true);
+      owned.browserClosed = true;
+      // Observed browser process death destroys its remaining owned page targets.
+      for (const resource of owned.pages) if (!resource.closed) { resource.closed = true; owned.pagesClosed++; }
+      await ledger();
+    }
+    if (owned.browserLaunchAttempted && (!owned.browserClosed || !owned.baselineVerified)) throw new Error("Browser launch/baseline ownership was not fully established; preserve the run ledger");
+  } catch (error) { errors.push(error); }
   try { if (installed || await Bun.file(wrapper).exists()) await command(process.execPath, [join(repo, "src/cli/install.ts"), "uninstall"], true); } catch (error) { errors.push(error); }
-  if (!errors.length) {
+  if (owned.commands.some(resource => !resource.groupClosed) || owned.services.some(resource => !resource.closed) || owned.pages.some(resource => !resource.closed) || (owned.bridge && !owned.bridge.closed)) errors.push(new Error("Owned resources have unobserved cleanup; preserve the run ledger"));
+  if (!errors.length && !owned.cleanupFailures.length) {
     try { await rm(root, { recursive: true, force: true }); owned.rootRemoved = true; } catch (error) { errors.push(error); }
   }
-  owned.cleanupErrors = errors.length;
-  if (errors.length) await ledger();
+  owned.cleanupFailures.push(...errors.map(String)); owned.cleanupErrors = owned.cleanupFailures.length;
+  await ledger();
   console.log("Resource cleanup:", JSON.stringify(owned));
   process.off("SIGINT", onSigint);
   process.off("SIGTERM", onSigterm);
   process.off("SIGHUP", onSighup);
-  if (errors.length) throw new AggregateError(errors, "Owned resource cleanup failed; see ledger/output for " + root);
+  if (owned.cleanupErrors) throw new AggregateError([...owned.cleanupFailures], "Owned resource cleanup failed; see ledger/output for " + resourceLedger);
 }

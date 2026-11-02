@@ -1,6 +1,22 @@
 # Project Context
 
-## 18.15.0 当前维护候选（未发布）
+## 18.15.0 发布阻塞处理（2026-11-02，仍未发布）
+
+起点本地/远端main均a7e98337b4e83551307383efc2ad71766f11a9e6，精确CI41321620258的macOS/Linux均成功；package、真实官方宿主、GitHub来源插件及三项官方依赖均18.15.0，doctor5/0/0。实际受管`omp update`报告Already up to date，官方二进制SHA256仍与18.15.0资产一致。Windows PR #1仍CLOSED、draft、未合并；42项用户未跟踪内容保持。
+
+冷摄取已建立上游闭环入口：[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)，上游独立复现并创建[PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)。本轮对未修改main 686b5e2fb542848dc3ff1a9e36a42a8fefdd2278的合成源码调度实测0/1次请求，局部候选修复为16/2次请求，15项查询回归及Stats双类型检查通过；这些不是18.15.0 compiled冷摄取重新复现或修复验收。遵守上游贡献规范，只报障，不代人类提交实现PR；不把局部修复写入插件或官方安装。仍需官方含修复制品及新进程验收，不能只凭PR/源码通过解除门禁。
+
+默认系统opener已独立补验：原生窗口接口失败后，用Chrome原生脚本取得稳定数字tab ID；正常及故意断言失败预检均关闭精确自有ID并保留用户基线。新zsh登录shell直接`omp stats`，不替换open、不修改默认浏览器，真实compiled对原URL调用/usr/bin/open恰好一次、退出0，lsof为该官方进程的原127.0.0.1端口单监听器。真实网页中文→English→刷新保留→中文、API不变及正常/故意失败的先关页后停服、端口/private/root回收均有原生AX/截图与账本；直接安装隔离launcher的该切片不冒充GitHub冷安装。
+
+浏览器失败保留：首次relay开页报断线，Chrome进程更换且出现恢复提示；原因未确证，没有执行退出浏览器或关闭用户页。经维护者明确批准，通过History恢复原11标签，App Store Connect自行跳转登录，不重登。该次没有取得自有target ID，仍单列unknown，不补造数量；后续改走原生数字ID。临时驱动的作用域、按完整URL而非origin匹配、AX checkbox/press假设错误均先回收已认领资源后修正，不记成产品修复或抹去失败。
+
+`scripts/smoke-cli.ts`固化绝对路径、CDP target身份/销毁、实际正常与人为失败预检、launcher/native/guard组及bridge端口回收；账本置于运行树外，清理失败不可被最终重试抹掉。Bun信号退出可能exitCode仍null，统一用exited结算状态判断/升级，不再轮询exitCode。首轮误用exitCode造成的超时账本保留，已知PID/端口回收后由父定向删除临时树；修正后的真实compiled smoke通过，5页创建/关闭、两服务/private和独占浏览器/root回收。支持OMP_SMOKE_GITHUB_REF指定精确40位SHA冷安装，避免再复制临时驱动。
+
+Tern门禁明确保留：本机无应用/命令及TERN_PANE_SOCKET/TERN_PANE；[官方页面](https://stencil.so/tern)标为CLOSED BETA。未注册waitlist、未改账户/权限，不用假socket替代真实pane/block。原系统浏览器补验不能代证Tern；仍需获得实际环境。外部前提未解除时只推进必要修复/检查，不重复整套最终发布矩阵；前提满足后重新固定目标版本并完整验收，绝不缩小三面范围。
+
+本轮插件运行代码/译文、package版本及锁定依赖未变；Settings435/435、Schema0，Commands88/88、97标识、漂移0，67测试/2687断言和源码3轮恢复通过。真实TUI/全页/命名Profile的历史证据不冒充本轮重验；最终精确提交CI和干净GitHub安装仍按实际输出核定。最新正式tag/Release仍v18.12.6，不空升候选、不创建发布；重启OMP与新终端的限制不变。
+
+## 18.15.0 初轮适配记录（2026-11-01，未发布）
 
 现场起点：本地/远端main均651e800606d554805975ad4c9f3dc0d2501dce22，package/真实宿主/GitHub来源插件均18.14.1，doctor5/0/0；精确提交CI41215037729的macOS/Linux成功。正式tag/Release仍v18.12.6。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项用户未跟踪内容不提交、不清理。
 
@@ -288,8 +304,8 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前Settings为426项UI元数据；18.13.3新增五项、复核autoResume恢复失败说明，8动态getter不变。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
-- 当前Commands为88定义、97名称/别名的顶层说明、实时状态与技能数量；18.13.3更新context/hub说明并新增subagents别名，27动态回调保持。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
+- 当前Settings为435项UI元数据、579定义；18.15.0新增两项任务模型设置，复核widgets/maxEffort与tier说明，8动态getter不变。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
+- 当前Commands为88定义、97名称/别名的顶层说明、实时状态与技能数量；9别名、27动态回调保持。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
 - 设置语言只保留在当前进程，下次启动默认中文；设置汉化不写配置、不读当前设置值或凭据、不联网。
