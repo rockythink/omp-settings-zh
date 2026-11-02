@@ -1,5 +1,21 @@
 # Project Context
 
+## 18.15.0 前提复查（2026-11-02，未发布）
+
+本轮起点main/origin/main与远端main均`7f3709010505a9059056cea1154eefca607cc73f`，精确CI [41401459541](https://github.com/rockythink/omp-settings-zh/actions/runs/41401459541)的macOS/Linux均成功。正式Release仍[v18.12.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)；相对该tag有20份文件变化，存在未发布候选，不按“今天无上游更新”结束候选判定。Windows PR #1现场仍closed/draft/merged_at:null，42项既有未跟踪内容不动。
+
+受管`omp update`实际报告Already up to date，前后`omp/18.15.0`。真实官方二进制SHA-256为`d36dfabf0ee52d6f08efadb59c46f0349545c6f6975522417adae29646e73e34`，与官方18.15.0 darwin-arm64资产一致；外部Bun1.4.4。coding-agent/utils/Stats最新稳定版均18.15.0，coding-agent精确依赖同版utils/Stats。本机插件仍GitHub来源18.15.0、doctor5/0/0；另一个pi-xcode-mcp0.1.0及其来源未改，无需换源或重装。
+
+独立从官方v18.15.0 Git树`3fedf8d53267e32a6d7521ce725fdcc4a36fdc67`核验全部1836份coding-agent、127份utils、97份Stats、440份TUI源码Git blob，开发目录和本机插件依赖均无不匹配；官方4个HTML源未包含在npm源码包，不能算已核验包内文件。本机插件17份src与工作区逐字节一致。Settings注册图、Commands全部注册/动态说明/公共provider及Stats全部客户端、DOM适配均没有新的来源变化，不重译、不空升候选编号。
+
+`bun install --frozen-lockfile`无变化；`bun run check`为67pass/0fail、2687断言，Settings435/435、Schema漂移0，Commands88/88及97标识、命令/别名/原文漂移0，三轮应用恢复与源码网络0。另用隔离HOME、PI_CODING_AGENT_DIR及XDG/TMPDIR实际运行官方绝对路径和受管启动器的`stats --json`/`--summary`，四进程均退出0，两对stdout/stderr逐字节相同。此切片不启动Web、不代替compiled TUI或Stats网页验收。
+
+冷摄取[#17754](https://github.com/can1357/oh-my-pi/issues/17754)仍open，修复[#17758](https://github.com/can1357/oh-my-pi/pull/17758)现场为open、merged:false、merged_at:null；最新官方Release仍18.15.0。已核验官方query.ts仍有同键in-flight提前返回且结算不重新检查版本的实现，不含PR修复。不重跑旧失败，不用插件轮询/强刷、源码候选或warm-state代证。当前分类为官方已知缺陷；本轮未发现插件回归或安装漂移，完整TUI/网页/最终冷安装属于外部前提未解除而未重验，不记为功能失败。Tern仍为范围外可选未验；历史unknown留审计，不作为已证实本轮泄漏。
+
+本轮资源run `omp-maintenance-20261102-053be955`：未启动浏览器、自动opener或Stats监听服务，页面创建0/关闭0/已知残留0，服务0；四个CLI PID及独占进程组均ESRCH，隔离运行根目录ENOENT。树外资源账本保留，不含用户数据；首次来源核验Eval在解析阶段失败，未获得资源，修正后完整核验通过。没有操作用户页面、真实设置或既有服务。默认opener及清理预检本轮未重跑，不能将此前通过追认为本轮验证。
+
+**未发布**：等待含#17758等效修复的官方稳定编译制品；到时重新固定真实宿主与最终提交，完整重验适用三面、安全/API/SSE、系统opener和本轮资源回收、macOS/Linux CI及精确SHA冷GitHub安装。全部通过才实际建tag/Release；本轮仅提交证据，不改运行代码、package/bun.lock或发布编号。
+
 ## 18.15.0 发布阻塞处理（2026-11-02，仍未发布）
 
 后续范围确认：维护者确认Tern不是插件依赖，正式发布验收限定macOS/Linux普通终端与系统浏览器路径；Tern未安装/未获邀不再阻止该范围发布，保留官方行为并在Release标注未验证、不宣称支持。此前“必须取得真实Tern环境”的决定由本确认替代，不追认旧未验项通过。冷摄取#17754/#17758、三面真实交互、权限/API/SSE、资源回收、最终CI与冷安装门禁不变。

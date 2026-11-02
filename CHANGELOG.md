@@ -11,6 +11,8 @@
 - 加固现有 compiled smoke：绝对二进制路径、target 身份与实际销毁、开始验收前的正常/断言失败清理预检、native/guard组与bridge端口观察；树外账本保留失败。信号退出观察使用 `exited`，避免 Bun 的 `exitCode:null` 导致误超时。新增 `OMP_SMOKE_GITHUB_REF` 精确提交冷安装模式。
 - 后续经维护者确认：正式验收限定 macOS/Linux 普通终端＋系统浏览器；Tern 为可选宿主，未安装/未获邀不再阻止该范围发布，保留官方行为但明确未验证、不宣称支持。此前要求取得 Tern 环境的门禁由本确认替代；冷摄取及原有三面真实验收、安全和回收门禁不豁免。
 - 修正原 Orca 自动化任务的提示词与仓库规范，保持原工作区、OMP provider、启用状态和每日23:00 Asia/Shanghai调度；已有未发布候选即使当天上游无更新仍须继续验收。任务completed不等于发布，按插件回归/官方缺陷/环境未验/驱动失败/历史unknown分别报告，不重复无法改变结论的最终矩阵。
+- 同日按新范围复查：`omp update`无更新，官方二进制校验匹配18.15.0资产，GitHub来源插件及三项依赖均18.15.0、doctor5/0/0，无安装漂移。四包全部源码与官方固定Git树及本机依赖匹配，插件17份src与工作区一致；Settings/Commands/Stats没有新增适配变化。
+- 冻结安装与完整check再次通过：67测试/2687断言、Settings435/435、Commands88/88和97标识，两类漂移0；隔离真实compiled JSON/summary与受管启动器两对stdout/stderr/状态一致，四CLI进程/组及临时root回收，未创建网页或Stats服务。修复PR #17758仍open/unmerged、最新官方稳定制品仍18.15.0；候选相对v18.12.6确有未发布改动，但冷摄取前提未解除，不重复最终矩阵、不空升版本、不建tag/Release。完整恢复条件见CONTEXT本轮记录。
 
 ### Settings
 
