@@ -1,5 +1,31 @@
 # Project Context
 
+## 18.16.0 维护候选（2026-11-03，未发布）
+
+起点本地/远端main均`20674fee801b6f00077cd2584be288f105bd01ca`，该精确提交CI [41468045453](https://github.com/rockythink/omp-settings-zh/actions/runs/41468045453) macOS/Linux成功；正式Release仍v18.12.6，候选相对该tag有实际待发布变化。Windows PR #1仍closed/draft/merged_at:null；42项既有未跟踪内容保护，不纳入提交。
+
+实际受管`omp update`将官方18.15.0→18.16.0，SHA256 `d4a10d97488d6054d2b18198bd24f461079952c7e0fb75ba66336ca0df0cb99e`匹配官方darwin-arm64资产；内嵌/外部Bun1.4.4。coding-agent/utils/Stats最新稳定版均18.16.0，coding-agent精确依赖同版utils/Stats。固定官方tag commit `650f3a108229ee11bf68ba3377f4e8c3391cd424`：npm全部1839份coding-agent、130份utils、97份Stats、441份TUI源码Git blob匹配，4个HTML源按package.files排除。开发依赖/宿主范围/翻译来源对齐；本机原GitHub来源升级、结束版本及最终CI以本轮工具输出另核，不预先代证。
+
+**Settings**：579→582定义、435→438 UI，新增btw.inject/composer.predictionAlternatives/hindsight.globalScope；已有435项显示元数据/选项不变，8→9动态getter。37域4文件变化，92条非纯类型导入边/48来源独立审阅；原生新增composerPredictionsEnabled条件，保存/凭据/effort显示副本隔离保持。预测候选明确同次请求、额外输出Token费用与实际Tab键位；全局Hindsight默认关闭，不为验证触发模型/注入/记忆写入。
+
+**Commands**：30命令文件全部逐字节不变；88定义/97标识/9别名/27动态回调保持。另审25份接口/导入来源，8份相邻变化不改变公共provider、同步裸/与折叠skill、async/partial/AbortSignal/可选能力、viewSession/有效层级/effort键位或descriptionMatch；静态例外仍仅switch/loop。
+
+**Stats及已解除的官方缺陷**：97源码/77客户端仅query.ts、SpanDrawer.tsx变化，服务端、导航/DOM/文案、Stats CLI/openPath不变，613键/105模板保留。上游Issue #17754已closed/completed，PR #17758于2026-11-02T17:03:40Z合并，稳定tag包含其merge commit。query成功结算重检缓存版本并沿用原节流；不是插件轮询。本轮原版/包装实际compiled分别确认HOME/.omp/stats.db不存在后启动；保留真实首响应内容，仅延迟网络交付3.5秒，两者均GET0→在途SSE版本2→自动GET16、UI/API16，无刷新/切页/预热，证明嵌入客户端含有效修复。
+
+冻结安装与完整check：67pass/0fail、2687断言，Settings438/438、Schema0；Commands88/88、97标识、漂移0；1923显示变更/3恢复/源码网络0。真实TUI四进程180个PTY文字重建帧（非桌面截图），中文搜索/布尔及effort编辑恢复/en-zh/参数隔离、九别名/两技能/第三方/文件、原Tab/Enter和descriptionMatch、plan/loop等待态、SDK idle子会话Hub焦点及自定义F6/F7/F8实际留证。有效tier回调12次均真实undefined，隔离DB仅合成本地perf行激活惰性分支，不冒称tier差异/真实测速。预测生成需模型完成，未触发；Hindsight默认条件隐藏、loop运行中暂停未触发模型求验收。70GET/12HEAD拒绝、POST0/agent_start0/dispatch0，四PID/PGID/PTY/root关闭；第三次picker关闭误判后143退出单列，其余0。
+
+Profile/XDG正式294断言/4组合、8次新compiled发现；cache-v1→v2删除旧址且不relink，稳定逻辑state.main保持。缺SHELL/USER/LOGNAME按真实UID解析账户shell；无Bun12对version/JSON/summary逐字节同，依赖桥移除且4次import真实exit1后四次标准卸载0、dry-run保持。macOS的XDG并未改变官方HOME内目录，不造假路径。含首轮PATH驱动错误共74命令组/112已知PID和两driver组均gone、两root删除，页面/Stats服务0。
+
+真实CLI生命周期切片：原smoke正常/驱动INT/TERM/HUP为0/130/143/129；另9对CLI输出/状态等价、13个Web场景含短/等号参数、占用端口fallback、真实ISIG/VINTR03/前台PGID的Ctrl+C、native/launcher SIGKILL、异常42及父消失，39target建/关、21服务均闭合。测试opener真实交付URL，不代证默认系统opener；最初/private路径驱动失配保留。旧smoke仅记page-observed不含opener PID的缺口已补：Bun.spawn只记录并原样委托，开页前记PID/parent/原URL，真实exited和ESRCH结算，树外sidecar留证；更新后的真实normal smoke5页建/关、两服务/private及两个opener退出0并回收，cleanupErrors0。全局不更改打开策略或权限。
+
+网页定向切片已观察十一页zh/en/zh共33路由，33份完整API（含16请求详情/4trace）与原版逐值一致；13组HTTP边界26响应一致，含原跨Host/Origin200无CORS、judge405/403及close false/405/403/404；真实SSE原/包装15004/15002ms。English刷新和g-o键盘导航通过，同名Requests/Overview数据与错误正文保持。窄屏CDP390px菜单/Tab及请求抽屉中文通过；语言按钮在模态背后导致抽屉关闭、立即读取异步菜单等驱动错误保留，不能当作产品失败或完整追踪/重启通过。
+
+更新后smoke驱动的INT/TERM/HUP各在本轮opener实际退出0和native/guard/private已登记后中断，最终130/143/129，分别4页建/关、服务/private/bridge/root回收且cleanupErrors0。父首次信号supervisor的var状态未逐轮清空，后两次过早发信号并误读取首轮账本，结果不计为活动服务中断通过；修正隔离状态后的TERM/HUP有不同PID/URL/树外账本，原失败与真实退出码保留。
+
+**本轮未发布阻塞：驱动资源清理失败。** 父run `omp-maintenance-20261103-4f2551f6`先用独占headless Profile证明正常/人为断言失败均销毁自有target并保留原baseline。第一次长tab.run中页面会话被关闭（原因未确证；后续persist阶段不再复现），临时stop把页面导航置于服务退出try之前，故漏等launcher；父按精确归属补发SIGINT，native/原端口/private及独占Chrome/Profile均回收，但launcher仍为工具宿主的僵尸子进程，当前无安全定向reap接口。不杀工具父宿主、不伪造ESRCH，不把这一驱动问题归为插件泄漏。原cleanupErrors和parent recovery账本保留，修正后各独立阶段清理成功不能抹去它。三个早期独占browser的额外初始空白target未逐一枚举，仅以已确认独占PID死亡证明整体销毁，不补造页数。历史unknown继续审计，不认领用户页。
+
+**恢复条件**：工具宿主定向reap已登记子进程并有实际闭环；修正的测试资源账本完整覆盖每个target/子进程后，以固定官方18.16.0和最终提交完整重验适用三面、默认系统opener、偏好同origin重启/trace/动态更新、资源失败路径与macOS/Linux CI、精确SHA干净GitHub安装。尚未完成项为环境/驱动未验，不写成产品失败；本轮不重复无法改变结论的最终矩阵，不建tag/Release。Tern可选未验证，不构成本范围阻塞；不得注册候补、登录或造socket。
+
 ## 18.15.0 前提复查（2026-11-02，未发布）
 
 本轮起点main/origin/main与远端main均`7f3709010505a9059056cea1154eefca607cc73f`，精确CI [41401459541](https://github.com/rockythink/omp-settings-zh/actions/runs/41401459541)的macOS/Linux均成功。正式Release仍[v18.12.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)；相对该tag有20份文件变化，存在未发布候选，不按“今天无上游更新”结束候选判定。Windows PR #1现场仍closed/draft/merged_at:null，42项既有未跟踪内容不动。
@@ -324,7 +350,7 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前Settings为435项UI元数据、579定义；18.15.0新增两项任务模型设置，复核widgets/maxEffort与tier说明，8动态getter不变。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
+- 当前Settings为438项UI元数据、582定义；18.16.0新增BTW注入、预测候选、Hindsight全局范围三项，已有435项不重译，9动态getter。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
 - 当前Commands为88定义、97名称/别名的顶层说明、实时状态与技能数量；9别名、27动态回调保持。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。

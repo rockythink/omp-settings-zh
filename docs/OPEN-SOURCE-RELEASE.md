@@ -27,8 +27,8 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前源码/目标宿主候选18.15.0，内嵌与最低外部Bun均1.4.4；最新正式发布仍v18.12.6。真实默认opener已补验；此前relay断线及unknown尝试继续单列，不抹去失败。冷摄取跟踪[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)/[修复PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)，仍须含修复的官方compiled。正式验收范围由维护者确认为macOS/Linux普通终端＋系统浏览器；Tern可选，缺少闭测资格/环境不阻止该范围发布，其路径未验证、不宣称支持。原范围内三面真实compiled、安全/资源回收、精确最终macOS/Linux CI与冷安装门禁不变，全部通过前禁止创建tag/Release。
-- 18.13.3实测的原官方/包装compiled首次摄取UI0/API16竞态，其query/query-store及客户端/服务live源码在18.15.0仍未变，未包含对应修复；不为确认旧失败重复运行，不在插件复制查询、轮询、强刷或修改门禁掩盖。完整Stats门禁仍未过，默认opener或Tern可验也不能单独解除发布阻塞。
+- 当前源码/宿主候选18.16.0，内嵌与最低外部Bun1.4.4，最新正式发布仍v18.12.6。冷摄取[#17754](https://github.com/can1357/oh-my-pi/issues/17754)已关闭，修复[#17758](https://github.com/can1357/oh-my-pi/pull/17758)已合并且原/包装checksum匹配官方compiled无数据库冷启动GET0/SSE2→自动GET16实际通过，不再把该官方旧缺陷列为当前持续阻塞。
+- 当前未过项为本轮驱动资源回收：长tab.run页面会话关闭后，临时清理漏等launcher；native/原端口/private及独占Chrome已回收，但工具父宿主尚未reap该自有僵尸子进程，无安全定向reap接口。保留原失败，不杀宿主或伪造PID消失，不把驱动问题归为插件功能回归。资源门禁未解除前不重复最终默认opener/精确SHA冷安装矩阵，不发布；解除后固定宿主与最终提交完整重验。macOS/Linux普通终端＋系统浏览器范围、三面真实交互/权限/API/SSE/资源/最终CI/冷安装不变，Tern可选未验、不宣称支持。历史unknown不等于当前持续泄漏。
 - 18.14.0另有该轮资源身份未过项：omp18140-stats-managed1成功open/observe后tab.run解析失败，该次没有服务/driver目录，具名close仅返回Released，未取得target ID/独占Profile。已知target和共享CDP空列表不能补造其独立销毁证明，该轮不发布。历史缺证必须保留，但不等于已证实后续轮持续泄漏；后续轮须建立独立基线并证明本轮所有资源闭环，不能凭旧地址认领页面或宣称全历史零残留。
 - 官方Tern `over`/`beside`是可选且不同的生命周期，当前未验证、不宣称支持。未安装Tern不阻止明确非Tern范围发版，也不为验收修改官方打开行为；以后明确纳入时才补齐真实环境、pane/block身份和关闭证明，系统fallback及测试opener不可代证。源码推断的注册窗口/迟到block/关闭时限差异不是动态复现，不据此添加shim。
 - 18.12.3首个Stats登录shell驱动被path_helper重排，潜在调用系统open；`http://127.0.0.1:52700`的潜在原生页存在/target/关闭均unknown，详见CONTEXT与SECURITY。已知自有资源全部回收或安全重跑通过仍不能替代该轮零残留门禁；保持未发布候选，不创建tag/Release。
@@ -103,6 +103,7 @@ private preload不能等正常流程后期ps审计才登记；自动opener bridg
 - 冷摄取须核验官方合并及实际含修复的官方构建、版本/checksum和嵌入客户端；上游PR绿色、自编译、局部源码回归或插件强刷均不代证。遵守上游贡献要求，不冒充维护者亲自review/测试或自主代发实现PR。
 - Tern为[官方闭测的可选产品](https://stencil.so/tern)，不是插件依赖；后续范围确认已撤销此前“缺少Tern就不发布”的要求。本次正式验收非Tern macOS/Linux普通终端＋系统浏览器，Release标注Tern未验证、不宣称支持。以后明确纳入时才要求真实应用/pane/socket/block；不得造假环境、自动注册waitlist/登录/接受条款/改变权限，产品仍原样保留官方打开行为。
 - 编译版smoke默认本地link；设置`OMP_SMOKE_GITHUB_REF=<最终40位SHA>`执行真实干净GitHub安装，禁止复制工具输出生成派生脚本。运行账本保留于树外`<run>.resources.json`；成功/人为失败预检先于安装及Stats，观察真实target/PID/组/端口/private销毁。清理失败记录不可被重试抹掉，父只在逐项核对明确所有权后回收遗留脚手架。
+- 18.16.0 smoke自动opener还须在真实Bun.spawn调用后、bridge导航前记录PID/parent/原URL，原样委托且保留实际`.exited`结算；每轮要求唯一原URL调用、真实退出0及ESRCH，树外sidecar与失败记录不随临时树删除。page-observed响应或服务退出不能替代opener子进程回收证明。长浏览器任务须防工具自动关闭，并确保页面导航失败也继续停止/等待服务；宿主拥有的僵尸子进程必须由宿主定向reap，不用kill父宿主或waitpid(-1)绕过。
 - 检查待发布内容以最后正式tag/Release为基线，而不是只看今天上游是否更新。已有未发布候选时继续验收，全部适用门禁通过后实际创建tag与Release；仅当无新变化且无待发布候选才不空提交/空发布。Orca最终结果明确区分“已发布（真实链接/提交）”“无变化且无候选”“未发布（精确阻塞/恢复条件）”，不以completed代证。
 
 

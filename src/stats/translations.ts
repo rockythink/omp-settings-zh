@@ -1,7 +1,7 @@
 /**
- * Display-only copy reviewed against @oh-my-pi/omp-stats 18.15.0 (97 Stats
- * source files, including 77 client files). The optional dashboard Close
- * control is translated; the known upstream cold-ingest race remains.
+ * Display-only copy reviewed against @oh-my-pi/omp-stats 18.16.0 (97 Stats
+ * source files, including 77 client files). UI copy is unchanged; the official
+ * query hook now rechecks live invalidation after an older request settles.
  * Apply only to known UI text/attributes, never journal payloads,
  * identifiers, or arbitrary data cells.
  * Protocol names, command names, currencies, and brands remain unchanged.

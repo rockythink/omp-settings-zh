@@ -18,14 +18,14 @@
 
 ## 当前版本
 
-- 当前源码候选：`18.15.0`；最新正式发布仍为 [`v18.12.6`](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)。完整门禁通过前不发布，main、源码编号和本机升级不等于 Release
-- 目标官方宿主：OMP 18.15.0（内嵌 Bun 1.4.4），通过原受管 `omp update` 从 18.14.1 升级，SHA-256 与官方 darwin-arm64 资产一致；外部 Bun 最低仍为 1.4.4，已有 Agent 和 Stats 进程不会热加载新代码
-- Settings：579 定义/435 项 UI，新增 `task.perCallModel` 与 `task.perCallModelAllow`，复核 `async.widgets`、`task.maxEffort` 与 `tier.openai` 的 ultrafast/relay 说明；其余 430 项不重译、8 个动态 getter 不变。允许列表只能约束配置已授权的模型，项目设置不能授予或启用模型；无 UI 的 `judgment.attemptTimeoutMs` 不补译
+- 当前源码候选：`18.16.0`；最新正式发布仍为 [`v18.12.6`](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)。main、源码编号和本机升级不等于 Release
+- 目标官方宿主：OMP 18.16.0（内嵌 Bun 1.4.4），通过原受管 `omp update` 从 18.15.0 升级，SHA-256 与官方 darwin-arm64 资产一致；外部 Bun 最低仍为 1.4.4。已有 Agent/Stats 进程不热加载新代码
+- Settings：582 定义/438 项 UI；新增 `btw.inject`、`composer.predictionAlternatives`、`hindsight.globalScope`，已有435项不重译。9个动态 getter，新增预测候选说明保留真实 Tab 键位、同次请求和额外输出 Token 费用；不触发模型/记忆写入求验收
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写 `config.yml`
-- Commands：88 定义、97 个命令名/别名、9 别名、27 个动态回调保持；静态漂移 0。`/fast ultra` 参数说明新增 relay，仍保留英文；`/jobs full` 可能请求模型生成 caption，不用于零模型请求验收；`/stats`、`/trace` 的官方 Tern 优先入口不由插件接管
-- 初轮适配证据：67 测试、2687 断言，435/435、Schema 漂移 0，1917 项显示元数据变更/3 次恢复/源码网络 0；TUI 169 个 PTY 文字帧及网页 33 路由/API/HTTP 分项另见 CONTEXT。后续维护已补验真实默认 opener 并加固 compiled smoke；历史记录不代替最终精确提交 CI 和目标宿主的适用真实交互
-- Stats：实际官方 18.15.0 编译 CLI；94→97 源码、74→77 客户端，新增关闭按钮 tooltip 译文，613 键/105 严格模板；browser/mutations/preload 保持。官方新增 `/api/close`、Tern 打开/关闭及合成未执行工具错误统计修正，插件不复制 API、计算或生命周期逻辑
-- **仍未发布**：官方冷摄取竞态已报 [#17754](https://github.com/can1357/oh-my-pi/issues/17754)，上游复现并创建修复 [#17758](https://github.com/can1357/oh-my-pi/pull/17758)；须取得包含修复的官方编译制品后重新验收，不能用源码修复代替。真实默认 `/usr/bin/open` 的原 URL/一次调用、中文/English/刷新及正常/失败定向回收已补验通过。Tern 是可选宿主，未安装或未获邀不再阻止 macOS/Linux 普通终端＋系统浏览器范围的发布；其路径未验证、不宣称支持。历史身份未知尝试继续单列，不宣称全历史零残留
+- Commands：88 定义、97 标识、9 别名、27 动态回调；30命令文件逐字节不变。公共 provider、裸 `/`／折叠技能、viewSession、有效层级、键位及原 Tab/Enter 行为保持；参数/第三方/模型ID原文不译
+- 自动检查：67测试/2687断言，Settings438/438、Schema漂移0，Commands88/88及97标识、漂移0；1923项显示变更/3次恢复/源码网络0。真实compiled TUI共180文字帧，分项与限制见CONTEXT
+- Stats：官方18.16.0实际编译CLI；97源码/77客户端仅query和SpanDrawer两文件变化，服务端/DOM/文案保持，613键/105模板不重译。官方 [#17758](https://github.com/can1357/oh-my-pi/pull/17758) 已合并并进入稳定制品；原版/包装分别无数据库冷启动，实际旧GET0与SSE版本2交错后自动取得16，未刷新、切页或加插件轮询
+- **仍未发布**：本轮长浏览器驱动失败后，有工具宿主尚未reap的自有僵尸launcher；native/端口/private已回收，但不能宣称完整资源门禁通过。其余十一页中英往返、33份API与13组HTTP边界、真实SSE及Profile/生命周期分项留证，默认系统opener与最终精确SHA冷安装未重验。恢复条件及驱动失败见CONTEXT。Tern可选、未验证、不宣称支持，不构成非Tern范围阻塞；历史unknown不冒充当前持续泄漏
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -62,7 +62,8 @@
 | 18.13.3（未发布候选） | 18.13.3（本机 macOS 编译版；默认 opener 实时确认阻塞，分项证据见 CONTEXT） | >=18.13.3 <19 |
 | 18.14.0（未发布候选） | 18.14.0（本机 macOS 编译版；默认 opener 与官方冷摄取门禁未过，分项证据见 CONTEXT） | >=18.14.0 <19 |
 | 18.14.1（未发布候选） | 18.14.1（本机 macOS 编译版；完整验收及精确提交 CI 另核，Stats 门禁未过） | >=18.14.1 <19 |
-| 18.15.0（当前未发布候选） | 18.15.0（非 Tern 路径分项及默认 opener 补验证据见 CONTEXT；冷摄取门禁未过，最终 CI 按提交核对） | >=18.15.0 <19 |
+| 18.15.0（历史未发布候选） | 18.15.0（非Tern路径分项见CONTEXT；该制品冷摄取未修） | >=18.15.0 <19 |
+| 18.16.0（当前未发布候选） | 18.16.0（官方冷摄取修复已实际验证；资源与最终矩阵未过，见CONTEXT） | >=18.16.0 <19 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -74,7 +75,7 @@ Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、�
 
 ## 安装
 
-当前源码候选要求官方 OMP `>=18.15.0 <19` 及外部 Bun `>=1.4.4`；正式发布 `v18.12.6` 的宿主范围为 `>=18.12.6 <19`。各版本实际验证基线见上表，是否正式发布以 GitHub Release 为准。发布主线仅 macOS/Linux。Windows PR #1现场仍 CLOSED、isDraft:true、mergedAt:null，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端仅维护main工作分支。通过官方插件管理器安装：
+当前源码候选要求官方 OMP `>=18.16.0 <19` 及外部 Bun `>=1.4.4`；正式发布 `v18.12.6` 的宿主范围为 `>=18.12.6 <19`。各版本实际验证基线见上表，是否正式发布以 GitHub Release 为准。发布主线仅 macOS/Linux。Windows PR #1现场仍 CLOSED、isDraft:true、mergedAt:null，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端仅维护main工作分支。通过官方插件管理器安装：
 
 ```sh
 omp plugin install github:rockythink/omp-settings-zh

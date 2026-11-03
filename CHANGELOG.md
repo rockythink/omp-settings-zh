@@ -2,6 +2,16 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.16.0] - 2026-11-03（未发布候选）
+
+- 对齐真实官方OMP、coding-agent/utils/Stats及锁文件18.16.0；官方darwin-arm64资产checksum匹配，内嵌及最低外部Bun1.4.4，固定来源commit `650f3a108229ee11bf68ba3377f4e8c3391cd424`。
+- Settings579→582定义、435→438 UI：新增`btw.inject`、`composer.predictionAlternatives`、`hindsight.globalScope`，其余435项原文/选项保持；9个动态getter，预测候选Tab提示保留同次请求与额外输出Token费用，不改实际配置/保存/授权。
+- Commands88定义/97标识/9别名/27动态回调保持，30命令文件逐字节不变；公共provider、viewSession/有效层级、动态键位、同步/异步/partial/取消及Tab/Enter边界不改，不重译未变文案。
+- Stats97源码/77客户端仅官方query和SpanDrawer变化，613键/105模板、DOM白名单/数据排除保持。冷摄取PR[#17758](https://github.com/can1357/oh-my-pi/pull/17758)已合并并进入官方稳定制品；原/包装真实compiled各无数据库冷启动，实际旧GET0/SSE2交错后自动GET16、UI/API16，无插件轮询/强刷。
+- 真实compiled TUI180帧、Profile/XDG294断言、CLI生命周期及十一页33路由/33完整API/13组权限边界/真实SSE分项通过；完整check67测试/2687断言，438/438、88/88及97标识、两类漂移0，三次恢复/源码网络0。细项限制与失败见CONTEXT，不冒称完整门禁通过。
+- 加固compiled smoke自动opener所有权：官方Bun.spawn原样委托、开页前记录PID/parent/原URL，真实`.exited`及PID消失验证，树外sidecar保留；更新后正常/人为失败的真实smoke5页创建/关闭、两服务与private及两opener退出0且回收。
+- **未发布**：长浏览器临时驱动失败后，已回收native/端口/private/独占浏览器，但工具宿主尚未reap自有僵尸launcher；该清理失败不由后续独立成功抹去。当前不重复最终系统opener/精确SHA冷安装矩阵，不建tag/Release。原官方冷摄取阻塞已解除；Tern可选未验证，不作为非Tern范围阻塞，历史unknown保持独立审计。
+
 ## [18.15.0] - 2026-11-01（未发布候选）
 
 ### 2026-11-02 发布阻塞处理

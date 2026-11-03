@@ -6,7 +6,7 @@
 
 ## 内置斜杠补全译文边界
 
-- 当前来源OMP18.15.0官方BUILTIN_SLASH_COMMAND_DEFS；88条说明、97名称/别名、9别名及27动态回调相对18.14.1保持，不重译。30命令文件3改：fast ultra参数新增relay仍保留英文、jobs full可能请求模型caption、Stats/trace优先Tern；不执行有模型/开页风险的命令来验证显示。viewSession、switch有效层级、effort键位、descriptionMatch与原生Enter保护保持；同步/异步/partial/取消/可选能力须行为回归和compiled验收，不把静态覆盖替代动态证据。
+- 当前来源OMP18.16.0官方BUILTIN_SLASH_COMMAND_DEFS；88条说明、97名称/别名、9别名及27动态回调相对18.15.0保持，30命令文件逐字节不变。另独立复核相邻prediction alternatives优先级来源，不触发模型预测求验收；viewSession、switch有效层级、effort键位、descriptionMatch与原生Enter保护保持。同步/异步/partial/取消/可选能力仍须行为回归和compiled验收，静态覆盖不代证动态状态。
 - 只翻译顶层补全的说明与实时状态、`skill:` 数量；参数提示、命令名、别名、模型／提供商 ID、路径与目标正文保持原样。
 - `switch` / `loop` / `effort` 的动态快捷键按宿主实际显示捕获，中文保留原键位。除键位占位外必须匹配官方原文，第三方覆盖、技能说明和未知文案不改。
 - `/settings-language en` 恢复官方补全结果；中文与英文都须验证排序、Tab／Enter 插入和实际官方编译版，不能用静态表检查代替。
@@ -14,7 +14,7 @@
 
 ## Stats Web 译文边界
 
-- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.15.0`；94→97源码/74→77客户端，新增`Close the dashboard (Esc)`→`关闭仪表板（Esc）`，复用Close→关闭，Esc键面保留原文；613键/105模板，browser/mutations/preload不改。系统fallback隐藏关闭按钮，官方Tern可关闭页面才挂载，源码可翻译不等于实际生命周期已验。搜索/追踪空态与数据排除保持；signed saved百分比保留符号、数值及百分号。实际运行时仍是官方compiled，不固定或复制npm实现，不翻译关闭API布尔/JSON或console原始错误。冷摄取竞态未修，不以强刷/轮询规避。
+- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.16.0`；97源码/77客户端仅query.ts与SpanDrawer.tsx变化，UI文案/DOM及服务端不变，613键/105模板不重译，browser/mutations/preload保持。官方冷摄取#17758已进入checksum匹配编译版，原/包装无数据库冷启动真实GET0/SSE2后自动GET16通过；不在插件复制查询、轮询或强刷。Close/Esc、signed saved百分比、搜索/追踪空态与数据排除保持；Tern可选未验证，系统fallback不代证。
 - `src/stats/translations.ts` 只包含原文键、中文值及严格锚定的动态模板；浏览器端必须先通过官方 UI 区域白名单，不能在整页全局替换英文。
 - 保留模型、提供商、工具、项目与账户名称、路径、请求与会话正文、错误原文、协议、数字和模板中的实际数据；未知文案与 canvas 内绘制内容保持官方原文。Window utilization 普通 tooltip series 标签是账户数据，即使为 Requests／Other (3) 也不译；仅官方带 tone-bad 的 Exhausted 注记与 total 固定标签属于 UI。
 - 切回 English 恢复原始文本与显示属性；验证 React 异步更新、路由复用与译文键同名的数据值，不只检查首页。外部写入即使与插件上次显示相同，也须失效旧来源；一批外部文本／属性写入全部失效后才渲染，不能误恢复真实数据。表头复用须重新判断整表单元格的 UI／数据身份。同 origin 的偏好跨刷新、路由与服务重启保留，首次默认中文；网页语言独立于 /settings-language。页面脚本在原 Stats 服务同端口加载，不增加代理。
@@ -187,7 +187,7 @@ Settings 选项显示副本与宿主共享原文源必须隔离；不能因设�
 
 活动翻译只以目标版本 OMP 官方设置注册表的英文显示元数据为语义来源：
 
-1. 从锁定的`@oh-my-pi/pi-coding-agent@18.15.0`完整37个分领域注册表及递归导入图提取英文；579定义/435项UI，新增task.perCallModel及task.perCallModelAllow，复核async.widgets、task.maxEffort与tier.openai ultrafast/relay，其余430项不重译，8动态getter不变。说明保留配置授权、精确模型selector、项目只能缩窄授权以及effort上限；不改默认值/原选项，无UI的judgment.attemptTimeoutMs不补译。固定官方commit 3fedf8d53267e32a6d7521ce725fdcc4a36fdc67的Git blob身份与npm全部1836份coding-agent源码匹配，另4个HTML按package.files排除；utils127/Stats97/TUI440份亦匹配。不得只查config目录、37域文件或入口，忽略导入模块新增注册；
+1. 从锁定的`@oh-my-pi/pi-coding-agent@18.16.0`完整37领域及递归导入注册图提取英文；582定义/438UI，新增btw.inject、composer.predictionAlternatives、hindsight.globalScope，其余435项原文/选项保持，9动态getter。新增Tab模板捕获真实getter；保留预测候选同次请求、额外输出Token费用及Hindsight跨项目授权限制，不改默认false、保存或配置。固定官方commit `650f3a108229ee11bf68ba3377f4e8c3391cd424`的Git blob与npm全部1839份coding-agent源码匹配，4个HTML源按package.files排除；utils130/Stats97/TUI441份亦匹配；
 2. 使用本项目自己的 LLM 能力按本规范生成初稿，不输入或复用第三方中文译文；
 3. 按设置路径和选项 `value` 校验完整性；
 4. 用英文原文哈希标记待复核的上游语义变化；

@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.15.0",
+  "sourceOmpVersion": "18.16.0",
   "settings": {
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
@@ -1789,6 +1789,12 @@ export const zhCN = {
       "description": "每轮对话完成后，请当前模型预测你的下一条消息，并在空输入框中以虚影文字显示；按 {tab} 或 {right} 可插入，但不会发送。额外用量：每轮对话完成后，都会基于完整对话再发送一次计费请求（计入 /stats）",
       "descriptionSource": "After a completed turn, ask the active model to predict your next message and show it as ghost text in the empty composer; {tab} or {right} inserts it without sending. Extra usage: every completed turn sends one more billed request over the whole conversation (counted in /stats)"
     },
+    "composer.predictionAlternatives": {
+      "sourceHash": "e4010f63ef563dcd89c9595238285e85c5a98d19c05767c8995038e79d75b917",
+      "label": "多个预测候选",
+      "description": "最多请求四个不同的预测候选，而非一个，按可能性从高到低排列。虚影文字显示首个与你的草稿匹配的候选；插入一个后，再按 {tab} 可选择另一个。同一次请求会多返回一些输出 token",
+      "descriptionSource": "Ask for up to four distinct predictions instead of one, most likely first. The ghost text shows the first one your draft matches; after inserting one, press {tab} again to pick another. The same single request returns a few more output tokens"
+    },
     "spelling.autocorrect": {
       "sourceHash": "4a5b6e53dd344a0b69d7a078e42dd7023a91562c2f08d28110930e293d40ba38",
       "label": "自动更正（macOS）",
@@ -2638,6 +2644,11 @@ export const zhCN = {
           "description": "使用共享记忆库，保留的内容会标记为 project:<cwd>；召回时同时呈现项目记忆和无标签的全局记忆"
         }
       }
+    },
+    "hindsight.globalScope": {
+      "sourceHash": "3c9f87dbcd8630a196def3bf5c030a696fe087209cb7ff7ff576214ce2748f04",
+      "label": "Hindsight 全局作用域",
+      "description": "允许 retain 和 learn 使用 scope: global，将记忆存储为不带项目标签的内容，让每个项目都能召回。需要使用 global 或 per-project-tagged 作用域"
     },
     "hindsight.autoRecall": {
       "sourceHash": "6b54f0c711423f19c901ffa695b923b612a2469e395139332243b2e72ce2d334",
@@ -4459,6 +4470,11 @@ export const zhCN = {
       "sourceHash": "195ccd837d8a7ab853c49e5534d9b077ffef0deb23a767e30787d81fd43aaf21",
       "label": "Advisor 清除旧结果",
       "description": "每次审查前，将 Advisor 较早审查中的 `read` / `grep` / `glob` 输出替换为简短占位内容，保留最新一次审查"
+    },
+    "btw.inject": {
+      "sourceHash": "1bea9a566bd1bcccd9816043ad68ab3def5d88b3eeb0e18516e23b77184b8936",
+      "label": "/btw 引导提示词注入",
+      "description": "向 /btw 请求引导提示词时，它会在 <inject> 标签中起草，并在回答中高亮显示；按 Alt+I（app.btw.inject）可将其发送到主会话"
     },
     "tui.vimMode": {
       "sourceHash": "413d6571d0bb45b34f715368db19f20e9c37d865aa005652a91ab63ab6158508",
