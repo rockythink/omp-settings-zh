@@ -4,6 +4,13 @@
 
 ## [18.16.0] - 2026-11-03（未发布候选）
 
+### 2026-11-04 前提复查
+
+- 官方、开发依赖及本机GitHub插件均保持18.16.0，受管`omp update`无更新；三面完整来源与固定官方tag匹配，17份插件源码无安装漂移，doctor5/0/0。冻结安装及完整check再次通过（67测试/2687断言、Settings438/438、Commands88/88及97标识、漂移0），真实compiled JSON/summary两对输出与状态等价，四PID/组/root回收，页面与Web服务0。
+- 原官方冷摄取修复仍在稳定制品；未发布候选相对v18.12.6仍有实际变化。上轮驱动自有僵尸launcher现场仍在，原native/private/端口已回收；不杀工具宿主、不把该驱动阻塞写成插件失败。本轮不重复最终浏览器矩阵或冷GitHub安装，不建tag/Release；恢复条件及本轮独立资源证据见CONTEXT。运行代码、译文和候选版本不变。
+
+### 2026-11-03 适配记录
+
 - 对齐真实官方OMP、coding-agent/utils/Stats及锁文件18.16.0；官方darwin-arm64资产checksum匹配，内嵌及最低外部Bun1.4.4，固定来源commit `650f3a108229ee11bf68ba3377f4e8c3391cd424`。
 - Settings579→582定义、435→438 UI：新增`btw.inject`、`composer.predictionAlternatives`、`hindsight.globalScope`，其余435项原文/选项保持；9个动态getter，预测候选Tab提示保留同次请求与额外输出Token费用，不改实际配置/保存/授权。
 - Commands88定义/97标识/9别名/27动态回调保持，30命令文件逐字节不变；公共provider、viewSession/有效层级、动态键位、同步/异步/partial/取消及Tab/Enter边界不改，不重译未变文案。

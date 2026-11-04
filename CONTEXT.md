@@ -1,5 +1,23 @@
 # Project Context
 
+## 18.16.0 前提复查（2026-11-04，未发布）
+
+起点本地main、origin/main与远端main均`355a5652e768ed5243b03bcf3a3de2ddad3938ce`，精确提交CI [41665096700](https://github.com/rockythink/omp-settings-zh/actions/runs/41665096700) macOS/Linux成功；正式tag/Release仍[v18.12.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)。相对该tag有20份文件变化，18.16.0为实际待发布候选，不因当天无上游更新结束候选判定。Windows PR #1现场仍closed/draft/merged_at:null，42项既有未跟踪内容不动。
+
+受管`omp update`实际报告Already up to date，前后均`omp/18.16.0`；真实官方二进制SHA256 `d4a10d97488d6054d2b18198bd24f461079952c7e0fb75ba66336ca0df0cb99e`匹配官方darwin-arm64资产，外部Bun1.4.4。coding-agent、utils、Stats最新稳定版均18.16.0，coding-agent精确依赖同版utils/Stats。本机GitHub来源插件18.16.0，锁定355a565，doctor5/0/0；17份插件src与工作区逐字节相同，pi-xcode-mcp0.1.0及其来源未改。结束同源升级及最终提交CI按工具输出另核，不由起点记录代证。
+
+重新从官方固定tag commit `650f3a108229ee11bf68ba3377f4e8c3391cd424`的完整Git树核验开发目录与本机插件依赖：各1839份coding-agent、130份utils、97份Stats、441份TUI源码Git blob全部匹配；4个HTML源按npm既有打包范围缺失，不补造核验。Settings注册图、Commands完整注册/动态说明/公共provider与Stats客户端/DOM边界均无新来源变化，不重译、不空升候选版本。Stats保留613键/105严格模板。
+
+`bun install --frozen-lockfile`无变化；完整`bun run check`为67pass/0fail、2687断言，Settings438/438、Schema漂移0，Commands88/88、97标识、命令/别名/原文漂移0；1923显示变更/3次恢复/源码网络0。另在隔离HOME、PI_CODING_AGENT_DIR、XDG与TMPDIR中分别运行真实官方绝对路径及受管启动器的`stats --json`/`--summary`，四进程均退出0，两对stdout/stderr逐字节相同。此切片不启动Web、不替代compiled TUI或网页验收。
+
+上游Issue #17754现场closed/completed，PR #17758已合并，固定稳定tag包含merge commit；checksum与上轮实际通过的官方18.16.0制品一致，query成功结算后重检live版本的修复仍在。不重跑已通过的冷摄取切片，不把旧官方缺陷重新列为当前阻塞，也不用源码检查代替下一轮完整验收。
+
+**当前阻塞仍为上轮驱动资源回收**：依据原run账本与进程启动时间核对，已登记launcher仍为同一工具宿主的僵尸子进程；不是历史unknown或当前活动Stats服务。原native已消失、私有目录及原root为ENOENT，原端口lsof无监听。当前接口没有安全的宿主定向reap能力；未向僵尸反复发信号，未终止宿主或用户会话。保留原失败，不将其归为插件回归。本轮未发现插件回归或安装漂移；三面compiled交互、默认系统opener、完整网页/API/SSE、最终精确SHA冷安装因前提未变未重验，不能记成功能失败。Tern可选未验证、Windows草稿仍不纳入。
+
+本轮资源run `omp-maintenance-20261104-278c365a`：页面创建0/关闭0/本轮残留0，浏览器/opener/Stats监听服务0；四个CLI PID及独占进程组均ESRCH，临时root删除，cleanupErrors0，树外账本保留。不操作既有用户页面或服务；本轮零新增残留不抹去上轮僵尸记录。正常/人为断言失败浏览器清理预检未启动，不能追认为本轮通过。
+
+**未发布**：等待拥有该子进程的工具宿主定向reap并实际确认PID闭环；随后固定真实官方宿主和最终提交，完整重验macOS/Linux普通终端＋系统浏览器范围的三面、资源正常/失败路径、权限/API/SSE、最终CI及精确SHA冷GitHub安装。全部适用门禁通过才创建tag/Release。本轮仅更新维护证据，不改运行代码、译文、package版本或锁文件。
+
 ## 18.16.0 维护候选（2026-11-03，未发布）
 
 起点本地/远端main均`20674fee801b6f00077cd2584be288f105bd01ca`，该精确提交CI [41468045453](https://github.com/rockythink/omp-settings-zh/actions/runs/41468045453) macOS/Linux成功；正式Release仍v18.12.6，候选相对该tag有实际待发布变化。Windows PR #1仍closed/draft/merged_at:null；42项既有未跟踪内容保护，不纳入提交。
