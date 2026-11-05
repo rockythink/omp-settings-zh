@@ -1,5 +1,25 @@
 # Project Context
 
+## 18.16.0 前提复查（2026-11-05，未发布）
+
+起点本地main、origin/main与远端main均`e3e187c300ca2eac2b5a702eaea9121348c48a2f`；正式tag/Release仍[v18.12.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)，相对该tag有20份文件变化，18.16.0仍为待发布候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项既有未跟踪内容保护，不纳入提交。
+
+**起点CI不是全绿**：[41854474963](https://github.com/rockythink/omp-settings-zh/actions/runs/41854474963)的Linux成功，macOS cancelled、steps为空、runner_name为空；check注释明确“The job was not acquired by Runner of type hosted even after multiple attempts”，并提示macOS arm64容量不足。分类为CI环境未验，不是已运行测试失败；不改小平台范围、不借更早提交CI代证，最终提交仍须macOS/Linux全部成功。
+
+受管`omp update`实际报告Already up to date，前后均`omp/18.16.0`；真实官方二进制SHA256 `d4a10d97488d6054d2b18198bd24f461079952c7e0fb75ba66336ca0df0cb99e`匹配官方darwin-arm64资产，外部Bun1.4.4。coding-agent、utils、Stats独立查询最新稳定版均18.16.0，coding-agent精确依赖同版utils/Stats。本机仍GitHub来源插件18.16.0，doctor5/0/0，17份src与工作区逐字节相同，pi-xcode-mcp0.1.0来源不动。结束同源升级与最终提交CI按现场工具结果另核，不由起点代证。
+
+重新获取固定官方tag commit `650f3a108229ee11bf68ba3377f4e8c3391cd424`完整Git树：开发目录和本机实际hoisted依赖各1839份coding-agent、130份utils、97份Stats、441份TUI源码Git blob全部匹配；仅官方4个HTML源按npm打包范围缺失。首次安装依赖探针误用不存在的嵌套node_modules，0文件结果不计验收；改为真实manager目录后强制非空并校验精确缺失集合。Settings注册图、Commands完整注册/动态说明/provider与Stats客户端/DOM来源无新变化，不改译文、运行代码、候选版本或锁文件；Stats保留613键/105模板。
+
+`bun install --frozen-lockfile`无变化，完整`bun run check`为67pass/0fail、2687断言；Settings438/438、Schema漂移0，Commands88/88、97标识、命令/别名/原文漂移0，1923显示变更/3次恢复/源码网络0。隔离HOME、PI_CODING_AGENT_DIR、XDG、TMPDIR及cwd，真实官方绝对路径与受管启动器的`stats --json`/`--summary`四进程均退出0，两对stdout/stderr逐字节相同；不启动Web、不代替compiled TUI或网页验收。
+
+上游#17754仍closed/completed，#17758仍merged；Git比较确认稳定tag在修复merge之后26提交、behind_by:0。checksum与已实际验证冷摄取修复的18.16.0制品一致；旧官方缺陷已解除，不重跑旧失败或将其恢复为阻塞，不用源码核对代替下一轮完整验收。
+
+**当前资源阻塞未变**：按原run账本与启动时间核对，已登记launcher仍是原工具宿主的僵尸子进程；原native无进程，原端口lsof无监听，private/root均不存在。没有安全宿主定向reap接口，不重复向僵尸发信号、不终止宿主或用户会话。分类为驱动资源清理失败，不是活动Stats服务、插件回归或历史unknown；三面compiled交互、默认系统opener、完整网页/API/SSE与最终精确SHA冷安装因前提未变未重验，不记成功能失败。历史未枚举target保持审计，Tern可选未验、Windows仍排除。
+
+本轮run `omp-maintenance-20261105-79d5732b`：页面创建/关闭/残留0/0/0，浏览器/opener/Stats监听服务0；四个compiled CLI及来源查询/本地检查的全部已登记PID和独占进程组均ESRCH，root删除，cleanupErrors0，树外账本保留。没有操作用户页面或已有服务。浏览器正常/人为失败预检未启动，不追认为本轮通过；本轮零新增残留不抹去旧僵尸和历史unknown。
+
+**未发布**：先由拥有该子进程的工具宿主安全定向reap并观察PID闭环；随后固定真实宿主与最终提交，建立完整新资源基线，重验三面、正常/失败清理、系统默认opener、权限/API/SSE及精确SHA冷GitHub安装，并要求最终macOS/Linux CI全绿。全部适用门禁通过后实际创建tag/Release；当前仅提交维护证据。
+
 ## 18.16.0 前提复查（2026-11-04，未发布）
 
 起点本地main、origin/main与远端main均`355a5652e768ed5243b03bcf3a3de2ddad3938ce`，精确提交CI [41665096700](https://github.com/rockythink/omp-settings-zh/actions/runs/41665096700) macOS/Linux成功；正式tag/Release仍[v18.12.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)。相对该tag有20份文件变化，18.16.0为实际待发布候选，不因当天无上游更新结束候选判定。Windows PR #1现场仍closed/draft/merged_at:null，42项既有未跟踪内容不动。
