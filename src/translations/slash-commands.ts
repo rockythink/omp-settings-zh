@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.16.0 (650f3a108229ee11bf68ba3377f4e8c3391cd424). */
+/* Display-only translations; source-review baseline OMP 18.17.0 (75e7801e247d4e3263439d4cc08ccad60dc64bdd). */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -329,6 +329,11 @@ export const slashCommandTranslations = [
     "name": "pin",
     "en": "Pin or unpin a session at the top of the resume list",
     "zh": "将会话置顶或取消置顶于恢复列表"
+  },
+  {
+    "name": "unpin",
+    "en": "Unpin a session from the top of the resume list",
+    "zh": "取消会话在恢复列表中的置顶"
   },
   {
     "name": "btw",

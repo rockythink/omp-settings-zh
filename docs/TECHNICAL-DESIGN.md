@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.16.0；最新正式Release仍为18.12.6，main与源码编号不是发布证据
-- 目标基线：官方OMP18.16.0/内嵌Bun1.4.4、外部Bun最低1.4.4；官方冷摄取修复已实际compiled验证，当前驱动资源回收未过，未发布；Tern可选未验证
+- 实现候选：18.17.0；最新正式Release仍为18.12.6，main与源码编号不是发布证据
+- 目标基线：官方OMP18.17.0、外部Bun最低1.4.4；18.16.0官方冷摄取修复证据保留，18.17.0完整compiled/Web尚未重验。旧驱动资源回收前提未解除，不发布；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -64,6 +64,8 @@
 
 18.16.0为582定义/438UI，新增btw.inject、composer.predictionAlternatives、hindsight.globalScope，原435项元数据/选项不变；动态getter8→9，新增Tab模板沿用原getter，不自行计算键位。新增composerPredictionsEnabled显示条件仍由原生面板判断；预测候选默认关闭，与单选同一模型请求但可能使用额外输出Token，Hindsight跨项目无标签记忆默认关闭且不覆盖项目隔离约束。注册图92条非纯类型依赖边/48来源独立复核，不改凭据/配置/保存或共享effort显示副本隔离。
 
+18.17.0为602定义/450UI，新增12项、原文变化7项，9动态getter不变；完整非类型相对导入图112边/63来源（含只读提示资源），不只比较all-settings入口。新增Motion/帧率/加载间隔、彩色Markdown、Shell可视化、自动更新、chillax、标准Responses WebSockets、ovnfs、子代理线程、扩展记录块呈现与Spotlight实验；原textVerbosity默认medium→low、edit.mode新增none等语义由官方执行。仅更新显示元数据/哈希，不启用新能力、不改默认值、凭据、protocolDefault、项目授权或保存。设置显示副本与effort原文继续隔离。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -78,7 +80,7 @@
 
 `src/slash-autocomplete.ts` 使用公共 `context.ui.addAutocompleteProvider(factory)`，主会话仅注册一次，宿主重建补全时重新包装原 provider。中文开关跟随设置应用状态；不导入或修改宿主命令注册表，不注册内置同名命令。
 
-`src/translations/slash-commands.ts`保存OMP18.16.0的88条官方说明/97名称别名；相对18.15.0全部30命令文件、9别名及27动态回调逐字节保持，不重译。另审25份接口/导入来源，8份相邻变化不改变公共provider、裸/和折叠skill同步、async/partial/AbortSignal/可选能力、descriptionMatch、viewSession、model/switch有效层级与effort实际键位。静态例外仍仅switch/loop；参数/路径/模型ID保留原文。预测候选生成需模型完成，不为验收发送请求。
+`src/translations/slash-commands.ts`保存OMP18.17.0的89条官方说明/98名称别名；新增unpin，既有88条静态说明、9别名及27动态回调保持。`localizeSlashAutocomplete`按原能力存在性bind新增`trySyncModelMentionCompletion`，避免遮蔽官方模型候选同步刷新/无匹配清除，不翻译模型与effort。原provider、裸/折叠skill、async/partial/AbortSignal、descriptionMatch、viewSession/有效tier/实际键位保持。静态例外仍仅switch/loop；新能力由真实官方provider的源码消费者场景定向验证，不等同compiled UI通过。
 
 显示副本通过 WeakMap 对应原 item，接受补全时交回原 provider，保留对象身份、this、光标与插入行为。其它可选能力按原 provider 的存在性和绑定透传。参数／文件补全、第三方覆盖、技能说明和未知原文不修改；`skill:` 只翻译数量。切回英文直接返回原结果，无共享对象撤销问题。
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
@@ -119,6 +121,7 @@
 - 官方新增GET/POST `/api/close`：closable布尔、非GET/POST405、缺/错操作头403、无handler404、调用handler后202；身份头不能替代`X-Omp-Stats-Action:1`。parser排除synthetic且未执行的工具错误，db回填v2→v3，计算仍归官方。query/query-store/live逐字节未修，冷摄取门禁保持。
 - Tern只认`TERN_PANE_SOCKET`+数字`TERN_PANE`，不读`PI_BROWSER_TERN`或`browser.tern`；测试opener bridge不能拦截Tern。CLI over管理关闭，会话beside成功后断开且页面归用户；两者不得混用回收规则。源码推断的注册窗口、迟到block及3秒wrapper/5秒close差异不是复现，不添加产品shim。真实compiled页面、API、信号130与block回收另验。
 - 18.16.0：97源码/77客户端仅query.ts与SpanDrawer.tsx变化，服务端、DOM、导航与文案保持，613键/105模板不改。query成功结算时重检最新live版本并沿用原节流；官方#17758已进入固定tag和checksum匹配编译制品，原/包装分别确认HOME/.omp/stats.db不存在后真实GET0/SSE2交错→自动GET16、UI/API16，未强刷/切页/轮询；这是实际嵌入客户端证明，不仅是源码导入。
+- 18.17.0：119源码/95客户端，18既有文件修改、22新增、0删除；新增Spotlight导航、实验/回取诊断及两只读API。893键、150通用严格模板＋9作用域属性模板；browser仅放行审阅UI，排除工具/步骤/target/session/正文，混合属性原数据捕获不再进词典。属性模板具体结构先于通用后缀匹配；折叠工具标签只接受官方数值/固定more/单复数tool三文本结构，保留React节点与English恢复。query/query-store/client live与18.16.0相同、server live全量同步节流变为15秒且结束flush，计算/节流不在插件复制。stats-cli/openPath字节不变，preload/mutations无变化；源码与纯DOM场景不代证新版compiled/Web/API/SSE门禁。
 
 ## 6. 检查与真实验证
 
@@ -143,7 +146,7 @@
 
 ## 7. 发布边界
 
-源码/开发依赖/目标宿主基线为18.16.0，范围`>=18.16.0 <19`，外部Bun最低1.4.4。官方冷摄取#17758已实际compiled通过；本轮驱动资源回收仍未过（精确PID及父宿主身份保存在树外账本），默认系统opener、完整trace/同origin重启/动态更新与最终精确SHA冷安装未重验，不发布。原三面真实交互、精确最终macOS/Linux CI和完整资源门禁仍须分别通过；Tern可选未验证、不阻止明确非Tern范围，不继承历史豁免或把历史unknown说成当前持续泄漏。Windows草稿未合并，不纳入支持。
+源码/开发依赖/目标宿主基线为18.17.0，范围`>=18.17.0 <19`，外部Bun最低1.4.4。旧自有僵尸仍待工具宿主安全定向reap，当前不重复不能改变结论的最终矩阵，不发布。18.16.0冷摄取实际修复证据不替代18.17.0完整网页/权限/API/SSE；前提解除后须重验三面compiled交互、系统默认opener、Profile/生命周期、精确最终macOS/Linux CI与干净GitHub安装及逐资源回收。Tern可选未验证，不阻止非Tern范围；Windows草稿未合并，不纳入支持；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

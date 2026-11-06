@@ -137,6 +137,7 @@ export function localizeSlashAutocomplete(current: Provider, isChinese: () => bo
     )),
     applyCompletion: (lines, row, col, item, prefix) => current.applyCompletion(lines, row, col, originals.get(item) ?? item, prefix),
     ...(current.trySyncSlashCompletion && { trySyncSlashCompletion: text => localize(current.trySyncSlashCompletion!(text)) }),
+    ...(current.trySyncModelMentionCompletion && { trySyncModelMentionCompletion: current.trySyncModelMentionCompletion.bind(current) }),
     ...(current.getInlineHint && { getInlineHint: current.getInlineHint.bind(current) }),
     ...(current.trySyncInlineReplace && { trySyncInlineReplace: current.trySyncInlineReplace.bind(current) }),
     ...(current.getForceFileSuggestions && { getForceFileSuggestions: current.getForceFileSuggestions.bind(current) }),

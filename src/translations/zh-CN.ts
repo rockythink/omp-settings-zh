@@ -2,8 +2,92 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.16.0",
+  "sourceOmpVersion": "18.17.0",
   "settings": {
+    "tui.colorfulMarkdown": {
+      "sourceHash": "439637afe8869b8e75951bce041143133a4b81129866c4953c7e178c6d2f9708",
+      "label": "彩色 Markdown",
+      "description": "使用主题的 ANSI 调色板为不同级别的标题、粗体和斜体文本、行内代码及表头着色；关闭后标题使用单一颜色，粗体和斜体不额外着色"
+    },
+    "tui.spinnerInterval": {
+      "sourceHash": "2c62c7ab424c003d2339c00253033548199f694ba9e5dcf25d85fd6bfa772a16",
+      "label": "加载动画间隔（毫秒）",
+      "description": "所有加载动画（含终端标题）的帧间隔毫秒数；0 显示静态符号，未设置时遵循动态效果设置",
+      "options": {
+        "0": { "label": "静态", "description": "无动画" },
+        "80": { "label": "80 毫秒", "description": "每秒 12.5 帧" },
+        "250": { "label": "250 毫秒", "description": "每秒 4 帧" },
+        "1000": { "label": "1 秒", "description": "每秒 1 帧" }
+      }
+    },
+    "tui.maxFps": {
+      "sourceHash": "d13f2fd28ff76bc373c90fdae629b21b116391afd732250792b579ed88c3ed9d",
+      "label": "最大帧率",
+      "description": "TUI 重绘频率的上限，包含流式文本；按键回显保持每秒 30 帧，使当前输入面板保持响应",
+      "options": {
+        "30": { "label": "30 fps", "description": "默认" },
+        "15": { "label": "15 fps" },
+        "4": { "label": "4 fps", "description": "适合多面板的低频刷新" },
+        "1": { "label": "1 fps", "description": "最低" }
+      }
+    },
+    "tui.motion": {
+      "sourceHash": "5e893d289db95e13d8dd55a40ca0dcf134eac637a514df83bff0b28cb7441211",
+      "label": "动态效果",
+      "description": "统一控制加载动画、流光和装饰性闪烁或淡入淡出；不影响流式文本（参见最大帧率），单独设置的加载动画间隔仍优先",
+      "options": {
+        "full": { "label": "完整", "description": "各动画遵循自己的设置（默认）" },
+        "reduced": { "label": "减少", "description": "加载动画间隔 250 毫秒，无流光、闪烁或淡入淡出" },
+        "none": { "label": "无", "description": "加载符号与标题静态显示，无流光、闪烁或淡入淡出" }
+      }
+    },
+    "display.shellVisualization": {
+      "sourceHash": "fe1f40ffa066586d5376250675d487f0a8b34505b7ebdd03a2ca7bf58f55a156",
+      "label": "Shell 执行可视化",
+      "description": "将 bash 命令显示为可交互的执行可视化，而非普通 Shell 命令文本"
+    },
+    "update.auto": {
+      "sourceHash": "1e53034e217130beea620c1938cd41a2d37e8a00888f08e413c06497311d8e0b",
+      "label": "自动更新",
+      "description": "启动时在后台安装 OMP 更新；下次启动运行新版本"
+    },
+    "magicKeywords.chillax": {
+      "sourceHash": "95310b43da854cea70552c12220bda378ff0ec7035990fc54db12329b1e8929f",
+      "label": "Chillax 关键词",
+      "description": "允许单独使用的 chillax 将思考降至模型最低努力级别，并附加其隐藏提示；支持逐消息努力级别的模型即使在轮次中也可生效"
+    },
+    "providers.openaiResponsesWebsockets": {
+      "sourceHash": "dec0e0f3ec568daa9fa16b88a5ca5d4614c3aaeb00dd93f11047efa371e8a954",
+      "label": "OpenAI Responses WebSockets",
+      "description": "为模型目录中支持此能力的标准 Responses 模型启用 WebSockets；模型或请求将其设为 false 时仍会禁用"
+    },
+    "ovnfs.path": {
+      "sourceHash": "ea3ca81909cbd39beabe1a1b4f055f15a7c7ed1fa1e8a099fb7ed17189fba631",
+      "label": "ovnfs 可执行文件",
+      "description": "ovnfs 可执行文件路径；未设置时在 PATH 中查找 `ovnfs`。找到后，所有独立副本使用 ovnfs 检出（文件夹的写时复制视图，任意大小约一秒就绪）：系统提示会要求 Agent 使用检出而非 git worktree 或复制；允许隔离且 `isolation.backend` 为 auto 时，隔离子代理也使用检出而非原生克隆"
+    },
+    "task.workerThreads": {
+      "sourceHash": "0a7c778920109fba9b1bbdbdf361023e40995774a64077f9a973aedf244a7ebc",
+      "label": "子代理工作线程",
+      "description": "子代理最多使用的工作线程数；最多 8 个并发子代理在主线程运行，第 9 个加入一个工作线程，此后每翻倍（18、36、72）再增加一个；线程中没有存活子代理一分钟后停止，0 表示所有子代理均在主线程运行",
+      "options": {
+        "0": { "label": "仅主线程" },
+        "1": { "label": "最多 1 个工作线程" },
+        "2": { "label": "最多 2 个工作线程" },
+        "4": { "label": "最多 4 个工作线程", "description": "默认" },
+        "8": { "label": "最多 8 个工作线程" }
+      }
+    },
+    "extensionRenderers.transcriptPresenters": {
+      "sourceHash": "7686b061705581ac688cde15289deeb9db4f1aef82adba55a18352b955026f1b",
+      "label": "扩展记录块呈现",
+      "description": "允许扩展将工具调用等记录块完整显示、压缩为一行或隐藏；会话、导出和模型上下文保持不变"
+    },
+    "spotlight.experiment.enabled": {
+      "sourceHash": "c4e3f8a94ec283e177ea6457a9590e36a8cdabf1513276bbc5d368c577fd07ce",
+      "label": "Spotlight 实验",
+      "description": "使用 Stencil Spotlight 整理工具输出并对 find 结果排序，将每个整理后的结果记录到会话"
+    },
     "tui.renderSvg": {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
       "label": "渲染 SVG 图示",
@@ -962,9 +1046,9 @@ export const zhCN = {
       "description": "移除终端输出左右两侧各 1 个字符的水平内边距"
     },
     "display.shimmer": {
-      "sourceHash": "2bb3bf5c3781a7e813164b5287f72b730102335c4f1ca7ba1ed4dcfe3f43a415",
+      "sourceHash": "afa8a45e78e5d1ec3f9ef7a37ed03b6fe029df9d9eddd4eb14726754a8381b13",
       "label": "流光动画",
-      "description": "工作中或加载中消息的动画样式",
+      "description": "工作中或加载中消息的动画样式；动态效果为减少或无时关闭",
       "options": {
         "classic": {
           "label": "经典",
@@ -981,9 +1065,9 @@ export const zhCN = {
       }
     },
     "display.smoothStreaming": {
-      "sourceHash": "486ee99f103176ae2d9462988dea8a0f9438a6ef043971617093152706261425",
+      "sourceHash": "90833099c0042b83c466ca2213c63804c82d64b7053b3e0e212ab1955dea6ce8",
       "label": "平滑流式显示",
-      "description": "在数据块到达时，平滑显示助手文本和流式工具输入"
+      "description": "在数据块到达时，平滑显示助手文本和流式工具输入（Tern 自行逐步显示助手文本）"
     },
     "display.hideToolActivity": {
       "sourceHash": "02283e2dd6b172dfe14a309ab19809155f6a8bd2a37b237692cbb68bd5ff0226",
@@ -1357,17 +1441,17 @@ export const zhCN = {
       }
     },
     "textVerbosity": {
-      "sourceHash": "7570c318bc48dd3c9727d2ae937d4d99f36a809c77f858440228f64b5273b3d8",
+      "sourceHash": "1606c12e28b2d49f6166843934ef5f1296e4f99192169fd06264affdb65f9ab4",
       "label": "文本详略程度",
       "description": "OpenAI Responses 和 Codex 的回复详略程度（low、medium 或 high）",
       "options": {
         "low": {
           "label": "低",
-          "description": "倾向简洁回复"
+          "description": "倾向简洁回复（默认）"
         },
         "medium": {
           "label": "中",
-          "description": "兼顾简洁与细节（默认）"
+          "description": "兼顾简洁与细节"
         },
         "high": {
           "label": "高",
@@ -1899,9 +1983,9 @@ export const zhCN = {
       }
     },
     "magicKeywords.enabled": {
-      "sourceHash": "562eae89d3d791c42d050ed4dea84bd066df129f1601b6694b67d16621afffac",
+      "sourceHash": "9ed7e192c3166d5aa5e9f82be279b080d832167b536ee9dd525987c6adade592",
       "label": "魔法关键词",
-      "description": "为单独使用的 `ultrathink`、`orchestrate`、`workflowz`、`jevify` 关键词启用隐藏提示"
+      "description": "为单独使用的 `ultrathink`、`chillax`、`orchestrate`、`workflowz`、`jevify` 关键词启用隐藏提示"
     },
     "magicKeywords.ultrathink": {
       "sourceHash": "051af7cad7887495172556e13ba4c799c5076cb3788219af399bd1d485699a45",
@@ -2756,9 +2840,9 @@ export const zhCN = {
       "description": "要完全忽略的规则名称（适用于随附的默认规则和你自己的规则）"
     },
     "edit.mode": {
-      "sourceHash": "b54fadd48af314434e9fcae0e86d0c8a1acbe8ed71679625ee1b112d2a1e6579",
+      "sourceHash": "acef7da5b47435747c6584240f53b74b849b9a2d1e7ce8989d7a1a265510276b",
       "label": "编辑模式",
-      "description": "选择编辑工具变体（replace、patch、hashline 或 apply_patch）"
+      "description": "选择编辑工具变体（replace、patch、hashline 或 apply_patch）；none 移除编辑工具，但保持 bash 启用"
     },
     "edit.fuzzyMatch": {
       "sourceHash": "0dee6242ca065b3e60e27f1bff9ccf59a4e8fdb61ea4b3f9f3394124d118bd1a",
@@ -4130,13 +4214,13 @@ export const zhCN = {
       }
     },
     "providers.openaiWebsockets": {
-      "sourceHash": "e02fcda6209fff1f11571fa354f6fe499e276aad74e20c937fa4386ca7ac53dc",
-      "label": "OpenAI WebSockets",
-      "description": "OpenAI Codex 模型的 WebSocket 策略（自动使用模型默认设置，开启时强制使用，关闭时禁用）",
+      "sourceHash": "bb0c9ae976df3bf703f73027886503b0fe0ea7b80d042f21dda07180129780e8",
+      "label": "OpenAI Codex WebSockets",
+      "description": "仅适用于 OpenAI Codex 模型的 WebSocket 策略",
       "options": {
         "auto": {
           "label": "自动",
-          "description": "使用模型或提供商的默认 WebSocket 行为"
+          "description": "使用 Codex 模型的默认设置"
         },
         "off": {
           "label": "关闭",
@@ -4763,13 +4847,13 @@ export const zhCN = {
       "description": "允许任务通过 `isolated: true` 单独启用隔离；未指定的任务在共享检出目录中运行"
     },
     "isolation.backend": {
-      "sourceHash": "a72b13a07a5e5f80c984f1d49464f393abad0fc62bee9bef516e11b314ab1003",
+      "sourceHash": "0bd12fc8c9293d74a71f05feb511e2387cb1267f37a967478f2dad76a373f90f",
       "label": "隔离后端",
       "description": "用于子代理隔离和工作树克隆的后端",
       "options": {
         "auto": {
           "label": "自动",
-          "description": "让 PAL 选择可用的最佳后端"
+          "description": "找到 ovnfs 时，隔离子代理使用 ovnfs 检出；否则（以及工作树场景）由 PAL 选择可用的最佳后端"
         },
         "apfs": {
           "label": "APFS",

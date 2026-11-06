@@ -1,5 +1,29 @@
 # Project Context
 
+## 18.17.0 定向维护（2026-11-06，未发布）
+
+起点本地main、origin/main与远端main均`e25b12f73fd6cba4a6e4898357023fb61f853a1b`；[该精确提交CI](https://github.com/rockythink/omp-settings-zh/actions/runs/42051407828)的macOS/Linux均成功，上一轮macOS runner容量阻塞已解除，不沿用旧失败结论。正式tag/Release仍[v18.12.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)，候选相对其有实际未发布适配；Windows PR #1现场CLOSED、isDraft:true、mergedAt:null。42份既有未跟踪内容不动，不纳入提交。
+
+官方coding-agent/utils/Stats最新稳定版独立查询均18.17.0，精确同版依赖、最低Bun1.4.4。受管`omp update`首次patch下载180秒截止143，真实版本仍18.16.0；随后官方支持的`omp update --force`完成patch/校验与安装，真实版本18.17.0，SHA-256 `51f2836f267a8ba6c12cfb50f80e75f0301ccfb1bd53535fc6f9df03199da364`匹配官方darwin-arm64资产。真实compiled在隔离环境运行`--version`时实际执行已有`--smol --preload`探针，内嵌Bun1.4.4；这只证明入口预加载，不代证Stats Web包装/合并合同。
+
+固定官方commit `75e7801e247d4e3263439d4cc08ccad60dc64bdd`的完整Git树与npm全部1928份coding-agent、130份utils、119份Stats、457份TUI源码Git blob匹配；四个HTML源按package.files排除。更新后的实际开发依赖全量源码再与上述来源逐字节相同。隔离依赖解析首次180秒截止，指定官方registry重试成功；不修改官方安装资源或使用自编译宿主。
+
+**Settings**：582→602定义、438→450 UI，12新增/7原文变化，原431项不重译，9动态getter保持；完整非类型相对注册导入图112边/63来源（含提示资源）独立检查。覆盖Motion/加载间隔/帧率/彩色Markdown/Shell可视化、自动更新、chillax、Responses WebSockets、ovnfs、子代理线程、扩展记录块呈现、Spotlight实验；textVerbosity默认medium→low、edit.mode新增none及隔离auto说明由官方执行，插件仅更新元数据/哈希，不启用功能、不改配置、凭据、protocolDefault、项目授权或保存。完整契约/恢复/effort参数原文隔离回归通过；新版compiled面板未重验。
+
+**Commands**：88→89定义、97→98标识，新增unpin；9别名/27动态回调、既有静态原文保持。独立审查同步裸/与skill折叠、async/partial/AbortSignal、viewSession/有效tier/实际键位和descriptionMatch；透明保留新可选`trySyncModelMentionCompletion`，不翻译模型/effort或改排序插入。完整门禁89/89、漂移0。throwaway真实官方provider源码场景完成zh/en/zh候选→冒号ID规范插入→no-match清除→slash参数优先；首轮未初始化主题失败保留，使用官方initThemeSync后通过，不冒称compiled UI验收。
+
+**Stats**：97→119源码、77→95客户端；18既有文件修改、22新增、0删除，新增Spotlight导航/诊断及两只读API。词典613→893键、通用严格模板105→150，另9个Spotlight作用域属性模板，共159；更新browser白名单与工具/步骤/target/session/正文数据排除，preload/mutations不改。混合属性捕获值不再进词典，具体属性模板先于通用后缀；折叠工具标签只识别官方三文本分片，单节点同名API数据不译。纯DOM驱动12项检查通过同名数据、zh/en/zh、属性/分片恢复及外部节点复用；非真实浏览器/compiled验收。中途重复字典键typecheck失败、属性模板优先级测试失败及最初折叠标签场景失败均保留，修正后完整check通过。
+
+冻结安装通过；最终源码完整`bun run check`为69pass/0fail、2713断言，Settings450/450/Schema0，Commands89/89/98标识/漂移0，1973显示变更/3次恢复/源码网络0。隔离HOME、PI_CODING_AGENT_DIR、XDG、TMPDIR及cwd，真实官方绝对路径和受管启动器的`stats --json/--summary`四进程均退出0，两对stdout/stderr逐字节相同；未启动Web，不代替API/SSE/网页或TUI验收。
+
+上游#17754仍closed/completed、#17758仍merged；稳定tag在修复merge之后686提交、behind_by0，query/query-store/client live与18.16.0逐字节相同。server live全量同步期间最小版本间距改为15秒并在结束flush，算法仍由官方负责；18.16.0已实际验证冷摄取修复不写成18.17.0通过。stats-cli/openPath字节不变，真实新版系统opener/单监听器/权限/API/SSE/费用确认与冷安装门禁尚未重验。
+
+**当前精确阻塞仍为驱动资源清理失败**：按原run账本与启动时间核对，launcher52913仍为原工具宿主22829的僵尸；native52914不存在，原50524端口lsof无监听，原root及六个已登记private目录均ENOENT。当前接口没有安全的宿主定向reap入口，不重复kill僵尸、不终止父宿主/用户会话。它不是活动Stats服务、插件回归或历史unknown。新版三面compiled交互与最终矩阵因该前提未变未启动，归类环境/驱动未验，不记成功能失败；Tern可选未验、Windows排除，历史unknown继续审计。
+
+本轮run `omp-maintenance-20261106-000b38b1`先建树外账本，未创建真实浏览器页面、浏览器进程、自动opener或官方Stats监听服务；页面创建/关闭/已知本轮残留0/0/0，不触碰既有用户页和服务。正常/人为断言失败的浏览器清理预检未启动，不追认为通过。自动测试的Bun fixture服务仅用于回归、不代证官方权限/compiled，通过测试finally等待退出；本轮驱动按独占命令组结算，最终PID/组/临时树回收由树外账本及交付现场核定。命令输出文件并发重名、错误gh绝对路径导致内核重启、注册图探针误将提示Markdown送入TS parser等驱动失败保留；后续改PID唯一输出、恢复磁盘账本和按资源类型读取，未伪造首轮成功。
+
+**未发布**：先由拥有旧子进程的工具宿主安全定向reap并观察PID闭环；然后固定18.17.0真实宿主与最终提交，建立完整新资源基线，重验三面compiled、全部12导航及新Spotlight、冷摄取、系统默认opener、Profile/生命周期/API/SSE/权限/费用边界、macOS/Linux最终CI及精确SHA冷GitHub安装，通过全部适用门禁后实际建tag/Release。本轮仅提交推送定向适配候选；最终提交CI与本机原GitHub来源升级以结束现场结果为准，不借起点代证。
+
 ## 18.16.0 前提复查（2026-11-05，未发布）
 
 起点本地main、origin/main与远端main均`e3e187c300ca2eac2b5a702eaea9121348c48a2f`；正式tag/Release仍[v18.12.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)，相对该tag有20份文件变化，18.16.0仍为待发布候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项既有未跟踪内容保护，不纳入提交。

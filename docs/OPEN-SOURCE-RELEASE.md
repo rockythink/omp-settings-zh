@@ -27,8 +27,8 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前源码/宿主候选18.16.0，内嵌与最低外部Bun1.4.4，最新正式发布仍v18.12.6。冷摄取[#17754](https://github.com/can1357/oh-my-pi/issues/17754)已关闭，修复[#17758](https://github.com/can1357/oh-my-pi/pull/17758)已合并且原/包装checksum匹配官方compiled无数据库冷启动GET0/SSE2→自动GET16实际通过，不再把该官方旧缺陷列为当前持续阻塞。
-- 当前未过项为本轮驱动资源回收：长tab.run页面会话关闭后，临时清理漏等launcher；native/原端口/private及独占Chrome已回收，但工具父宿主尚未reap该自有僵尸子进程，无安全定向reap接口。保留原失败，不杀宿主或伪造PID消失，不把驱动问题归为插件功能回归。资源门禁未解除前不重复最终默认opener/精确SHA冷安装矩阵，不发布；解除后固定宿主与最终提交完整重验。macOS/Linux普通终端＋系统浏览器范围、三面真实交互/权限/API/SSE/资源/最终CI/冷安装不变，Tern可选未验、不宣称支持。历史unknown不等于当前持续泄漏。
+- 当前源码/宿主候选18.17.0，内嵌与最低外部Bun1.4.4，最新正式发布仍v18.12.6。冷摄取[#17754](https://github.com/can1357/oh-my-pi/issues/17754)已关闭、修复[#17758](https://github.com/can1357/oh-my-pi/pull/17758)已合并；18.17.0 tag包含修复，18.16.0 checksum匹配官方compiled的实际冷启动修复证据保留。新版Stats还新增Spotlight与诊断，不能用旧冷启动通过代证18.17.0完整网页/API/SSE门禁。
+- 当前未过前提仍为2026-11-03驱动资源回收：原工具宿主尚未reap自有僵尸launcher，native/原端口/private已回收，无安全宿主定向reap接口。保留原失败，不杀宿主或伪造PID消失，不把驱动问题归为插件功能回归；本轮独立清理成功不能抹去它。前提未解除时完成三面必要适配、安装漂移修复和定向回归，不重复最终系统opener/精确SHA冷安装矩阵、不发布。解除后固定宿主/最终SHA，完整重验macOS/Linux普通终端＋系统浏览器三面交互/权限/API/SSE/资源/最终CI/冷安装。Tern可选未验、不宣称支持；Windows不纳入，历史unknown不等于当前持续泄漏。
 - 18.14.0另有该轮资源身份未过项：omp18140-stats-managed1成功open/observe后tab.run解析失败，该次没有服务/driver目录，具名close仅返回Released，未取得target ID/独占Profile。已知target和共享CDP空列表不能补造其独立销毁证明，该轮不发布。历史缺证必须保留，但不等于已证实后续轮持续泄漏；后续轮须建立独立基线并证明本轮所有资源闭环，不能凭旧地址认领页面或宣称全历史零残留。
 - 官方Tern `over`/`beside`是可选且不同的生命周期，当前未验证、不宣称支持。未安装Tern不阻止明确非Tern范围发版，也不为验收修改官方打开行为；以后明确纳入时才补齐真实环境、pane/block身份和关闭证明，系统fallback及测试opener不可代证。源码推断的注册窗口/迟到block/关闭时限差异不是动态复现，不据此添加shim。
 - 18.12.3首个Stats登录shell驱动被path_helper重排，潜在调用系统open；`http://127.0.0.1:52700`的潜在原生页存在/target/关闭均unknown，详见CONTEXT与SECURITY。已知自有资源全部回收或安全重跑通过仍不能替代该轮零残留门禁；保持未发布候选，不创建tag/Release。

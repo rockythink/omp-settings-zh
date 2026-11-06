@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 
-import { statsPatterns, statsZh } from "./translations";
+import { statsPatterns, statsSpotlightAttributes, statsZh } from "./translations";
 import { invalidateExternalWrites } from "./mutations";
 
 // Served by the official Stats listener; follows the DOM as React renders.
@@ -15,6 +15,7 @@ import { invalidateExternalWrites } from "./mutations";
 	const texts = new WeakMap<Text, DisplayState>();
 	const attributes = new WeakMap<Element, Map<string, DisplayState>>();
 	const patterns = statsPatterns.map(([source, replacement]) => [new RegExp(source), replacement] as const);
+	const spotlightAttributePatterns = statsSpotlightAttributes.map(([source, replacement]) => [new RegExp(source), replacement] as const);
 	const dictionary: Readonly<Record<string, string>> = statsZh;
 	const displayAttributes = ["aria-label", "title", "placeholder"] as const;
 	let language: Language = "zh";
@@ -34,12 +35,30 @@ import { invalidateExternalWrites } from "./mutations";
 		".traces-gutter-track", ".traces-gutter-model", ".traces-tooltip", ".providers-account",
 		".projects-folder", ".tools-name", ".bar-list-label", ".chart-tooltip-title", ".chart-tooltip-value",
 		".frustration-judge [role='alert']", ".frustration-judge p .tone-bad", ".modal-body > .tone-bad",
+		".spot-target", ".spot-tool", ".spot-econ-tool", ".spot-steps-name", ".spot-fb-tool",
+		".spot-coverage-tool", ".spot-hero-tools", ".spot-drawer-title", ".spot-drawer-subtitle",
 	].join(",");
 	const fixedLabels = [
 		".topbar-title", ".nav-heading", ".nav-row-label", ".page-title", ".page-description",
 		".card-title", ".card-description", ".stat-label", ".section-label", ".kv-key",
 		".empty-title", ".empty-hint", ".modal-title", ".request-drawer-error-label",
 		".traces-gutter-lane", ".traces-legend-item", ".traces-kind",
+	].join(",");
+	const spotlightLabels = [
+		".spot-section-title", ".spot-section-copy", ".spot-empty-title", ".spot-empty-hint",
+		".spot-eyebrow", ".spot-hero-unit", ".spot-hero-interval", ".spot-hero-note",
+		".spot-side-copy", ".spot-side-range", ".spot-facts dt", ".spot-rank-facts .dim",
+		".spot-panel-title", ".spot-rank-chance", ".spot-gap-empty", ".spot-rank-axis",
+		".spot-callout-head", ".spot-callout-copy", ".spot-time-label", ".spot-time-detail",
+		".spot-time-detail > .dim", ".spot-coverage-headline", ".spot-econ-facts dt",
+		".spot-econ-cell[data-empty] > .dim", ".spot-steps-unit", ".spot-econ-scale > .num",
+		".spot-tool-net-head > .dim", ".spot-tool-net-detail", ".spot-would-save > .dim",
+		".spot-kind", ".spot-kind > .sr-only", ".spot-timeline-head > .dim",
+		".spot-timeline-body > .micro", ".spot-timeline-head > .badge",
+		".spot-timeline-head > .cell-primary", ".spot-gap-title > .dim",
+		".spot-rank-panel .dw-label", ".spot-page .chart-marker > text",
+		".spot-tooltip-extra > .chart-tooltip-row.dim", ".spot-page .empty",
+		".spot-result-meta > .dim", ".spot-result-meta .badge", ".spot-page .waterfall-label",
 	].join(",");
 	const dataStatLabels: Readonly<Record<string, true>> = { "Most used": true, "Top model": true, "Affected models": true };
 	const fixedChartCards: Readonly<Record<string, true>> = { Activity: true, "Token mix": true, "Savings over time": true, "Where it went": true };
@@ -67,6 +86,8 @@ import { invalidateExternalWrites } from "./mutations";
 
 	function fixedChart(element: Element): boolean {
 		if (element.closest(".providers-mix, .frustration-key")) return true;
+		if (element.closest(".spot-group-legend")) return true;
+		if (element.closest(".spot-page") && ["Compounding", "Tool-output share of context", "Not shaped yet"].includes(cardTitle(element))) return true;
 		const title = cardTitle(element);
 		if (Object.hasOwn(fixedChartCards, title)) return true;
 		if (title !== "Daily estimate") return false;
@@ -74,9 +95,28 @@ import { invalidateExternalWrites } from "./mutations";
 		return sourceText(active ?? null) === "By component";
 	}
 
+	function foldedCoverageLabel(element: Element): boolean {
+		if (!element.matches(".spot-coverage-tool")) return false;
+		let part = 0;
+		for (const node of element.childNodes) {
+			if (node.nodeType === Node.COMMENT_NODE) continue;
+			if (node.nodeType !== Node.TEXT_NODE || part > 2) return false;
+			const text = node as Text;
+			const state = texts.get(text);
+			const value = state && text.data === state.rendered ? state.original : text.data;
+			if (!(part === 0 ? /^\d[\d,]*$/ : part === 1 ? /^ more $/ : /^tools?$/).test(value)) return false;
+			part++;
+		}
+		return part === 3;
+	}
+
 	function safeText(text: Text): boolean {
 		const parent = text.parentElement;
 		if (!parent) return false;
+		// Spotlight mixes tool/target identifiers with fixed copy inside a few shared components.
+		if (parent.matches(".spot-drawer-subtitle .badge, .spot-timeline-head > .cell-primary, .spot-coverage .bar-list-label > .badge, .spot-coverage .bar-list-label > .dim.num, .spot-context .chart-tooltip-title")) return true;
+		if (foldedCoverageLabel(parent)) return true;
+		if (parent.matches(".spot-hero-warn > span")) return text !== parent.firstChild;
 		const cell = parent.closest("td");
 		if (cell) {
 			const header = cell.closest("table")?.querySelectorAll("thead th")[cell.cellIndex];
@@ -90,6 +130,7 @@ import { invalidateExternalWrites } from "./mutations";
 		// The trace page reuses PageHeader for a session title and cwd, not UI prose.
 		if (parent.closest(".traces-view .page-title, .traces-view .page-description")) return false;
 		if (parent.matches(fixedLabels) || parent.closest("th, .chart-empty")) return true;
+		if (parent.matches(spotlightLabels)) return true;
 		if (parent.matches("[role=dialog] > header .badge, .modal-body > p.muted")) return true;
 		if (parent.matches("svg title") && fixedChart(parent)) return true;
 		if (parent.closest(".stat-foot")) return !["Most used", "Affected models"].includes(statLabel(parent));
@@ -126,6 +167,11 @@ import { invalidateExternalWrites } from "./mutations";
 	function safeAttribute(element: Element, name: string): boolean {
 		// Canvas pixels stay untouched; only its fixed accessibility instructions are DOM text.
 		if (element.matches(".traces-canvas, .traces-minimap")) return name === "aria-label";
+		if (element.matches(".spot-hero-tools svg[aria-label]")) return name === "aria-label";
+		if (element.matches(".spot-drawer-subtitle > span:has(> .badge)")) return name === "title";
+		if (element.matches(".spot-hero-tools > span")) return name === "title";
+		// These titles are tool names/listings, not copy, even when they equal dictionary keys.
+		if (element.matches(".spot-more-tools, .spot-econ th, .spot-steps-name")) return false;
 		if (element.closest(excluded)) return false;
 		if (name === "placeholder") return element.matches(".search input, input.input");
 		if (name === "aria-label" && element.matches(".search > input.input[type='search']")) return true;
@@ -134,6 +180,8 @@ import { invalidateExternalWrites } from "./mutations";
 		if (element.matches(".live-chip") && name === "title" && sourceText(element.querySelector("span:not(.dot)")) === "Sync failed") return false;
 		if (element.matches(".legend-item, .share-bar-seg")) return fixedChart(element);
 		if (element.matches(".segmented-option")) return !element.closest(".frustration-classes");
+		if (element.closest(".spot-page") && element.matches(".spot-hero, .spot-hero-value, .spot-hero-usd, .spot-rank-panel, .spot-rank-sources, .spot-rank-pos, .spot-rank section, .spot-panel-title, .spot-rank-n td > span, .spot-rank-bar, .spot-gap, .spot-gap-bar, .dw-dot, .dw-detail span[title], .dw-value > .num > span, .spot-rank-facts > div, .waterfall-row, .spot-econ-cell, .spot-tool-net-row, .spot-tool-net-value, .spot-shrink, .spot-would-save, .spot-result-meta > span:has(> .badge)")) return true;
+		if (element.matches(".spot-kind, .spot-drawer-summary [title]")) return name === "title";
 		return element.matches(".btn, .topbar-menu, .sidebar, .segmented, .check, .traces-check, th, select.input, .live-chip");
 	}
 
@@ -152,11 +200,28 @@ import { invalidateExternalWrites } from "./mutations";
 		return value;
 	}
 
+	function translateAttribute(element: Element, value: string): string {
+		// Only these reviewed containers can contain multiline UI templates with opaque labels.
+		if (!element.matches(".spot-econ-cell, .spot-tool-net-row, .spot-rank-bar, .spot-gap, .spot-gap-bar, .spot-hero-tools > span")) return translate(value);
+		return value.split("\n").map(line => {
+			for (const [pattern, replacement] of spotlightAttributePatterns) {
+				if (pattern.test(line)) return line.replace(pattern, replacement);
+			}
+			return element.matches(".spot-hero-tools > span") ? line : translate(line);
+		}).join("\n");
+	}
+
 	function processText(text: Text): void {
 		const previous = texts.get(text);
 		const current = text.data;
 		const original = previous && current === previous.rendered ? previous.original : current;
-		const rendered = language === "zh" && safeText(text) ? translate(original) : original;
+		let rendered = language === "zh" && safeText(text) ? translate(original) : original;
+		// React splits this fixed label around its count and singular/plural expression.
+		// Keep those nodes intact; a one-node tool name with the same text remains data.
+		if (language === "zh" && text.parentElement && foldedCoverageLabel(text.parentElement)) {
+			if (original.trim() === "more") rendered = original.replace("more", "个额外");
+			else if (/^tools?$/.test(original)) rendered = "工具";
+		}
 		if (rendered === original) texts.delete(text);
 		else texts.set(text, { original, rendered });
 		if (current !== rendered) text.data = rendered;
@@ -171,7 +236,7 @@ import { invalidateExternalWrites } from "./mutations";
 			return;
 		}
 		const original = previous && current === previous.rendered ? previous.original : current;
-		const rendered = language === "zh" && safeAttribute(element, name) ? translate(original) : original;
+		const rendered = language === "zh" && safeAttribute(element, name) ? translateAttribute(element, original) : original;
 		if (rendered === original) states?.delete(name);
 		else {
 			const next = states ?? new Map<string, DisplayState>();

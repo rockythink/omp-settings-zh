@@ -6,7 +6,7 @@
 
 ## 内置斜杠补全译文边界
 
-- 当前来源OMP18.16.0官方BUILTIN_SLASH_COMMAND_DEFS；88条说明、97名称/别名、9别名及27动态回调相对18.15.0保持，30命令文件逐字节不变。另独立复核相邻prediction alternatives优先级来源，不触发模型预测求验收；viewSession、switch有效层级、effort键位、descriptionMatch与原生Enter保护保持。同步/异步/partial/取消/可选能力仍须行为回归和compiled验收，静态覆盖不代证动态状态。
+- 当前来源OMP18.17.0官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调。新增unpin，既有静态文案、别名和动态模板保持；新增可选同步模型补全能力只透明保留，不翻译模型/effort或改变匹配。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持；源码审查与静态覆盖不代证新版compiled交互。
 - 只翻译顶层补全的说明与实时状态、`skill:` 数量；参数提示、命令名、别名、模型／提供商 ID、路径与目标正文保持原样。
 - `switch` / `loop` / `effort` 的动态快捷键按宿主实际显示捕获，中文保留原键位。除键位占位外必须匹配官方原文，第三方覆盖、技能说明和未知文案不改。
 - `/settings-language en` 恢复官方补全结果；中文与英文都须验证排序、Tab／Enter 插入和实际官方编译版，不能用静态表检查代替。
@@ -14,7 +14,7 @@
 
 ## Stats Web 译文边界
 
-- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.16.0`；97源码/77客户端仅query.ts与SpanDrawer.tsx变化，UI文案/DOM及服务端不变，613键/105模板不重译，browser/mutations/preload保持。官方冷摄取#17758已进入checksum匹配编译版，原/包装无数据库冷启动真实GET0/SSE2后自动GET16通过；不在插件复制查询、轮询或强刷。Close/Esc、signed saved百分比、搜索/追踪空态与数据排除保持；Tern可选未验证，系统fallback不代证。
+- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.17.0`；119源码/95客户端，新增Spotlight页面与诊断。893字典键、150通用严格模板及9个Spotlight作用域属性模板；工具/步骤/target/session数据和混合属性捕获值保持原文。只扩展已审阅DOM白名单，React多文本节点的折叠工具标签按严格结构翻译，单文本同名工具数据不译。query/query-store/client live修复源码保留，但18.16.0实际冷启动通过不代证18.17.0完整网页；mutations/preload不改，未知文案与canvas保留。
 - `src/stats/translations.ts` 只包含原文键、中文值及严格锚定的动态模板；浏览器端必须先通过官方 UI 区域白名单，不能在整页全局替换英文。
 - 保留模型、提供商、工具、项目与账户名称、路径、请求与会话正文、错误原文、协议、数字和模板中的实际数据；未知文案与 canvas 内绘制内容保持官方原文。Window utilization 普通 tooltip series 标签是账户数据，即使为 Requests／Other (3) 也不译；仅官方带 tone-bad 的 Exhausted 注记与 total 固定标签属于 UI。
 - 切回 English 恢复原始文本与显示属性；验证 React 异步更新、路由复用与译文键同名的数据值，不只检查首页。外部写入即使与插件上次显示相同，也须失效旧来源；一批外部文本／属性写入全部失效后才渲染，不能误恢复真实数据。表头复用须重新判断整表单元格的 UI／数据身份。同 origin 的偏好跨刷新、路由与服务重启保留，首次默认中文；网页语言独立于 /settings-language。页面脚本在原 Stats 服务同端口加载，不增加代理。
@@ -187,7 +187,7 @@ Settings 选项显示副本与宿主共享原文源必须隔离；不能因设�
 
 活动翻译只以目标版本 OMP 官方设置注册表的英文显示元数据为语义来源：
 
-1. 从锁定的`@oh-my-pi/pi-coding-agent@18.16.0`完整37领域及递归导入注册图提取英文；582定义/438UI，新增btw.inject、composer.predictionAlternatives、hindsight.globalScope，其余435项原文/选项保持，9动态getter。新增Tab模板捕获真实getter；保留预测候选同次请求、额外输出Token费用及Hindsight跨项目授权限制，不改默认false、保存或配置。固定官方commit `650f3a108229ee11bf68ba3377f4e8c3391cd424`的Git blob与npm全部1839份coding-agent源码匹配，4个HTML源按package.files排除；utils130/Stats97/TUI441份亦匹配；
+1. 从锁定的`@oh-my-pi/pi-coding-agent@18.17.0`完整注册图提取英文；602定义/450UI，12项新增、7项原文变化、9动态getter保持，未变化431项不重译。112条非类型相对导入边/63来源独立核对；仅更新显示与原文哈希，不改默认值、保存、配置、项目授权和共享effort原文。固定官方commit `75e7801e247d4e3263439d4cc08ccad60dc64bdd`的Git blob与npm全部1928份coding-agent源码匹配，4个HTML源按package.files排除；utils130/Stats119/TUI457份亦匹配；
 2. 使用本项目自己的 LLM 能力按本规范生成初稿，不输入或复用第三方中文译文；
 3. 按设置路径和选项 `value` 校验完整性；
 4. 用英文原文哈希标记待复核的上游语义变化；

@@ -2,6 +2,16 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.17.0] - 2026-11-06（未发布候选）
+
+- 通过原受管`omp update --force`升级官方18.16.0→18.17.0；首次补丁下载截止143保留，重试由官方完成patch/校验，SHA-256匹配darwin-arm64资产。内嵌及最低外部Bun1.4.4，开发依赖/锁文件/宿主范围与来源同步。
+- Settings602定义/450UI：12新增、7原文变化，未变431项不重译，9动态getter保持。覆盖Motion/帧率/加载间隔、彩色Markdown、Shell可视化、自动更新、chillax、Responses WebSockets、ovnfs、子代理线程、扩展记录块呈现和Spotlight；不启用功能、不改官方默认值、凭据、项目授权或保存。
+- Commands89定义/98标识：新增unpin，9别名/27动态回调及既有静态文案保持；透明保留新版`trySyncModelMentionCompletion`。真实官方provider源码场景验证zh/en/zh候选、冒号ID插入、no-match清除与参数优先级，不冒称compiled交互。
+- Stats119源码/95客户端：新增Spotlight页面、诊断与两只读API；独立新增280字典键、45通用模板及9作用域属性模板，合计893键/159模板。补充DOM白名单和工具/步骤/target/session数据排除；修正属性模板具体优先和React折叠标签分片，保留English恢复及节点复用。preload/mutations不变，原计算/API/权限/费用确认不复制。
+- 官方#17758查询修复源码保留且稳定tag包含合并提交；server live全量同步节流变化由官方负责。18.16.0实际冷启动通过不代证18.17.0，当前完整网页/冷摄取/API/SSE未重验。
+- 冻结安装与完整check通过：69测试/2713断言，Settings450/450/Schema0，Commands89/89及98标识/漂移0；1973显示变更/3次恢复/源码网络0。纯DOM定向12项检查覆盖同名数据、zh/en/zh、属性/React分片恢复与外部节点复用；真实compiled隔离JSON/summary两对输出/状态相同。中途重复键、模板优先级及探针准备失败留证，不抹去。
+- **未发布**：旧驱动自有僵尸仍待原工具宿主安全定向reap；不杀父宿主/用户会话，不重复不能改变结论的最终矩阵。前提解除后固定最终宿主/SHA，完整重验三面compiled、系统默认opener、Profile/生命周期/API/SSE/权限/资源、macOS/Linux CI与精确SHA冷GitHub安装，再实际建tag/Release。Tern可选未验证、Windows不纳入；最终提交/本机同源升级与资源结算见CONTEXT及本轮交付。
+
 ## [18.16.0] - 2026-11-03（未发布候选）
 
 ### 2026-11-05 前提复查
