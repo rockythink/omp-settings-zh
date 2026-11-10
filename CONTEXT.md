@@ -1,5 +1,29 @@
 # Project Context
 
+## 18.18.6 完整验收（2026-11-10）
+
+起点本地/远端main均`d1bc27818f73d8a75362d750524ac618219bfa2f`，该精确提交CI [42243778372](https://github.com/rockythink/omp-settings-zh/actions/runs/42243778372)成功；正式Release仍v18.12.6，候选相对其有实际未发布适配。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项既有未跟踪内容不动。
+
+**旧阻塞解除**：`ps`现场查询PID 52913、52914与原工具宿主22829均不存在，2026-11-03的驱动僵尸已随原宿主退出闭环；不是由本轮kill或全局waitpid完成，原失败记录保留。冷摄取#17754 closed，#17758 merged，稳定tag在合并提交之后1820提交、behind_by0。
+
+受管`omp update`报告已最新，前后均`omp/18.18.6`（本机已先于本轮被官方自动更新到该版本）；SHA-256 `ed2e63eb43888eb76cb1409b245b1db4557c94dfad52dc545c9aaca01ebce82d`匹配官方darwin-arm64资产。coding-agent/utils/Stats最新稳定版均18.18.6，精确同版依赖、最低Bun1.4.4。固定官方commit `9058ab9d229663e229e2867824ba6df6f21e9e59`的Git blob与npm全部1937份coding-agent、130份utils、119份Stats、463份TUI源码匹配，4个HTML源按package.files排除。
+
+**Settings**：602→604定义、450UI不变；`gc.strip`/`gc.stripAfterDays`无UI不补译。4项原文变化：`lsp.enabled`（集成范围与`--no-lsp`）、`mnemopi.dbPath`（`~`语义）、`task.eager`（只影响主Agent）、`tui.mouse`（滚轮不再靠Shift滚动，须用键盘回滚或关闭）；其余446项不重译，9动态getter。完整注册导入图63文件/112边，6份变化逐份审阅；`spotlight.experiment.holdout`默认0.15→0.05无显示文案变化，由官方执行。真实compiled：中文搜索命中新版`鼠标点击聚焦`并显示新译文与实际⇧键位；布尔原生保存false→true→false写入隔离config.yml；枚举面板Esc取消不写配置；同进程en/zh往返面板与搜索恢复；`/effort `参数保持官方英文。`composer.shape`等宿主动态选项按设计保留英文。
+
+**Commands**：89定义/98标识/9别名/27动态回调；30命令文件仅`builtin-lifecycle`的`/restart`说明与`helpers/logout`参数重构变化，`pi-tui/autocomplete.ts`逐字节不变。真实compiled逐一输入全部98名称/别名，均显示中文、无缺失；plan/plan-review、loop、model、switch、effort、skill:数量、第三方与技能说明英文边界、`@`文件和`/switch `参数不译；Tab补全后Enter由原provider打开原生面板；`/transcript`纯描述命中Enter未误执行；en/zh往返恢复。自定义F6/F7/F8键位实测；SDK创建零请求idle子会话后经Hub聚焦，model/switch/effort跟随Sonnet/low并由F8改medium，F7退出后主会话恢复Opus/high。`annotate`为官方捆绑/外部说明，非BUILTIN注册表，按原文保留。
+
+**Stats**：119源码/95客户端，客户端逐字节不变，仅server/parser/trace/shared-types变化，893键/159模板、browser/mutations/preload不改。实际compiled真实Chrome：cold ingestion原版与包装均确认无stats.db启动，保留真实首响应仅延迟交付3.5秒，GET0→SSE版本1,2→自动GET16，UI/API16，无刷新/轮询；12导航zh/en/zh全部往返一致，English与原版页面归一化后逐页相同；41份完整API（含16请求详情与会话trace/Spotlight）与原版逐值一致；23组HTTP边界全等（含跨Host/Origin原样、judge 405/403、close 405/403/404、身份头非授权）；原/包装SSE心跳15002/15003ms；双项目16→17自然更新与UI刷新；请求抽屉、追踪三模式与span详情、图表、390px菜单、Tab与g键跳转、English刷新/路由/同origin重启保留均实测。同名数据（Requests/Filter工具、`Requests failed: Overview timeout`错误、路径）保持原文。Frustration预估对话取消，judge POST 0。`Most used: <工具>`、`Most tokens: <服务商>`、`52.9% of requests · <服务商>`、筛选`All`等混合数据提示按既有安全回退保留英文；No judge model错误为服务端原文。
+
+**生命周期**：真实PTY Ctrl+C（ISIG on、VINTR 0x03、前台组为子进程）原版130、包装信号退出，端口闭合；INT/TERM/HUP 130/143/129，native SIGKILL 137，launcher SIGKILL 137且guard在3.9秒内清理；父进程消失后native/端口回收，所有私有目录与guard消失。新增`reused`路径：原版/包装owner与second四种组合均0.6秒exit 0、原URL opener一次、owner不受影响、无private残留。`stats --json/--summary/--help`、`--version`、`--port 99999`、未知参数原版/包装stdout/stderr/退出码逐字节相同。单监听器lsof确认。
+
+**默认opener与安装**：新zsh登录交互shell解析受管omp与`/usr/bin/open`，真实Chrome各恰好新增1个`http://127.0.0.1:<port>/#/overview?range=24h`标签，按原生window/tab ID关闭，正常与故意断言失败分支都回到基线。compiled smoke（本地link）5页建/关、两单监听器服务、私有目录0700/0600及合并flags/preload、doctor、dry-run/卸载通过，cleanupErrors0。Profile/XDG 4组合及缺SHELL/USER/LOGNAME：compiled `getPluginsNodeModules`稳定路径、cache-v1物理移动到v2且不relink后插件仍加载、state.main保持逻辑路径、dry-run保留、标准卸载撤销launcher与PATH块；macOS上XDG不改变路径。
+
+**驱动失败保留**：首次TUI PATH未含官方目录，插件按合同失败关闭；probe曾拦截含`/settings`的input；前三次TUI各16次后台技能描述压缩POST在建连前被拒（agent_start0、无实际发送），预置官方格式缓存后POST 0。web首轮护栏误伤测试opener，且启动失败路径未进finally，遗留2个本轮原版Stats进程，已按账本PID+端口+argv定向回收并确认端口关闭；驱动已修正。第二轮背景标签IntersectionObserver超时4阶段；`reuse-path`初判超时系护栏拦截本机身份探测，放行后四组合通过。均非产品回归。
+
+**资源**：run `omp-maintenance-20261110-b3226a7e`账本在仓库外。web修正后5轮浏览器页面15/15关闭、服务20/20停止且端口确认关闭，独占headless浏览器退出，cleanupErrors0；真实Chrome自有标签2/2按ID关闭，用户原有页面未操作。`bun install --frozen-lockfile`与完整`bun run check`通过：69pass/0fail、2713断言，Settings450/450、Schema0，Commands89/89、98标识、漂移0，1973显示变更/3次恢复/源码网络0。
+
+**发布判定**：本提交的macOS/Linux CI、精确SHA干净GitHub安装及tag/Release实际结果以GitHub Release为准；任一失败不发布。Tern路径未验证、不宣称支持，Windows不纳入，历史unknown继续审计。
+
 ## 18.17.0 定向维护（2026-11-06，未发布）
 
 起点本地main、origin/main与远端main均`e25b12f73fd6cba4a6e4898357023fb61f853a1b`；[该精确提交CI](https://github.com/rockythink/omp-settings-zh/actions/runs/42051407828)的macOS/Linux均成功，上一轮macOS runner容量阻塞已解除，不沿用旧失败结论。正式tag/Release仍[v18.12.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.12.6)，候选相对其有实际未发布适配；Windows PR #1现场CLOSED、isDraft:true、mergedAt:null。42份既有未跟踪内容不动，不纳入提交。

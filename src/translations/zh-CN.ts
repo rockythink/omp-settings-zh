@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.17.0",
+  "sourceOmpVersion": "18.18.6",
   "settings": {
     "tui.colorfulMarkdown": {
       "sourceHash": "439637afe8869b8e75951bce041143133a4b81129866c4953c7e178c6d2f9708",
@@ -2573,9 +2573,9 @@ export const zhCN = {
       "description": "开启时，在停止时自动运行一轮私有捕获（会额外使用 token）；关闭时，仅保留常驻的自动学习指导"
     },
     "mnemopi.dbPath": {
-      "sourceHash": "6edb10f1c642d197994b758ee93ac1ac5b13e48a8d3dd1222921a5371dc32122",
+      "sourceHash": "372f9b3fad7d4aa4d11c3a190e84bacebfcae831177cefd09df24859ff01d600",
       "label": "Mnemopi DB 路径",
-      "description": "可选的 SQLite DB 路径，默认为智能体记忆目录"
+      "description": "可选的 SQLite DB 路径，开头的 ~ 表示用户主目录；默认为智能体记忆目录"
     },
     "mnemopi.bank": {
       "sourceHash": "1512e129c6007ed86b1f07ed6fa676303a57f7b09ff6bb48257a9c3b119298c7",
@@ -2970,9 +2970,9 @@ export const zhCN = {
       "description": "在对话记录中内联显示读取工具结果，而非摘要行"
     },
     "lsp.enabled": {
-      "sourceHash": "c01d690f5c32a9df560e180ced8e7f2f11f658097097e251a2576a8ada2f28e6",
+      "sourceHash": "1fe68995927bf7240990df61e826e24215df1f1d1e554e4fb5610f020cc89bb5",
       "label": "LSP",
-      "description": "启用 lsp 工具以提供代码智能功能（定义、引用、诊断、重命名）"
+      "description": "语言服务器集成：lsp 工具、写入/编辑后诊断及写入时格式化（--no-lsp 仅在本次运行中禁用）"
     },
     "lsp.lazy": {
       "sourceHash": "5e5740595487c2c62b0154cba12ccd13ef68858bf8069cd509f21fc72a9eb419",
@@ -3550,9 +3550,9 @@ export const zhCN = {
       "description": "代理管理的 worktree 的基础目录——任务隔离副本、`github` PR 检出和 `omp worktree` 清理均位于此处。未设置时使用 ~/.omp/wt。必须是绝对路径或以 ~ 开头的相对路径；其他相对路径会被忽略。环境变量 OMP_WORKTREE_DIR 的优先级更高"
     },
     "task.eager": {
-      "sourceHash": "bb8fdeff73b831ee5a5ed25b4aa5696b2565a6c6c7a27ac6c5a196e1c2b367c7",
+      "sourceHash": "aa3f2e90e4ccba792ae4e7124599a4dc5d540b122684ea7a7f2ba1c50ec533da",
       "label": "优先委派任务",
-      "description": "推动将工作委派给子代理的强度",
+      "description": "推动主 Agent 委派工作的强度；子代理仍沿用模型自身的策略",
       "options": {
         "default": {
           "label": "默认",
@@ -4492,10 +4492,10 @@ export const zhCN = {
       }
     },
     "tui.mouse": {
-      "sourceHash": "6d1ddee15769b420ca1d7ef313cf7a895922d7c5fbae52f4943aa6ed450e5ac1",
+      "sourceHash": "11b76da0b77e9f76042964ffb583b7b9159c00fdc27e31472ebd02193711d48f",
       "label": "鼠标点击聚焦",
-      "description": "在主会话中捕获鼠标点击，使实时子 Agent 卡片和 HUD 行可通过点击聚焦，并在悬停时高亮目标；扩展所属链接上的点击会传给对应扩展（也可用链接提示键而不使用鼠标来选择链接）。开启后，原生文本选择改为 {shift}+拖动，滚轮滚动改为 {shift}+滚轮",
-      "descriptionSource": "Capture mouse clicks in the main session so live subagent cards and HUD rows focus on click, with a hover highlight on the target, and clicks on extension-owned links reach their extension (the link-hint key picks them without the mouse). Native text selection becomes {shift}+drag and wheel scroll becomes {shift}+wheel while on"
+      "description": "在主会话中捕获鼠标点击，使实时子 Agent 卡片和 HUD 行可通过点击聚焦，并在悬停时高亮目标；扩展所属链接上的点击会传给对应扩展（也可用链接提示键而不使用鼠标来选择链接）。开启后，原生文本选择改为 {shift}+拖动；鼠标捕获会让滚轮无法滚动（终端改为把滚轮事件上报给 omp），请改用终端的键盘回滚按键，或关闭此项",
+      "descriptionSource": "Capture mouse clicks in the main session so live subagent cards and HUD rows focus on click, with a hover highlight on the target, and clicks on extension-owned links reach their extension (the link-hint key picks them without the mouse). Native text selection becomes {shift}+drag while on, and mouse capture stops wheel scrolling — the terminal reports wheel ticks to omp instead — so scroll with the terminal's keyboard scrollback keys, or turn this off"
     },
     "display.pinnedAgents": {
       "sourceHash": "01fb7f1651c02d82ca1765bf78b136248dd7cb94fe686af3beb2451d8bf3c16c",

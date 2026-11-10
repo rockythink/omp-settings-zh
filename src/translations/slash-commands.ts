@@ -410,8 +410,8 @@ export const slashCommandTranslations = [
   },
   {
     "name": "restart",
-    "en": "Restart omp with the same launch flags, resuming this session",
-    "zh": "保留原启动参数重启 OMP，并恢复当前会话"
+    "en": "Restart omp with the same launch flags, resuming this session and its running subagents",
+    "zh": "保留原启动参数重启 OMP，并恢复当前会话及其运行中的子 Agent"
   },
   {
     "name": "marketplace",

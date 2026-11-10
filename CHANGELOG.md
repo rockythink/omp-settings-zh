@@ -2,6 +2,14 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.18.6] - 2026-11-10
+
+- 对齐官方OMP、coding-agent/utils/Stats及锁文件18.18.6（官方tag commit `9058ab9d229663e229e2867824ba6df6f21e9e59`）；受管`omp update`报告已最新，SHA-256匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。npm全部1937份coding-agent、130份utils、119份Stats、463份TUI源码与官方Git blob一致，4个HTML源按package.files排除。
+- Settings604定义/450UI：复核`lsp.enabled`、`mnemopi.dbPath`、`task.eager`、`tui.mouse`4项原文，其余446项不重译，9动态getter保持；新增的`gc.strip`、`gc.stripAfterDays`无UI，不补译。注册导入图63文件/112边中6份变化已逐份审阅；`spotlight.experiment.holdout`默认值变化由官方执行。
+- Commands89定义/98标识/9别名/27动态回调：仅`/restart`英文说明变化，动态回调与公共provider接口不变。
+- Stats119源码/95客户端：客户端逐字节不变，893键/159模板保持；服务端`reused`复用分支、trace ETag v5与解析游标调整由官方执行，插件不复制。
+- 首次对新版做三面完整编译版验收：真实TUI的Settings与Commands、12页Stats、冷摄取、API/权限/SSE、生命周期、系统默认opener及Profile/XDG矩阵全部通过，证据见CONTEXT。Tern路径未验证，Windows不纳入。
+
 ## [18.17.0] - 2026-11-06（未发布候选）
 
 - 通过原受管`omp update --force`升级官方18.16.0→18.17.0；首次补丁下载截止143保留，重试由官方完成patch/校验，SHA-256匹配darwin-arm64资产。内嵌及最低外部Bun1.4.4，开发依赖/锁文件/宿主范围与来源同步。

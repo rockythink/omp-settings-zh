@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.17.0；最新正式Release仍为18.12.6，main与源码编号不是发布证据
-- 目标基线：官方OMP18.17.0、外部Bun最低1.4.4；18.16.0官方冷摄取修复证据保留，18.17.0完整compiled/Web尚未重验。旧驱动资源回收前提未解除，不发布；Tern可选未验证
+- 实现版本：18.18.6；正式发布以GitHub Release为准，main与源码编号不是发布证据
+- 目标基线：官方OMP18.18.6、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -66,6 +66,8 @@
 
 18.17.0为602定义/450UI，新增12项、原文变化7项，9动态getter不变；完整非类型相对导入图112边/63来源（含只读提示资源），不只比较all-settings入口。新增Motion/帧率/加载间隔、彩色Markdown、Shell可视化、自动更新、chillax、标准Responses WebSockets、ovnfs、子代理线程、扩展记录块呈现与Spotlight实验；原textVerbosity默认medium→low、edit.mode新增none等语义由官方执行。仅更新显示元数据/哈希，不启用新能力、不改默认值、凭据、protocolDefault、项目授权或保存。设置显示副本与effort原文继续隔离。
 
+18.18.6为604定义/450UI，4项原文变化（lsp.enabled、mnemopi.dbPath、task.eager、tui.mouse），其余446项不重译，9动态getter不变；`gc.strip`/`gc.stripAfterDays`无UI不补译。63文件/112边注册图6份变化已审阅，registry/all-settings合同不变；tui.mouse模板保持{shift}捕获，滚轮不再属Shift语义。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -122,6 +124,7 @@
 - Tern只认`TERN_PANE_SOCKET`+数字`TERN_PANE`，不读`PI_BROWSER_TERN`或`browser.tern`；测试opener bridge不能拦截Tern。CLI over管理关闭，会话beside成功后断开且页面归用户；两者不得混用回收规则。源码推断的注册窗口、迟到block及3秒wrapper/5秒close差异不是复现，不添加产品shim。真实compiled页面、API、信号130与block回收另验。
 - 18.16.0：97源码/77客户端仅query.ts与SpanDrawer.tsx变化，服务端、DOM、导航与文案保持，613键/105模板不改。query成功结算时重检最新live版本并沿用原节流；官方#17758已进入固定tag和checksum匹配编译制品，原/包装分别确认HOME/.omp/stats.db不存在后真实GET0/SSE2交错→自动GET16、UI/API16，未强刷/切页/轮询；这是实际嵌入客户端证明，不仅是源码导入。
 - 18.17.0：119源码/95客户端，18既有文件修改、22新增、0删除；新增Spotlight导航、实验/回取诊断及两只读API。893键、150通用严格模板＋9作用域属性模板；browser仅放行审阅UI，排除工具/步骤/target/session/正文，混合属性原数据捕获不再进词典。属性模板具体结构先于通用后缀匹配；折叠工具标签只接受官方数值/固定more/单复数tool三文本结构，保留React节点与English恢复。query/query-store/client live与18.16.0相同、server live全量同步节流变为15秒且结束flush，计算/节流不在插件复制。stats-cli/openPath字节不变，preload/mutations无变化；源码与纯DOM场景不代证新版compiled/Web/API/SSE门禁。
+- 18.18.6：119源码/95客户端，客户端逐字节不变；server新增`reused`句柄（他进程dashboard时CLI只打开页面并直接返回，插件wrapper无需特例，私有目录照常清理），trace ETag v5改定长摘要，parser游标移除dev字段。893键/159模板及browser/mutations/preload不改。
 
 ## 6. 检查与真实验证
 
@@ -146,7 +149,7 @@
 
 ## 7. 发布边界
 
-源码/开发依赖/目标宿主基线为18.17.0，范围`>=18.17.0 <19`，外部Bun最低1.4.4。旧自有僵尸仍待工具宿主安全定向reap，当前不重复不能改变结论的最终矩阵，不发布。18.16.0冷摄取实际修复证据不替代18.17.0完整网页/权限/API/SSE；前提解除后须重验三面compiled交互、系统默认opener、Profile/生命周期、精确最终macOS/Linux CI与干净GitHub安装及逐资源回收。Tern可选未验证，不阻止非Tern范围；Windows草稿未合并，不纳入支持；历史unknown独立保留。
+源码/开发依赖/目标宿主基线为18.18.6，范围`>=18.18.6 <19`，外部Bun最低1.4.4。旧自有僵尸及其原宿主已消失，原失败记录保留。18.18.6完整验收含三面compiled交互、系统默认opener、Profile/生命周期、API/SSE/权限与资源回收；Tern可选未验证，Windows草稿未合并，不纳入支持；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

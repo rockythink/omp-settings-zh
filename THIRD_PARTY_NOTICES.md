@@ -2,13 +2,13 @@
 
 ## 当前状态
 
-`src/translations/zh-CN.ts`依据OMP18.17.0官方英文完整注册图独立复核：602定义/450UI，新增12项、复核7项，原431项不重译、9动态getter保持。112条非类型相对导入边/63来源（含提示资源）；仅翻译显示，不改变默认值、原value、保存、凭据或项目授权，不复用第三方中文译文。
+`src/translations/zh-CN.ts`依据OMP18.18.6官方英文完整注册图独立复核：604定义/450UI，复核4项原文变化，其余446项不重译、9动态getter保持。63文件/112条非类型相对导入边；仅翻译显示，不改变默认值、原value、保存、凭据或项目授权，不复用第三方中文译文。
 
-`src/translations/slash-commands.ts`保存官方OMP18.17.0的89说明/98标识/9别名/27动态回调；新增unpin，原88项静态文案及动态模板保持。透明保留新增同步模型提及补全能力，不改变候选数据、匹配排序、参数或原生插入执行。
+`src/translations/slash-commands.ts`保存官方OMP18.18.6的89说明/98标识/9别名/27动态回调；相对18.17.0仅`/restart`说明变化。不改变候选数据、匹配排序、参数或原生插入执行。
 
-`src/stats/translations.ts`审阅基线为官方`@oh-my-pi/omp-stats@18.17.0`；119源码/95客户端，新增Spotlight导航、页面与诊断。893键、150通用严格模板＋9作用域属性模板；仅调整审阅DOM/数据边界，mutations/preload不改。npm仅作审阅来源，实际运行时是官方compiled，在原监听器同源注入，不重新分发Stats实现或二进制。
+`src/stats/translations.ts`审阅基线为官方`@oh-my-pi/omp-stats@18.18.6`；119源码/95客户端，客户端相对18.17.0逐字节不变。893键、150通用严格模板＋9作用域属性模板，mutations/preload不改。npm仅作审阅来源，实际运行时是官方compiled，在原监听器同源注入，不重新分发Stats实现或二进制。
 
-固定官方Git树commit `75e7801e247d4e3263439d4cc08ccad60dc64bdd`的blob身份与npm全部1928份coding-agent、130份utils、119份Stats、457份TUI源码匹配；4个HTML源由package.files排除，不补造包内来源。冷摄取[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)/[PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)已由上游合并，18.17.0包含合并提交且查询修复源码保持；18.16.0官方compiled实际修复证据保留，但不替代新版完整验收。不以局部源码、自编译或第三方构建代替官方制品。
+固定官方Git树commit `9058ab9d229663e229e2867824ba6df6f21e9e59`的blob身份与npm全部1937份coding-agent、130份utils、119份Stats、463份TUI源码匹配；4个HTML源由package.files排除，不补造包内来源。冷摄取[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)/[PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)已由上游合并，18.18.6官方compiled原版与包装均已实际验证修复。不以局部源码、自编译或第三方构建代替官方制品。
 
 ## Oh My Pi
 
@@ -17,7 +17,7 @@
 - Project: Oh My Pi
 - Repository: https://github.com/can1357/oh-my-pi
 - License: MIT
-- Baseline reviewed: v18.17.0 (75e7801e247d4e3263439d4cc08ccad60dc64bdd)
+- Baseline reviewed: v18.18.6 (9058ab9d229663e229e2867824ba6df6f21e9e59)
 - Copyright notices in the reviewed upstream license:
   - Copyright (c) 2025 Mario Zechner
   - Copyright (c) 2025-2026 Can Bölük
