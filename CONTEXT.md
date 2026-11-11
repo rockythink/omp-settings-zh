@@ -20,6 +20,8 @@
 
 **资源**：run `omp-maintenance-20261111-d6f3ab2f`账本在树外。smoke 5/5页、网页驱动每轮1页均关闭，各独占headless Chrome退出；TUI 6会话进程组0存活；所有Stats服务端口关闭；真实Chrome自有标签2/2按ID关闭，用户原有标签未操作。冻结安装与完整`bun run check`：71pass/0fail、2727断言，Settings453/453、Schema0，Commands89/89、98标识、漂移0，2000显示变更/3次恢复/源码网络0。
 
+**首个最终提交CI失败**：`65119c4` CI 43052519294 macOS成功、Linux失败1项——自愈测试断言“恢复后inode号不同”，Linux在unlink后立即复用同一inode号，断言不能证明“未就地改写”。产品代码无误（macOS与真实compiled恢复均通过），属测试缺陷；改为恢复前持有被替换文件的打开句柄、恢复后句柄仍读到原ELF字节，一次性对照证实就地写入会让句柄读到新内容而unlink后不会。
+
 **发布判定**：最终提交的macOS/Linux CI、精确SHA干净GitHub安装、命名Profile/XDG及tag/Release实际结果以GitHub Release为准；任一失败不发布。Tern路径未验证，Windows不纳入，历史unknown继续审计。
 
 ## 18.18.6 完整验收（2026-11-10）

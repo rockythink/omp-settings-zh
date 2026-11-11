@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { mkdtemp, mkdir, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, open, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { LAUNCHER_RECOVERED } from "../src/cli/install";
@@ -218,13 +218,16 @@ test("a launcher displaced by an official binary is restored or uninstalled with
     const elf = new Uint8Array(70_000);
     elf.set([0x7f, 0x45, 0x4c, 0x46]);
     await writeFile(f.wrapper, elf, { mode: 0o755 });
-    const displacedInode = (await stat(f.wrapper)).ino;
-    const installed = await f.invoke(["install"]);
-    expect(installed.code).toBe(0);
-    expect(installed.stdout.startsWith(LAUNCHER_RECOVERED)).toBe(true);
-    expect(await readFile(f.wrapper, "utf8")).toBe(JSON.parse(await readFile(statePath, "utf8")).writtenWrapper);
-    // A new file, not the running binary's inode rewritten in place.
-    expect((await stat(f.wrapper)).ino).not.toBe(displacedInode);
+    // Like a running omp, hold the displaced binary open across recovery.
+    const running = await open(f.wrapper, "r");
+    try {
+      const installed = await f.invoke(["install"]);
+      expect(installed.code).toBe(0);
+      expect(installed.stdout.startsWith(LAUNCHER_RECOVERED)).toBe(true);
+      expect(await readFile(f.wrapper, "utf8")).toBe(JSON.parse(await readFile(statePath, "utf8")).writtenWrapper);
+      // Unlinked, not rewritten in place: the open binary keeps its bytes.
+      expect(new Uint8Array(await running.readFile())).toEqual(elf);
+    } finally { await running.close(); }
     expect(await readFile(f.omp, "utf8")).toBe(official);
     await writeFile(f.wrapper, elf, { mode: 0o755 });
     expect((await f.invoke(["uninstall"])).code).toBe(0);
