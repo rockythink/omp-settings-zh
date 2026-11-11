@@ -6,7 +6,7 @@
 
 ## 内置斜杠补全译文边界
 
-- 当前来源OMP18.18.6官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调。相对18.17.0仅`/restart`说明变化，既有静态文案、别名、动态模板与公共provider接口保持。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持。
+- 当前来源OMP18.18.8官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调，相对18.18.6无变化。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持。
 - 只翻译顶层补全的说明与实时状态、`skill:` 数量；参数提示、命令名、别名、模型／提供商 ID、路径与目标正文保持原样。
 - `switch` / `loop` / `effort` 的动态快捷键按宿主实际显示捕获，中文保留原键位。除键位占位外必须匹配官方原文，第三方覆盖、技能说明和未知文案不改。
 - `/settings-language en` 恢复官方补全结果；中文与英文都须验证排序、Tab／Enter 插入和实际官方编译版，不能用静态表检查代替。
@@ -14,7 +14,7 @@
 
 ## Stats Web 译文边界
 
-- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.18.6`；119源码/95客户端，客户端相对18.17.0逐字节不变。893字典键、150通用严格模板及9个Spotlight作用域属性模板；工具/步骤/target/session数据和混合属性捕获值保持原文。mutations/preload不改，未知文案与canvas保留；`Most used: <工具>`等混合数据提示按安全回退保留英文。
+- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.18.8`；119源码/95客户端，相对18.18.6逐字节不变。893字典键、150通用严格模板及9个Spotlight作用域属性模板；工具/步骤/target/session数据和混合属性捕获值保持原文。mutations/preload不改，未知文案与canvas保留；`Most used: <工具>`等混合数据提示按安全回退保留英文。
 - `src/stats/translations.ts` 只包含原文键、中文值及严格锚定的动态模板；浏览器端必须先通过官方 UI 区域白名单，不能在整页全局替换英文。
 - 保留模型、提供商、工具、项目与账户名称、路径、请求与会话正文、错误原文、协议、数字和模板中的实际数据；未知文案与 canvas 内绘制内容保持官方原文。Window utilization 普通 tooltip series 标签是账户数据，即使为 Requests／Other (3) 也不译；仅官方带 tone-bad 的 Exhausted 注记与 total 固定标签属于 UI。
 - 切回 English 恢复原始文本与显示属性；验证 React 异步更新、路由复用与译文键同名的数据值，不只检查首页。外部写入即使与插件上次显示相同，也须失效旧来源；一批外部文本／属性写入全部失效后才渲染，不能误恢复真实数据。表头复用须重新判断整表单元格的 UI／数据身份。同 origin 的偏好跨刷新、路由与服务重启保留，首次默认中文；网页语言独立于 /settings-language。页面脚本在原 Stats 服务同端口加载，不增加代理。
@@ -187,7 +187,7 @@ Settings 选项显示副本与宿主共享原文源必须隔离；不能因设�
 
 活动翻译只以目标版本 OMP 官方设置注册表的英文显示元数据为语义来源：
 
-1. 从锁定的`@oh-my-pi/pi-coding-agent@18.18.6`完整注册图提取英文；604定义/450UI，4项原文变化、9动态getter保持，未变化446项不重译。63文件/112条非类型相对导入边独立核对；仅更新显示与原文哈希，不改默认值、保存、配置、项目授权和共享effort原文。固定官方commit `9058ab9d229663e229e2867824ba6df6f21e9e59`的Git blob与npm全部1937份coding-agent源码匹配，4个HTML源按package.files排除；utils130/Stats119/TUI463份亦匹配；
+1. 从锁定的`@oh-my-pi/pi-coding-agent@18.18.8`完整注册图提取英文；607定义/453UI。官方把`codexResets.autoRedeem`、`claudeResets.autoRedeem`拆为按窗口的同意项，新增5项（Codex 5h/每周、Claude 5h/每周/Fable）独立翻译，删除2项旧译文；其余448项不重译，9动态getter保持。Fable/Cedar/Juniper保留产品名，`unset`/`yes`/`no`保留配置值。固定官方commit `679691a78141de0dd6ba1b7a5d5c1b1d7d967a63`的Git blob与npm全部1940份coding-agent源码匹配，4个HTML源按package.files排除；utils130/Stats119/TUI463份亦匹配；
 2. 使用本项目自己的 LLM 能力按本规范生成初稿，不输入或复用第三方中文译文；
 3. 按设置路径和选项 `value` 校验完整性；
 4. 用英文原文哈希标记待复核的上游语义变化；

@@ -18,13 +18,14 @@
 
 ## 当前版本
 
-- 当前版本：`18.18.6`，对应官方 OMP 18.18.6。是否正式发布以 [GitHub Releases](https://github.com/rockythink/omp-settings-zh/releases) 为准，main、源码编号和本机升级不等于 Release
-- 目标官方宿主：OMP18.18.6，SHA-256匹配官方darwin-arm64资产；内嵌及最低外部Bun1.4.4。已有Agent/Stats进程不热加载新代码，须重启
-- Settings：604定义/450项UI；相对18.17.0复核`lsp.enabled`、`mnemopi.dbPath`、`task.eager`、`tui.mouse`4项原文变化，其余446项不重译，9个动态getter保持。不改变官方默认值、原value、条件或保存
+- 当前版本：`18.18.8`，对应官方 OMP 18.18.8。是否正式发布以 [GitHub Releases](https://github.com/rockythink/omp-settings-zh/releases) 为准，main、源码编号和本机升级不等于 Release
+- 目标官方宿主：OMP18.18.8，SHA-256匹配官方darwin-arm64资产；内嵌及最低外部Bun1.4.4。已有Agent/Stats进程不热加载新代码，须重启
+- Settings：607定义/453项UI；官方把`codexResets.autoRedeem`、`claudeResets.autoRedeem`拆为按窗口的同意项，新增Codex 5h/每周与Claude 5h/每周/Fable五项译文并移除两项旧译文，其余448项不重译，9个动态getter保持。旧值迁移、默认unset及消耗逻辑由官方执行
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写`config.yml`；选项显示副本与`/effort`参数原文隔离
-- Commands：89定义、98标识、9别名、27动态回调；相对18.17.0仅`/restart`说明变化。参数、第三方说明、模型/提供商ID和effort值不译，不改变匹配/排序/插入/执行
+- Commands：89定义、98标识、9别名、27动态回调；相对18.18.6注册表、动态回调与补全接口均无变化。参数、第三方说明、模型/提供商ID和effort值不译，不改变匹配/排序/插入/执行
 - 验收范围：macOS普通终端＋系统浏览器的真实官方compiled；Settings、Commands、Stats分项证据见CONTEXT。Tern路径未验证、不宣称支持；Windows不纳入
-- Stats：实际运行官方18.18.6编译CLI，不以固定npm包替代；95份客户端源码相对18.17.0逐字节不变，服务端新增的reused复用分支、ETag与解析变化由官方执行。未知文案、数值、请求/会话正文、错误原文及canvas文字保留。少量混合数据的提示（如`Most used: <工具>`、`52.9% of requests · <服务商>`）保留英文
+- Stats：实际运行官方18.18.8编译CLI，不以固定npm包替代；Stats包119份源码相对18.18.6逐字节不变。未知文案、数值、请求/会话正文、错误原文及canvas文字保留。少量混合数据的提示（如`Most used: <工具>`、`52.9% of requests · <服务商>`）保留英文
+- 18.18.8修复：官方后台自动更新（`update.auto`）会替换PATH中第一个`omp`，曾把新版二进制装到Stats启动器位置，导致启动器失效、扩展加载失败。启动器与扩展现从PATH中移除启动器目录（按文件身份匹配），官方更新始终安装到原位置；若启动器已被官方二进制替换，插件在下次加载时恢复启动器并提示，不覆盖原始OMP
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -64,7 +65,8 @@
 | 18.15.0（历史未发布候选） | 18.15.0（非Tern路径分项见CONTEXT；该制品冷摄取未修） | >=18.15.0 <19 |
 | 18.16.0（历史未发布候选） | 18.16.0（官方冷摄取修复已实际验证；资源与最终矩阵未过，见CONTEXT） | >=18.16.0 <19 |
 | 18.17.0（历史未发布候选） | 18.17.0（定向适配；未完成compiled/网页完整门禁） | >=18.17.0 <19 |
-| 18.18.6 | 18.18.6（macOS 编译版三面真实验收；发布判定以 GitHub Release 为准，Tern 未验证） | >=18.18.6 <19 |
+| 18.18.6 | 18.18.6（macOS 编译版三面真实验收；Tern 未验证） | >=18.18.6 <19 |
+| 18.18.8 | 18.18.8（macOS 编译版三面真实验收；发布判定以 GitHub Release 为准，Tern 未验证） | >=18.18.8 <19 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -76,7 +78,7 @@ Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、�
 
 ## 安装
 
-当前版本要求官方OMP `>=18.18.6 <19`及外部Bun `>=1.4.4`。各版本实际验证基线见上表，是否正式发布以GitHub Release为准。发布主线仅macOS/Linux。Windows PR #1现场仍CLOSED、isDraft:true、mergedAt:null，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端仅维护main工作分支。通过官方插件管理器安装：
+当前版本要求官方OMP `>=18.18.8 <19`及外部Bun `>=1.4.4`。各版本实际验证基线见上表，是否正式发布以GitHub Release为准。发布主线仅macOS/Linux。Windows PR #1现场仍CLOSED、isDraft:true、mergedAt:null，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端仅维护main工作分支。通过官方插件管理器安装：
 
 ```sh
 omp plugin install github:rockythink/omp-settings-zh

@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import extension from "../src/index";
+import { launcherBinDirectory } from "../src/cli/install";
 import { getHostMetadata } from "../src/host-adapter";
 import { mkdtemp, mkdir, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -36,10 +37,14 @@ if (process.env.OMP_SETTINGS_ZH_LIFECYCLE_CHILD !== "1") {
   const before = Object.getOwnPropertyDescriptors(ui);
   const events = new Map<string, Handler>();
   const commands = new Map<string, Command>();
+  // Interactive shells put the launcher first; the background update worker inherits our PATH.
+  process.env.PATH = launcherBinDirectory(process.env.HOME!).replace("/.local", "//.local") + ":" + process.env.PATH;
   await extension({
     on: (name: string, handler: Handler) => events.set(name, handler),
     registerCommand: (name: string, options: { handler: Command }) => commands.set(name, options.handler),
   } as never);
+  const resolved = Bun.spawn(["/bin/sh", "-c", "command -v omp"], { stdout: "pipe" });
+  expect((await new Response(resolved.stdout).text()).trim()).toBe(join(process.env.HOME!, "bin", "omp"));
   const main: Context = { agent: { kind: "main" }, ui: { notify: () => {}, select: async () => undefined, addAutocompleteProvider: () => {} } };
   const child: Context = { ...main, agent: { kind: "sub" } };
   const start = events.get("session_start")!;

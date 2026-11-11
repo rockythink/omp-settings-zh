@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.18.6",
+  "sourceOmpVersion": "18.18.8",
   "settings": {
     "tui.colorfulMarkdown": {
       "sourceHash": "439637afe8869b8e75951bce041143133a4b81129866c4953c7e178c6d2f9708",
@@ -4365,22 +4365,41 @@ export const zhCN = {
         }
       }
     },
-    "codexResets.autoRedeem": {
-      "sourceHash": "f7e97012bc893e8b2601d4a96a14e3683e3ff34a8320e0ca5217558785f2243f",
-      "label": "Codex 自动兑换已保存的重置额度",
-      "description": "自动消耗已保存的 Codex 速率限制重置额度：当某轮对话卡住、账号因 5h 或每周窗口耗尽而被阻止，且没有其他账号可以接管时，恢复该账号；同时挽回即将过期的额度。unset 会在首次消耗前询问（没有询问界面时，仅消耗将在 5 分钟内到期的重置额度），yes 不经提示直接消耗，no 禁用这两项检查",
+    "codexResets.autoRedeem5h": {
+      "sourceHash": "7b0952ce3dbd2f0f95f986ec654034843cb09071fb3ae3b3f8caf0a422a1c221",
+      "label": "Codex 自动兑换已保存的重置额度（5h）",
+      "description": "账号仅因 5 小时窗口被阻塞，或即将过期额度的用量最满聊天窗口为 5h 时，消耗已保存的 Codex 重置额度。unset 在消耗前询问，未经询问绝不消耗；yes 不经询问直接消耗；no 绝不消耗",
       "options": {
         "unset": {
           "label": "未设置",
-          "description": "先检查是否符合条件，再在首次消耗前询问。没有询问界面时，仅消耗将在 5 分钟内到期的重置额度"
+          "description": "消耗前询问；未经询问绝不消耗"
         },
         "yes": {
           "label": "是",
-          "description": "不经提示直接消耗符合条件的已保存重置额度"
+          "description": "不经询问直接消耗符合条件的已保存重置额度"
         },
         "no": {
           "label": "否",
-          "description": "不执行已保存重置额度的自动兑换检查"
+          "description": "绝不为此窗口消耗已保存的重置额度"
+        }
+      }
+    },
+    "codexResets.autoRedeemWeekly": {
+      "sourceHash": "9a795d3b2c9c5366ad6d11ab13af1456ac6deb003913286581b32b25f284eb13",
+      "label": "Codex 自动兑换已保存的重置额度（每周）",
+      "description": "账号因每周窗口被阻塞，或即将过期额度的用量最满聊天窗口为每周窗口时，消耗已保存的 Codex 重置额度。仅凭短暂 429 等待时间得知的阻塞，须两个 Codex 窗口设置均允许。unset 在消耗前询问，未经询问绝不消耗；yes 不经询问直接消耗；no 绝不消耗",
+      "options": {
+        "unset": {
+          "label": "未设置",
+          "description": "消耗前询问；未经询问绝不消耗"
+        },
+        "yes": {
+          "label": "是",
+          "description": "不经询问直接消耗符合条件的已保存重置额度"
+        },
+        "no": {
+          "label": "否",
+          "description": "绝不为此窗口消耗已保存的重置额度"
         }
       }
     },
@@ -4712,22 +4731,60 @@ export const zhCN = {
         }
       }
     },
-    "claudeResets.autoRedeem": {
-      "sourceHash": "7c0055eae35d897d65a88b24b8a9a88f5116153828bbf0cdee7d4a051cfc0c05",
-      "label": "Claude 自动兑换重置",
-      "description": "自动消耗符合条件的 Claude Cedar 或 Juniper 重置次数。Cedar 仅用于其覆盖的额度限制；Juniper 仅能解除单独的 5 小时限额阻断。`unset` 在首次消耗前询问（没有询问界面时，仅消耗将在 5 分钟内到期的重置），`yes` 无需询问直接消耗，`no` 禁用限额阻断恢复和到期前利用",
+    "claudeResets.autoRedeem5h": {
+      "sourceHash": "ea7f3ae8d3c5d6996d504d7a10b917a6eafe1b46ade0fc90c4c4568399e47b73",
+      "label": "Claude 自动兑换已保存的重置（5h）",
+      "description": "仅因 5 小时限额被阻断，或即将到期重置所覆盖的最满限额为 5h 时，消耗 Claude Cedar 或 Juniper 重置。unset 在消耗前询问，未经询问绝不消耗；yes 不经询问直接消耗；no 绝不消耗",
       "options": {
         "unset": {
           "label": "未设置",
-          "description": "实时检查是否符合条件，再在首次消耗 Claude 重置次数前询问。没有询问界面时，仅消耗将在 5 分钟内到期的重置"
+          "description": "消耗前询问；未经询问绝不消耗"
         },
         "yes": {
           "label": "是",
-          "description": "无需询问，直接消耗符合条件的 Claude 重置次数"
+          "description": "不经询问直接消耗符合条件的已保存重置"
         },
         "no": {
           "label": "否",
-          "description": "不执行 Claude 重置自动兑换检查"
+          "description": "绝不为此窗口消耗已保存的重置"
+        }
+      }
+    },
+    "claudeResets.autoRedeemWeekly": {
+      "sourceHash": "70053e1e5cead287bbe7cbba679a2e3357b730b6f1861270eb723b2b992e3bae",
+      "label": "Claude 自动兑换已保存的重置（每周）",
+      "description": "因每周限额或特定模型限额被阻断，或即将到期重置所覆盖的最满限额为每周限额时，消耗 Claude Cedar 重置。unset 在消耗前询问，未经询问绝不消耗；yes 不经询问直接消耗；no 绝不消耗",
+      "options": {
+        "unset": {
+          "label": "未设置",
+          "description": "消耗前询问；未经询问绝不消耗"
+        },
+        "yes": {
+          "label": "是",
+          "description": "不经询问直接消耗符合条件的已保存重置"
+        },
+        "no": {
+          "label": "否",
+          "description": "绝不为此窗口消耗已保存的重置"
+        }
+      }
+    },
+    "claudeResets.autoRedeemFable": {
+      "sourceHash": "382c0f97d50b5bfa97963c54955f21f192b504d10722b9702d7b2817e521f463",
+      "label": "Claude 自动兑换 Fable 重置",
+      "description": "消耗 Claude Fable 发布期重置，它会恢复 Fable 每周用量及 5 小时窗口。这类重置仅受此设置控制。unset 在消耗前询问，未经询问绝不消耗；yes 不经询问直接消耗；no 绝不消耗",
+      "options": {
+        "unset": {
+          "label": "未设置",
+          "description": "消耗前询问；未经询问绝不消耗"
+        },
+        "yes": {
+          "label": "是",
+          "description": "不经询问直接消耗符合条件的已保存重置"
+        },
+        "no": {
+          "label": "否",
+          "description": "绝不为此窗口消耗已保存的重置"
         }
       }
     },

@@ -1,5 +1,5 @@
 import { access, chmod, lstat, mkdir, readFile, realpath, rmdir, stat, unlink, writeFile } from "node:fs/promises";
-import { constants } from "node:fs";
+import { constants, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { userInfo } from "node:os";
 
@@ -31,6 +31,30 @@ export interface LauncherInstallOptions {
   bun?: string;
 }
 
+/** First line of the install status when an official update had replaced the launcher. */
+export const LAUNCHER_RECOVERED = "已恢复被官方更新替换的 PATH 启动器";
+
+/** The managed launcher directory; it holds only `omp`. */
+export function launcherBinDirectory(home: string): string {
+  return join(resolve(home), ".local", "share", "omp-settings-zh", "bin");
+}
+
+function identity(path: string): string | null {
+  try { const info = statSync(path); return `${info.dev}:${info.ino}`; }
+  catch { return null; }
+}
+
+/**
+ * PATH without the launcher directory, so official updates resolve the real OMP.
+ * Entries are matched by the `omp` they provide, so `//`, trailing-slash and symlinked forms also go.
+ */
+export function withoutLauncherPath(path: string, bin: string): string {
+  const launcher = identity(join(bin, "omp"));
+  return path.split(":").filter(entry =>
+    !(entry && resolve(entry) === bin) && (launcher === null || identity(join(entry || ".", "omp")) !== launcher),
+  ).join(":");
+}
+
 /** Idempotent lifecycle entry; returns user-facing status without writing stdout. */
 export function installLauncher(options: LauncherInstallOptions = {}): Promise<string> {
   return manageLauncher("install", options);
@@ -51,8 +75,9 @@ function quote(value: string): string {
   return `'${value.replaceAll("'", "'\\''")}'`;
 }
 
-function launcher(state: InstallState): string {
-  const direct = `exec ${quote(state.omp)} "$@"`;
+function launcher(state: InstallState, binDirectory: string): string {
+  const official = `exec ${quote(state.omp)} "$@"`;
+  const wrapper = quote(join(binDirectory, "omp"));
   return `#!/bin/sh
 ${WRAPPER}
 if [ "\${1-}" = plugin ] && [ "\${2-}" = uninstall ]; then
@@ -67,18 +92,40 @@ if [ "\${1-}" = plugin ] && [ "\${2-}" = uninstall ]; then
     fi
   done
 fi
-if [ "\${1-}" = update ]; then
-  # Official update selects its replacement target from PATH, not process.execPath.
-  export PATH=${quote(dirname(state.omp))}:"$PATH"
-fi
+omp_settings_zh_direct() {
+  # Official updates, including the background update.auto worker, replace PATH's
+  # first omp; drop this launcher's directory so they target the official binary.
+  if [ -n "\${PATH+x}" ]; then
+    omp_settings_zh_rest=$PATH
+    PATH=
+    omp_settings_zh_first=yes
+    while :; do
+      case $omp_settings_zh_rest in
+        *:*) omp_settings_zh_entry=\${omp_settings_zh_rest%%:*}; omp_settings_zh_rest=\${omp_settings_zh_rest#*:}; omp_settings_zh_more=yes ;;
+        *) omp_settings_zh_entry=$omp_settings_zh_rest; omp_settings_zh_more=no ;;
+      esac
+      if [ ! "$omp_settings_zh_entry/omp" -ef ${wrapper} ]; then
+        if [ "$omp_settings_zh_first" = yes ]; then PATH=$omp_settings_zh_entry; omp_settings_zh_first=no
+        else PATH=$PATH:$omp_settings_zh_entry; fi
+      fi
+      [ "$omp_settings_zh_more" = yes ] || break
+    done
+    export PATH
+  fi
+  if [ "\${1-}" = update ]; then
+    # Explicit update must reach the recorded official binary even if its directory is not on PATH.
+    export PATH=${quote(dirname(state.omp))}:"$PATH"
+  fi
+  ${official}
+}
 if [ "\${1-}" != stats ]; then
-  ${direct}
+  omp_settings_zh_direct "$@"
 fi
 for arg do
   case "$arg" in
-    --json|--json=*|--summary|--summary=*|--help|--help=*) ${direct} ;;
+    --json|--json=*|--summary|--summary=*|--help|--help=*) omp_settings_zh_direct "$@" ;;
     --*) ;;
-    -*[jsh]*) ${direct} ;;
+    -*[jsh]*) omp_settings_zh_direct "$@" ;;
   esac
 done
 exec ${quote(state.bun)} ${quote(state.main)} ${quote(state.omp)} "$@"
@@ -116,6 +163,18 @@ async function ownedFile(path: string): Promise<string | null> {
     throw new Error(`拒绝覆盖非本插件普通文件：${path}`);
   }
   return readFile(path, "utf8");
+}
+
+/** A native executable the official updater wrote over the launcher, which it found first on PATH. */
+async function displacedExecutable(path: string): Promise<boolean> {
+  const info = await metadata(path);
+  if (!info || !info.isFile() || info.isSymbolicLink() || info.size < 65536 ||
+      (process.getuid && info.uid !== process.getuid())) return false;
+  const head = new Uint8Array(await Bun.file(path).slice(0, 4).arrayBuffer());
+  if (head.length < 4) return false;
+  const magic = new DataView(head.buffer).getUint32(0, false);
+  // ELF, Mach-O 32/64 in either byte order, and universal Mach-O.
+  return [0x7f454c46, 0xfeedface, 0xfeedfacf, 0xcefaedfe, 0xcffaedfe, 0xcafebabe].includes(magic);
 }
 
 async function executable(path: string): Promise<string> {
@@ -252,14 +311,16 @@ async function apply(changes: Change[]): Promise<void> {
 async function manageLauncher(command: "install" | "uninstall", options: LauncherInstallOptions, checkOnly = false): Promise<string> {
   if (!process.env.HOME) throw new Error("需要 HOME 环境变量");
   const home = resolve(process.env.HOME);
-  const directory = join(home, ".local", "share", "omp-settings-zh");
-  const bin = join(directory, "bin");
+  const bin = launcherBinDirectory(home);
+  const directory = dirname(bin);
   const wrapper = join(bin, "omp");
   const statePath = join(directory, "state.json");
   await privateDirectory(directory);
   await privateDirectory(bin);
   const old = await loadState(statePath);
-  const previousWrapper = await ownedFile(wrapper);
+  // Only a launcher this state recorded can have been displaced; a fresh install never removes a binary.
+  const displaced = old !== null && await displacedExecutable(wrapper);
+  const previousWrapper = displaced ? null : await ownedFile(wrapper);
   if (previousWrapper !== null && (!old || previousWrapper !== old.writtenWrapper)) {
     throw new Error(`启动器不是本插件文件或已被修改，拒绝覆盖：${wrapper}`);
   }
@@ -282,6 +343,7 @@ async function manageLauncher(command: "install" | "uninstall", options: Launche
   }
   if (command === "uninstall") {
     if (previousWrapper !== null) changes.push({ path: wrapper, before: previousWrapper, after: null, mode: 0o755 });
+    else if (displaced) changes.push({ path: wrapper, before: null, after: null });
     changes.push({ path: statePath, before: await readFile(statePath, "utf8"), after: null, mode: 0o600 });
     if (checkOnly) return "卸载预检通过。";
     await apply(changes);
@@ -319,14 +381,17 @@ async function manageLauncher(command: "install" | "uninstall", options: Launche
   await mkdir(bin, { recursive: true, mode: 0o700 });
   await chmod(directory, 0o700);
   for (const path of targets) await mkdir(dirname(path), { recursive: true });
-  const nextWrapper = launcher(state);
+  const nextWrapper = launcher(state, bin);
   state.writtenWrapper = nextWrapper;
   if (previousWrapper !== nextWrapper) changes.unshift({ path: wrapper, before: previousWrapper, after: nextWrapper, mode: 0o755 });
+  // Unlink first: rewriting the displaced binary in place could corrupt a running omp.
+  if (displaced) changes.unshift({ path: wrapper, before: null, after: null });
   const oldText = await readOptional(statePath);
   const newText = JSON.stringify(state, null, 2) + "\n";
   if (oldText !== newText) changes.push({ path: statePath, before: oldText, after: newText, mode: 0o600 });
   await apply(changes);
-  return `已安装：${wrapper}\n原始 OMP：${state.omp}\n请重新打开终端，或在当前终端执行：export PATH=${quote(bin)}:"$PATH"`;
+  const status = `已安装：${wrapper}\n原始 OMP：${state.omp}\n请重新打开终端，或在当前终端执行：export PATH=${quote(bin)}:"$PATH"`;
+  return displaced ? `${LAUNCHER_RECOVERED}；被替换的二进制已移除，原始 OMP 保持不变。\n${status}` : status;
 }
 
 async function run(args: string[]): Promise<void> {

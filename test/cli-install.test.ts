@@ -2,6 +2,7 @@ import { expect, test } from "bun:test";
 import { mkdtemp, mkdir, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { LAUNCHER_RECOVERED } from "../src/cli/install";
 
 const installer = resolve("src/cli/install.ts");
 
@@ -183,6 +184,53 @@ test("official updates replace the selected official binary without replacing th
     expect(await readFile(f.omp, "utf8")).toBe("updated-official-binary\n");
     expect(await readFile(f.wrapper, "utf8")).toBe(launcher);
     expect((await f.invoke(["uninstall"])).code).toBe(0);
+  } finally { await rm(f.home, { recursive: true, force: true }); }
+});
+test("background updates started from any launched command replace the official binary, never the launcher", async () => {
+  const f = await fixture("zsh");
+  try {
+    // Like the update.auto worker: inherit PATH, replace the first omp found on it.
+    await writeFile(f.omp, '#!/bin/sh\nprintf "%s\\n" "$PATH"\ntarget=$(command -v omp)\nprintf "%s\\n" "$target"\n', { mode: 0o755 });
+    expect((await f.invoke(["install", "--bun", process.execPath])).code).toBe(0);
+    const launcher = await readFile(f.wrapper, "utf8");
+    const bin = join(f.home, ".local/share/omp-settings-zh/bin");
+    const originalBin = join(f.home, "original bin");
+    for (const args of [[], ["stats", "--json"]]) {
+      const child = Bun.spawn([f.wrapper, ...args], {
+        // Unnormalized spellings of the launcher directory resolve to the same omp and must go too.
+        env: { ...f.env, PATH: `${bin.replace("/.local", "//.local")}:${originalBin}::/usr/bin:/bin:${bin}/` },
+        stdout: "pipe", stderr: "pipe",
+      });
+      const [code, stdout, stderr] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);
+      if (code !== 0) throw new Error(stderr);
+      expect(stdout).toBe(`${originalBin}::/usr/bin:/bin\n${f.omp}\n`);
+    }
+    expect(await readFile(f.wrapper, "utf8")).toBe(launcher);
+  } finally { await rm(f.home, { recursive: true, force: true }); }
+});
+
+test("a launcher displaced by an official binary is restored or uninstalled without touching the official OMP", async () => {
+  const f = await fixture("zsh");
+  try {
+    expect((await f.invoke(["install", "--bun", process.execPath])).code).toBe(0);
+    const official = await readFile(f.omp, "utf8");
+    const statePath = join(f.home, ".local/share/omp-settings-zh/state.json");
+    const elf = new Uint8Array(70_000);
+    elf.set([0x7f, 0x45, 0x4c, 0x46]);
+    await writeFile(f.wrapper, elf, { mode: 0o755 });
+    const displacedInode = (await stat(f.wrapper)).ino;
+    const installed = await f.invoke(["install"]);
+    expect(installed.code).toBe(0);
+    expect(installed.stdout.startsWith(LAUNCHER_RECOVERED)).toBe(true);
+    expect(await readFile(f.wrapper, "utf8")).toBe(JSON.parse(await readFile(statePath, "utf8")).writtenWrapper);
+    // A new file, not the running binary's inode rewritten in place.
+    expect((await stat(f.wrapper)).ino).not.toBe(displacedInode);
+    expect(await readFile(f.omp, "utf8")).toBe(official);
+    await writeFile(f.wrapper, elf, { mode: 0o755 });
+    expect((await f.invoke(["uninstall"])).code).toBe(0);
+    await expect(stat(f.wrapper)).rejects.toThrow();
+    await expect(stat(statePath)).rejects.toThrow();
+    expect(await readFile(f.omp, "utf8")).toBe(official);
   } finally { await rm(f.home, { recursive: true, force: true }); }
 });
 

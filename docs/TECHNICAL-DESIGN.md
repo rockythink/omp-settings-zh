@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现版本：18.18.6；正式发布以GitHub Release为准，main与源码编号不是发布证据
-- 目标基线：官方OMP18.18.6、外部Bun最低1.4.4；Tern可选未验证
+- 实现版本：18.18.8；正式发布以GitHub Release为准，main与源码编号不是发布证据
+- 目标基线：官方OMP18.18.8、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -68,6 +68,8 @@
 
 18.18.6为604定义/450UI，4项原文变化（lsp.enabled、mnemopi.dbPath、task.eager、tui.mouse），其余446项不重译，9动态getter不变；`gc.strip`/`gc.stripAfterDays`无UI不补译。63文件/112边注册图6份变化已审阅，registry/all-settings合同不变；tui.mouse模板保持{shift}捕获，滚轮不再属Shift语义。
 
+18.18.8为607定义/453UI：官方把`codexResets.autoRedeem`、`claudeResets.autoRedeem`拆为按窗口的同意项（Codex 5h/每周，Claude 5h/每周/Fable），旧值迁移到5h与每周、Fable保持unset，均由官方执行；不确定窗口（仅短429等待）取两窗口中较严格者，无询问界面时unset不再自动消耗。插件新译5项、删除2项旧译文，其余448项不重译，9动态getter不变；registry/all-settings合同不变。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -94,7 +96,7 @@
 - `src/index.ts` 异步 ExtensionFactory 默认等待 `installLauncher()`：官方 GitHub/npm 安装验证会 await factory，每次扩展加载也幂等维护。无 Stats 启用命令；本地 link 在首次扩展加载时自动接入。
 - `src/cli/install.ts` 在独立目录生成启动器、私有安装状态与可撤销的 zsh/Bash PATH 块。记录实际写出的 wrapper，以允许未来代码升级但拒绝覆盖用户改动；稳定的逻辑包路径不绑定 Git 缓存。无 SHELL 时读取账户登录 shell；macOS 的 Bun 在 USER／LOGNAME 缺失时会报告 unknown 名称，此时用 id 按真实 UID 解析后查询 dscl，Linux 按 UID 查询 getent，不猜测 shell。非 Stats、JSON、摘要和帮助直接 exec 原 OMP；只有本插件的原生 uninstall 经 main 预检所有权、执行原命令并清理自己的 PATH，dry-run 不清理。
 - 安装阶段动态导入官方 `pi-utils.getPluginsNodeModules()`，与官方插件管理器使用同一活动 Profile／XDG 目录解析，恢复稳定 package link；只有该路径 realpath 与当前模块一致才使用，不复制目录业务逻辑。卸载阶段不加载此依赖。
-- 官方 `update` 按 PATH 中 `omp` 的位置选择二进制替换目标；启动器只在透传 update 前将已记录官方二进制目录置于 PATH 最前，再 exec 原二进制，保留 argv/stdio。不得将受管 wrapper 作为官方更新目标。
+- 官方 `update` 与后台 `update.auto` worker 都按 PATH 中第一个 `omp` 选择替换目标，后者继承发起进程的 PATH。启动器在 exec 官方二进制前，按“该目录下的 `omp` 与启动器为同一文件”（`-ef`）从 PATH 移除自身目录，覆盖 `//`、尾斜杠与符号链接写法；显式 `update` 另将已记录官方目录置前。扩展工厂在首个 await 前同步移除同一目录（规范化路径或 dev/ino 相同），覆盖 Orca 等以绝对路径直接启动官方二进制的会话。插件扩展满足官方延后绑定条件，延迟加载与 `runAutoUpdate` 并发，故进程内移除只是尽力而为，不伪造快捷键强制 eager。若启动器仍被替换为原生可执行文件（ELF/Mach-O 魔数、≥64KiB、当前用户、有安装状态），下次安装/加载先 unlink 再写回启动器（不改写可能正在运行的 inode），卸载同样移除；原始 OMP 不改动，主会话提示一次。会话子进程中的 `omp` 因此解析为官方二进制（rc 重新加入 PATH 块的 shell 除外）。不得将受管 wrapper 作为官方更新目标。
 - `main.ts` / `run.ts` 运行实际官方 `omp stats`，不导入固定 Stats 包。Web 预先构建 browser.ts 并生成私有 CJS，以合并的 `BUN_OPTIONS --preload` 加载；原 argv、cwd、Profile、stdio、port/host、官方打开策略和独立 judge 保持。没有额外代理、打开器替换或第二个 URL；信号与守护清理子进程和临时文件。18.15.0官方CLI优先Tern over，失败才用原系统opener；现有3秒强制终止与Tern5秒关闭时限的交错仅是源码推断，未动态复现，不据此修改run.ts。
 - `src/stats/preload.ts` 生成自包含启动 Hook，包装 `Bun.serve(options.fetch)`，先执行原 handler；只有成功 HTML 且有官方 Stats 身份标记才注入 `/__omp-settings-zh.js`，同一监听器提供脚本。非 Stats 服务、API/SSE、拒绝/错误、方法、Host/Origin 与 CORS 行为保持。身份头不是授权；修改后的 HTML/脚本 no-store，不保留失效长度或 ETag。Bun 不可靠解析预加载的引号/空格路径，使用安全字符的私有临时路径；不改用户其它预加载参数。
 - `browser.ts` 使用官方 DOM 类白名单与数据区域排除规则，译文来自 translations.ts；只修改文本节点和显示属性。WeakMap 记录原文，MutationObserver 跟随异步渲染/节点复用，切回 English 恢复。自有写入在 observer 断开期间完成；`mutations.ts` 在处理外部整批写入前失效对应来源，即使真实数据与上次中文显示相同也不恢复旧英文。表头变化重扫整表，stat 标签／chart 模式变化重扫其邻接区域；追踪 Minimap 仅翻译固定 aria-label，canvas 像素不改。
@@ -125,6 +127,7 @@
 - 18.16.0：97源码/77客户端仅query.ts与SpanDrawer.tsx变化，服务端、DOM、导航与文案保持，613键/105模板不改。query成功结算时重检最新live版本并沿用原节流；官方#17758已进入固定tag和checksum匹配编译制品，原/包装分别确认HOME/.omp/stats.db不存在后真实GET0/SSE2交错→自动GET16、UI/API16，未强刷/切页/轮询；这是实际嵌入客户端证明，不仅是源码导入。
 - 18.17.0：119源码/95客户端，18既有文件修改、22新增、0删除；新增Spotlight导航、实验/回取诊断及两只读API。893键、150通用严格模板＋9作用域属性模板；browser仅放行审阅UI，排除工具/步骤/target/session/正文，混合属性原数据捕获不再进词典。属性模板具体结构先于通用后缀匹配；折叠工具标签只接受官方数值/固定more/单复数tool三文本结构，保留React节点与English恢复。query/query-store/client live与18.16.0相同、server live全量同步节流变为15秒且结束flush，计算/节流不在插件复制。stats-cli/openPath字节不变，preload/mutations无变化；源码与纯DOM场景不代证新版compiled/Web/API/SSE门禁。
 - 18.18.6：119源码/95客户端，客户端逐字节不变；server新增`reused`句柄（他进程dashboard时CLI只打开页面并直接返回，插件wrapper无需特例，私有目录照常清理），trace ETag v5改定长摘要，parser游标移除dev字段。893键/159模板及browser/mutations/preload不改。
+- 18.18.8：Stats包119源码与`stats-cli`、`openPath`均相对18.18.6逐字节不变；utils仅删除未被插件使用的`getConfigAgentDirName`。893键/159模板及browser/mutations/preload不改。
 
 ## 6. 检查与真实验证
 
@@ -149,7 +152,7 @@
 
 ## 7. 发布边界
 
-源码/开发依赖/目标宿主基线为18.18.6，范围`>=18.18.6 <19`，外部Bun最低1.4.4。旧自有僵尸及其原宿主已消失，原失败记录保留。18.18.6完整验收含三面compiled交互、系统默认opener、Profile/生命周期、API/SSE/权限与资源回收；Tern可选未验证，Windows草稿未合并，不纳入支持；历史unknown独立保留。
+源码/开发依赖/目标宿主基线为18.18.8，范围`>=18.18.8 <19`，外部Bun最低1.4.4。18.18.8完整验收含三面compiled交互、系统默认opener、Profile/生命周期、API/SSE/权限与资源回收，以及真实官方`update.auto` worker的对照/修复实验；Tern可选未验证，Windows草稿未合并，不纳入支持；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

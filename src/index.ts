@@ -4,11 +4,16 @@ import type { ApplyTranslationsResult } from "./apply-translations";
 import { getHostMetadata } from "./host-adapter";
 import type { HostMetadata } from "./compatibility";
 import { zhCN } from "./translations/zh-CN";
-import { installLauncher } from "./cli/install";
+import { installLauncher, launcherBinDirectory, LAUNCHER_RECOVERED, withoutLauncherPath } from "./cli/install";
 import { localizeSlashAutocomplete } from "./slash-autocomplete";
 
 const extension: ExtensionFactory = async (pi) => {
-  await installLauncher();
+  // Synchronously, before any await: the official update.auto worker inherits this PATH
+  // and replaces its first omp, which must not be the managed launcher.
+  if (process.env.HOME && process.env.PATH !== undefined) {
+    process.env.PATH = withoutLauncherPath(process.env.PATH, launcherBinDirectory(process.env.HOME));
+  }
+  let launcherNotice = (await installLauncher()).startsWith(LAUNCHER_RECOVERED);
   let host: HostMetadata | undefined;
   let active: Extract<ApplyTranslationsResult, { status: "applied" }> | undefined;
   let restoreError: string | undefined;
@@ -56,6 +61,10 @@ const extension: ExtensionFactory = async (pi) => {
     }
     const reason = await setLanguage("zh");
     if (reason) context.ui.notify("omp-settings-zh 设置汉化失败：" + reason, "warning");
+    if (launcherNotice) {
+      launcherNotice = false;
+      context.ui.notify("omp-settings-zh：官方更新曾安装到 Stats 启动器位置，已恢复启动器；官方 OMP 仍为原位置版本，下次官方更新将安装到原位置。", "warning");
+    }
   });
 
   pi.registerCommand("settings-language", {

@@ -1,5 +1,27 @@
 # Project Context
 
+## 18.18.8 适配与启动器修复（2026-11-11）
+
+起点本地/远端main均`004f42c9b9c118005bae33791d2ec62bbded48ee`=已发布[v18.18.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.18.6)，CI 42848381626成功；相对该tag无待发布候选，上游coding-agent/utils/Stats最新稳定版均18.18.8，构成新适配。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；既有未跟踪内容不动。本轮由Orca每日任务宿主PID 46097运行，无并行维护者。
+
+**安装漂移与插件缺陷**：用户配置`update.auto: true`；本宿主23:00:33启动后，官方worker在23:00:49把18.18.8（sha256 `8de03d5f…`，与官方darwin-arm64资产一致）装到PATH首位的`~/.local/share/omp-settings-zh/bin/omp`（`~/.omp/update/auto-update.log`原文“Updated to 18.18.8 at …/omp-settings-zh/bin/omp”），官方原位置仍18.18.6。插件启动器只在显式`update`时调整PATH，worker继承发起进程PATH，故被覆盖；18.18.6插件下次加载会因“拒绝覆盖”使扩展失败。分类为插件回归（18.17.0官方新增update.auto后暴露），非官方缺陷。修复：启动器exec前按`-ef`移除自身目录，扩展在首个await前同步移除（规范化路径/dev+ino），被原生可执行文件替换时unlink后写回并提示一次。插件扩展满足官方延后绑定条件，`loadDeferredExtensions`与`runAutoUpdate`并发，进程内移除为尽力而为，启动器层确定。真实compiled官方worker：对照组（启动器目录在PATH首位、直接运行官方）复现覆盖；修复组首次因实验PATH含`//`仍被覆盖（暴露字符串比较缺陷），改文件身份匹配后，补丁更新到隔离官方位置18.18.8、启动器sha不变；对照组被替换的真实二进制经新代码恢复为启动器（新inode、内容等于state记录、官方副本不变）。本机经官方`omp update`（官方目录优先）更新原位置到18.18.8，cmp确认被替换文件与之逐字节相同后移除，用已安装18.18.6插件自身install入口恢复启动器；`omp`重新解析为启动器、state一致。已安装18.18.6插件仍有缺陷，须升级到本版本。
+
+**来源**：官方tag commit `679691a78141de0dd6ba1b7a5d5c1b1d7d967a63`的Git blob与npm全部1940份coding-agent、130份utils、119份Stats、463份TUI源码匹配，4个HTML源按package.files排除。coding-agent 49文件变化、utils仅`dirs.ts`删除未用的`getConfigAgentDirName`、Stats包0变化、TUI 12文件（新增`app.ask.note`键位等）。
+
+**Settings**：604→607定义、450→453UI；官方删除`codexResets.autoRedeem`、`claudeResets.autoRedeem`，新增Codex 5h/每周与Claude 5h/每周/Fable五项按窗口同意设置（旧值由官方迁移，Fable保持unset；无询问界面时unset不再自动消耗）。新译5项、删2项，其余448项不重译，9动态getter不变。真实compiled（隔离HOME/Profile/XDG，官方18.18.8，本仓库link）：中文搜索“自动兑换”命中5项新设置；枚举面板显示新说明与三个中文选项，Esc不写配置；布尔“鼠标点击聚焦”原生保存false→true→false写入隔离config.yml，中文说明保留实际`⇧`；同进程en/zh往返面板与搜索恢复；同一已挂载中文的进程中`/effort `参数说明保持官方英文。
+
+**Commands**：89定义/98标识/9别名/27动态回调，静态门禁漂移0；30命令文件、`pi-tui/autocomplete.ts`不变，扩展接口仅新增可取消`session_before_shutdown`与表单notes。真实compiled逐一输入98名称/别名：97个补全行为中文，`force:`别名进入官方参数阶段不显示自身行（规范命令`/force`为“强制工具：12 个启用的工具”）。顶层`/`、`skill:`“2 项技能”及展开后第三方技能英文原文、`@`文件名/路径原样；plan开启显示“计划：开启（PLAN.md）”与“计划审核：可用”、loop“开启（等待下一条提示）”、⇧⇥ effort high→xhigh→high均中文且值原样；`/setti`+Tab补全`/settings `后Enter由原provider打开原生面板；en/zh往返列表恢复。纯描述命中`/transcript`时Enter未执行`/dump`（descriptionMatch保护）。
+
+**Stats**：官方Stats包、`stats-cli`、`openPath`逐字节不变，893键/159模板不改。compiled smoke（本地link）：成功/人为断言失败预检、5页建/关、两服务单监听器、合并`--smol`与用户preload、私有目录0700/0600、doctor、dry-run/卸载，19命令组与2个测试opener（退出0）回收，cleanupErrors0，推理尝试0。独立网页驱动（隔离HOME合成2项目4会话16请求，测试专属opener把真实URL交给受管headless标签）：原版/包装各一监听器，每次启动恰1次opener；37份完整API（16请求详情、4 trace）仅`/api/status`本进程同步计数不同（原版首次摄取32、包装复用库0）；17组HTTP边界全等（跨Host/Origin原样、OPTIONS无CORS授权、judge/cancel/close/sync方法与操作头、身份头非授权）；SSE心跳原版15002ms/包装15001ms。12页zh/en/zh稳定且English与原版归一化逐页相同；`Requests`工具、错误原文、模型ID保持原文；English经刷新、路由、同origin重启保持；`g m`跳转、390px中文与两按钮、请求抽屉中文标签且数据原样；追加请求约1秒后同文档无刷新UI更新且仍中文；三服务SIGINT退出130、端口关闭，官方进程外部fetch0。`stats --json/--summary/--help`、`--version`、`--port 99999`、未知参数原版/包装stdout/stderr/退出码逐字节相同。真实PTY Ctrl+C（ISIG on、VINTR 0x03、前台组为子进程）、SIGTERM、SIGHUP下包装以对应信号退出，启动器SIGKILL后guard 1.1秒内关端口，私有目录全部消失。
+
+**默认opener**：隔离HOME中新zsh登录交互shell在path_helper后解析受管`omp`与`/usr/bin/open`；用户真实Chrome每次恰新增1个`http://127.0.0.1:<port>/#/overview?range=24h`标签，按原生window/tab ID关闭；正常与故意断言失败分支都回到标签基线，服务SIGINT退出、端口关闭、进程组消失。只读基线确认信号实验未打开任何127.0.0.1页。
+
+**驱动失败保留（均非产品回归）**：首个TUI会话停在setup交接帧，SIGTERM超时后对本轮PID/进程组SIGKILL；回收阶段未持续读PTY导致后续两次也升级SIGKILL，改为等待期间读PTY后为143。pyte差量渲染残帧、输入残留（如`/g/loop`）造成误判英文/缺行，验证清空后重测为中文；这种非标准中间文本输入下官方候选无nativeDetail，插件按设计回退原文。加入技能后官方后台技能描述压缩16次POST，以及误把`/transcript`作为提示提交后的23次重试POST，均由护栏在建连前拒绝（占位非凭据key，无socket、无费用），但违背本轮“不发送模型请求”约束，单列。网页驱动：preload误拦截opener回环fetch、语言/请求行不可点、同端口重启opener计数复用、仅API未观察UI更新等首轮失败，均先关页再停服务且端口/进程组核实关闭，修正后整轮重跑通过。
+
+**资源**：run `omp-maintenance-20261111-d6f3ab2f`账本在树外。smoke 5/5页、网页驱动每轮1页均关闭，各独占headless Chrome退出；TUI 6会话进程组0存活；所有Stats服务端口关闭；真实Chrome自有标签2/2按ID关闭，用户原有标签未操作。冻结安装与完整`bun run check`：71pass/0fail、2727断言，Settings453/453、Schema0，Commands89/89、98标识、漂移0，2000显示变更/3次恢复/源码网络0。
+
+**发布判定**：最终提交的macOS/Linux CI、精确SHA干净GitHub安装、命名Profile/XDG及tag/Release实际结果以GitHub Release为准；任一失败不发布。Tern路径未验证，Windows不纳入，历史unknown继续审计。
+
 ## 18.18.6 完整验收（2026-11-10）
 
 起点本地/远端main均`d1bc27818f73d8a75362d750524ac618219bfa2f`，该精确提交CI [42243778372](https://github.com/rockythink/omp-settings-zh/actions/runs/42243778372)成功；正式Release仍v18.12.6，候选相对其有实际未发布适配。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项既有未跟踪内容不动。

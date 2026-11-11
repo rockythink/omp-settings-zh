@@ -2,6 +2,15 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.18.8] - 2026-11-11
+
+- **修复：官方后台自动更新覆盖Stats启动器。** 官方`update.auto` worker继承发起进程的PATH，并替换PATH中第一个`omp`；本机实际被装到`~/.local/share/omp-settings-zh/bin/omp`，官方原位置停在18.18.6，启动器失效且下次扩展加载因“拒绝覆盖”失败（Settings/Commands汉化也一并丢失）。启动器在exec官方二进制前按文件身份（`-ef`）从PATH移除自身目录，扩展在首个await前同步移除同一目录；若启动器已被原生可执行文件替换，下次加载先unlink再写回启动器并提示一次，卸载同样处理，原始OMP不改动。真实官方worker对照组复现覆盖，修复组把18.18.8安装到官方原位置、启动器不变；首次修复组因PATH中`//`写法未匹配而失败，已改为文件身份匹配并补回归。
+- 对齐官方OMP、coding-agent/utils/Stats及锁文件18.18.8（官方tag commit `679691a78141de0dd6ba1b7a5d5c1b1d7d967a63`）；SHA-256匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。npm全部1940份coding-agent、130份utils、119份Stats、463份TUI源码与官方Git blob一致，4个HTML源按package.files排除。
+- Settings607定义/453UI：官方把`codexResets.autoRedeem`、`claudeResets.autoRedeem`拆为按窗口的同意项；新译Codex 5h/每周与Claude 5h/每周/Fable五项、删除两项旧译文，其余448项不重译，9动态getter保持。旧值迁移、默认unset及消耗规则由官方执行。
+- Commands89定义/98标识/9别名/27动态回调：注册表、动态说明与补全接口相对18.18.6无变化；新增的`session_before_shutdown`等扩展接口不影响插件。
+- Stats：119源码/95客户端及`stats-cli`、`openPath`相对18.18.6逐字节不变，893键/159模板保持。
+- 三面真实编译版验收：Settings中文搜索/枚举取消/布尔原生保存/en-zh往返与`/effort`参数隔离；Commands逐一98名称/别名、实时状态、技能/文件/第三方边界与Tab/Enter原provider执行；Stats compiled smoke、12页zh/en/zh对照原版、37份完整API与17组HTTP边界、SSE心跳、无刷新更新、生命周期信号及真实系统默认opener正常/失败回收均通过，证据与驱动失败单列见CONTEXT。冻结安装与完整check：71测试/2727断言，Settings453/453、Commands89/89与98标识、漂移0。Tern路径未验证，Windows不纳入。
+
 ## [18.18.6] - 2026-11-10
 
 - 对齐官方OMP、coding-agent/utils/Stats及锁文件18.18.6（官方tag commit `9058ab9d229663e229e2867824ba6df6f21e9e59`）；受管`omp update`报告已最新，SHA-256匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。npm全部1937份coding-agent、130份utils、119份Stats、463份TUI源码与官方Git blob一致，4个HTML源按package.files排除。

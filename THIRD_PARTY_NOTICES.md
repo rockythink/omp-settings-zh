@@ -2,13 +2,13 @@
 
 ## 当前状态
 
-`src/translations/zh-CN.ts`依据OMP18.18.6官方英文完整注册图独立复核：604定义/450UI，复核4项原文变化，其余446项不重译、9动态getter保持。63文件/112条非类型相对导入边；仅翻译显示，不改变默认值、原value、保存、凭据或项目授权，不复用第三方中文译文。
+`src/translations/zh-CN.ts`依据OMP18.18.8官方英文完整注册图独立复核：607定义/453UI；官方将两项单一自动兑换设置拆为Codex 5h/每周与Claude 5h/每周/Fable五项，独立新译5项、删除2项旧译文，其余448项不重译、9动态getter保持。仅翻译显示，不改变默认值、原value、保存、凭据或项目授权，不复用第三方中文译文。
 
-`src/translations/slash-commands.ts`保存官方OMP18.18.6的89说明/98标识/9别名/27动态回调；相对18.17.0仅`/restart`说明变化。不改变候选数据、匹配排序、参数或原生插入执行。
+`src/translations/slash-commands.ts`保存官方OMP18.18.8的89说明/98标识/9别名/27动态回调；相对18.18.6注册表、动态回调与补全接口无变化。不改变候选数据、匹配排序、参数或原生插入执行。
 
-`src/stats/translations.ts`审阅基线为官方`@oh-my-pi/omp-stats@18.18.6`；119源码/95客户端，客户端相对18.17.0逐字节不变。893键、150通用严格模板＋9作用域属性模板，mutations/preload不改。npm仅作审阅来源，实际运行时是官方compiled，在原监听器同源注入，不重新分发Stats实现或二进制。
+`src/stats/translations.ts`审阅基线为官方`@oh-my-pi/omp-stats@18.18.8`；119源码/95客户端，全部相对18.18.6逐字节不变。893键、150通用严格模板＋9作用域属性模板，mutations/preload不改。npm仅作审阅来源，实际运行时是官方compiled，在原监听器同源注入，不重新分发Stats实现或二进制。
 
-固定官方Git树commit `9058ab9d229663e229e2867824ba6df6f21e9e59`的blob身份与npm全部1937份coding-agent、130份utils、119份Stats、463份TUI源码匹配；4个HTML源由package.files排除，不补造包内来源。冷摄取[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)/[PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)已由上游合并，18.18.6官方compiled原版与包装均已实际验证修复。不以局部源码、自编译或第三方构建代替官方制品。
+固定官方Git树commit `679691a78141de0dd6ba1b7a5d5c1b1d7d967a63`的blob身份与npm全部1940份coding-agent、130份utils、119份Stats、463份TUI源码匹配；4个HTML源由package.files排除，不补造包内来源。冷摄取[Issue #17754](https://github.com/can1357/oh-my-pi/issues/17754)/[PR #17758](https://github.com/can1357/oh-my-pi/pull/17758)已由上游合并。不以局部源码、自编译或第三方构建代替官方制品。
 
 ## Oh My Pi
 
@@ -17,7 +17,7 @@
 - Project: Oh My Pi
 - Repository: https://github.com/can1357/oh-my-pi
 - License: MIT
-- Baseline reviewed: v18.18.6 (9058ab9d229663e229e2867824ba6df6f21e9e59)
+- Baseline reviewed: v18.18.8 (679691a78141de0dd6ba1b7a5d5c1b1d7d967a63)
 - Copyright notices in the reviewed upstream license:
   - Copyright (c) 2025 Mario Zechner
   - Copyright (c) 2025-2026 Can Bölük
