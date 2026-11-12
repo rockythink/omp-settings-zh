@@ -2,6 +2,15 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.19.0] - 2026-11-12
+
+- 对齐官方OMP、coding-agent/utils/Stats及锁文件18.19.0（官方tag commit `04cd1a7549a02d62ad1d24826198d52507595683`）；本机官方`update.auto`已把18.18.9→18.19.0装到官方原位置、受管启动器未变，`omp update`报告已最新，SHA-256匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。npm全部1955份coding-agent、130份utils、119份Stats、463份TUI源码与官方tag一致，4个HTML源按package.files排除。
+- Settings456UI：新增`task.autoParallel`（自动并行）、`task.steps`（顺序任务步骤）、`browser.webkit`（WebKit浏览器）、`browser.webkitPath`（浏览器WebKit路径）四项译文；官方删除`task.file`，移除其译文；复核`ask.timeout`（超时提交表单当前值）与`browser.enabled/cdpUrl/headless/tern/freezeOnTurnEnd`原文变化；其余446项不重译。无UI的`launch.persist`、`systemPromptTemplates`不补译。
+- Commands89定义/98标识/9别名/27动态回调：注册表、动态说明与补全接口相对18.18.8无变化；`/browser`模式应用、`/session delete`新建会话及`/mcp`移除Smithery子命令均为执行侧变化，不涉及补全显示。
+- Stats：客户端仅Spotlight额外开销卡变化。新增“失败原因”列表头与说明、`N 条结果`悬停模板及Stencil未登录提示译文；6个已知原因标签（未登录/网络/超时/速率受限/无效响应/未记录）只在该列标签节点生效，`HTTP <状态码>`、未知原因代码、百分比、`/login`与`STENCIL_API_KEY`保持原样。共898键、151通用模板＋9属性模板。
+- 测试驱动：`scripts/smoke-cli.ts`的独占Chrome设置`MAC_CHROMIUM_TMPDIR`，避免macOS版Chromium在用户临时目录留下`com.google.Chrome.*`。
+- 三面真实编译版验收：Settings中文搜索新增项、枚举面板Esc不写配置、布尔原生保存false→true→false、en/zh往返与`/effort`参数英文隔离；Commands逐一98名称/别名（97中文、`force:`按官方进入参数阶段）、plan/loop/effort实时状态、`skill:`数量与技能/文件原文、Tab/Enter原provider执行、en/zh往返；Stats compiled smoke、12页zh/en/zh对照原版、失败原因列与提示双语、37份API与17组HTTP边界、SSE心跳、无刷新更新、冷摄取、同origin重启、真实系统默认opener正常/失败回收、命名Profile/XDG物理迁移与卸载均通过，证据见CONTEXT。冻结安装与完整check：71测试/2729断言，Settings456/456、Commands89/89与98标识、漂移0。Tern路径未验证，Windows不纳入。
+
 ## [18.18.8] - 2026-11-11
 
 - **修复：官方后台自动更新覆盖Stats启动器。** 官方`update.auto` worker继承发起进程的PATH，并替换PATH中第一个`omp`；本机实际被装到`~/.local/share/omp-settings-zh/bin/omp`，官方原位置停在18.18.6，启动器失效且下次扩展加载因“拒绝覆盖”失败（Settings/Commands汉化也一并丢失）。启动器在exec官方二进制前按文件身份（`-ef`）从PATH移除自身目录，扩展在首个await前同步移除同一目录；若启动器已被原生可执行文件替换，下次加载先unlink再写回启动器并提示一次，卸载同样处理，原始OMP不改动。真实官方worker对照组复现覆盖，修复组把18.18.8安装到官方原位置、启动器不变；首次修复组因PATH中`//`写法未匹配而失败，已改为文件身份匹配并补回归。

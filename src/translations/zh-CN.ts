@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.18.8",
+  "sourceOmpVersion": "18.19.0",
   "settings": {
     "tui.colorfulMarkdown": {
       "sourceHash": "439637afe8869b8e75951bce041143133a4b81129866c4953c7e178c6d2f9708",
@@ -2013,9 +2013,9 @@ export const zhCN = {
       "description": "当智能体因错误而停止时通知"
     },
     "ask.timeout": {
-      "sourceHash": "e16a82b7fe37223e0adc327cb067cce1c7c5c759972cff7cce430176eda6ecf3",
+      "sourceHash": "fb87367040e8448530267967ea829cea67c3369a9ce7cd2bf1d9a4e13f5c8478",
       "label": "Ask 超时",
-      "description": "达到此秒数后自动选择推荐的 ask 选项（0 表示禁用）。也用于限制 cfg:// 审批提示的等待时间；审批未获回答时拒绝写入，而不是自动选择",
+      "description": "达到此秒数后提交 ask 表单的当前值（即预选答案；0 表示禁用）。也用于限制 cfg:// 审批提示的等待时间；审批未获回答时拒绝写入，而不是自动提交",
       "options": {
         "0": {
           "label": "已禁用"
@@ -3341,14 +3341,14 @@ export const zhCN = {
       "description": "允许 Agent 在任务进行中通过写入 out:// 回复，像响应一样显示，但不结束其轮次。未设置时：交互式 TUI 中开启，print、RPC 和 ACP 中关闭"
     },
     "browser.enabled": {
-      "sourceHash": "9a40a3d49291aca625cad9b74b5cefdf7a8226e527286f22819835830e252129",
+      "sourceHash": "42099c4cdbb16d6dd7829cd4d1293a255681c7e9f13c2463f9e9ddc3f24ba53e",
       "label": "浏览器",
-      "description": "启用浏览器 `eval` 预置接口，以脚本方式自动化 Chromium（Puppeteer）"
+      "description": "启用浏览器 `eval` 预置接口，以脚本方式进行浏览器自动化"
     },
     "browser.cdpUrl": {
-      "sourceHash": "941af626f521a3da139ff1a08a75fe114ac545c1435070096810f16a01a404ce",
+      "sourceHash": "75cf424c4f0f7abc69f4be83bbdff334e239eb51f608c441f69d65a10ef8b597",
       "label": "浏览器 CDP URL",
-      "description": "默认的 HTTP CDP 发现端点（例如 http://127.0.0.1:9222），用于连接现有浏览器，而非启动浏览器。工具调用中显式指定的 app.cdp_url 或 app.path 优先"
+      "description": "默认的 HTTP CDP 发现端点（例如 http://127.0.0.1:9222），用于连接现有浏览器，而非启动浏览器。工具调用中显式指定的 `app` 优先"
     },
     "browser.relay": {
       "sourceHash": "e511bad991ea61d39fbf1eaf2bad8df691c4083d87cc335fe951c481b5765988",
@@ -3361,9 +3361,9 @@ export const zhCN = {
       "description": "omp browser relay 端点（默认 http://127.0.0.1:9224）"
     },
     "browser.headless": {
-      "sourceHash": "70e1b1b75f1c02e3665fd018bedf6bf384da574c644913544bdef72cdd804577",
+      "sourceHash": "4b735e1d1b2c2368ece07015505bc3a2a11f1f6645e7e8fa6a3202bea64d5c7c",
       "label": "无头浏览器",
-      "description": "以无头模式启动浏览器（禁用则显示浏览器界面）"
+      "description": "以无窗口方式运行浏览器（禁用则显示窗口）。在引擎附带查看器的平台（macOS）上，omp 的 WebKit 页签会立即获得或失去窗口；其他平台上的可见浏览器为 Chromium，由下一次打开操作以新模式启动"
     },
     "browser.cmux": {
       "sourceHash": "ff40bf2a738e51226c5bae4dd1744c0ae00938d77e000bb3a1c2862201901539",
@@ -3568,15 +3568,34 @@ export const zhCN = {
         }
       }
     },
+    "task.autoParallel": {
+      "sourceHash": "0fb34b979b697036b529ae3d76380c2e4c24d7831563d715b7ad885cb28d4431",
+      "label": "自动并行",
+      "description": "通过 judge 角色解析到的原生 judge，判断每个新的顶层提示词中哪些部分可以并发执行。需要原生 judge 和 task 工具；缺少时不进行判断",
+      "options": {
+        "off": {
+          "label": "关闭",
+          "description": "从不拆分提示词"
+        },
+        "suggest": {
+          "label": "建议",
+          "description": "判断每条提示词并报告拆分结果，但不据此执行"
+        },
+        "on": {
+          "label": "开启",
+          "description": "当提示词可拆分为相互独立的子任务时，指示 Agent 并行委派这些子任务"
+        }
+      }
+    },
     "task.batch": {
       "sourceHash": "17bcb5f41d9b1a207ef70fb90e66837f42e4d09f881b8b4aaec9d1fc9a82c791",
       "label": "批量任务调用",
       "description": "将 task 工具切换为批处理结构：一次调用携带 { context, tasks[] }——每个条目对应一个子代理，可为每个条目指定可选的 agent（默认为会话的 spawn-policy agent）和隔离设置，并且必须提供共享上下文以添加到每项任务之前。启用 async.enabled=true 时，每次 spawn 都会作为独立的后台代理运行，并采用正常的空闲/停放生命周期；否则调用会阻塞，直至获得合并结果。禁用后恢复扁平的单次 spawn schema"
     },
-    "task.file": {
-      "sourceHash": "673eb7a72f4a1c47ae71cc716c83af8d177ac6cff01671d2cdf880e20405065d",
-      "label": "从文件读取任务指令",
-      "description": "允许 task 工具从文件（taskFile）读取子代理指令，并记录其路径和 SHA-256"
+    "task.steps": {
+      "sourceHash": "891403c96af8b009531bdbfbf41a00d815fd8502ce69cecce17f28251a6511d4",
+      "label": "顺序任务步骤",
+      "description": "spawn 改为接收有序的 `steps`，而不是单个 `task`：子代理先收到第一步，完成上一步后再收到下一步；超过 4 步时，靠前的消息各携带两步或更多。最后一步的结果即为该任务的结果"
     },
     "task.structured": {
       "sourceHash": "3ec811e3e67ce6ad912560be364f9c7b5b0c6070d9827b0a4f355537dc2d2e1f",
@@ -4972,14 +4991,24 @@ export const zhCN = {
       "description": "自动保存计划的目录；支持 `~`、绝对路径和相对于当前工作目录的路径。留空时使用 `<project>/.omp/plans/`"
     },
     "browser.tern": {
-      "sourceHash": "0355bf9a5c9e3401be54aef02e646c40378f212309afe8f3214238285229832f",
+      "sourceHash": "d6a7963663e581f3d27c909c760a62630c331227812e9f7691d185134364075b",
       "label": "Tern 浏览器",
-      "description": "在 Tern 面板内，将浏览器页签作为画中画置于 omp 面板上方（原生网页视图），而不是使用无头 Chromium；没有可承载的 Tern 窗口时回退到 Chromium。显式 `app` 选项、Browser Relay 和浏览器 CDP URL 优先；`app.tern:false` 可让单次打开不使用此模式。设置 `PI_BROWSER_TERN=0` 或 `PI_BROWSER_TERN=1` 可覆盖此设置"
+      "description": "在 Tern 面板内，将浏览器页签作为画中画置于 omp 面板上方（原生网页视图），而不是使用 omp 自有的无头浏览器；没有可承载的 Tern 窗口时回退到该浏览器。显式 `app`、Browser Relay 和浏览器 CDP URL 优先；将 `app` 设为 `\"own\"` 可让单次打开不使用此模式。设置 `PI_BROWSER_TERN=0` 或 `PI_BROWSER_TERN=1` 可覆盖此设置"
+    },
+    "browser.webkit": {
+      "sourceHash": "7761d75fc241971ae7dba9e3a678a9b097bf10dfa957420d4a5c864501dbcbb4",
+      "label": "WebKit 浏览器",
+      "description": "引擎已安装时，在 omp 自有的无头 WebKit 引擎中打开浏览器页签，而不是使用受管 Chromium（未安装任何浏览器时，omp 会先将该引擎下载到 `~/.o2/lib/abkit`，之后才考虑 Chrome for Testing；参见“浏览器 WebKit 路径”）。在引擎未附带查看器的平台上，可见浏览器仍由 Chromium 打开，引擎无法启动的页签也仍使用 Chromium；显式 `app`、Browser Relay、浏览器 CDP URL、Tern 和 cmux 优先；将 `app` 设为 `\"chromium\"` 可让单次打开不使用此模式。设置 `PI_BROWSER_WEBKIT=0` 或 `PI_BROWSER_WEBKIT=1` 可覆盖此设置"
+    },
+    "browser.webkitPath": {
+      "sourceHash": "82356332f8826291f095a81bd47f0ed738bf8e8723837e9667e22775dde4dc3d",
+      "label": "浏览器 WebKit 路径",
+      "description": "omp 的 WebKit 引擎：其宿主可执行文件，或 ABKit 引擎目录（其中的宿主程序为 ABHost；Windows 上为 ABHost.exe）。未设置时，omp 运行已安装的引擎 `~/.o2/lib/abkit/ABHost`（Windows 上为 ABHost.exe）。支持 `~`。`PI_BROWSER_WEBKIT_PATH` 会覆盖此设置"
     },
     "browser.freezeOnTurnEnd": {
-      "sourceHash": "4277a2304699c39a135dfc0706b3e20347f6ffec2d72f737b055432131d1ea00",
+      "sourceHash": "faf563f57bc4280dfdc60e7d53e60a4ecc7a8194e4c9e23c545c94cf43e9979a",
       "label": "轮次结束后冻结浏览器页签",
-      "description": "轮次结束时冻结 OMP 管理的无头浏览器页签，避免动画页面在空闲时持续消耗 CPU/GPU。下次使用时自动解冻；打开时传入 `persist:true` 可让该页签不参与冻结"
+      "description": "轮次结束时冻结 OMP 管理的无头 Chromium 页签，避免动画页面在空闲时持续消耗 CPU/GPU（WebKit 页签只在被请求时才绘制）。下次使用时自动解冻；打开时传入 `persist:true` 可让该页签不参与冻结"
     },
     "browser.idleCloseSec": {
       "sourceHash": "20a877089331e6c8fc135da9a6214ea29ea256e191d577e72e61ba05c28e7ed8",

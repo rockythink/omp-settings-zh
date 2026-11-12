@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 
-import { statsPatterns, statsSpotlightAttributes, statsZh } from "./translations";
+import { statsFailureCauses, statsPatterns, statsSpotlightAttributes, statsZh } from "./translations";
 import { invalidateExternalWrites } from "./mutations";
 
 // Served by the official Stats listener; follows the DOM as React renders.
@@ -84,6 +84,17 @@ import { invalidateExternalWrites } from "./mutations";
 		return sourceText(element.closest(".stat")?.querySelector(":scope > .stat-label") ?? null);
 	}
 
+	function columnHeader(element: Element): string {
+		const cell = element.closest("td");
+		return cell ? sourceText(cell.closest("table")?.querySelectorAll("thead th")[cell.cellIndex] ?? null) : "";
+	}
+
+	// Overhead's cause label is the first node of its own span; share and separators stay data.
+	function failureCauseLabel(text: Text): boolean {
+		const parent = text.parentElement;
+		return !!parent && parent.matches(".spot-nowrap") && text === parent.firstChild && columnHeader(parent) === "Failure causes";
+	}
+
 	function fixedChart(element: Element): boolean {
 		if (element.closest(".providers-mix, .frustration-key")) return true;
 		if (element.closest(".spot-group-legend")) return true;
@@ -117,13 +128,9 @@ import { invalidateExternalWrites } from "./mutations";
 		if (parent.matches(".spot-drawer-subtitle .badge, .spot-timeline-head > .cell-primary, .spot-coverage .bar-list-label > .badge, .spot-coverage .bar-list-label > .dim.num, .spot-context .chart-tooltip-title")) return true;
 		if (foldedCoverageLabel(parent)) return true;
 		if (parent.matches(".spot-hero-warn > span")) return text !== parent.firstChild;
-		const cell = parent.closest("td");
-		if (cell) {
-			const header = cell.closest("table")?.querySelectorAll("thead th")[cell.cellIndex];
-			const column = sourceText(header ?? null);
-			if (["When", "Started", "Last seen", "Last used"].includes(column)) return true;
-			if (column === "Status" && parent.matches(".badge, .cell-primary")) return true;
-		}
+		const column = columnHeader(parent);
+		if (["When", "Started", "Last seen", "Last used"].includes(column)) return true;
+		if (column === "Status" && parent.matches(".badge, .cell-primary")) return true;
 		// SpanDrawer puts its fixed kind badge inside the otherwise data-only subtitle.
 		if (parent.matches(".drawer-subtitle > .row > .badge")) return true;
 		if (parent.closest(excluded)) return false;
@@ -170,6 +177,7 @@ import { invalidateExternalWrites } from "./mutations";
 		if (element.matches(".spot-hero-tools svg[aria-label]")) return name === "aria-label";
 		if (element.matches(".spot-drawer-subtitle > span:has(> .badge)")) return name === "title";
 		if (element.matches(".spot-hero-tools > span")) return name === "title";
+		if (element.matches(".spot-nowrap") && columnHeader(element) === "Failure causes") return name === "title";
 		// These titles are tool names/listings, not copy, even when they equal dictionary keys.
 		if (element.matches(".spot-more-tools, .spot-econ th, .spot-steps-name")) return false;
 		if (element.closest(excluded)) return false;
@@ -216,6 +224,7 @@ import { invalidateExternalWrites } from "./mutations";
 		const current = text.data;
 		const original = previous && current === previous.rendered ? previous.original : current;
 		let rendered = language === "zh" && safeText(text) ? translate(original) : original;
+		if (language === "zh" && failureCauseLabel(text) && Object.hasOwn(statsFailureCauses, original)) rendered = statsFailureCauses[original]!;
 		// React splits this fixed label around its count and singular/plural expression.
 		// Keep those nodes intact; a one-node tool name with the same text remains data.
 		if (language === "zh" && text.parentElement && foldedCoverageLabel(text.parentElement)) {

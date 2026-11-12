@@ -27,7 +27,8 @@
 | 18.16.0（历史候选） | 18.16.0 | 冷摄取官方修复实际compiled通过；驱动资源回收未过，最终系统opener/冷安装未重验，未发布；Tern可选未验证 |
 | 18.17.0（历史候选） | 18.17.0 | 新设置/Commands/Spotlight显示适配；未完成compiled/Web完整门禁，未发布 |
 | 18.18.6 | 18.18.6 | macOS编译版三面完整验收，真实系统默认opener与API/权限/SSE/费用边界通过；Tern未验证 |
-| 18.18.8 | 18.18.8 | 修复官方后台自动更新替换PATH启动器；macOS编译版三面验收见CONTEXT；Tern未验证；实际发布以GitHub tag/Release为准 |
+| 18.18.8 | 18.18.8 | 修复官方后台自动更新替换PATH启动器；macOS编译版三面验收；Tern未验证 |
+| 18.19.0 | 18.19.0 | Settings/Stats Spotlight失败原因适配；macOS编译版三面验收、冷摄取、系统默认opener及API/权限/SSE边界见CONTEXT；Tern未验证；实际发布以GitHub tag/Release为准 |
 
 同一主版本的后续 OMP 版本会执行结构预检，但在完成 CI 和真实 `/settings` 验证前不视为正式支持。OMP 19 及以上版本默认失败关闭。
 

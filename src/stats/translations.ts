@@ -639,6 +639,11 @@ export const statsZh: Record<string, string> = {
 	"A failed or timed-out call leaves the cut to the no-score fallback, so those results measure the fallback rather than Spotlight's scorer. Read every comparison on this page with that share in mind.": "调用失败或超时后由无评分回退规则精简，因此这些结果衡量的是回退规则，而非 Spotlight 评分器。阅读本页各项对比时，请考虑该比例。",
 	"Tool calls waited": "工具调用为这些失败等待了",
 	"on those failures.": "。",
+	", to restore ranking.": "，即可恢复排序。",
+	"had no Stencil sign-in: run": "的结果未登录 Stencil：运行",
+	"and choose Stencil, or set": "并选择 Stencil，或设置",
+	"Failure causes": "失败原因",
+	"Why the calls failed, as shares of the results that called Spotlight. A result whose calls failed two ways counts under both; unrecorded results were journaled before pi recorded causes": "调用失败的原因，按其占调用 Spotlight 的结果的比例统计。调用以两种方式失败的结果在两项下均计入；“未记录”指 pi 开始记录原因之前写入日志的结果",
 	Overhead: "额外开销",
 	"What shaping costs: Spotlight failures, added latency and its bill": "精简处理的代价：Spotlight 失败、增加的延迟与费用",
 	"Every evaluated result counts, held-out ones included: they were shaped too, just not shown.": "统计所有已评估结果，包括保留对照：它们也经过精简处理，只是没有展示精简版本。",
@@ -902,6 +907,7 @@ statsPatterns.push(
 	[String.raw`^in ((?:\d+m )?\d+s) for$`, "用时$1，费用为"],
 	[String.raw`^in ((?:\d+m )?\d+s)$`, "用时$1"],
 	[String.raw`^(\d[\d,]*) tok$`, "$1 Token"],
+	[String.raw`^(\d[\d,]*) results$`, "$1 条结果"],
 );
 
 // Spotlight formatter output: values remain byte-for-byte captures.
@@ -967,6 +973,21 @@ for (const [en, zh, rule] of [
 	const escaped = rule.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 	statsPatterns.push([`^(\\d+) × ${en.toLowerCase()}: ${escaped}$`, `$1 × ${zh}：${statsZh[rule]}`]);
 }
+
+/**
+ * The Spotlight Overhead card's labels for official failure-cause codes
+ * (`no_credential`, `transport`, `timeout`, `rate_limited`, `bad_reply`,
+ * `unrecorded`). Applied only to that column's label node; `HTTP <status>`
+ * and unknown codes keep their official text.
+ */
+export const statsFailureCauses: Readonly<Record<string, string>> = {
+	"not signed in": "未登录",
+	network: "网络",
+	timeout: "超时",
+	"rate limited": "速率受限",
+	"bad reply": "无效响应",
+	unrecorded: "未记录",
+};
 
 /**
  * Attribute-only templates for official Spotlight containers. Their first

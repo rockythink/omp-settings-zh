@@ -217,7 +217,8 @@ try {
   await writeFile(openerAudit, "");
   // Puppeteer's default SIGINT handler calls process.exit(130), bypassing our cleanup.
   owned.browserLaunchAttempted = true; await ledger();
-  browser = await puppeteer.launch({ executablePath: browserExecutable, headless: true, userDataDir: owned.browserProfile, env, handleSIGINT: false, handleSIGTERM: false, handleSIGHUP: false, args: ["--no-sandbox", "--disable-dev-shm-usage"] });
+  // Chromium on macOS ignores TMPDIR for its own temp directories; keep them in the run tree.
+  browser = await puppeteer.launch({ executablePath: browserExecutable, headless: true, userDataDir: owned.browserProfile, env: { ...env, MAC_CHROMIUM_TMPDIR: temporary }, handleSIGINT: false, handleSIGTERM: false, handleSIGHUP: false, args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   owned.browserPid = browser.process()?.pid ?? 0;
   await ledger();
   if (!owned.browserPid) throw new Error("Owned browser process identity is missing");

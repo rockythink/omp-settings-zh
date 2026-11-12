@@ -1,10 +1,10 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.18.8维护版本，正式发布以GitHub Release为准；Tern可选未验证，不阻止明确非Tern范围发布
-- 基线版本：官方OMP18.18.8；外部Bun最低1.4.4
-- 文档日期：2026-11-11
+- 状态：18.19.0维护版本，正式发布以GitHub Release为准；Tern可选未验证，不阻止明确非Tern范围发布
+- 基线版本：官方OMP18.19.0；外部Bun最低1.4.4
+- 文档日期：2026-11-12
 
-相对18.18.6：Settings607定义/453UI，新增5项按窗口自动兑换译文、删除2项旧译文，其余448项不重译，9动态getter保持。Commands89定义/98标识无变化。Stats包源码逐字节不变。修复官方后台自动更新替换PATH启动器的问题（见TECHNICAL-DESIGN）。三面完整真实验收见CONTEXT。
+相对18.18.8：Settings456UI，新增`task.autoParallel`、`task.steps`、`browser.webkit`、`browser.webkitPath`四项译文，删除`task.file`译文，复核`ask.timeout`及5项浏览器设置原文，其余446项不重译。Commands89定义/98标识无变化。Stats仅Spotlight额外开销卡新增失败原因列与Stencil未登录提示，补5键、1通用模板及6个限定列的原因标签。三面完整真实验收见CONTEXT。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 

@@ -1,5 +1,31 @@
 # Project Context
 
+## 18.19.0 适配（2026-11-12）
+
+起点本地/远端main均`6afe46a68eb67a6698a8a28ccaebeaa099dd6f3c`=已发布[v18.18.8](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.18.8)，CI 43053043836成功；相对该tag无待发布候选。官方18.18.9与18.19.0相继发布，coding-agent/utils/Stats/TUI最新稳定版均18.19.0，构成新适配。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；工作区既有未跟踪`.bun-build`临时件与`AGENTS.md`不动、不提交。
+
+**宿主与安装**：用户`update.auto`的官方worker于23:00把18.18.9→18.19.0装到官方原位置`~/.local/bin/omp`（`auto-update.log`原文“Updated to 18.19.0 at …/.local/bin/omp”）；受管启动器仍为11-11写入的shell脚本且与state记录逐字节一致，18.18.8修复在真实后台更新中生效。受管`omp update`报告Already up to date，`omp --version`前后均18.19.0，SHA-256 `d469628a…`匹配官方darwin-arm64资产。本机插件为GitHub来源18.18.8（另有pi-xcode-mcp0.1.0不动）。
+
+**来源**：官方tag commit `04cd1a7549a02d62ad1d24826198d52507595683`的源码与npm全部1955份coding-agent、130份utils、119份Stats、463份TUI源码逐字节一致，4个HTML源按package.files排除。
+
+**Settings**：453→456UI。新增`task.autoParallel`、`task.steps`、`browser.webkit`、`browser.webkitPath`，删除`task.file`，6项原文变化（`ask.timeout`、`browser.enabled/cdpUrl/headless/tern/freezeOnTurnEnd`），其余446项不重译；无UI的`launch.persist`、`systemPromptTemplates`不补译，registry仅注释变化。真实compiled（隔离HOME/Profile，官方18.19.0，本仓库link，无凭据并启用网络护栏）：中文搜索“自动并行”命中Tasks新项且说明为新译；枚举面板显示关闭/建议/开启三项中文选项与说明，Esc后config.yml不变；“顺序任务步骤”原生保存false→true→false写入隔离config.yml；“WebKit”搜索4项、“Ask 超时”新说明正确；同进程`/settings-language en`后显示官方“Auto Parallel”原文，`zh`后中文搜索恢复；`/effort `参数说明保持官方英文（含`(current)`）。
+
+**Commands**：89定义/98标识/9别名/27动态回调，静态门禁漂移0；30命令文件4份变化（`/browser`应用模式、`/session delete`新建会话、`/mcp`移除Smithery子命令、注释），27动态回调源码、`pi-tui/autocomplete.ts`与扩展类型不变。真实compiled（`--model anthropic/claude-opus-5-5`无凭据）逐一输入98名称/别名：97行中文，`force:`按官方进入参数阶段（`/force`为“强制工具：12 个启用的工具”）。model/models/switch显示“模型：anthropic/claude-opus-5-5”原ID；⇧⇥使effort high→xhigh→max且中文；plan开启“计划：开启（PLAN.md）”/“计划审核：可用”，再次/plan为官方暂停（English“Plan: off”↔“计划：关闭”）；loop开启后“循环：已暂停”、再次关闭；`skill:`“2 项技能”，展开后技能说明英文原样；`@Requ`与`@docs 空格/`文件名原样；`/setti`+Tab补全`/settings`后Enter打开原生面板；en/zh往返九项逐一对照恢复。
+
+**Stats**：客户端仅`spotlight/Overhead.tsx`变化（失败原因列、原因标签、`N results`悬停、Stencil未登录提示），服务端新增失败原因列与聚合；query/query-store/live/api与18.18.8逐字节相同。插件新增5键、1通用模板、6个限定列的原因标签（898键/151+9模板）及`browser.ts`列识别。网页驱动（隔离HOME合成2项目4会话17请求，Spotlight实验含no_credential×2、timeout×2、http_502、transport失败；测试专属opener把真实URL交给独占headless标签）：原版与包装各1监听器，包装BUN_OPTIONS合并用户guard与私有preload（位于隔离TMPDIR）；默认中文；12页zh/en/zh稳定且English与原版归一化逐页相同；失败原因列中文表头/说明、“未登录/超时/网络”标签与“N 条结果”悬停，`HTTP 502`、百分比原样，提示句中文且`/login`、`STENCIL_API_KEY`原样，English与原版逐字相同；请求抽屉标签中文、模型与错误原文保留，工具名`Requests`保留；`g m`跳转、语言控件方向键、390px两按钮可见；追加请求约1秒后同文档无刷新18→19行；English经刷新、路由与同origin重启保持；37份API仅`/api/status`同步计数不同；17组HTTP边界状态一致（跨Host/Origin原样、OPTIONS无CORS、judge 405/403、close 405/403/404、sync 405、身份头非授权），仅SPA回退HTML因注入脚本长度不同；SSE心跳15002/15005与15002/15002ms；三服务SIGINT退出130、端口关闭、进程组消失、私有目录消失。`stats --json/--summary/--help/-j`、`--version`、`--port 99999`原版/包装stdout/stderr/退出码逐字节相同，日志opener未被调用。
+
+**冷摄取**：原版与包装各用无`stats.db`的新home，首个`/api/stats/recent`延迟3.5秒：首帧0行，约3.5秒后官方自动再次请求，UI与API均19行，同文档无刷新/轮询。
+
+**默认opener与Profile**：隔离HOME中新zsh登录交互shell在path_helper后解析受管omp与`/usr/bin/open`；用户真实Chrome正常与故意断言失败两次各恰新增1个`http://127.0.0.1:<port>/#/overview?range=24h`标签，页面HTML含注入脚本，单监听器；按原生window/tab ID关闭后标签集合回到基线，服务SIGINT结束、端口关闭、进程组消失。命名Profile`qa-maint`（含/不含XDG）：compiled`getPluginsNodeModules()`为`~/.omp/profiles/qa-maint/plugins/node_modules`，state.main为逻辑路径；物理目录v1→v2且不relink后新进程仍加载、state不变、summary输出相同；zsh登录shell解析启动器；dry-run保留、正式卸载撤销启动器与PATH块。缺SHELL/USER/LOGNAME时按账户shell（dscl为zsh）写入`.zprofile`/`.zshrc`。
+
+**compiled smoke**：首轮（本地link）通过，5页建/关、两服务单监听器、合并`--smol`与用户preload、2个opener退出0、19命令组回收、cleanupErrors0；但发现独占Chrome在用户临时目录留下Chrome目录（macOS版Chromium不读TMPDIR）。试验证明设置`MAC_CHROMIUM_TMPDIR`后Chrome临时目录落入运行树，已写入smoke驱动；修正后第二轮同样通过且无可归属本轮的用户临时目录残留。
+
+**驱动失败与更正（均非产品回归）**：首个TUI会话停在setup交接帧，SIGTERM退出143后重启；pyte差量残帧需SIGWINCH重绘后判读。`/transcript`纯描述命中Enter未执行`/dump`，官方随后把它当作提示提交，因无凭据在发请求前报“No API key found”；全程网络审计79 GET/19 HEAD均在建连前拦截，推理POST 0。网页首轮无刷新更新探针读错统计位、私有目录检查看错目录（实际在隔离TMPDIR），改用请求行与API计数、核对TMPDIR后通过。**归属更正**：清理Chrome残留时删除了2个仅含`.keep-directory`的空`TemporaryDirectory.*`，事后测得该类目录由无关后台进程每分钟创建（累计约4.1万），并非本轮资源；Chrome命名目录的归属正确（其一经试验profile的SingletonSocket链接证实）。
+
+**资源**：run `omp-maintenance-20261112-75948335`账本在树外。TUI 4个PTY会话进程组0存活；网页驱动4次运行各4页建/关、独占headless Chrome退出、cleanupErrors0，6个Stats服务与2个默认opener服务全部SIGINT退出、端口关闭；真实Chrome自有标签2/2按ID关闭，用户原有标签与既有服务（含用户自己的`omp stats` 3847）未操作。冻结安装与完整`bun run check`：71pass/0fail、2729断言，Settings456/456、Schema0，Commands89/89、98标识、漂移0，2013显示变更/3次恢复/源码网络0。
+
+**发布判定**：最终提交的macOS/Linux CI、精确SHA干净GitHub安装与tag/Release实际结果以GitHub Release为准；任一失败不发布。Tern路径未验证，Windows不纳入，历史unknown继续审计。
+
 ## 18.18.8 适配与启动器修复（2026-11-11）
 
 起点本地/远端main均`004f42c9b9c118005bae33791d2ec62bbded48ee`=已发布[v18.18.6](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.18.6)，CI 42848381626成功；相对该tag无待发布候选，上游coding-agent/utils/Stats最新稳定版均18.18.8，构成新适配。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；既有未跟踪内容不动。本轮由Orca每日任务宿主PID 46097运行，无并行维护者。

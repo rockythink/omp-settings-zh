@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现版本：18.18.8；正式发布以GitHub Release为准，main与源码编号不是发布证据
-- 目标基线：官方OMP18.18.8、外部Bun最低1.4.4；Tern可选未验证
+- 实现版本：18.19.0；正式发布以GitHub Release为准，main与源码编号不是发布证据
+- 目标基线：官方OMP18.19.0、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -70,6 +70,8 @@
 
 18.18.8为607定义/453UI：官方把`codexResets.autoRedeem`、`claudeResets.autoRedeem`拆为按窗口的同意项（Codex 5h/每周，Claude 5h/每周/Fable），旧值迁移到5h与每周、Fable保持unset，均由官方执行；不确定窗口（仅短429等待）取两窗口中较严格者，无询问界面时unset不再自动消耗。插件新译5项、删除2项旧译文，其余448项不重译，9动态getter不变；registry/all-settings合同不变。
 
+18.19.0为456UI：新增`task.autoParallel`（off/suggest/on，经judge角色解析的原生judge判断顶层提示词能否并行拆分）、`task.steps`（spawn改用有序steps，超过4步时合并到至多4条提示）、`browser.webkit`与`browser.webkitPath`（omp自有WebKit引擎及其ABHost路径）；官方删除`task.file`；`ask.timeout`改为超时提交表单当前值，5项浏览器说明随WebKit引擎调整。新增无UI的`launch.persist`与`systemPromptTemplates`不补译。其余446项不重译；registry/all-settings合同只有注释变化。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -90,6 +92,8 @@
 开发门禁 `scripts/check-slash-commands.ts` 从锁定官方依赖读取 `BUILTIN_SLASH_COMMAND_DEFS`，通过 `scripts/slash-report.ts` 检测新增/删除、空译文、原文/别名漂移和标识冲突；仅 switch／loop 键位例外复用 `staticText`，其它静态原文精确匹配，不因显示层支持 effort 的动态键位而放宽门禁。只在开发脚本导入注册表，不改变插件运行时的宿主边界。动态状态生成逻辑与接口须独立源码审查和真实交互验证。
 
 18.15.0的30个命令文件27份字节不变，仅builtin-modes/builtin-session/helpers/stats-dashboard变化：`/fast ultra`参数说明扩展Codex及relay，必须保持英文；`/jobs full`调用requestJobCaptions，可能发起模型工作，不用于零请求验收；会话`/stats`、`/trace`优先openTernPage beside并断开客户端，失败回退openPath。注册表、动态回调、provider接口、裸/与折叠skill同步路径及原生补全保持。显示层不介入执行、模型选择或页面生命周期。
+
+18.19.0的30个命令文件中4份变化：`/browser`改调`applyBrowserModeChange`、`/session delete`先新建会话再删除文件、`/mcp`移除Smithery子命令及其帮助、补全注释更新；BUILTIN注册表、27动态回调、`pi-tui/autocomplete.ts`与扩展类型均不变，runner仅移除插件未用的`sessionApprovalKeys`。
 
 ## Stats Web 显示适配
 
@@ -128,6 +132,7 @@
 - 18.17.0：119源码/95客户端，18既有文件修改、22新增、0删除；新增Spotlight导航、实验/回取诊断及两只读API。893键、150通用严格模板＋9作用域属性模板；browser仅放行审阅UI，排除工具/步骤/target/session/正文，混合属性原数据捕获不再进词典。属性模板具体结构先于通用后缀匹配；折叠工具标签只接受官方数值/固定more/单复数tool三文本结构，保留React节点与English恢复。query/query-store/client live与18.16.0相同、server live全量同步节流变为15秒且结束flush，计算/节流不在插件复制。stats-cli/openPath字节不变，preload/mutations无变化；源码与纯DOM场景不代证新版compiled/Web/API/SSE门禁。
 - 18.18.6：119源码/95客户端，客户端逐字节不变；server新增`reused`句柄（他进程dashboard时CLI只打开页面并直接返回，插件wrapper无需特例，私有目录照常清理），trace ETag v5改定长摘要，parser游标移除dev字段。893键/159模板及browser/mutations/preload不改。
 - 18.18.8：Stats包119源码与`stats-cli`、`openPath`均相对18.18.6逐字节不变；utils仅删除未被插件使用的`getConfigAgentDirName`。893键/159模板及browser/mutations/preload不改。
+- 18.19.0：119源码，客户端仅`spotlight/Overhead.tsx`变化：额外开销表新增“Failure causes”列（表头title、按原因代码生成的标签与`N results`悬停）和Stencil未登录提示句；服务端新增`sp_failure_causes`列与按原因聚合，计算归官方。插件新增5键与`^N results$`通用模板，并在`browser.ts`新增`columnHeader`与`failureCauseLabel`：只有该列`.spot-nowrap`的首个文本节点经独立的`statsFailureCauses`映射（6个已知代码标签），`HTTP <状态码>`、未知代码、百分比与`code`内容保持原样，标签title仅在该列放行。mutations/preload不改。
 
 ## 6. 检查与真实验证
 
@@ -148,11 +153,12 @@
 - compiled smoke账本固定写到运行树旁的`<run>.resources.json`，不因树删除丢失证据；任何清理失败永久记录，不由最终重试覆盖。关闭页面后查询CDP target实际消失，关闭浏览器后观察自有PID退出；服务同时验证launcher/native/guard进程组、原端口与private目录，bridge单独验端口。Bun的信号退出可能仍显示exitCode:null，启动时登记exited promise，以其结算状态统一驱动等待与升级，不反复向已退出进程发信号。
 - `OMP_SMOKE_GITHUB_REF=<40位SHA>`切换到干净GitHub安装；未提供则仍走本地link。只有公开插件/依赖安装阶段允许其正常网络，之后真实compiled探针恢复无dispatch护栏；普通命令45秒、冷安装120秒截止均回收独占进程组，不复制驱动或放宽模型请求边界。
 - 18.16.0 smoke额外通过原样委托的Bun.spawn记录自动opener PID/parent/原URL，bridge在导航前接入账本，`.exited`与ESRCH共同证明短生命周期opener结束；sidecar置于树外。长browser tab.run临时驱动曾在页面会话关闭后漏等launcher，产生工具宿主尚未reap的自有僵尸子进程；native/端口/private关闭不等于所有PID关闭。失败保留，不杀工具父宿主或通过全局waitpid规避；新阶段的独立成功不抹去旧清理错误。
+- 18.19.0 smoke的独占Chrome额外设置`MAC_CHROMIUM_TMPDIR`：macOS版Chromium不读`TMPDIR`，否则会在用户临时目录留下`com.google.Chrome.*`（含singleton socket）；设置后这些目录落在运行树内，随运行树回收。用户临时目录中每分钟出现的`TemporaryDirectory.*`来自无关后台进程，不属于驱动资源。
 
 
 ## 7. 发布边界
 
-源码/开发依赖/目标宿主基线为18.18.8，范围`>=18.18.8 <19`，外部Bun最低1.4.4。18.18.8完整验收含三面compiled交互、系统默认opener、Profile/生命周期、API/SSE/权限与资源回收，以及真实官方`update.auto` worker的对照/修复实验；Tern可选未验证，Windows草稿未合并，不纳入支持；历史unknown独立保留。
+源码/开发依赖/目标宿主基线为18.19.0，范围`>=18.19.0 <19`，外部Bun最低1.4.4。18.19.0完整验收含三面compiled交互、冷摄取、系统默认opener、命名Profile/XDG与生命周期、API/SSE/权限与资源回收；Tern可选未验证，Windows草稿未合并，不纳入支持；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 
