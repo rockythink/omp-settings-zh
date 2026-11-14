@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.19.0 (04cd1a7549a02d62ad1d24826198d52507595683). */
+/* Display-only translations; source-review baseline OMP 18.20.0 (c308970263ae13744ea15ab67302e3dac840e266). */
 export const slashCommandTranslations = [
   {
     "name": "security",

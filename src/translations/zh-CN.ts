@@ -2,8 +2,18 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.19.0",
+  "sourceOmpVersion": "18.20.0",
   "settings": {
+    "encourageEdits": {
+      "sourceHash": "97c0218942526b6f2de735d7fbe6f0279d21a29b0e08c9a06c68af6b0bf763cb",
+      "label": "要求使用 edit 编辑",
+      "description": "要求使用 edit 工具编辑文件，禁止使用 sed、perl 或 python 编辑"
+    },
+    "find.verifyModel": {
+      "sourceHash": "7cc464eb1e3f7878b67976c61118624befecd0f9df66c94c6e35af97ddfea874",
+      "label": "Find 验证模型",
+      "description": "find 验证文本片段时优先尝试的模型选择器（如 openrouter/liquid/d1-ultra），先于 judge 角色；文件名与概要排序仍使用 judge 角色。未设置时，文本验证也使用 judge 角色"
+    },
     "tui.colorfulMarkdown": {
       "sourceHash": "439637afe8869b8e75951bce041143133a4b81129866c4953c7e178c6d2f9708",
       "label": "彩色 Markdown",
@@ -1204,9 +1214,9 @@ export const zhCN = {
       "description": "注入纠偏指引前所需的连续相同工具调用次数"
     },
     "model.toolCallLoopGuard.exemptTools": {
-      "sourceHash": "1866d8c94a8995695e2ac84db7a361039111fdd8ca2323fda177228556e9b48f",
+      "sourceHash": "19590d4b45892e4faf1251d7fb956f714a5987edb7ed3421f80b15db304797c2",
       "label": "工具调用循环豁免工具",
-      "description": "可连续重复而不触发跨轮次循环防护的工具名称"
+      "description": "可连续重复而不触发跨轮次循环防护的工具名称，或 write 分发调用的 xd:// 设备名称（如 mcp__peers_wait）"
     },
     "inlineToolDescriptors": {
       "sourceHash": "87ae40514d48f7d5003ca8a5711e964cfbf2fc4e4e81f620a15a78dd9d4201b6",

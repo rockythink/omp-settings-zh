@@ -6,7 +6,7 @@
 
 ## 内置斜杠补全译文边界
 
-- 当前来源OMP18.19.0官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调，相对18.18.8无变化。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持。
+- 当前来源OMP18.20.0官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调，相对18.19.0的30个命令文件逐字节不变。官方provider修正技能名中段命中排序，插件保持原候选顺序。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持；源码行为通过不代证compiled TUI验收。
 - 只翻译顶层补全的说明与实时状态、`skill:` 数量；参数提示、命令名、别名、模型／提供商 ID、路径与目标正文保持原样。
 - `switch` / `loop` / `effort` 的动态快捷键按宿主实际显示捕获，中文保留原键位。除键位占位外必须匹配官方原文，第三方覆盖、技能说明和未知文案不改。
 - `/settings-language en` 恢复官方补全结果；中文与英文都须验证排序、Tab／Enter 插入和实际官方编译版，不能用静态表检查代替。
@@ -14,7 +14,7 @@
 
 ## Stats Web 译文边界
 
-- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.19.0`；119源码，客户端仅Spotlight额外开销卡变化。898字典键、151通用严格模板及9个Spotlight作用域属性模板；失败原因列的6个已知代码标签单独存放于`statsFailureCauses`，只作用于该列标签节点，`HTTP <状态码>`、未知代码和百分比保持原样。工具/步骤/target/session数据和混合属性捕获值保持原文。mutations/preload不改，未知文案与canvas保留；`Most used: <工具>`等混合数据提示按安全回退保留英文。
+- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.20.0`；119源码中4份Spotlight服务端文件变化，95客户端逐字节不变。898字典键、151通用严格模板及9个Spotlight作用域属性模板保持；失败原因列6个已知代码标签只作用于该列节点，HTTP状态码、未知代码、百分比与数据捕获值保持原文。browser/mutations/preload不改；未知文案、混合数据提示与canvas安全回退英文。18.20.0真实网页因环境前提未重验，不能继承旧版通过记录。
 - `src/stats/translations.ts` 只包含原文键、中文值及严格锚定的动态模板；浏览器端必须先通过官方 UI 区域白名单，不能在整页全局替换英文。
 - 保留模型、提供商、工具、项目与账户名称、路径、请求与会话正文、错误原文、协议、数字和模板中的实际数据；未知文案与 canvas 内绘制内容保持官方原文。Window utilization 普通 tooltip series 标签是账户数据，即使为 Requests／Other (3) 也不译；仅官方带 tone-bad 的 Exhausted 注记与 total 固定标签属于 UI。
 - 切回 English 恢复原始文本与显示属性；验证 React 异步更新、路由复用与译文键同名的数据值，不只检查首页。外部写入即使与插件上次显示相同，也须失效旧来源；一批外部文本／属性写入全部失效后才渲染，不能误恢复真实数据。表头复用须重新判断整表单元格的 UI／数据身份。同 origin 的偏好跨刷新、路由与服务重启保留，首次默认中文；网页语言独立于 /settings-language。页面脚本在原 Stats 服务同端口加载，不增加代理。
@@ -187,7 +187,7 @@ Settings 选项显示副本与宿主共享原文源必须隔离；不能因设�
 
 活动翻译只以目标版本 OMP 官方设置注册表的英文显示元数据为语义来源：
 
-1. 从锁定的`@oh-my-pi/pi-coding-agent@18.19.0`完整注册图提取英文；456UI。新增`task.autoParallel`、`task.steps`、`browser.webkit`、`browser.webkitPath`四项独立翻译，删除`task.file`译文，复核`ask.timeout`与5项浏览器设置原文；其余446项不重译。judge、Agent、WebKit、ABKit/ABHost、Chrome for Testing、Browser Relay保留原名，`steps`、`app`取值与环境变量保留原文。固定官方commit `04cd1a7549a02d62ad1d24826198d52507595683`的源码与npm全部1955份coding-agent源码一致，4个HTML源按package.files排除；utils130/Stats119/TUI463份亦一致；
+1. 从锁定的`@oh-my-pi/pi-coding-agent@18.20.0`完整注册图提取英文；458UI。新增`encourageEdits`与`find.verifyModel`两项独立翻译，复核`model.toolCallLoopGuard.exemptTools`的write分发xd://设备名语义；其余455项不重译。edit、find、judge、xd://、模型选择器及设备示例保留原文，新增无UI的`find.hitThreshold`不补译。固定官方commit `c308970263ae13744ea15ab67302e3dac840e266`的源码与npm全部1962份coding-agent源码Git blob一致，4个HTML源按package.files排除；utils130/Stats119/TUI463份亦一致；
 2. 使用本项目自己的 LLM 能力按本规范生成初稿，不输入或复用第三方中文译文；
 3. 按设置路径和选项 `value` 校验完整性；
 4. 用英文原文哈希标记待复核的上游语义变化；

@@ -1,5 +1,23 @@
 # Project Context
 
+## 18.20.0 定向适配（2026-11-14，未发布）
+
+起点本地main、origin/main与远端main均`9c0d0eb6cea213687e910449f99b222f55a636be`，对应正式[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)；其精确提交[CI 43250200358](https://github.com/rockythink/omp-settings-zh/actions/runs/43250200358)的macOS/Linux成功，相对该tag原无待发布候选。官方及coding-agent/utils/Stats最新稳定版均18.20.0，形成新适配候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；既有42项未跟踪内容不动、不提交。
+
+**宿主与来源**：本机官方已是18.20.0，实际`omp update`报告Already up to date，前后版本不变；SHA-256 `2b1309b06a743ae939708f939b63f75c7a436ed08c7953309f0e387e0c793ead`与官方darwin-arm64资产相同。受管启动器仍为原shell脚本；本机插件起点为GitHub来源18.19.0、doctor5/0/0，pi-xcode-mcp0.1.0不动。固定官方tag commit `c308970263ae13744ea15ab67302e3dac840e266`，完整Git tree不截断，npm全部1962份coding-agent、130份utils、119份Stats、463份TUI源码Git blob一致，4个HTML源按package.files排除。开发依赖、宿主范围、版本及来源同步至18.20.0；最终本机同源升级与CI以交付现场为准。
+
+**Settings**：615定义/458UI；新增`encourageEdits`与`find.verifyModel`两项译文，复核`model.toolCallLoopGuard.exemptTools`的write分发xd://设备名说明，其余455项不重译。新增无UI的`find.hitThreshold`不补译；完整非纯类型相对注册图64文件/114边中仅tools/settings、session/settings、spotlight/types变化。9动态getter、选项value/默认值、凭据/项目权限、原生保存与共享effort原文隔离保持；官方新增Find分组保持英文。当前compiled TUI中文搜索/原生编辑/en-zh与effort参数隔离未重验，不能继承18.19.0交互通过。
+
+**Commands**：89定义/98标识/9别名/27动态回调，30个命令文件逐字节不变，扩展类型与动态说明合同保持；interactive-mode仅删除Todo自动结算，runner变化为context投影记录，不改补全接口。官方TUI autocomplete将技能名中段精确命中从1000降为900，避免`/job`中段技能压过内置`jobs`；插件不复制排序。throwaway官方provider源码消费者实测zh/en/zh下裸/、/job、/skill:、/skill:alpha，同步/异步候选与原provider顺序相同，/job首项jobs，展开技能描述原样，applyCompletion逐候选结果相同；完整check补充动态状态/有效tier/真实键位/partial/取消/可选能力。compiled顶层列表、别名、动态状态与Tab/Enter交互未重验。
+
+**Stats与官方修复**：119源码中仅db、spotlight-aggregator、spotlight-ingest、spotlight-measures变化：多窗口read的存储、隐藏行/后续读取编辑归因、按窗口排名质量；95客户端逐字节不变，stats-cli/openPath与query/query-store/live保持。898键、151通用模板＋9属性模板、6个限定原因标签与browser/mutations/preload不改。#17754现场CLOSED，#17758现场MERGED，tag在merge之后3024提交、behind_by0；修复源码保持。当前制品冷摄取实际Web未重验，不能写成失败或以旧warm-state代证。
+
+**回归**：冻结安装及完整check通过，71pass/0fail、2729断言，Settings458/458、Schema0，Commands89/89/98标识、漂移0，2017显示变更/3次恢复/源码网络0。隔离HOME、PI_CODING_AGENT_DIR、命名Profile/XDG/TMPDIR及cwd，真实官方绝对路径与源码包装入口的stats --json/--summary四进程stdout/stderr/退出状态逐字节一致；另一次--version为18.20.0，真实入口preload记录Bun1.4.4、已有--smol与用户preload执行，网络尝试0。这不代证Web注入、单监听器、API/SSE或Profile物理迁移门禁。
+
+**环境未验与恢复条件**：本轮`computer.capabilities()`实测screenLocked:true、secureInput为loginwindow，原生AX窗口不可用，不能安全建立默认系统opener页面归属及正常/失败清理基线。该环境前提未解除，未启动真实浏览器、opener、Stats监听服务或完整TUI/Web/冷安装矩阵；不是插件回归或官方缺陷，也不把未测试记成功能失败。解锁后先实测受管页面正常/人为失败回收，再固定目标宿主与最终SHA，完整重验适用三面、默认opener、冷摄取、API/SSE/权限/费用边界、Profile/生命周期及最终macOS/Linux CI与精确SHA冷GitHub安装，通过全部门禁才实际tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+
+**本轮资源**：run `omp-maintenance-20261114-05f3eb18`先建树外账本。页面创建/关闭/已知本轮残留0/0/0，独占浏览器/opener/Stats监听服务0，未分配Web端口；不触碰用户既有页或服务。五个定向compiled/包装命令均登记PID/独占进程组并确认ESRCH；临时来源、脚手架与运行树在交付前回收，证据账本单独保留。正常/失败网页清理预检本轮未启动，不追认为通过。最终资源结算、提交与本机同源升级结果见交付现场；源码候选编号和main推送不等于发布。
+
 ## 18.19.0 适配（2026-11-12）
 
 起点本地/远端main均`6afe46a68eb67a6698a8a28ccaebeaa099dd6f3c`=已发布[v18.18.8](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.18.8)，CI 43053043836成功；相对该tag无待发布候选。官方18.18.9与18.19.0相继发布，coding-agent/utils/Stats/TUI最新稳定版均18.19.0，构成新适配。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；工作区既有未跟踪`.bun-build`临时件与`AGENTS.md`不动、不提交。

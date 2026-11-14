@@ -2,6 +2,15 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [18.20.0] - 2026-11-14（未发布候选）
+
+- 对齐官方OMP、coding-agent/utils/Stats及锁文件18.20.0，固定官方commit `c308970263ae13744ea15ab67302e3dac840e266`；npm全部1962份coding-agent、130份utils、119份Stats、463份TUI源码Git blob匹配，4个HTML源按package.files排除。实际`omp update`前后均18.20.0且报告已最新，本机SHA-256匹配官方darwin-arm64资产；内嵌入口与最低外部Bun1.4.4。
+- Settings615定义/458UI：新增`encourageEdits`（要求使用edit编辑）与`find.verifyModel`（Find验证模型）两项译文，复核工具循环豁免的write分发xd://设备名语义，其余455项不重译。无UI的`find.hitThreshold`不补译；保留原默认值、选择器、项目权限、保存、9动态getter与共享effort原文隔离。
+- Commands89定义/98标识/9别名/27动态回调，30个命令文件相对18.19.0逐字节不变。官方provider修正技能名中段命中的排序优先级，源码消费者定向回归验证`/job`优先`jobs`、裸/与skill折叠、同步/异步、zh/en/zh及原生插入保持；插件不复制匹配逻辑、不新增译文。
+- Stats119源码中4份服务端文件改进多窗口read的Spotlight存储、需求归因与排名质量；95客户端、stats-cli/openPath不变。保留898键、151通用模板＋9属性模板及6个限定原因标签，browser/mutations/preload不改。官方#17758为当前tag祖先，query修复源码保持；旧版冷摄取通过不能代证当前制品。
+- 冻结安装与完整check：71测试/2729断言通过，Settings458/458、Schema0，Commands89/89与98标识、漂移0，2017项显示变更/3次恢复/源码网络0。真实compiled原版与包装`stats --json/--summary`的stdout/stderr/退出状态一致，--smol和用户preload实际执行，网络尝试0。
+- **未发布**：本轮Mac锁屏，原生窗口/AX不可用，无法可靠建立系统默认opener页面身份及正常/失败回收证据；未启动浏览器、opener或Stats监听服务，不重复完整最终矩阵。解锁后固定最终宿主/SHA，完整重验三面compiled、冷摄取、API/SSE/权限/费用边界、Profile/生命周期/资源、最终macOS/Linux CI及精确SHA冷GitHub安装，全部通过才建tag/Release。Tern可选未验证、Windows不纳入；提交/安装/资源结算以交付现场为准。
+
 ## [18.19.0] - 2026-11-12
 
 - 对齐官方OMP、coding-agent/utils/Stats及锁文件18.19.0（官方tag commit `04cd1a7549a02d62ad1d24826198d52507595683`）；本机官方`update.auto`已把18.18.9→18.19.0装到官方原位置、受管启动器未变，`omp update`报告已最新，SHA-256匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。npm全部1955份coding-agent、130份utils、119份Stats、463份TUI源码与官方tag一致，4个HTML源按package.files排除。
