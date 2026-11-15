@@ -78,7 +78,11 @@ test("official switch role order, picker-ranked models and thinking suffixes pas
   cfgCycleOrder.override(settings, ["smol", "default"]);
   const session = {
     scopedModels: models.slice(0, 2).map(model => ({ model })),
-    modelRegistry: { getError: () => undefined, getAvailable: () => models, getAll: () => models },
+    modelRegistry: {
+      getError: () => undefined, getAvailable: () => models, getAll: () => models,
+      // 18.20.1+ official completion retries failed provider discovery on each keystroke.
+      retryUnavailableDiscovery: () => undefined,
+    },
     effectiveServiceTier: () => undefined,
   };
   const command = buildTuiBuiltinSlashCommands({ ctx: { settings, session } } as unknown as TuiSlashCommandRuntime)

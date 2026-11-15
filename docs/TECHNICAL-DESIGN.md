@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.20.0，未发布；main与源码编号不是发布证据
-- 目标基线：官方OMP18.20.0、外部Bun最低1.4.4；Tern可选未验证
+- 实现候选：18.20.2，未发布；main与源码编号不是发布证据
+- 目标基线：官方OMP18.20.2、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -74,6 +74,8 @@
 
 18.20.0为615定义/458UI：新增`encourageEdits`（默认true，在系统提示词中要求edit并禁止sed/perl/python编辑）与`find.verifyModel`（片段验证优先选择模型，回退judge，文件名/概要排序仍用judge）；复核工具循环豁免说明中的write分发xd://设备名称。其余455项不重译，新增无UI的`find.hitThreshold`不补译；64文件/114边的非纯类型相对注册导入图中仅tools/settings、session/settings与spotlight/types变化。9个动态getter不变；原生设置分组新增Find，仍保留官方英文。
 
+18.20.2为622定义/462UI：新增`auth.unpausedProviders`（数组，默认[]；重新启用官方暂停的提供商，Google Antigravity唯一选项，新`unpausedProvidersNotProject`条件使项目设置不可配置）、`todo.midRunNudges`（off/capped/backoff，默认capped；capped每12次变更提醒、最多两次，backoff按12×2ⁿ放宽至192）、`commit.enabled`（默认true；commit eval prelude与`/commit`）与`bash.allowedEnvVars`（数组；bash.patterns允许规则可接受的前缀环境变量，原文含执行变量风险警示）。其余458项原文哈希不变；registry新增数组`merge`策略与`pathScoped.itemType`，all-settings新增无UI的辅助模型策略域，均由官方执行。9个动态getter不变。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -98,6 +100,8 @@
 18.19.0的30个命令文件中4份变化：`/browser`改调`applyBrowserModeChange`、`/session delete`先新建会话再删除文件、`/mcp`移除Smithery子命令及其帮助、补全注释更新；BUILTIN注册表、27动态回调、`pi-tui/autocomplete.ts`与扩展类型均不变，runner仅移除插件未用的`sessionApprovalKeys`。
 
 18.20.0的30个命令文件逐字节不变，89定义/98标识/9别名/27动态回调与扩展类型合同保持。官方`pi-tui/autocomplete.ts`将技能名中段精确命中降到前缀同级900，避免`/job`压过内置`jobs`；插件不复制排序逻辑。真实官方provider源码消费者回归验证裸/、/job、skill折叠、同步/异步、zh/en/zh与原生插入结果一致；compiled TUI未重验。
+
+18.20.2新增`builtin-commit.ts`的`/commit`（90定义/99标识），其handle生成提交提示词，验收不执行。动态说明回调源码不变；`/switch`模型补全每次按键`void rankModels.retryDiscovery?.()`，调用宿主`modelRegistry.retryUnavailableDiscovery()`，`ModelMentionCompletion`的matched新增可选`pending`。插件按原能力bind透传`trySyncModelMentionCompletion`，返回对象（含pending）不复制；回归夹具补上宿主新方法。新增`session_clear`扩展事件不重放session_start，语言状态与provider包装不受影响。
 
 ## Stats Web 显示适配
 
@@ -138,6 +142,7 @@
 - 18.18.8：Stats包119源码与`stats-cli`、`openPath`均相对18.18.6逐字节不变；utils仅删除未被插件使用的`getConfigAgentDirName`。893键/159模板及browser/mutations/preload不改。
 - 18.19.0：119源码，客户端仅`spotlight/Overhead.tsx`变化：额外开销表新增“Failure causes”列（表头title、按原因代码生成的标签与`N results`悬停）和Stencil未登录提示句；服务端新增`sp_failure_causes`列与按原因聚合，计算归官方。插件新增5键与`^N results$`通用模板，并在`browser.ts`新增`columnHeader`与`failureCauseLabel`：只有该列`.spot-nowrap`的首个文本节点经独立的`statsFailureCauses`映射（6个已知代码标签），`HTTP <状态码>`、未知代码、百分比与`code`内容保持原样，标签title仅在该列放行。mutations/preload不改。
 - 18.20.0：119源码中仅db、spotlight-aggregator、spotlight-ingest、spotlight-measures变化：存储多窗口read事实，按窗口计算隐藏行、后续读取/编辑需求与排名质量。95客户端、query/query-store/live、stats-cli/openPath均逐字节不变；898键、151通用模板＋9属性模板及6个限定原因标签、browser/mutations/preload保持。原计算由官方执行，不因客户端不变继承旧版真实Web/API/SSE与冷摄取通过记录。
+- 18.20.2：120源码，新增`spotlight-worker.ts`：Spotlight构建在官方Worker中只读打开数据库、单事务快照，服务端串行排队并在最后一个dashboard停止时中止；compiled以宿主入口加`__omp_worker_stats_spotlight` argv启动worker。实测compiled Bun1.4.4的worker不加载BUN_OPTIONS preload（仅主进程留下标记），原版/包装`/api/stats/spotlight`24h/7d/all均200且内容相同。客户端Costs/Gain/Providers与range/series改按本地日历日分桶，3条“Per UTC day…”说明改为“Per day…”并更新译文；stats-cli/openPath、query/query-store/live不变，browser/mutations/preload不改。
 
 ## 6. 检查与真实验证
 
@@ -163,7 +168,7 @@
 
 ## 7. 发布边界
 
-当前源码/开发依赖/目标宿主候选为18.20.0，范围`>=18.20.0 <19`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0本轮锁屏，仅通过源码合同、官方provider定向行为与compiled JSON/summary等价，真实三面、默认opener、冷摄取、Profile/生命周期/API/SSE及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
+当前源码/开发依赖/目标宿主候选为18.20.2，范围`>=18.20.2 <19`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0候选未发布并由18.20.2取代。18.20.2本轮仍锁屏，仅通过源码合同、compiled smoke（无头受管Chrome＋测试专属opener）与Spotlight worker API对照；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

@@ -1,6 +1,24 @@
 # Project Context
 
-## 18.20.0 定向适配（2026-11-14，未发布）
+## 18.20.2 定向适配（2026-11-15，未发布）
+
+起点本地main、origin/main均`770a1f9fbadaa4e6565363c5b914a38c6b3a8806`（18.20.0未发布候选，CI 43608717733成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方coding-agent/utils/Stats/TUI最新稳定版均18.20.2，构成新适配并取代18.20.0候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。
+
+**宿主与来源**：用户`update.auto`已把官方18.20.0→18.20.2装到原官方位置`~/.local/bin/omp`（auto-update.log原文“Updated to 18.20.2 at …/.local/bin/omp”），受管启动器仍为原shell脚本；经启动器的`omp update`报告Already up to date，前后均18.20.2，SHA-256 `e2de0974ce581bfcf2044ea795c712fa240fdf8304f7bdb4b3d81b154d2b57fc`与官方darwin-arm64资产digest相同。官方tag commit `7c49c11aa5bbaf3f418406583096168ad5b8c6dc`的完整Git树不截断，npm全部1980份coding-agent、130份utils、120份Stats、463份TUI源码Git blob一致，4个HTML源按package.files排除；安装后开发依赖与npm包src逐字节相同。utils的`getPluginsNodeModules`未变（dirs.ts仅新增Antigravity CLI目录），`update-cli`仅把`managedInstallName`移入新模块，更新目标选择不变。
+
+**Settings**：622定义/462UI/9动态getter。新增`auth.unpausedProviders`、`todo.midRunNudges`、`commit.enabled`、`bash.allowedEnvVars`四项译文（含Antigravity选项与off/capped/backoff三选项），其余458项原文哈希不变、不重译；新增无UI项不补译。settings-ui仅新增`unpausedProvidersNotProject`条件，registry新增数组merge策略/pathScoped.itemType，均由官方执行。compiled TUI中文搜索/原生编辑/en-zh与effort参数隔离未重验。
+
+**Commands**：90定义/99标识/9别名/27动态回调，新增`/commit`译文（其handle生成提交提示词，不在验收中执行）。动态说明回调源码不变；`/switch`补全每次按键调用`modelRegistry.retryUnavailableDiscovery()`，`ModelMentionCompletion`新增可选`pending`，插件bind透传原能力。首轮完整check 70/1：switch回归夹具缺该宿主方法而抛TypeError（夹具过期，非产品回归），补上方法后通过。compiled顶层列表、别名、动态状态与Tab/Enter交互未重验。
+
+**Stats与官方修复**：120源码；新增官方Spotlight worker，构建移出服务线程并串行排队；客户端Costs/Gain/Providers与range/series改按本地日历日，3条“Per UTC day…”说明改“Per day…”，译文同步替换（旧键删除）。stats-cli/openPath、query/query-store/live不变。#17754 CLOSED/COMPLETED，#17758 MERGED（merge `febb2679…`），tag在其后3576提交、behind_by0；当前制品冷摄取实际Web未重验。
+
+**回归**：冻结安装无变化；完整`bun run check`71pass/0fail、2739断言，Settings462/462、Schema0，Commands90/90、99标识、漂移0，2035显示变更/3次恢复/源码网络0。真实官方18.20.2绝对路径`scripts/smoke-cli.ts`（本地link，无头独占Chrome，测试专属opener转交URL）：成功/人为断言失败预检、5页建/5关、两服务各单监听器、compiled Bun1.4.4合并`--smol`与用户preload、doctor3/1/0、2个opener退出0、19命令组与bridge关闭、root与私有preload目录删除，cleanupErrors0；16目录GET/2身份GET/1无凭据HEAD在dispatch前拦截，推理0。另用独立驱动（只记录URL的测试opener，未开页、不作opener证据；外连护栏preload）对照原版与源码包装入口：`/api/stats/spotlight` 24h/7d/all均200且内容相同（空数据1380字节），各单监听器，包装HTML注入，worker进程未加载BUN_OPTIONS preload（3条标记均主线程），外连尝试0，两服务SIGINT退出130、端口与进程组关闭。
+
+**环境未验与恢复条件**：起止两次`computer.capabilities()`均screenLocked:true、secureInputApp loginwindow；不能安全建立真实系统默认opener页面归属与正常/失败回收基线，前提未变，不重复完整最终矩阵（TUI三面交互、12页Web/冷摄取/API/SSE/权限/费用边界、Profile/生命周期、精确SHA冷GitHub安装）。不是插件回归或官方缺陷。解锁后固定18.20.2宿主与最终SHA完整重验，通过全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+
+**本轮资源**：run `omp-maintenance-20261115-bf87e044`树外账本`/tmp/<run>.resources.json`。smoke 5页建/关、独占Chrome退出、2服务/2opener/bridge/19命令组闭合；Spotlight驱动2服务闭合；未操作用户真实浏览器页面或既有服务。驱动失败：首次Spotlight驱动因运行目录未建ENOENT（未启动任何进程）；维护中误执行一次`git stash -- package.json bun.lock`，立即`stash pop`恢复且stash列表为空，无内容丢失。
+
+## 18.20.0 定向适配（2026-11-14，未发布，由18.20.2取代）
 
 起点本地main、origin/main与远端main均`9c0d0eb6cea213687e910449f99b222f55a636be`，对应正式[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)；其精确提交[CI 43250200358](https://github.com/rockythink/omp-settings-zh/actions/runs/43250200358)的macOS/Linux成功，相对该tag原无待发布候选。官方及coding-agent/utils/Stats最新稳定版均18.20.0，形成新适配候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；既有42项未跟踪内容不动、不提交。
 
@@ -504,8 +522,8 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前Settings为438项UI元数据、582定义；18.16.0新增BTW注入、预测候选、Hindsight全局范围三项，已有435项不重译，9动态getter。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
-- 当前Commands为88定义、97名称/别名的顶层说明、实时状态与技能数量；9别名、27动态回调保持。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
+- 当前Settings为462项UI元数据、622定义、9动态getter；18.20.2新增解除暂停的提供商、运行中待办提醒、选择性提交、Bash允许的环境变量四项，其余不重译。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
+- 当前Commands为90定义、99名称/别名的顶层说明、实时状态与技能数量；9别名、27动态回调保持。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
 - 设置语言只保留在当前进程，下次启动默认中文；设置汉化不写配置、不读当前设置值或凭据、不联网。

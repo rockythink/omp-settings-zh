@@ -1,10 +1,10 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.20.0未发布候选；完整验收未完成，Tern可选未验证
-- 基线版本：官方OMP18.20.0；外部Bun最低1.4.4
-- 文档日期：2026-11-14
+- 状态：18.20.2未发布候选；完整验收未完成，Tern可选未验证
+- 基线版本：官方OMP18.20.2；外部Bun最低1.4.4
+- 文档日期：2026-11-15
 
-相对18.19.0：Settings456→458UI，新增`encourageEdits`与`find.verifyModel`两项译文，复核循环豁免工具的xd://设备名说明，其余455项不重译。Commands89定义/98标识不变；官方技能名中段匹配排序变化由原provider处理。Stats95份客户端不变，4份服务端文件改进多窗口read的Spotlight统计；词典与DOM适配不变。本轮锁屏，仅源码与定向compiled CLI回归，不把历史完整验收继承为18.20.0通过。
+相对18.19.0：Settings456→462UI，18.20.0新增`encourageEdits`、`find.verifyModel`，18.20.2新增`auth.unpausedProviders`、`todo.midRunNudges`、`commit.enabled`、`bash.allowedEnvVars`，其余不重译。Commands90定义/99标识，新增`/commit`说明译文；动态回调不变。Stats客户端Costs/Gain改按本地日历日，3条“Per UTC day”说明随之更新；Spotlight构建改由官方worker执行，词典与DOM适配不变。18.20.0候选未发布；本轮仍锁屏，仅源码合同、compiled smoke与Spotlight API对照，不把历史完整验收继承为18.20.2通过。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 

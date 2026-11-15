@@ -2,7 +2,16 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
-## [18.20.0] - 2026-11-14（未发布候选）
+## [18.20.2] - 2026-11-15（未发布候选）
+
+- 对齐官方OMP、coding-agent/utils/Stats及锁文件18.20.2，固定官方tag commit `7c49c11aa5bbaf3f418406583096168ad5b8c6dc`；npm全部1980份coding-agent、130份utils、120份Stats、463份TUI源码Git blob匹配，4个HTML源按package.files排除。官方`update.auto`已把18.20.0→18.20.2装到原官方位置、受管启动器未变；`omp update`报告已最新，SHA-256 `e2de0974…`匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。
+- Settings622定义/462UI：新增`auth.unpausedProviders`（解除暂停的提供商，含Google Antigravity选项）、`todo.midRunNudges`（运行中待办提醒：关闭/有上限/退避）、`commit.enabled`（选择性提交）、`bash.allowedEnvVars`（Bash允许的环境变量）四项译文，其余458项原文哈希不变、不重译；无UI新增项不补译。新`unpausedProvidersNotProject`条件、数组合并策略与原生保存均由官方执行，9动态getter与共享effort原文隔离保持。
+- Commands90定义/99标识/9别名/27动态回调：新增`/commit`（仅提交此智能体及其子智能体所做的更改）译文；动态说明回调源码未变。官方`/switch`模型补全每次按键调用`retryUnavailableDiscovery`，`ModelMentionCompletion`新增可选`pending`，插件绑定透传原能力；回归测试夹具补上该宿主方法。
+- Stats120源码：Costs/Gain按本地日历日分桶，`Per UTC day…`三条说明改为`Per day…`，相应译文更新为“按日汇总…”；新增官方Spotlight worker，构建移出服务线程。stats-cli/openPath、query/query-store/live不变；898键、151通用模板＋9属性模板与browser/mutations/preload保持。
+- 冻结安装与完整check：71测试/2739断言，Settings462/462、Schema0，Commands90/90与99标识、漂移0，2035项显示变更/3次恢复/源码网络0。真实官方18.20.2 compiled smoke（本地link、无头受管Chrome、测试专属opener）：成功/人为失败预检、5页建/关、两服务单监听器、合并`--smol`与用户preload、doctor3/1/0、卸载回收，cleanupErrors0。原版与包装compiled `/api/stats/spotlight`（24h/7d/all）均200且内容相同，单监听器、包装HTML注入，worker未加载BUN_OPTIONS preload，外连尝试0。
+- **未发布**：Mac仍锁屏，无法建立真实系统默认opener页面身份与正常/失败回收证据；compiled TUI交互、完整网页/冷摄取/API/SSE边界、Profile/生命周期及精确SHA冷GitHub安装未重验。解锁后固定最终宿主/SHA完整重验，全部通过才建tag/Release。Tern可选未验证，Windows不纳入。
+
+## [18.20.0] - 2026-11-14（历史未发布候选，由18.20.2取代）
 
 - 对齐官方OMP、coding-agent/utils/Stats及锁文件18.20.0，固定官方commit `c308970263ae13744ea15ab67302e3dac840e266`；npm全部1962份coding-agent、130份utils、119份Stats、463份TUI源码Git blob匹配，4个HTML源按package.files排除。实际`omp update`前后均18.20.0且报告已最新，本机SHA-256匹配官方darwin-arm64资产；内嵌入口与最低外部Bun1.4.4。
 - Settings615定义/458UI：新增`encourageEdits`（要求使用edit编辑）与`find.verifyModel`（Find验证模型）两项译文，复核工具循环豁免的write分发xd://设备名语义，其余455项不重译。无UI的`find.hitThreshold`不补译；保留原默认值、选择器、项目权限、保存、9动态getter与共享effort原文隔离。

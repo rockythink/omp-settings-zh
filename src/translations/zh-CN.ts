@@ -2,8 +2,48 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.20.0",
+  "sourceOmpVersion": "18.20.2",
   "settings": {
+    "auth.unpausedProviders": {
+      "sourceHash": "3e2a78bb276f04a95d8df8a221210a61e301310124dfc83955ebd06b5c437de8",
+      "label": "解除暂停的提供商",
+      "description": "重新启用已被官方暂停的提供商：登录、令牌刷新和已保存的凭据将恢复可用。每项暂停都会说明你需自行承担的账户风险。项目设置不能配置此项",
+      "options": {
+        "google-antigravity": {
+          "label": "Google Antigravity（Gemini、Claude、GPT-OSS）",
+          "description": "Google Antigravity 已暂停：Google 条款不允许第三方登录，且 Google 已封禁使用过该方式的账户（见 #18341）。请改用 GEMINI_API_KEY（AI Studio）或 google-vertex。"
+        }
+      }
+    },
+    "todo.midRunNudges": {
+      "sourceHash": "a8d5ea1e2d36fdb3d8ca88b54f79c64e3a42270d08d417abcb1a046e05af5bca",
+      "label": "运行中待办提醒",
+      "description": "长轮次持续进行修改时，提醒其更新待办列表的频率",
+      "options": {
+        "off": {
+          "label": "关闭",
+          "description": "运行中从不提醒"
+        },
+        "capped": {
+          "label": "有上限",
+          "description": "每 12 次编辑或命令后提醒；在待办列表变化或你发送消息之前最多提醒两次"
+        },
+        "backoff": {
+          "label": "退避",
+          "description": "持续提醒，间隔逐次加倍：依次在 12、24、48、96 次编辑或命令后提醒，之后每 192 次提醒一次"
+        }
+      }
+    },
+    "commit.enabled": {
+      "sourceHash": "05ec2e117cb5cd45e1f66c575581b50ec7a18263e614935c30bea63ae7491f6c",
+      "label": "选择性提交",
+      "description": "启用 commit eval prelude 与 /commit：只提交此 Agent 及其子代理写入的行"
+    },
+    "bash.allowedEnvVars": {
+      "sourceHash": "3865996a4e6133a88f94208f989a4535634f612a4e0b226cf325aa960da0e71b",
+      "label": "Bash 允许的环境变量",
+      "description": "匹配 bash.patterns 允许规则时，可作为命令开头 KEY=VALUE 前缀的确切环境变量名（不支持通配符）。任何取值都会被接受，因此只应列出无害的构建／测试变量；改变执行行为的变量（PATH、LD_PRELOAD、BASH_ENV、*_RUNNER、*_WRAPPER）可导致执行任意命令。"
+    },
     "encourageEdits": {
       "sourceHash": "97c0218942526b6f2de735d7fbe6f0279d21a29b0e08c9a06c68af6b0bf763cb",
       "label": "要求使用 edit 编辑",

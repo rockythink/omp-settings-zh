@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.20.0 (c308970263ae13744ea15ab67302e3dac840e266). */
+/* Display-only translations; source-review baseline OMP 18.20.2 (7c49c11aa5bbaf3f418406583096168ad5b8c6dc). */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -274,6 +274,11 @@ export const slashCommandTranslations = [
     "name": "mcp",
     "en": "Manage MCP servers (add, list, remove, test)",
     "zh": "管理 MCP 服务器（添加、列出、移除、测试）"
+  },
+  {
+    "name": "commit",
+    "en": "Commit only the changes this agent and its subagents made",
+    "zh": "仅提交此智能体及其子智能体所做的更改"
   },
   {
     "name": "ssh",
