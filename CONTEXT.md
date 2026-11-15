@@ -16,7 +16,9 @@
 
 **环境未验与恢复条件**：起止两次`computer.capabilities()`均screenLocked:true、secureInputApp loginwindow；不能安全建立真实系统默认opener页面归属与正常/失败回收基线，前提未变，不重复完整最终矩阵（TUI三面交互、12页Web/冷摄取/API/SSE/权限/费用边界、Profile/生命周期、精确SHA冷GitHub安装）。不是插件回归或官方缺陷。解锁后固定18.20.2宿主与最终SHA完整重验，通过全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
 
-**本轮资源**：run `omp-maintenance-20261115-bf87e044`树外账本`/tmp/<run>.resources.json`。smoke 5页建/关、独占Chrome退出、2服务/2opener/bridge/19命令组闭合；Spotlight驱动2服务闭合；未操作用户真实浏览器页面或既有服务。驱动失败：首次Spotlight驱动因运行目录未建ENOENT（未启动任何进程）；维护中误执行一次`git stash -- package.json bun.lock`，立即`stash pop`恢复且stash列表为空，无内容丢失。
+**本轮资源**：run `omp-maintenance-20261115-bf87e044`树外账本`/tmp/<run>.resources.json`。smoke两次（第二次验证驱动诊断改动）各5页建/关、独占Chrome退出、2服务/2opener/bridge/19命令组闭合；Spotlight驱动2服务闭合；未操作用户真实浏览器页面或既有服务。驱动失败：首次Spotlight驱动因运行目录未建ENOENT（未启动任何进程）；Spotlight子账本误放在运行树内随树删除，结果已转录到主账本；维护中误执行一次`git stash -- package.json bun.lock`，立即`stash pop`恢复且stash列表为空，无内容丢失。
+
+**CI**：适配提交`e9eeca6`的[CI 43728773527](https://github.com/rockythink/omp-settings-zh/actions/runs/43728773527)两次尝试均Linux成功、macOS失败：compiled smoke第一个Stats阶段官方自动opener把原URL交给bridge后退出1，独占headless页停在about:blank，guard未登记，驱动按设计失败关闭（cleanupErrors4；runner为一次性VM）。旧驱动不输出bridge失败原因，原因未取得；不是已证实的产品回归，也不算通过。随后只给`scripts/smoke-cli.ts`加入bridge失败原因与页面错误输出（产品代码不变），`daeaafe`的[CI 43729248898](https://github.com/rockythink/omp-settings-zh/actions/runs/43729248898) macOS/Linux均成功、macOS smoke通过。按2/3失败记为macOS runner上间歇性驱动/环境失败，后续出现时以新诊断定位；最终发布前须在最终SHA重新取得CI成功。
 
 ## 18.20.0 定向适配（2026-11-14，未发布，由18.20.2取代）
 
