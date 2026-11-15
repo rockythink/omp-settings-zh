@@ -257,11 +257,28 @@ try {
       if (openers.length !== 1 || openers[0]!.cmd[1]?.replace(/\/$/, "") !== expectedUrl) throw new Error("Official opener identity or original URL was not captured");
       if (!owned.temporaryPaths.includes(resource.preload)) owned.temporaryPaths.push(resource.preload);
       await ledger(); // Record private ownership before forwarding the official automatic URL.
-      await page.goto(url, { waitUntil: "domcontentloaded" });
-      await page.waitForSelector("#omp-stats-language");
+      const pageErrors: string[] = [];
+      const onPageError = (error: unknown) => pageErrors.push("pageerror: " + (error instanceof Error ? error.message : String(error)));
+      const onConsole = (message: { type(): string; text(): string }) => { if (message.type() === "error") pageErrors.push("console: " + message.text()); };
+      page.on("pageerror", onPageError);
+      page.on("console", onConsole);
+      try {
+        await page.goto(url, { waitUntil: "domcontentloaded" });
+        await page.waitForSelector("#omp-stats-language");
+      } catch (error) {
+        // The opener exits 1 without output; keep the actual reason and page state in the run output.
+        const state = await page.evaluate(() => ({ url: location.href, scripts: [...document.scripts].map(script => script.src), body: document.body?.innerText.slice(0, 200) })).catch(() => undefined);
+        throw new Error(String(error) + " " + JSON.stringify({ state, pageErrors }));
+      } finally {
+        page.off("pageerror", onPageError);
+        page.off("console", onConsole);
+      }
       pageResources.get(page)!.url = url; await ledger(); opened = true;
       return new Response("page-observed");
-    } catch (error) { return new Response(String(error), { status: 500 }); }
+    } catch (error) {
+      console.error("Opener bridge failed:", String(error));
+      return new Response(String(error), { status: 500 });
+    }
   } });
   owned.bridge = { pid: process.pid, port: bridge.port!, closed: false }; await ledger();
   const opener = "#!" + process.execPath + "\nconst r=await fetch(" + JSON.stringify("http://127.0.0.1:" + bridge.port) + ",{method:'POST',body:Bun.argv[2],signal:AbortSignal.timeout(60000)});if(!r.ok||await r.text()!=='page-observed')process.exit(1);\n";
