@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.20.2",
+  "sourceOmpVersion": "18.20.3",
   "settings": {
     "auth.unpausedProviders": {
       "sourceHash": "3e2a78bb276f04a95d8df8a221210a61e301310124dfc83955ebd06b5c437de8",
@@ -2671,6 +2671,25 @@ export const zhCN = {
       "label": "Mnemopi 自动召回",
       "description": "在每次会话的第一轮中召回本地记忆"
     },
+    "mnemopi.recallRelevance": {
+      "sourceHash": "d178c8e0d6fe3912888155f0a9da4d14dbacaf679b3be39b8ab4b0b9cd9fb2ac",
+      "label": "Mnemopi 召回相关性",
+      "description": "在注入每条自动召回的记忆前，询问 judge 模型角色该记忆是否与当前任务相关",
+      "options": {
+        "auto": {
+          "label": "自动",
+          "description": "仅在有原生 judge 后端时过滤；否则注入全部召回记忆"
+        },
+        "on": {
+          "label": "开启",
+          "description": "使用 judge 角色解析到的任意模型过滤；设备端 judge 可能只来得及判断部分记忆"
+        },
+        "off": {
+          "label": "关闭",
+          "description": "从不过滤；注入全部召回记忆"
+        }
+      }
+    },
     "mnemopi.autoRetain": {
       "sourceHash": "9a6a8a65929c72005582bffbb401cb1e3ab3b16db71a34f415e4753d88abe9bb",
       "label": "Mnemopi 自动保留",
@@ -2710,6 +2729,16 @@ export const zhCN = {
       "sourceHash": "537b5f568cfcc08b610269aa61de82414f3df1f7383049b0b8455aab0e0b431c",
       "label": "Mnemopi 嵌入 API 密钥",
       "description": "传递给 Mnemopi 的可选嵌入 API 密钥"
+    },
+    "mnemopi.embeddingQueryPrefix": {
+      "sourceHash": "85b0d67f0f234fe3ce19e71ba42005fb254684a787d3c818a8c32f183e760df7",
+      "label": "Mnemopi 嵌入查询前缀",
+      "description": "生成嵌入前添加到召回查询开头的文本，适用于指令微调嵌入模型（Qwen3-Embedding、E5）；已存储的记忆按原样嵌入"
+    },
+    "mnemopi.embeddingInputType": {
+      "sourceHash": "e638de7d08c5a4bed40b57f7d28f0d37e36162d83ba08fb590def30f29a7c99e",
+      "label": "Mnemopi 嵌入输入类型",
+      "description": "随嵌入 API 请求发送 input_type（召回时为 query，存储记忆时为 passage）；NVIDIA NIM 非对称嵌入模型要求此参数"
     },
     "mnemopi.llmMode": {
       "sourceHash": "41d2c6637e4fd5922fcfc42df2d7431d73ac742305373424946bb2ce31290268",

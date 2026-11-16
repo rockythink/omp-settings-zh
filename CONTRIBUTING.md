@@ -4,9 +4,9 @@
 
 ## 当前版本
 
-`18.20.2` 是面向官方OMP18.20.2的未发布候选，正式Release仍为18.19.0。462项设置新增`auth.unpausedProviders`、`todo.midRunNudges`、`commit.enabled`、`bash.allowedEnvVars`四项译文，其余458项不重译；共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
+`18.20.3` 是面向官方OMP18.20.3的未发布候选，正式Release仍为18.19.0。465项设置新增`mnemopi.recallRelevance`、`mnemopi.embeddingQueryPrefix`、`mnemopi.embeddingInputType`三项译文，其余462项不重译；共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
 
-当前覆盖90个内置命令、99名称/别名、9别名和27动态回调，相对18.20.0新增`/commit`说明；模型/参数/文件/第三方说明不译。Stats客户端3条按日说明随官方改为本地日历日并同步更新，Spotlight构建改由官方worker执行，不由插件复制；898键及160模板保持。本轮锁屏，完整三面compiled/Web验收未重验，不能发布。Tern可选未验证、Windows不纳入。
+当前覆盖89个内置命令、98名称/别名、9别名和27动态回调，官方18.20.3删除`/seance`，同步移除其译文；模型/参数/文件/第三方说明不译。Stats 120份源码相对18.20.2逐字节不变；898键及160模板保持。本轮锁屏，完整三面compiled/Web验收未重验，不能发布。Tern可选未验证、Windows不纳入。
 
 - [产品需求](docs/PRD.md)
 - [技术设计](docs/TECHNICAL-DESIGN.md)
@@ -39,7 +39,7 @@
 
 - macOS 或 Linux；
 - Bun 1.4.4 或更新版本；外部启动器与官方compiled内嵌Bun须分别核对；
-- 官方 OMP18.20.2；候选仅完成源码合同、compiled smoke与定向API回归，历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
+- 官方 OMP18.20.3；候选仅完成源码合同与compiled smoke，历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
 - Git。
 
 项目保持以下脚本契约：

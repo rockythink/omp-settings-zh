@@ -1,5 +1,23 @@
 # Project Context
 
+## 18.20.3 定向适配（2026-11-16，未发布）
+
+起点本地main、origin/main均`568c964254436509238160be018ff64c85844176`（18.20.2未发布候选；`daeaafe`的CI 43729248898与`568c964`的CI 43729428636均macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方coding-agent/utils/Stats/TUI最新稳定版均18.20.3，构成新适配并取代18.20.2候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。
+
+**宿主与来源**：用户`update.auto`已把官方18.20.2→18.20.3装到原官方位置`~/.local/bin/omp`（auto-update.log“Updated to 18.20.3 at …/.local/bin/omp”），受管启动器仍为原shell脚本；`omp update`报告Already up to date，前后均18.20.3，SHA-256 `979884efdb84d48ab0401279d3669e71c003922e3e0b50689b8901a4b356e85a`与官方darwin-arm64资产digest相同。官方tag commit `90935366da0c368a437da4343ae748b03a2ffe97`稀疏检出与npm源码逐字节比较：coding-agent 1977份一致（仅4个导出模板源按package.files排除）、utils130/Stats120/TUI463份全同。utils相对18.20.2仅turndown变化，`getPluginsNodeModules`不变。本机插件来源`github:rockythink/omp-settings-zh`（跟随main，现为18.20.2），doctor 5/0/0，pi-xcode-mcp0.1.0不动。
+
+**Settings**：625定义/465UI。新增`mnemopi.recallRelevance`（auto/on/off三选项）、`mnemopi.embeddingQueryPrefix`、`mnemopi.embeddingInputType`三项译文，其余462项原文哈希不变、不重译；三项受`mnemopiActive`条件控制。compiled TUI中文搜索/原生编辑/en-zh与effort参数隔离未重验。
+
+**Commands**：89定义/98标识/9别名/27动态回调。官方删除`seance.ts`/`/seance`，commands:check首轮报staleCommands`seance`，移除其译文后通过。builtin-collaboration（`/copy`改读viewSession）、builtin-marketplace（await选择器、errorMessage）为执行侧变化；动态说明回调、`pi-tui/autocomplete.ts`、扩展types不变，wrapper仅审批对abort响应。compiled顶层列表、别名、动态状态与Tab/Enter交互未重验。
+
+**Stats**：omp-stats 18.20.3相对18.20.2仅package.json版本/依赖号变化，120源码逐字节相同；译文、browser/mutations/preload不改。#17754 CLOSED/COMPLETED，#17758 MERGED（`febb2679…`），v18.20.3在其后3695提交、behind_by0；当前制品冷摄取实际Web未重验。
+
+**回归**：完整`bun run check`71pass/0fail、2729断言，Settings465/465、Schema0，Commands89/89、98标识、漂移0，2048显示变更/3次恢复/源码网络0；冻结安装无变化。真实官方18.20.3绝对路径`scripts/smoke-cli.ts`（本地link，无头独占Chrome，测试专属opener转交URL）：成功/人为断言失败预检、5页建/5关、两服务（51508/51514）各单监听器、compiled Bun1.4.4合并`--smol`与用户preload、doctor3/1/0、2个opener退出0、19命令组与bridge关闭、root与私有preload目录删除，cleanupErrors0；事后核对浏览器/服务PID ESRCH、端口无监听。16目录GET/2身份GET/1无凭据HEAD在dispatch前拦截，推理0。
+
+**环境未验与恢复条件**：起始`computer.capabilities()`与ioreg均screenLocked:true、secureInputApp loginwindow；前提未变，不重复完整最终矩阵（TUI三面交互、12页Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期、精确SHA冷GitHub安装）。不是插件回归或官方缺陷。解锁后固定18.20.3（或届时最新）宿主与最终SHA完整重验，通过全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+
+**本轮资源**：唯一开页/服务阶段为smoke，run树`omp-native-posix-emgzv5`、树外账本`<TMPDIR>/omp-native-posix-emgzv5.resources.json`；页面5/5、独占Chrome退出、2服务/2opener/bridge/19命令组闭合；未操作用户真实浏览器页面或既有服务。上游比较用的npm包与官方源码稀疏检出位于会话scratchpad，不在仓库。
+
 ## 18.20.2 定向适配（2026-11-15，未发布）
 
 起点本地main、origin/main均`770a1f9fbadaa4e6565363c5b914a38c6b3a8806`（18.20.0未发布候选，CI 43608717733成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方coding-agent/utils/Stats/TUI最新稳定版均18.20.2，构成新适配并取代18.20.0候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。
