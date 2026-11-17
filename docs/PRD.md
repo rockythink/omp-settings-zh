@@ -1,10 +1,10 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.20.3未发布候选；完整验收未完成，Tern可选未验证
-- 基线版本：官方OMP18.20.3；外部Bun最低1.4.4
-- 文档日期：2026-11-16
+- 状态：18.22.0未发布候选；完整验收未完成，Tern可选未验证
+- 基线版本：官方OMP18.22.0；外部Bun最低1.4.4
+- 文档日期：2026-11-17
 
-相对18.19.0：Settings456→465UI，18.20.0新增`encourageEdits`、`find.verifyModel`，18.20.2新增`auth.unpausedProviders`、`todo.midRunNudges`、`commit.enabled`、`bash.allowedEnvVars`，18.20.3新增`mnemopi.recallRelevance`、`mnemopi.embeddingQueryPrefix`、`mnemopi.embeddingInputType`，其余不重译。Commands89定义/98标识：18.20.2新增`/commit`说明译文，18.20.3官方删除`/seance`并移除译文；动态回调不变。Stats客户端Costs/Gain改按本地日历日，3条“Per UTC day”说明随之更新；Spotlight构建改由官方worker执行；18.20.3 Stats源码不变，词典与DOM适配不变。18.20.0、18.20.2候选未发布；本轮仍锁屏，仅源码合同与compiled smoke，不把历史完整验收继承为18.20.3通过。
+相对18.19.0：Settings456→468UI，18.20.0新增`encourageEdits`、`find.verifyModel`，18.20.2新增`auth.unpausedProviders`、`todo.midRunNudges`、`commit.enabled`、`bash.allowedEnvVars`，18.20.3新增`mnemopi.recallRelevance`、`mnemopi.embeddingQueryPrefix`、`mnemopi.embeddingInputType`，18.22.0新增`tui.renderEmbeds`、`disassembler.backend`/`maxOpen`/`idleCloseSec`、`ghidra.installDir`/`python`并随官方删除`ida.enabled`/`maxOpen`/`idleCloseSec`，TTS/语音五项改为Phonon音色与0.8–1.3语速、`worktree.onExit`新增`force`，其余不重译。Commands89定义/98标识：18.20.2新增`/commit`说明译文，18.20.3官方删除`/seance`并移除译文，18.22.0不变；动态回调不变。Stats客户端Costs/Gain改按本地日历日，3条“Per UTC day”说明随之更新；Spotlight构建改由官方worker执行；18.20.3与18.22.0 Stats源码不变，词典与DOM适配不变。18.20.0、18.20.2、18.20.3候选未发布；本轮仍锁屏，仅源码合同与compiled smoke，不把历史完整验收继承为18.22.0通过。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 

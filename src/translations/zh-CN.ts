@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.20.3",
+  "sourceOmpVersion": "18.22.0",
   "settings": {
     "auth.unpausedProviders": {
       "sourceHash": "3e2a78bb276f04a95d8df8a221210a61e301310124dfc83955ebd06b5c437de8",
@@ -142,6 +142,11 @@ export const zhCN = {
       "sourceHash": "920a4585d30ea2a8fd3ca2c22f7804d9e35c1ce7100917de1b36e2432084cd82",
       "label": "渲染 SVG 图示",
       "description": "引导 Agent 使用 SVG 绘制示意图和图表，在支持图形显示的终端中以内嵌图片呈现"
+    },
+    "tui.renderEmbeds": {
+      "sourceHash": "de7b34145200b34750ee90ac1ea747d0e629d8ec1c909358b921c65aa8cd078e",
+      "label": "渲染内嵌图片与网页",
+      "description": "引导 Agent 用 <img> 展示图片、用 <iframe> 展示网页，并在支持图形显示的终端中加载它们（包括远程地址）后内嵌绘制"
     },
     "tui.autoGraph": {
       "sourceHash": "622829046e1f74700ab00e5524b58f6e32d8f0eb05b7ceee19ddfb7dfa240ae6",
@@ -3320,9 +3325,9 @@ export const zhCN = {
       "description": "为共享的长期运行项目进程启用具名 bash 服务和 `proc://` 监管"
     },
     "speechgen.enabled": {
-      "sourceHash": "6a2cb3bbb0ac88e5ad4e09b5edb942c301e6751119f23f74958db1270a145c6b",
+      "sourceHash": "8aa156fc433ab04e5fac49696adf1119752b47bc030bc590b5279c2c93d6971f",
       "label": "语音生成",
-      "description": "启用 TTS 工具，以通过设备端的 Kokoro 或 xAI Grok Voice 合成语音文件"
+      "description": "启用 TTS 工具，以通过设备端的 Phonon 或 xAI Grok Voice 合成语音文件"
     },
     "generate_image.enabled": {
       "sourceHash": "e444f73d66163d1246d092eca529d40bc88eefc2a58f1b112c5b895060bef994",
@@ -4017,45 +4022,45 @@ export const zhCN = {
       }
     },
     "tts.localVoice": {
-      "sourceHash": "f71bd9b3dde8109334bd4516eef7fd3e18b66a8ac1f4a27be82f9fb3189f2690",
+      "sourceHash": "f19701971e4bbd97865eacb626b7f26139505e557dc4b5a143e827afd674f670",
       "label": "本地 TTS 音色",
-      "description": "本地 TTS 后端使用的 Kokoro 音色（美式/英式、女声/男声）",
+      "description": "本地 TTS 后端使用的 Phonon 音色（美式/英式、女声/男声）",
       "options": {
-        "af_heart": {
-          "label": "Heart（美式女声）"
+        "harper": {
+          "label": "Harper（美式女声）"
         },
-        "af_bella": {
-          "label": "Bella（美式女声）"
+        "hadley": {
+          "label": "Hadley（美式女声）"
         },
-        "af_nicole": {
-          "label": "Nicole（美式女声）"
+        "delia": {
+          "label": "Delia（美式女声）"
         },
-        "af_aoede": {
-          "label": "Aoede（美式女声）"
+        "everly": {
+          "label": "Everly（美式女声）"
         },
-        "af_kore": {
-          "label": "Kore（美式女声）"
+        "easton": {
+          "label": "Easton（美式男声）"
         },
-        "af_sarah": {
-          "label": "Sarah（美式女声）"
+        "preston": {
+          "label": "Preston（美式男声）"
         },
-        "am_michael": {
-          "label": "Michael（美式男声）"
+        "miles": {
+          "label": "Miles（美式男声）"
         },
-        "am_fenrir": {
-          "label": "Fenrir（美式男声）"
+        "trevor": {
+          "label": "Trevor（美式男声）"
         },
-        "am_puck": {
-          "label": "Puck（美式男声）"
+        "maeve": {
+          "label": "Maeve（英式女声）"
         },
-        "bf_emma": {
-          "label": "Emma（英式女声）"
+        "bryony": {
+          "label": "Bryony（英式女声）"
         },
-        "bm_george": {
-          "label": "George（英式男声）"
+        "edwin": {
+          "label": "Edwin（英式男声）"
         },
-        "bm_fable": {
-          "label": "Fable（英式男声）"
+        "hugh": {
+          "label": "Hugh（英式男声）"
         }
       }
     },
@@ -4086,45 +4091,45 @@ export const zhCN = {
       "description": "合成前使用 tiny/smol 模型将助手输出改写为自然口语（描述代码，去除链接和 Markdown）；失败时回退到机械清理"
     },
     "speech.voice": {
-      "sourceHash": "a0bb367f6fdb86aa58b87b7b07e506d8642c97496eaa81258942688f16d5cbd2",
+      "sourceHash": "56288a41b526aa7e729c790d59a6969f310c9021b62a321788b723474e47d398",
       "label": "语音朗读音色",
-      "description": "朗读助手输出时使用的 Kokoro 音色",
+      "description": "朗读助手输出时使用的 Phonon 音色",
       "options": {
-        "af_heart": {
-          "label": "Heart（美式女声）"
+        "harper": {
+          "label": "Harper（美式女声）"
         },
-        "af_bella": {
-          "label": "Bella（美式女声）"
+        "hadley": {
+          "label": "Hadley（美式女声）"
         },
-        "af_nicole": {
-          "label": "Nicole（美式女声）"
+        "delia": {
+          "label": "Delia（美式女声）"
         },
-        "af_aoede": {
-          "label": "Aoede（美式女声）"
+        "everly": {
+          "label": "Everly（美式女声）"
         },
-        "af_kore": {
-          "label": "Kore（美式女声）"
+        "easton": {
+          "label": "Easton（美式男声）"
         },
-        "af_sarah": {
-          "label": "Sarah（美式女声）"
+        "preston": {
+          "label": "Preston（美式男声）"
         },
-        "am_michael": {
-          "label": "Michael（美式男声）"
+        "miles": {
+          "label": "Miles（美式男声）"
         },
-        "am_fenrir": {
-          "label": "Fenrir（美式男声）"
+        "trevor": {
+          "label": "Trevor（美式男声）"
         },
-        "am_puck": {
-          "label": "Puck（美式男声）"
+        "maeve": {
+          "label": "Maeve（英式女声）"
         },
-        "bf_emma": {
-          "label": "Emma（英式女声）"
+        "bryony": {
+          "label": "Bryony（英式女声）"
         },
-        "bm_george": {
-          "label": "George（英式男声）"
+        "edwin": {
+          "label": "Edwin（英式男声）"
         },
-        "bm_fable": {
-          "label": "Fable（英式男声）"
+        "hugh": {
+          "label": "Hugh（英式男声）"
         }
       }
     },
@@ -5108,11 +5113,6 @@ export const zhCN = {
         }
       }
     },
-    "ida.enabled": {
-      "sourceHash": "70576a37ddc515257ce4f0609e32d041823236d0ca47ac51e0e044d7efaba4a3",
-      "label": "IDA Pro",
-      "description": "在 IDA Pro（idalib）中打开通过 `read` 读取的可执行文件，并启用 `ida` 工具；未找到 IDA 安装时不生效"
-    },
     "ida.python": {
       "sourceHash": "67c1e283db95d8cf4e481715ca889b359cf70d687dae4424069b70f3d9977950",
       "label": "IDA Python",
@@ -5123,10 +5123,33 @@ export const zhCN = {
       "label": "IDA 安装目录",
       "description": "包含 `libidalib` 的目录，会导出为 `IDADIR`；留空时自动检测（`$IDADIR`、`ida-config.json`、标准安装路径）"
     },
-    "ida.maxOpen": {
-      "sourceHash": "42a8cc47af6a062c4622f0d32f03d86cdc8c434642fd439868d6581fb24b4c3d",
-      "label": "IDA 最大打开数据库数",
-      "description": "每个项目同时打开的 IDA 数据库数量上限（`omp ps` 中的 `omp.ida.*` 守护进程）；再打开一个时，会保存并关闭空闲数据库中最久未使用的那个",
+    "disassembler.backend": {
+      "sourceHash": "0ec47bf44d307a1c73fd46fc472f291ee99d110ceb03b5b376f0dd4c0548eaa0",
+      "label": "反汇编器",
+      "description": "`read` 的分析选择器与 `eval` 的 `dsm` 命名空间所用后端；直接读取可执行文件只显示元数据。自动模式在已安装 IDA Pro 时使用它，否则使用 Ghidra（首次分析时下载）",
+      "options": {
+        "auto": {
+          "label": "自动",
+          "description": "找到带 idalib 的 IDA Pro 安装时使用 IDA Pro，否则使用 Ghidra"
+        },
+        "ghidra": {
+          "label": "Ghidra",
+          "description": "通过 PyGhidra 使用 Ghidra；未安装时，首次分析会自动准备 Ghidra 12.2、JDK 25 和 PyGhidra"
+        },
+        "ida": {
+          "label": "IDA Pro",
+          "description": "通过 idalib 使用 IDA Pro；未找到安装时禁用分析"
+        },
+        "none": {
+          "label": "无",
+          "description": "仅显示可执行文件元数据；禁用分析"
+        }
+      }
+    },
+    "disassembler.maxOpen": {
+      "sourceHash": "982d01717f01430af285dd2e8f1e6fe3061e4ed1de58363a315dbf6fd0b04326",
+      "label": "最大打开数据库数",
+      "description": "每个项目同时打开的数据库数量上限（`omp ps` 中的 `omp.ida.*` / `omp.ghidra.*` 守护进程）；再打开一个时，会淘汰一个未被引用的空闲数据库。用完后请关闭保留的 `dsm` 句柄",
       "options": {
         "2": {
           "label": "2"
@@ -5142,10 +5165,10 @@ export const zhCN = {
         }
       }
     },
-    "ida.idleCloseSec": {
-      "sourceHash": "a33319946dd3f20f344ee6e2d120b547d568a042e55cda96304c5506006c66eb",
-      "label": "IDA 空闲关闭超时",
-      "description": "保存并关闭空闲超过所设秒数的 IDA 数据库（0 表示从不关闭）；重新打开时会重置 `exec` 命名空间",
+    "disassembler.idleCloseSec": {
+      "sourceHash": "75a40e3f44ed2f16e7b77da9802d62a416635ecd8702d6d6561f7520ff604e85",
+      "label": "空闲关闭超时",
+      "description": "保存并关闭未被引用且空闲超过所设秒数的数据库（0 表示从不关闭）；保留的 `dsm` 句柄会保持打开。重新打开时会重置 `exec` 命名空间",
       "options": {
         "0": {
           "label": "从不"
@@ -5163,6 +5186,16 @@ export const zhCN = {
           "label": "1 小时"
         }
       }
+    },
+    "ghidra.installDir": {
+      "sourceHash": "e24292cd4139da1dd384047b3c4439e4a307b2c6331bcfd1698e19912fc55160",
+      "label": "Ghidra 安装目录",
+      "description": "Ghidra 12 及以上版本的安装目录（包含 `Ghidra/application.properties`）；留空时依次使用 `$GHIDRA_INSTALL_DIR`、Homebrew 安装，否则使用下载到 `~/.omp/ghidra` 下的受管版本"
+    },
+    "ghidra.python": {
+      "sourceHash": "4d64b0f7a742459b7a9205594dffe21da49416041880ed34bd462234ee281652",
+      "label": "Ghidra Python",
+      "description": "能够导入 `pyghidra` 的 Python 解释器；留空时使用由安装包自带 wheel 构建的受管虚拟环境"
     },
     "mcp.startupTimeoutMs": {
       "sourceHash": "036eb918786f257149807dd371cd723429f05617777ea62ee84e5e863d5ca4de",
@@ -5233,7 +5266,7 @@ export const zhCN = {
       }
     },
     "worktree.onExit": {
-      "sourceHash": "adddacc716cb093ee9054d9cb2076e702a585ce88ea9ab140e4b96ee461e8462",
+      "sourceHash": "3480f2a332a7e09525d809a96e9fbdc2bc09de89fecbe9df0bccd68579a3c718",
       "label": "退出时的工作树",
       "description": "退出时如何处理自 omp 启动以来创建的工作树（启动时或通过 `/wt` 创建）",
       "options": {
@@ -5248,68 +5281,60 @@ export const zhCN = {
         "remove": {
           "label": "移除",
           "description": "移除干净的工作树；有未提交更改或新提交时询问。被 Git 忽略的文件（如 `.env`）也会被删除"
+        },
+        "force": {
+          "label": "强制移除",
+          "description": "不经询问移除所有工作树，即使有未提交的更改。未提交的工作、被 Git 忽略的文件（如 `.env`）以及仅存在于分离 HEAD 上的提交都会丢失；分支上的新提交会保留"
         }
       }
     },
     "tts.localSpeed": {
-      "sourceHash": "573ddc72a5a07effd82556de3c2f7bacc5310bf39d49d392e6d07df41e5b1df8",
+      "sourceHash": "8360d7b556a97a1a224417f1be47320ebb05bac8bf0a07dd0a81ebc9411944a1",
       "label": "本地 TTS 语速",
-      "description": "本地 TTS 后端（tts 工具、omp say）的语速。1 表示正常；限制在 0.5–2.5 范围内",
+      "description": "本地 TTS 后端（tts 工具、omp say）的语速。1 表示正常；限制在 0.8–1.3 范围内",
       "options": {
+        "0.8": {
+          "label": "0.8×"
+        },
+        "0.9": {
+          "label": "0.9×"
+        },
         "1": {
           "label": "1×（正常）"
         },
-        "2": {
-          "label": "2×"
+        "1.1": {
+          "label": "1.1×"
         },
-        "0.5": {
-          "label": "0.5×"
+        "1.2": {
+          "label": "1.2×"
         },
-        "0.75": {
-          "label": "0.75×"
-        },
-        "1.25": {
-          "label": "1.25×"
-        },
-        "1.5": {
-          "label": "1.5×"
-        },
-        "1.75": {
-          "label": "1.75×"
-        },
-        "2.5": {
-          "label": "2.5×"
+        "1.3": {
+          "label": "1.3×"
         }
       }
     },
     "speech.speed": {
-      "sourceHash": "298796cf6aaf3647aaeaed789859e3a594753e7228a565ca28055c7bd34245ba",
+      "sourceHash": "62f359ba95a81052ea8b24ba36b2bb4e1ff7d9458418f475a0ebe1347305ae9b",
       "label": "语音朗读语速",
-      "description": "朗读助手输出时的语速。1 表示正常；限制在 0.5–2.5 范围内",
+      "description": "朗读助手输出时的语速。1 表示正常；限制在 0.8–1.3 范围内",
       "options": {
+        "0.8": {
+          "label": "0.8×"
+        },
+        "0.9": {
+          "label": "0.9×"
+        },
         "1": {
           "label": "1×（正常）"
         },
-        "2": {
-          "label": "2×"
+        "1.1": {
+          "label": "1.1×"
         },
-        "0.5": {
-          "label": "0.5×"
+        "1.2": {
+          "label": "1.2×"
         },
-        "0.75": {
-          "label": "0.75×"
-        },
-        "1.25": {
-          "label": "1.25×"
-        },
-        "1.5": {
-          "label": "1.5×"
-        },
-        "1.75": {
-          "label": "1.75×"
-        },
-        "2.5": {
-          "label": "2.5×"
+        "1.3": {
+          "label": "1.3×"
         }
       }
     }
