@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：18.22.0，未发布；main与源码编号不是发布证据
-- 目标基线：官方OMP18.22.0、外部Bun最低1.4.4；Tern可选未验证
+- 实现候选：18.22.2，未发布；main与源码编号不是发布证据
+- 目标基线：官方OMP18.22.2、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -80,6 +80,8 @@
 
 18.22.0为629定义/468UI：新增`tui.renderEmbeds`（布尔，默认true；引导Agent以`<img>`/`<iframe>`内嵌图片与网页并加载远程地址）、`disassembler.backend`（auto/ghidra/ida/none，默认auto）、`disassembler.maxOpen`/`idleCloseSec`（取代删除的`ida.maxOpen`/`idleCloseSec`，并按dsm句柄引用淘汰）、`ghidra.installDir`/`python`；删除`ida.enabled`（工具开关改由反汇编器后端决定），`ida.python`/`installDir`保持。本地TTS由Kokoro改为Phonon：`tts.localVoice`/`speech.voice`选项换为12个Phonon音色，`tts.localSpeed`/`speech.speed`换为0.8–1.3六档，`speechgen.enabled`原文同步；官方迁移旧Kokoro音色值，插件只译显示。`worktree.onExit`新增`force`。新增无UI的`task.agentPrewalkAuto`不补译。其余456项原文哈希不变，9个动态getter不变；TUI设置分组新增`Disassembler`、`Ghidra`，分组标题保持官方原文。
 
+18.22.2为632定义/471UI：新增`providers.webKeyless`（布尔，默认true；关闭后web_search与URL读取只用已配置凭据的服务）、`live.endpoint`（字符串；兼容OpenAI Realtime WebRTC的基础URL，官方`validate`只接受http(s)）、`live.apiKey`（字符串，`credential: true`，仅发往该端点）；`live.voice`由enum改为string，9个Codex音色仍作为`ui.options`建议项（选项value/label不变），说明改为允许自定义端点音色。`task.structured`、`browser.relay`/`cmux`/`tern`原文变化改译（子代理默认跳过relay/tern，除非显式`app`；cmux不用于子代理）。其余463项原文哈希不变，9个动态getter不变。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -110,6 +112,8 @@
 18.20.3删除`seance.ts`与`/seance`（89定义/98标识），插件同步移除该说明。`/copy`改读viewSession、`/marketplace`等待异步选择器均为执行侧变化；动态说明回调、`pi-tui/autocomplete.ts`与扩展类型不变。
 
 18.22.0命令文件仅`builtin-lifecycle.ts`（`/move`无头重定向改调官方`rescopeSessionToCwd`）与`types.ts`注释变化，均属执行侧；89定义/98标识、静态原文、别名、动态说明回调、`pi-tui/autocomplete.ts`与扩展补全类型不变。扩展lifecycle改以`agent_pause`映射非终态`agent_end`，插件不订阅该事件。
+
+18.22.2命令目录仅`helpers/active-oauth-account.ts`变化（用量限额对API-key账户按凭据行id归属），属执行侧；89定义/98标识、静态原文、别名、动态说明回调、`pi-tui/autocomplete.ts`与extensibility目录不变。`^`模型提及新增末尾标点剥离，不属斜杠补全。
 
 ## Stats Web 显示适配
 
@@ -153,6 +157,7 @@
 - 18.20.2：120源码，新增`spotlight-worker.ts`：Spotlight构建在官方Worker中只读打开数据库、单事务快照，服务端串行排队并在最后一个dashboard停止时中止；compiled以宿主入口加`__omp_worker_stats_spotlight` argv启动worker。实测compiled Bun1.4.4的worker不加载BUN_OPTIONS preload（仅主进程留下标记），原版/包装`/api/stats/spotlight`24h/7d/all均200且内容相同。客户端Costs/Gain/Providers与range/series改按本地日历日分桶，3条“Per UTC day…”说明改为“Per day…”并更新译文；stats-cli/openPath、query/query-store/live不变，browser/mutations/preload不改。
 - 18.20.3：`@oh-my-pi/omp-stats`仅版本与依赖号变化，120源码逐字节不变；browser/mutations/preload不改。
 - 18.22.0：`@oh-my-pi/omp-stats`仅版本与依赖号变化，120源码逐字节不变；browser/mutations/preload不改。utils仅新增`getGhidraDir`与marked URL边界修复，`getPluginsNodeModules`不变。
+- 18.22.2：120源码，客户端仅`GainRoute.tsx`变化：`GainSource`新增`compaction`（服务端读`snapcompact_compactions`表，计算归官方），来源列`SOURCE_LABEL`改为“Snapcompact imaged tool results”/“Snapcompact compaction (context freed)”，页头说明与空态提示改写。插件替换范围模板与空态键，并在`browser.ts`新增`gainSourceLabel`：仅表头为“Source”的`.cell-primary`单文本节点经独立的`statsGainSources`映射（2个固定标签），其他列同文本仍为数据原文；mutations/preload不改。
 
 ## 6. 检查与真实验证
 
@@ -178,7 +183,7 @@
 
 ## 7. 发布边界
 
-当前源码/开发依赖/目标宿主候选为18.22.0，范围`>=18.22.0 <19`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3候选未发布并由18.22.0取代。18.22.0本轮仍锁屏，仅通过源码合同与compiled smoke（无头受管Chrome＋测试专属opener）；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
+当前源码/开发依赖/目标宿主候选为18.22.2，范围`>=18.22.2 <19`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3、18.22.0候选未发布并由18.22.2取代。18.22.2本轮仍锁屏，仅通过源码合同与compiled smoke（无头受管Chrome＋测试专属opener）；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

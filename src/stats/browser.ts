@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 
-import { statsFailureCauses, statsPatterns, statsSpotlightAttributes, statsZh } from "./translations";
+import { statsFailureCauses, statsGainSources, statsPatterns, statsSpotlightAttributes, statsZh } from "./translations";
 import { invalidateExternalWrites } from "./mutations";
 
 // Served by the official Stats listener; follows the DOM as React renders.
@@ -93,6 +93,12 @@ import { invalidateExternalWrites } from "./mutations";
 	function failureCauseLabel(text: Text): boolean {
 		const parent = text.parentElement;
 		return !!parent && parent.matches(".spot-nowrap") && text === parent.firstChild && columnHeader(parent) === "Failure causes";
+	}
+
+	// Gain's fixed source label is the only node of a Source-column `.cell-primary`.
+	function gainSourceLabel(text: Text): boolean {
+		const parent = text.parentElement;
+		return !!parent && parent.matches(".cell-primary") && parent.childNodes.length === 1 && columnHeader(parent) === "Source";
 	}
 
 	function fixedChart(element: Element): boolean {
@@ -225,6 +231,7 @@ import { invalidateExternalWrites } from "./mutations";
 		const original = previous && current === previous.rendered ? previous.original : current;
 		let rendered = language === "zh" && safeText(text) ? translate(original) : original;
 		if (language === "zh" && failureCauseLabel(text) && Object.hasOwn(statsFailureCauses, original)) rendered = statsFailureCauses[original]!;
+		if (language === "zh" && gainSourceLabel(text) && Object.hasOwn(statsGainSources, original)) rendered = statsGainSources[original]!;
 		// React splits this fixed label around its count and singular/plural expression.
 		// Keep those nodes intact; a one-node tool name with the same text remains data.
 		if (language === "zh" && text.parentElement && foldedCoverageLabel(text.parentElement)) {

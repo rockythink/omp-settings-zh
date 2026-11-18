@@ -6,7 +6,7 @@
 
 ## 内置斜杠补全译文边界
 
-- 当前来源OMP18.22.0官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调。相对18.20.3命令说明、别名与动态回调源码均不变（18.20.3曾删除`/seance`并同步移除译文）；`/commit`会生成提交提示词，验收只看补全说明、不执行。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持；源码行为通过不代证compiled TUI验收。
+- 当前来源OMP18.22.2官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调。相对18.22.0命令说明、别名与动态回调源码均不变（18.20.3曾删除`/seance`并同步移除译文）；`/commit`会生成提交提示词，验收只看补全说明、不执行。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持；源码行为通过不代证compiled TUI验收。
 - 只翻译顶层补全的说明与实时状态、`skill:` 数量；参数提示、命令名、别名、模型／提供商 ID、路径与目标正文保持原样。
 - `switch` / `loop` / `effort` 的动态快捷键按宿主实际显示捕获，中文保留原键位。除键位占位外必须匹配官方原文，第三方覆盖、技能说明和未知文案不改。
 - `/settings-language en` 恢复官方补全结果；中文与英文都须验证排序、Tab／Enter 插入和实际官方编译版，不能用静态表检查代替。
@@ -14,7 +14,7 @@
 
 ## Stats Web 译文边界
 
-- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.22.0`，120源码相对18.20.3逐字节不变；18.20.2客户端Costs/Gain/Providers与range/series改按本地日历日分桶，3条“Per UTC day…”说明改为“Per day…”并同步更新为“按日汇总…”。898字典键、151通用严格模板及9个Spotlight作用域属性模板保持；失败原因列6个已知代码标签只作用于该列节点，HTTP状态码、未知代码、百分比与数据捕获值保持原文。日期刻度由浏览器Intl本地化，插件不改。browser/mutations/preload不改；未知文案、混合数据提示与canvas安全回退英文。18.22.0真实网页因环境前提未完整重验，不能继承旧版通过记录。
+- 当前审阅基线为官方`@oh-my-pi/omp-stats@18.22.2`，120源码中客户端仅`GainRoute.tsx`相对18.22.0变化：页头说明与空态提示随原文替换，来源列“Snapcompact imaged tool results”/“Snapcompact compaction (context freed)”只在该列`.cell-primary`单文本节点经`statsGainSources`译为“Snapcompact 图像化工具结果”/“Snapcompact 压缩（释放的上下文）”，项目范围版说明（含项目名）安全回退英文。18.20.2客户端Costs/Gain/Providers与range/series改按本地日历日分桶，3条“Per UTC day…”说明改为“Per day…”并同步更新为“按日汇总…”。898字典键、151通用严格模板及9个Spotlight作用域属性模板保持；失败原因列6个已知代码标签只作用于该列节点，HTTP状态码、未知代码、百分比与数据捕获值保持原文。日期刻度由浏览器Intl本地化，插件不改。mutations/preload不改；未知文案、混合数据提示与canvas安全回退英文。18.22.2真实网页因环境前提未完整重验，不能继承旧版通过记录。
 - `src/stats/translations.ts` 只包含原文键、中文值及严格锚定的动态模板；浏览器端必须先通过官方 UI 区域白名单，不能在整页全局替换英文。
 - 保留模型、提供商、工具、项目与账户名称、路径、请求与会话正文、错误原文、协议、数字和模板中的实际数据；未知文案与 canvas 内绘制内容保持官方原文。Window utilization 普通 tooltip series 标签是账户数据，即使为 Requests／Other (3) 也不译；仅官方带 tone-bad 的 Exhausted 注记与 total 固定标签属于 UI。
 - 切回 English 恢复原始文本与显示属性；验证 React 异步更新、路由复用与译文键同名的数据值，不只检查首页。外部写入即使与插件上次显示相同，也须失效旧来源；一批外部文本／属性写入全部失效后才渲染，不能误恢复真实数据。表头复用须重新判断整表单元格的 UI／数据身份。同 origin 的偏好跨刷新、路由与服务重启保留，首次默认中文；网页语言独立于 /settings-language。页面脚本在原 Stats 服务同端口加载，不增加代理。
@@ -187,7 +187,7 @@ Settings 选项显示副本与宿主共享原文源必须隔离；不能因设�
 
 活动翻译只以目标版本 OMP 官方设置注册表的英文显示元数据为语义来源：
 
-1. 从锁定的`@oh-my-pi/pi-coding-agent@18.22.0`完整注册图提取英文；468UI。18.22.0新增`tui.renderEmbeds`、`disassembler.backend`/`maxOpen`/`idleCloseSec`、`ghidra.installDir`/`python`六项独立翻译，删除官方移除的三项`ida.*`；`tts.localVoice`/`localSpeed`、`speech.voice`/`speed`、`speechgen.enabled`按Phonon音色与0.8–1.3语速改译，`worktree.onExit`补译`force`；其余456项原文哈希不变、不重译。Phonon、Kokoro、Ghidra、PyGhidra、IDA Pro、idalib、JDK、dsm、exec、`<img>`/`<iframe>`、音色人名、judge、input_type、query/passage、Qwen3-Embedding、E5、NVIDIA NIM、eval、prelude、/commit、bash.patterns、环境变量名、GEMINI_API_KEY、google-vertex与Issue编号保留原文。固定官方commit `3e8cff3b7ce19a805c11a26a6dd1703066435851`的源码与npm全部2000份coding-agent源码逐字节一致，4个导出模板源按package.files排除；utils130/Stats120/TUI470份亦一致；
+1. 从锁定的`@oh-my-pi/pi-coding-agent@18.22.2`完整注册图提取英文；471UI。18.22.2新增`providers.webKeyless`、`live.endpoint`、`live.apiKey`三项独立翻译，`live.voice`、`task.structured`、`browser.relay`/`cmux`/`tern`按新原文改译；18.22.0新增`tui.renderEmbeds`、`disassembler.backend`/`maxOpen`/`idleCloseSec`、`ghidra.installDir`/`python`六项并删除官方移除的三项`ida.*`，`tts.localVoice`/`localSpeed`、`speech.voice`/`speed`、`speechgen.enabled`按Phonon音色与0.8–1.3语速改译，`worktree.onExit`补译`force`；其余463项原文哈希不变、不重译。Phonon、Kokoro、Ghidra、PyGhidra、IDA Pro、idalib、JDK、dsm、exec、`<img>`/`<iframe>`、音色人名、Parallel/Exa/Firecrawl/Keenable/Perplexity/Jina/Startpage/DuckDuckGo/Ecosia/Google/Mojeek/Hacker News、OpenAI Realtime WebRTC、Codex、Bearer、!command、`app: "relay"`/`"tern"`、judge、input_type、query/passage、Qwen3-Embedding、E5、NVIDIA NIM、eval、prelude、/commit、bash.patterns、环境变量名、GEMINI_API_KEY、google-vertex与Issue编号保留原文。固定官方commit `e1ae2cc998efd1ca151b46ebefc0e0dab6c23c63`的源码与npm全部2010份coding-agent源码逐字节一致，4个导出模板源按package.files排除；utils131/Stats120/TUI472份亦一致；
 2. 使用本项目自己的 LLM 能力按本规范生成初稿，不输入或复用第三方中文译文；
 3. 按设置路径和选项 `value` 校验完整性；
 4. 用英文原文哈希标记待复核的上游语义变化；

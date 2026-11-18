@@ -32,7 +32,8 @@
 | 18.20.0（历史候选） | 18.20.0 | 未发布，由18.20.2取代；锁屏导致默认opener页面身份/回收无法验收；仅源码合同、provider行为与compiled JSON/summary通过；Tern未验证 |
 | 18.20.2（历史候选） | 18.20.2 | 未发布，由18.20.3取代；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同、compiled smoke（测试专属opener）与Spotlight worker API对照通过；Tern未验证 |
 | 18.20.3（历史候选） | 18.20.3 | 未发布，由18.22.0取代；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同与compiled smoke（测试专属opener）通过；Tern未验证 |
-| 18.22.0（候选） | 18.22.0 | 未发布；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同与compiled smoke（测试专属opener）通过；Tern未验证 |
+| 18.22.0（历史候选） | 18.22.0 | 未发布，由18.22.2取代；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同与compiled smoke（测试专属opener）通过；Tern未验证 |
+| 18.22.2（候选） | 18.22.2 | 未发布；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同与compiled smoke（测试专属opener）通过；Tern未验证 |
 
 同一主版本的后续 OMP 版本会执行结构预检，但在完成 CI 和真实 `/settings` 验证前不视为正式支持。OMP 19 及以上版本默认失败关闭。
 
@@ -52,7 +53,7 @@ Web 模式为 Stats 子进程创建私有预加载 CJS，通过合并 `BUN_OPTIO
 
 测试只认领有 run 清单、page/target ID 和精确 origin 证据的页面及自有服务。专属浏览器 Profile、opener 与 PATH 隔离仅限测试子进程，不改系统默认浏览器或产品逻辑；真实默认 opener 默认另验。仅18.12.1获维护者明确授权豁免该项实际打开/失败回收验收，Release必须标注未验证，不申请桌面控制；此例外不自动延续，其他门禁不变。先关自有页面，再停服务并确认端口关闭，最后删除私有临时目录；异常分支继续清理剩余资源并汇总失败，任何残留阻止发布。用户既有页面、服务、设置、会话与凭据不在清理或提交范围。
 
-18.20.0、18.20.2、18.20.3与18.22.0四轮均`screenLocked:true`，原生AX窗口不可用；不绕过锁屏建立默认浏览器控制，也不拿旧版通过代证。18.20.2起各轮仅以无头受管Chrome和测试专属opener运行compiled smoke，18.20.2另用只记录URL的测试opener（未开页）对照原版/包装Spotlight API；二者都不是默认opener证据。官方#17758为当前tag祖先、query修复源码保持，但当前制品的冷摄取实际Web行为仍待解锁后独立验收。新设置只修改显示元数据，不改变暂停提供商的授权、Bash允许规则/环境变量匹配、选择性提交、待办提醒、Mnemopi召回过滤/嵌入请求、反汇编器/Ghidra下载与安装、内嵌网页远程加载或工作树强制移除逻辑；`bash.allowedEnvVars`的安全警示（PATH、LD_PRELOAD等可导致任意命令执行）、`tui.renderEmbeds`会加载远程地址以及`worktree.onExit`强制移除会丢失未提交工作的提示均完整保留在译文中。
+18.20.0、18.20.2、18.20.3、18.22.0与18.22.2五轮均`screenLocked:true`，原生AX窗口不可用；不绕过锁屏建立默认浏览器控制，也不拿旧版通过代证。18.20.2起各轮仅以无头受管Chrome和测试专属opener运行compiled smoke，18.20.2另用只记录URL的测试opener（未开页）对照原版/包装Spotlight API；二者都不是默认opener证据。官方#17758为当前tag祖先、query修复源码保持，但当前制品的冷摄取实际Web行为仍待解锁后独立验收。新设置只修改显示元数据，不改变暂停提供商的授权、Bash允许规则/环境变量匹配、选择性提交、待办提醒、Mnemopi召回过滤/嵌入请求、反汇编器/Ghidra下载与安装、内嵌网页远程加载、免密钥第三方网页服务、实时语音端点URL校验与密钥发送或工作树强制移除逻辑；`live.apiKey`凭据标记保持，`bash.allowedEnvVars`的安全警示（PATH、LD_PRELOAD等可导致任意命令执行）、`tui.renderEmbeds`会加载远程地址、`providers.webKeyless`会使用无你凭据的第三方服务以及`worktree.onExit`强制移除会丢失未提交工作的提示均完整保留在译文中。18.22.2官方新增无凭据的`@openai/codex`最新版本查询（Codex客户端版本记录），由官方执行；compiled smoke将其在建连前拦截并单列计数，插件不发起该请求。
 
 18.12.3本轮首个Stats登录shell驱动未在path_helper之后断言opener，潜在调用系统`/usr/bin/open`。精确origin为`http://127.0.0.1:52700`，因锁屏无法核实潜在原生页的target、存在或关闭；该轮不计全局零残留，即使其已知自有资源已回收也禁止发布。后续启动必须在同一shell处理完登录配置后，先断言`command -v open`（Linux为xdg-open）解析到本轮自有opener，再执行Stats；不得借安全重跑抹除未知页。解锁后仍须凭原生页面身份与run证据定向核查，不能批量关闭同origin页面。
 

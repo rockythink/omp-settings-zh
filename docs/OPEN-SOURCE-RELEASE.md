@@ -27,7 +27,7 @@
 ## 2. 发布原则
 
 - 在插件入口、测试和真实 OMP 验证完成前，可以公开规划仓库，但不得发布可安装版本或宣称插件可用。
-- 当前候选18.22.0（取代未发布的18.20.0、18.20.2与18.20.3），未发布；内嵌入口及最低外部Bun1.4.4。冷摄取[#17754](https://github.com/can1357/oh-my-pi/issues/17754)已关闭、修复[#17758](https://github.com/can1357/oh-my-pi/pull/17758)已合并且为18.22.0tag祖先，query修复源码保持；18.19.0实测通过不能代证18.22.0。当前仍锁屏，完整三面/默认opener/冷安装未重验，发布门禁仍未通过。
+- 当前候选18.22.2（取代未发布的18.20.0、18.20.2、18.20.3与18.22.0），未发布；内嵌入口及最低外部Bun1.4.4。冷摄取[#17754](https://github.com/can1357/oh-my-pi/issues/17754)已关闭、修复[#17758](https://github.com/can1357/oh-my-pi/pull/17758)已合并且为18.22.2tag祖先，query修复源码保持；18.19.0实测通过不能代证18.22.2。当前仍锁屏，完整三面/默认opener/冷安装未重验，发布门禁仍未通过。
 - 2026-11-03遗留的驱动僵尸及其原工具宿主现场已消失，原失败记录保留，非本轮kill所致。Tern可选未验、不宣称支持；Windows不纳入，历史unknown不等于当前持续泄漏。
 - 18.14.0另有该轮资源身份未过项：omp18140-stats-managed1成功open/observe后tab.run解析失败，该次没有服务/driver目录，具名close仅返回Released，未取得target ID/独占Profile。已知target和共享CDP空列表不能补造其独立销毁证明，该轮不发布。历史缺证必须保留，但不等于已证实后续轮持续泄漏；后续轮须建立独立基线并证明本轮所有资源闭环，不能凭旧地址认领页面或宣称全历史零残留。
 - 官方Tern `over`/`beside`是可选且不同的生命周期，当前未验证、不宣称支持。未安装Tern不阻止明确非Tern范围发版，也不为验收修改官方打开行为；以后明确纳入时才补齐真实环境、pane/block身份和关闭证明，系统fallback及测试opener不可代证。源码推断的注册窗口/迟到block/关闭时限差异不是动态复现，不据此添加shim。
@@ -94,7 +94,7 @@
 
 private preload不能等正常流程后期ps审计才登记；自动opener bridge转交URL前，先从真实compiled marker记录native PID、BUN_OPTIONS中的私有路径，再打开自有页。中断回归同时证明目录/文件0700/0600与退出后该路径ENOENT；归属未知时保留账本失败关闭，不因端口已关闭就删掉唯一追踪记录。
 
-模型请求隔离不能只覆盖global fetch：目标compiled显式模型的原生HTTPS暖连须到达标准Agent异步无Socket拒绝，并跨abort timeout存活；代理fetch分支独立检查。目录GET、Stats身份GET、无凭据HEAD、被拒POST尝试分别记账。技能描述fixture预置官方格式缓存，不调用后台生成；未知输入在input阶段handled，不靠agent_start throw阻止费用。
+模型请求隔离不能只覆盖global fetch：目标compiled显式模型的原生HTTPS暖连须到达标准Agent异步无Socket拒绝，并跨abort timeout存活；代理fetch分支独立检查。目录GET、Codex客户端版本GET（18.22.2起官方`@openai/codex`最新dist-tag查询，按精确URL识别）、Stats身份GET、无凭据HEAD、被拒POST尝试分别记账。技能描述fixture预置官方格式缓存，不调用后台生成；未知输入在input阶段handled，不靠agent_start throw阻止费用。
 
 ### 4.1 阻塞前置与恢复
 

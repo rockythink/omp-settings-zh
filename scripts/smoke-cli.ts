@@ -428,7 +428,7 @@ require('node:module').syncBuiltinESMExports?.();
   const attempts = (await readFile(fetchAudit, "utf8").catch((error: NodeJS.ErrnoException) => { if (error.code === "ENOENT") return ""; throw error; })).trim().split("\n").filter(Boolean).map(line => JSON.parse(line) as { pid: number; transport: string; url: string; method: string });
   const denials = (await readFile(connectionAudit, "utf8")).trim().split("\n").filter(Boolean).map(line => JSON.parse(line) as { pid: number; protocol: string });
   console.log("Compiled dispatch audit:", JSON.stringify(attempts));
-  let catalogues = 0, probes = 0, warmups = 0, nativeRequests = 0, nativeWarmup = false;
+  let catalogues = 0, probes = 0, warmups = 0, versionLookups = 0, nativeRequests = 0, nativeWarmup = false;
   for (const attempt of attempts) {
     const url = new URL(attempt.url);
     if (/^https?\.(?:request|get)$/.test(attempt.transport)) nativeRequests++;
@@ -439,10 +439,13 @@ require('node:module').syncBuiltinESMExports?.();
       probes++;
     } else if (attempt.method === "GET" && /\/(?:models(?:\.json\.zstd)?|tags|props)$/.test(url.pathname)) {
       catalogues++;
+    } else if (attempt.method === "GET" && url.href === "https://registry.npmjs.org/@openai/codex/latest") {
+      // 18.22.2 pi-catalog codex-version: credential-free dist-tag lookup when no fresh record exists.
+      versionLookups++;
     } else throw new Error("Unexpected request attempt (blocked): " + JSON.stringify(attempt));
   }
   if (!nativeWarmup || denials.length !== nativeRequests) throw new Error("Compiled native HTTPS warm-up did not reach the asynchronous no-socket rejection");
-  console.log("Compiled network audit:", catalogues, "catalogue GET,", probes, "Stats identity GET and", warmups, "credential-free warm-up HEAD attempts blocked before dispatch; no inference attempts");
+  console.log("Compiled network audit:", catalogues, "catalogue GET,", versionLookups, "Codex version GET,", probes, "Stats identity GET and", warmups, "credential-free warm-up HEAD attempts blocked before dispatch; no inference attempts");
   checkpoint();
   console.log("Native macOS/Linux smoke passed; test-only opener forwarding is not the system-default opener contract.");
 } catch (error) {

@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.22.0",
+  "sourceOmpVersion": "18.22.2",
   "settings": {
     "auth.unpausedProviders": {
       "sourceHash": "3e2a78bb276f04a95d8df8a221210a61e301310124dfc83955ebd06b5c437de8",
@@ -3435,9 +3435,9 @@ export const zhCN = {
       "description": "默认的 HTTP CDP 发现端点（例如 http://127.0.0.1:9222），用于连接现有浏览器，而非启动浏览器。工具调用中显式指定的 `app` 优先"
     },
     "browser.relay": {
-      "sourceHash": "e511bad991ea61d39fbf1eaf2bad8df691c4083d87cc335fe951c481b5765988",
+      "sourceHash": "3cbfd3e0fb93b274a3d2b0f8d17c20ab36f14a15891c7ee25e649b62eb057e11",
       "label": "Browser Relay",
-      "description": "通过 omp Browser Relay 操作自己的 Chrome 页签。只需安装一次扩展（`omp browser-relay install`）；浏览器预置接口需要中继服务时会自动启动。优先于浏览器 CDP URL；设置 `PI_BROWSER_RELAY=0` 或 `PI_BROWSER_RELAY=1` 可覆盖此设置"
+      "description": "通过 omp Browser Relay 操作自己的 Chrome 页签。只需安装一次扩展（`omp browser-relay install`）；浏览器预置接口需要中继服务时会自动启动。优先于浏览器 CDP URL；设置 `PI_BROWSER_RELAY=0` 或 `PI_BROWSER_RELAY=1` 可覆盖此设置。子代理不使用此模式，除非某次打开传入 `app: \"relay\"`"
     },
     "browser.relayUrl": {
       "sourceHash": "6b961b3c49b9ab178a7ee5aa2b8811ea5ee3726af557a0eb72020d573f234c27",
@@ -3450,9 +3450,9 @@ export const zhCN = {
       "description": "以无窗口方式运行浏览器（禁用则显示窗口）。在引擎附带查看器的平台（macOS）上，omp 的 WebKit 页签会立即获得或失去窗口；其他平台上的可见浏览器为 Chromium，由下一次打开操作以新模式启动"
     },
     "browser.cmux": {
-      "sourceHash": "ff40bf2a738e51226c5bae4dd1744c0ae00938d77e000bb3a1c2862201901539",
+      "sourceHash": "e7834022d4725754d69b372b908e8d6537ae7d39cd512cbd45b3f2a90c5c73dd",
       "label": "cmux 浏览器",
-      "description": "当 cmux 套接字可用时，使用 cmux WKWebView surface 执行浏览器自动化。可设置 PI_BROWSER_CMUX=0 或 PI_BROWSER_CMUX=1 覆盖此设置"
+      "description": "当 cmux 套接字可用时，使用 cmux WKWebView surface 执行浏览器自动化（子代理不使用）。可设置 PI_BROWSER_CMUX=0 或 PI_BROWSER_CMUX=1 覆盖此设置"
     },
     "browser.screenshotDir": {
       "sourceHash": "849ec1d7056fb8bde68fdf6588baabc3023b45be9f188d41fff18bf115d24bd8",
@@ -3682,9 +3682,9 @@ export const zhCN = {
       "description": "spawn 改为接收有序的 `steps`，而不是单个 `task`：子代理先收到第一步，完成上一步后再收到下一步；超过 4 步时，靠前的消息各携带两步或更多。最后一步的结果即为该任务的结果"
     },
     "task.structured": {
-      "sourceHash": "3ec811e3e67ce6ad912560be364f9c7b5b0c6070d9827b0a4f355537dc2d2e1f",
+      "sourceHash": "e2bb404a21215434b65ef7728976964ef84826ef71cb26271be41d694fdcb5d9",
       "label": "结构化任务结果",
-      "description": "在 task 工具中提供 outputSchema/schemaMode，并通过 yield 工具返回子代理结果，按调用方或代理的输出 Schema 校验。关闭后，task 子代理不提供 yield 工具，而是将最终消息作为纯文本返回，但定义中设置 structured: true 的代理除外。Eval 中的 agent()/workpool spawn 始终保留结构化结果"
+      "description": "在 task 工具中提供 outputSchema/schemaMode，并遵循代理的输出 Schema；带 Schema 的子代理通过 yield 工具返回结果，并按该 Schema 校验。关闭后，task 子代理忽略 Schema，但定义中设置 structured: true 的代理除外。没有 Schema 的子代理不提供 yield 工具，直接返回最终消息。Eval 中的 agent()/workpool spawn 始终遵循 Schema"
     },
     "task.enableEffort": {
       "sourceHash": "d6d2b80e6c10272591a12b32e3300b7c3973c280ab811c1c8978d3977ba5681c",
@@ -3988,9 +3988,9 @@ export const zhCN = {
       }
     },
     "live.voice": {
-      "sourceHash": "bfc3c31ed2e023f8695e731604f665e9745edde961e17b2c22071a51b82aeebf",
+      "sourceHash": "acc5780d172ab8e9a2c79e0021a5c17970d6f85b4b318dc6ac316ac286262f8e",
       "label": "实时语音音色",
-      "description": "由 Codex 支持的实时语音会话所使用的音色",
+      "description": "实时语音会话使用的音色；自定义实时端点可能接受其他音色名称（在配置文件中设置）",
       "options": {
         "arbor": {
           "label": "Arbor"
@@ -4020,6 +4020,16 @@ export const zhCN = {
           "label": "Vale"
         }
       }
+    },
+    "live.endpoint": {
+      "sourceHash": "254eaf0faae1dfc4333f642886292686062ed3b826016fff248e338cc6d483b9",
+      "label": "实时语音端点",
+      "description": "兼容 OpenAI Realtime WebRTC 的服务器基础 URL（例如 http://127.0.0.1:8080/v1），用于代替 Codex 进行实时语音；留空则使用 Codex"
+    },
+    "live.apiKey": {
+      "sourceHash": "59cb416c3ea2f45f03e6ef12c629abe35a28d07e53d15a8e0fff4b3374ce6cc5",
+      "label": "实时语音端点 API 密钥",
+      "description": "仅发送给实时语音端点的 Bearer 密钥：可填写字面值、环境变量名或 !command"
     },
     "tts.localVoice": {
       "sourceHash": "f19701971e4bbd97865eacb626b7f26139505e557dc4b5a143e827afd674f670",
@@ -4467,6 +4477,11 @@ export const zhCN = {
           "description": "使用 r.jina.ai 网页读取服务（`JINA_API_KEY` 可选）"
         }
       }
+    },
+    "providers.webKeyless": {
+      "sourceHash": "286dfef2dc79e53f47803b3fb124e2f4054e4e2d8a7453abaf882431a2fbd304",
+      "label": "免密钥网页服务",
+      "description": "允许网页搜索与 URL 读取使用无需你凭据的第三方服务：免密钥的 Parallel、Exa、Firecrawl、Keenable 与 Perplexity，Jina 读取器，以及抓取式搜索引擎（Startpage、DuckDuckGo、Ecosia、Google、Mojeek、Hacker News）。关闭后只运行你已配置的服务"
     },
     "codexResets.autoRedeem5h": {
       "sourceHash": "7b0952ce3dbd2f0f95f986ec654034843cb09071fb3ae3b3f8caf0a422a1c221",
@@ -5075,9 +5090,9 @@ export const zhCN = {
       "description": "自动保存计划的目录；支持 `~`、绝对路径和相对于当前工作目录的路径。留空时使用 `<project>/.omp/plans/`"
     },
     "browser.tern": {
-      "sourceHash": "d6a7963663e581f3d27c909c760a62630c331227812e9f7691d185134364075b",
+      "sourceHash": "a3530a3b174b56497a54f9f602228a9aee8ae0149ad0647c8f26caa5f84abcc7",
       "label": "Tern 浏览器",
-      "description": "在 Tern 面板内，将浏览器页签作为画中画置于 omp 面板上方（原生网页视图），而不是使用 omp 自有的无头浏览器；没有可承载的 Tern 窗口时回退到该浏览器。显式 `app`、Browser Relay 和浏览器 CDP URL 优先；将 `app` 设为 `\"own\"` 可让单次打开不使用此模式。设置 `PI_BROWSER_TERN=0` 或 `PI_BROWSER_TERN=1` 可覆盖此设置"
+      "description": "在 Tern 面板内，将浏览器页签作为画中画置于 omp 面板上方（原生网页视图），而不是使用 omp 自有的无头浏览器；没有可承载的 Tern 窗口时回退到该浏览器。子代理不使用此模式，除非某次打开传入 `app: \"tern\"`。显式 `app`、Browser Relay 和浏览器 CDP URL 优先；将 `app` 设为 `\"own\"` 可让单次打开不使用此模式。设置 `PI_BROWSER_TERN=0` 或 `PI_BROWSER_TERN=1` 可覆盖此设置"
     },
     "browser.webkit": {
       "sourceHash": "7761d75fc241971ae7dba9e3a678a9b097bf10dfa957420d4a5c864501dbcbb4",

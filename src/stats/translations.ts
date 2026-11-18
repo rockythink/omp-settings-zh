@@ -283,7 +283,7 @@ export const statsZh: Record<string, string> = {
 	"All projects": "全部项目",
 	"Saved per day": "每日节省",
 	Cumulative: "累计",
-	"Savings appear here once snapcompact compacts tool output.": "snapcompact 压缩工具输出后，节省量会显示在此处。",
+	"Savings appear here once snapcompact compacts the context or images tool output.": "snapcompact 压缩上下文或将工具输出转为图像后，节省量会显示在此处。",
 	"Saved tokens": "节省的 Token",
 	"Saved bytes": "节省的字节",
 	Reduction: "缩减比例",
@@ -848,7 +848,7 @@ for (const [en, zh] of ranges) {
 		[`Which tools omp called in ${en}, how often they failed, and what they cost.`, `${zh}内 omp 调用了哪些工具、失败频率及对应费用。`],
 		[`Burn, reliability and subscription headroom per provider over ${en}.`, `${zh}内各服务商的用量消耗、可靠性及订阅剩余额度。`],
 		[`How often your messages sound annoyed, per model version, in ${en}.`, `${zh}内您的消息表达不满的频率，按模型版本统计。`],
-		[`Tokens snapcompact kept out of context in ${en}.`, `${zh}内 snapcompact 避免放入上下文的 Token 量。`],
+		[`Context snapcompact freed by compacting, and tokens it saved by imaging tool results, in ${en}.`, `${zh}内 snapcompact 通过压缩释放的上下文，以及将工具结果转为图像所节省的 Token 量。`],
 		[`No savings recorded in ${en}`, `${zh}内暂无节省记录`],
 		[`No requests in ${en}`, `${zh}内暂无请求`],
 		[`No failures in ${en}`, `${zh}内暂无失败请求`],
@@ -987,6 +987,15 @@ export const statsFailureCauses: Readonly<Record<string, string>> = {
 	"rate limited": "速率受限",
 	"bad reply": "无效响应",
 	unrecorded: "未记录",
+};
+
+/**
+ * Gain's two fixed source labels. They render in the data-class `.cell-primary`
+ * of the Source column, so only that column's label node uses this table.
+ */
+export const statsGainSources: Readonly<Record<string, string>> = {
+	"Snapcompact imaged tool results": "Snapcompact 图像化工具结果",
+	"Snapcompact compaction (context freed)": "Snapcompact 压缩（释放的上下文）",
 };
 
 /**

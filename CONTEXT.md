@@ -1,6 +1,24 @@
 # Project Context
 
-## 18.22.0 定向适配（2026-11-17，未发布）
+## 18.22.2 定向适配（2026-11-18，未发布）
+
+起点本地main、origin/main均`0e2ed4246e4c4fd3dcae0082f6fa32f431f7ab5c`（18.22.0未发布候选）；其[CI 44111103565](https://github.com/rockythink/omp-settings-zh/actions/runs/44111103565) Linux成功、macOS cancelled（steps空、runner_name空，注释“not acquired by Runner … after multiple attempts”与macOS arm64容量提示），属CI环境未验，不是测试失败。最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方coding-agent/utils/Stats/TUI最新稳定版均18.22.2（中间18.22.1），构成新适配并取代18.22.0候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。
+
+**宿主与来源**：用户`update.auto`已把官方18.22.0→18.22.2装到原官方位置`~/.local/bin/omp`（auto-update.log“Updated to 18.22.2 at …/.local/bin/omp”），受管启动器仍为原shell脚本；`omp update`报告Already up to date，前后均18.22.2，SHA-256 `d02253f9f5e13bafa2af6a6a773cf7531019d37379b073a204b1be128b961458`与官方darwin-arm64资产digest相同。官方tag commit `e1ae2cc998efd1ca151b46ebefc0e0dab6c23c63`稀疏检出与npm源码逐字节比较：coding-agent 2010份一致（仅4个导出模板源按package.files排除）、utils131/Stats120/TUI472份全同。utils仅新增`bounded-json`，`getPluginsNodeModules`不变。本机插件起点`github:rockythink/omp-settings-zh`仍为18.20.3（上一轮未同步main），doctor 5/0/0，pi-xcode-mcp0.1.0不动。
+
+**Settings**：632定义/471UI。新增`providers.webKeyless`（免密钥网页服务）、`live.endpoint`（实时语音端点，http(s)校验由官方执行）、`live.apiKey`（凭据标记保持）三项译文；`live.voice`由enum改为string且9个Codex音色降为建议项，说明改为可接受自定义端点音色，按新原文改译、音色名保持原文；`task.structured`（带Schema才有yield）、`browser.relay`/`browser.tern`（子代理除非显式`app`否则跳过）、`browser.cmux`（不用于子代理）原文变化改译。其余463项原文哈希不变、不重译。compiled TUI中文搜索/原生编辑/en-zh与effort参数隔离未重验。
+
+**Commands**：89定义/98标识/9别名/27动态回调，commands:check漂移0。slash-commands目录仅`helpers/active-oauth-account.ts`（用量限额按API-key凭据行归属）变化，属执行侧；extensibility目录、`pi-tui/autocomplete.ts`不变。interactive-mode仅goal模式工具名单与重启命令变化；`^`模型提及新增末尾标点剥离（`resolveModelMentionToken`），不属斜杠补全且插件不译模型ID。compiled顶层列表、别名、动态状态与Tab/Enter交互未重验。
+
+**Stats**：120源码，客户端仅`GainRoute.tsx`变化：新增来源`compaction`，来源列标签改为“Snapcompact imaged tool results”/“Snapcompact compaction (context freed)”，页头说明与空态提示改写；服务端gain-aggregator新读`snapcompact_compactions`表，计算归官方。插件替换6条范围说明模板与1条空态提示（898键/151通用模板＋9属性模板总数不变），新增仅作用于Gain“Source”列`.cell-primary`单文本节点的`statsGainSources`（2个固定标签），同文本出现在其他列仍为数据原文。throwaway无头Chrome（独占临时Profile）DOM驱动：zh译文、English恢复、其他列同文本不译、React替换节点后重译均通过；页面1建/1关、浏览器ESRCH、Profile删除。#17754 CLOSED/COMPLETED，#17758 MERGED（`febb2679…`），v18.22.2在其后4410提交、behind_by0；当前制品冷摄取实际Web未重验。
+
+**回归**：`bun install`更新锁文件后完整`bun run check`71pass/0fail、2729断言，Settings471/471、Schema0，Commands89/89、98标识、漂移0，2069显示变更/3次恢复/源码网络0。真实官方18.22.2绝对路径`scripts/smoke-cli.ts`（本地link，无头独占Chrome，测试专属opener转交URL）首轮产品阶段与清理全部通过（5页建/关、两服务单监听器、cleanupErrors0、run树删除），但网络审计因新GET `https://registry.npmjs.org/@openai/codex/latest`失败关闭：来源为18.22.2新增`pi-catalog/wire/codex-version.ts`，无记录或超6小时时后台取`@openai/codex`最新dist-tag作Codex客户端版本，无凭据、非推理、在建连前被护栏拒绝。归类为官方新行为导致的驱动审计白名单过期（非插件回归），smoke按精确URL单列“Codex version GET”计数。第二轮通过：成功/人为断言失败预检、5页建/5关、两服务（54817/54823）各单监听器、compiled Bun1.4.4合并`--smol`与用户preload、doctor3/1/0、16目录GET/1 Codex版本GET/2身份GET/1无凭据HEAD在dispatch前拦截，推理0；浏览器/2服务/2opener PID均ESRCH，run树与私有preload目录删除，监听列表与开跑前基线一致。
+
+**环境未验与恢复条件**：起始`computer.capabilities()`为screenLocked:true、secureInputApp loginwindow；前提未变，不重复完整最终矩阵（TUI三面交互、12页Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期、精确SHA冷GitHub安装）。不是插件回归或官方缺陷。解锁后固定18.22.2（或届时最新）宿主与最终SHA完整重验，通过全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+
+**本轮资源**：开页阶段为Gain DOM驱动两次有效运行（各1页建/关，独占chrome-headless-shell，Profile在scratchpad并删除）及smoke两轮（run树`omp-native-posix-S8ODEA`、`omp-native-posix-29rBJy`，树外账本`<TMPDIR>/<run>.resources.json`；各5页建/关、独占Chrome退出、2服务/2opener闭合）。首轮smoke后pgrep基线差异的Chrome PID 50419为用户Chrome（父15778）渲染进程，非本轮资源、未操作。驱动失败：Gain驱动首次在about:blank读localStorage抛SecurityError、第二次夹具缺`header.topbar`致语言控件未挂载，两次均在finally关闭浏览器并删除Profile；未操作用户真实浏览器页面或既有服务。
+
+## 18.22.0 定向适配（2026-11-17，未发布，由18.22.2取代）
 
 起点本地main、origin/main均`91c2c7c6c8e190bb03b86eeabee969895d921b38`（18.20.3未发布候选，CI 43893352631 macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方coding-agent/utils/Stats最新稳定版均18.22.0（中间18.21.0），构成新适配并取代18.20.3候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。
 

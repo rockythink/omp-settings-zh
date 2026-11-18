@@ -4,9 +4,9 @@
 
 ## 当前版本
 
-`18.22.0` 是面向官方OMP18.22.0的未发布候选，正式Release仍为18.19.0。468项设置新增`tui.renderEmbeds`、`disassembler.backend`/`maxOpen`/`idleCloseSec`、`ghidra.installDir`/`python`六项译文，删除官方移除的三项`ida.*`，并按Phonon音色与0.8–1.3语速改译五项TTS/语音设置、为`worktree.onExit`补`force`；其余456项不重译；共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
+`18.22.2` 是面向官方OMP18.22.2的未发布候选，正式Release仍为18.19.0。471项设置新增`providers.webKeyless`、`live.endpoint`、`live.apiKey`三项译文，按新原文改译`live.voice`、`task.structured`、`browser.relay`/`cmux`/`tern`五项；其余463项不重译；共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
 
-当前覆盖89个内置命令、98名称/别名、9别名和27动态回调，18.22.0命令列表、原文、别名、动态说明与补全接口相对18.20.3不变；模型/参数/文件/第三方说明不译。Stats 120份源码相对18.20.3逐字节不变；898键及160模板保持。本轮锁屏，完整三面compiled/Web验收未重验，不能发布。Tern可选未验证、Windows不纳入。
+当前覆盖89个内置命令、98名称/别名、9别名和27动态回调，18.22.2命令列表、原文、别名、动态说明与补全接口相对18.22.0不变；模型/参数/文件/第三方说明不译。Stats 120份源码中仅Gain页变化，已同步译文并为来源列加限定映射；898键及160模板保持。本轮锁屏，完整三面compiled/Web验收未重验，不能发布。Tern可选未验证、Windows不纳入。
 
 - [产品需求](docs/PRD.md)
 - [技术设计](docs/TECHNICAL-DESIGN.md)
@@ -39,7 +39,7 @@
 
 - macOS 或 Linux；
 - Bun 1.4.4 或更新版本；外部启动器与官方compiled内嵌Bun须分别核对；
-- 官方 OMP18.22.0；候选仅完成源码合同与compiled smoke，历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
+- 官方 OMP18.22.2；候选仅完成源码合同与compiled smoke，历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
 - Git。
 
 项目保持以下脚本契约：

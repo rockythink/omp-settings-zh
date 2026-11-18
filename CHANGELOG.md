@@ -2,7 +2,17 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
-## [18.22.0] - 2026-11-17（未发布候选）
+## [18.22.2] - 2026-11-18（未发布候选）
+
+- 对齐官方OMP、coding-agent/utils及锁文件18.22.2（npm最新稳定版，中间18.22.1未单独适配），固定官方tag commit `e1ae2cc998efd1ca151b46ebefc0e0dab6c23c63`；npm全部2010份coding-agent、131份utils、120份Stats、472份TUI源码与官方tag逐字节一致，4个导出模板源按package.files排除。官方`update.auto`已把18.22.0→18.22.2装到原官方位置`~/.local/bin/omp`、受管启动器未变；`omp update`报告已最新，SHA-256 `d02253f9…`匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。
+- Settings632定义/471UI：新增`providers.webKeyless`（免密钥网页服务）、`live.endpoint`（实时语音端点）、`live.apiKey`（实时语音端点API密钥）三项译文；`live.voice`改为可自定义字符串（音色降为建议项）、`task.structured`、`browser.relay`/`cmux`/`tern`原文变化改译。其余463项原文哈希不变、不重译；音色名、服务名、环境变量与`app`取值保持原文。
+- Commands89定义/98标识/9别名/27动态回调：命令列表、静态原文、别名、动态说明回调、`pi-tui/autocomplete.ts`与扩展补全类型均不变；仅更新审阅基线注释。
+- Stats：Gain页新增“Snapcompact compaction”来源，来源列两个固定标签经仅作用于该列的`statsGainSources`翻译；页头说明6条范围模板与空态提示随原文替换。其余客户端源码不变。
+- `scripts/smoke-cli.ts`：网络审计按精确URL单列官方18.22.2新增的`@openai/codex`最新版本查询（无凭据、在发出前拦截），产品代码不受影响。
+- 冻结安装与完整check：71测试/2729断言，Settings471/471、Schema0，Commands89/89与98标识、漂移0，2069项显示变更/3次恢复/源码网络0。真实官方18.22.2 compiled smoke（无头受管Chrome、测试专属opener）：成功/人为失败预检、5页建/关、两服务单监听器、合并`--smol`与用户preload、doctor3/1/0、2个opener退出0、私有preload目录删除，cleanupErrors0；16目录GET/1 Codex版本GET/2身份GET/1无凭据HEAD在发出前拦截，推理0。
+- **未发布**：Mac仍锁屏（`screenLocked:true`），compiled TUI交互、完整网页/冷摄取/API/SSE边界、默认opener、Profile/生命周期及精确SHA冷GitHub安装未重验。解锁后固定最终宿主/SHA完整重验，全部通过才建tag/Release。Tern可选未验证，Windows不纳入。
+
+## [18.22.0] - 2026-11-17（历史未发布候选，由18.22.2取代）
 
 - 对齐官方OMP、coding-agent/utils及锁文件18.22.0（npm最新稳定版，中间18.21.0未单独适配），固定官方tag commit `3e8cff3b7ce19a805c11a26a6dd1703066435851`；npm全部2000份coding-agent、130份utils、120份Stats、470份TUI源码与官方tag逐字节一致，4个导出模板源按package.files排除。官方`update.auto`已把18.20.3→18.22.0装到原官方位置`~/.local/bin/omp`、受管启动器未变；`omp update`报告已最新，SHA-256 `d185113d…`匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。
 - Settings629定义/468UI：新增`tui.renderEmbeds`（渲染内嵌图片与网页）、`disassembler.backend`（反汇编器：自动/Ghidra/IDA Pro/无）、`disassembler.maxOpen`（最大打开数据库数）、`disassembler.idleCloseSec`（空闲关闭超时）、`ghidra.installDir`（Ghidra安装目录）、`ghidra.python`六项译文；随官方删除`ida.enabled`/`maxOpen`/`idleCloseSec`译文。本地TTS由Kokoro换为Phonon：`tts.localVoice`/`speech.voice`改为12个Phonon音色、`tts.localSpeed`/`speech.speed`改为0.8–1.3六档，`speechgen.enabled`同步；`worktree.onExit`新增“强制移除”。其余456项原文哈希不变、不重译；音色人名、Ghidra/PyGhidra/idalib/dsm等保持原文。
