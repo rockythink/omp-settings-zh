@@ -1,10 +1,12 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：18.22.2未发布候选；完整验收未完成，Tern可选未验证
-- 基线版本：官方OMP18.22.2；外部Bun最低1.4.4
-- 文档日期：2026-11-18
+- 状态：19.0.0未发布候选；完整验收未完成，Tern可选未验证
+- 基线版本：官方OMP19.0.0（主版本，兼容预检只接受19.x）；外部Bun最低1.4.4
+- 文档日期：2026-11-19
 
 相对18.19.0：Settings456→471UI，18.20.0新增`encourageEdits`、`find.verifyModel`，18.20.2新增`auth.unpausedProviders`、`todo.midRunNudges`、`commit.enabled`、`bash.allowedEnvVars`，18.20.3新增`mnemopi.recallRelevance`、`mnemopi.embeddingQueryPrefix`、`mnemopi.embeddingInputType`，18.22.0新增`tui.renderEmbeds`、`disassembler.backend`/`maxOpen`/`idleCloseSec`、`ghidra.installDir`/`python`并随官方删除`ida.enabled`/`maxOpen`/`idleCloseSec`，TTS/语音五项改为Phonon音色与0.8–1.3语速、`worktree.onExit`新增`force`，18.22.2新增`providers.webKeyless`、`live.endpoint`、`live.apiKey`并改译`live.voice`、`task.structured`、`browser.relay`/`cmux`/`tern`，其余不重译。Commands89定义/98标识：18.20.2新增`/commit`说明译文，18.20.3官方删除`/seance`并移除译文，18.22.0与18.22.2不变；动态回调不变。Stats客户端Costs/Gain改按本地日历日，3条“Per UTC day”说明随之更新；Spotlight构建改由官方worker执行；18.22.2 Gain页新增Snapcompact压缩来源，说明/空态改译并为来源列两个固定标签加列限定映射。18.20.0、18.20.2、18.20.3、18.22.0候选未发布；本轮仍锁屏，仅源码合同与compiled smoke，不把历史完整验收继承为18.22.2通过。
+
+19.0.0（主版本）：Settings471→477UI，新增`providers.cacheWarmingStrategy`、`providers.cacheWarmingCompactPercent`、`providers.cacheWarmingCompactTokens`、`task.crossInstance`、`mcp.evalNamespaces`、`mcp.builtinTransforms`，改译`providers.cacheWarming`、`tools.intentTracing`、`isolation.backend`、`ovnfs.path`、`task.enableLsp`；Commands仅`/handoff`说明变化；Stats概览新增“按来源”与“决策模型”。官方主版本的SDK破坏性变化（cacheWarming、artifact→local、handoff、统一daemon、提示压缩命名）不触及插件使用的设置注册表、补全provider、`getPluginsNodeModules`与Stats CLI入口。18.22.2候选未发布并由19.0.0取代。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 

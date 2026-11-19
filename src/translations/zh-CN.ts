@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "18.22.2",
+  "sourceOmpVersion": "19.0.0",
   "settings": {
     "auth.unpausedProviders": {
       "sourceHash": "3e2a78bb276f04a95d8df8a221210a61e301310124dfc83955ebd06b5c437de8",
@@ -112,9 +112,9 @@ export const zhCN = {
       "description": "为模型目录中支持此能力的标准 Responses 模型启用 WebSockets；模型或请求将其设为 false 时仍会禁用"
     },
     "ovnfs.path": {
-      "sourceHash": "ea3ca81909cbd39beabe1a1b4f055f15a7c7ed1fa1e8a099fb7ed17189fba631",
+      "sourceHash": "726dbdbdaaa87c230644d9c1a45cf41fa130487a7758b38f9230aef0c5f16fa6",
       "label": "ovnfs 可执行文件",
-      "description": "ovnfs 可执行文件路径；未设置时在 PATH 中查找 `ovnfs`。找到后，所有独立副本使用 ovnfs 检出（文件夹的写时复制视图，任意大小约一秒就绪）：系统提示会要求 Agent 使用检出而非 git worktree 或复制；允许隔离且 `isolation.backend` 为 auto 时，隔离子代理也使用检出而非原生克隆"
+      "description": "ovnfs 可执行文件路径；未设置时在 PATH 中查找 `ovnfs`。找到后，所有独立副本使用 ovnfs 检出（文件夹的写时复制视图，任意大小约一秒就绪）：系统提示会要求 Agent 使用检出而非 git worktree 或复制；`isolation.backend` 为 auto 时，隔离子代理（在允许时）在检出中运行而非原生克隆，`/wt` 也会把会话移入检出而非关联的工作树"
     },
     "task.workerThreads": {
       "sourceHash": "0a7c778920109fba9b1bbdbdf361023e40995774a64077f9a973aedf244a7ebc",
@@ -3460,9 +3460,9 @@ export const zhCN = {
       "description": "保存截图的目录。未设置时，截图会保存到临时文件。支持 ~。示例：~/Downloads、~/Desktop、/sdcard/Download（Android）"
     },
     "tools.intentTracing": {
-      "sourceHash": "c3bc5fc30301eb49b3cc478dbb62b7782646274d8b03d80334b189e35aa34d82",
+      "sourceHash": "54dbe56ae74349d81a61d91ee8498e654f2660ac1df9e5c4bd5c6b86aebb0118",
       "label": "意图追踪",
-      "description": "要求 agent 在执行每个工具调用前说明其意图"
+      "description": "要求 agent 在执行每个工具调用前说明其意图。未设置时：交互式 TUI 中开启，print、RPC、ACP 和 SDK 会话中关闭"
     },
     "tools.abortOnFabricatedResult": {
       "sourceHash": "1147a3e5a734d140cf86a651cb2306223b3d07d70c3c120e0a98fa6a4a37ffc1",
@@ -3562,6 +3562,16 @@ export const zhCN = {
       "sourceHash": "e29995ca2c17ba56e659b548eab599cc2b8fc22663caf692fd87dd7543ba4b53",
       "label": "MCP 通知防抖",
       "description": "MCP 资源更新注入对话前的防抖窗口，单位为毫秒"
+    },
+    "mcp.evalNamespaces": {
+      "sourceHash": "0271fcabe6f499ff6679ce667ce05f90d26824449da5afdf39ed530fa58c4b82",
+      "label": "MCP eval 命名空间",
+      "description": "将每个 MCP 服务器公开为 eval 全局对象（github.create_issue(...)），而不是顶层工具或 xd:// 工具"
+    },
+    "mcp.builtinTransforms": {
+      "sourceHash": "48fff1e8d97416a6189b47a993b199986ca748248d56af8bdb3d6fb2e9231730",
+      "label": "MCP 内置转换",
+      "description": "跳过已被 omp 自带工具取代的已识别 MCP 服务器（eval 可运行 JavaScript 时的 Codex node_repl）"
     },
     "plan.enabled": {
       "sourceHash": "3ccd9f953d421df50fea843172f59f3785b4371ea11cb93c757642da94df63cc",
@@ -3747,9 +3757,14 @@ export const zhCN = {
       }
     },
     "task.enableLsp": {
-      "sourceHash": "8266d8ac4042f7ed00343ee380bfbfaaf546d874f1d485ee8177ecba2777d702",
-      "label": "在子代理中使用 LSP",
-      "description": "允许通过 task 工具生成的子代理使用 lsp 工具。默认为关闭以降低子代理的 token 开销；当支持 LSP 的委派值得消耗额外 token 时可启用"
+      "sourceHash": "b672e7fcd90548744b209f835b8593bbd3337ff665183ad0b72cd37219a39bcd",
+      "label": "子代理编辑的 LSP 检查",
+      "description": "对子代理的编辑运行 LSP 格式化和诊断。默认关闭以降低子代理开销；无论是否开启，子代理都可使用 lsp 工具。"
+    },
+    "task.crossInstance": {
+      "sourceHash": "fd6dd434026b6df4e330c4fc16a17c038c8c768299f74548a433d14cd2a984b5",
+      "label": "跨实例 Agent 消息",
+      "description": "允许此文件夹中的其他 omp 实例读取 Agent 输出，并发送可唤醒 Agent 的消息"
     },
     "task.maxRecursionDepth": {
       "sourceHash": "d0d14939c269a02a443d715b757fe1d63925815b7d48add13466ee3b81a63f15",
@@ -4831,9 +4846,9 @@ export const zhCN = {
       "description": "通过 Codex WebSocket，将 GPT-6 回复流式输出期间输入的消息直接送入该回复，而不是等待下一个工具边界"
     },
     "providers.cacheWarming": {
-      "sourceHash": "92adf61f240c5286461b82e98d2369cd0d6cc9c9656ae09b4c6f936e160699a8",
+      "sourceHash": "5b6489151ec4344b476990d8e4aa15da3cd6eee7f8733fb6100352d0e9df3f04",
       "label": "缓存保温",
-      "description": "在提示词缓存条目即将过期前，以 1 token 的输出额度重新发送上一次请求",
+      "description": "在上一次请求的提示词缓存条目即将过期前刷新它（Anthropic 使用 max_tokens 0 预热，其他情况以 1 token 输出重放）",
       "options": {
         "off": {
           "label": "关闭",
@@ -4847,6 +4862,49 @@ export const zhCN = {
           "label": "空闲期间",
           "description": "预期节省仍高于成本下限时，也在两次运行之间刷新 5 分钟缓存条目"
         }
+      }
+    },
+    "providers.cacheWarmingStrategy": {
+      "sourceHash": "55f2b60221283c367bf2b221916a6fafd57831738205111a9cd781c3820e7d67",
+      "label": "缓存保温策略",
+      "description": "刷新不再划算后如何衔接长时间工具调用：在缓存过期前压缩历史，或任其过期",
+      "options": {
+        "auto": {
+          "label": "自动",
+          "description": "刷新支出不超过更便宜的重建成本时持续刷新，之后压缩大型提示词或任缓存条目过期"
+        },
+        "keepalive": {
+          "label": "保持存活",
+          "description": "从不压缩；持续刷新直到不再划算"
+        },
+        "compact": {
+          "label": "压缩",
+          "description": "提示词达到衔接压缩阈值后，在首次决策时即压缩"
+        }
+      }
+    },
+    "providers.cacheWarmingCompactPercent": {
+      "sourceHash": "518091892cf3a7bba501828e086354cdc56dd59bd90dc2cff54622dc97596767",
+      "label": "缓存衔接压缩百分比",
+      "description": "提示词须达到上下文窗口的该比例，长时间工具调用才可通过压缩衔接；与 token 数限制取较低者",
+      "options": {
+        "40": { "label": "40%" },
+        "50": { "label": "50%" },
+        "60": { "label": "60%" },
+        "70": { "label": "70%" },
+        "80": { "label": "80%" }
+      }
+    },
+    "providers.cacheWarmingCompactTokens": {
+      "sourceHash": "44c7f9ecf9806049db54123dc94b809a3e45638e2e097b66133b36ccf5049c15",
+      "label": "缓存衔接压缩 token 数",
+      "description": "提示词达到该 token 数后，长时间工具调用才可通过压缩衔接；与窗口百分比取较低者",
+      "options": {
+        "50000": { "label": "50K token" },
+        "100000": { "label": "100K token" },
+        "150000": { "label": "150K token" },
+        "200000": { "label": "200K token" },
+        "300000": { "label": "300K token" }
       }
     },
     "claudeResets.autoRedeem5h": {
@@ -5022,13 +5080,13 @@ export const zhCN = {
       "description": "允许任务通过 `isolated: true` 单独启用隔离；未指定的任务在共享检出目录中运行"
     },
     "isolation.backend": {
-      "sourceHash": "0bd12fc8c9293d74a71f05feb511e2387cb1267f37a967478f2dad76a373f90f",
+      "sourceHash": "1e899fa5bdbfc31f70c50e35c1cb7e4808d540c5d10c4b555988f6f8e1721717",
       "label": "隔离后端",
       "description": "用于子代理隔离和工作树克隆的后端",
       "options": {
         "auto": {
           "label": "自动",
-          "description": "找到 ovnfs 时，隔离子代理使用 ovnfs 检出；否则（以及工作树场景）由 PAL 选择可用的最佳后端"
+          "description": "找到 ovnfs 时，隔离子代理和 `/wt` 使用 ovnfs 检出；否则（以及其他工作树场景）由 PAL 选择可用的最佳后端"
         },
         "apfs": {
           "label": "APFS",

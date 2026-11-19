@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 18.22.2 (e1ae2cc998efd1ca151b46ebefc0e0dab6c23c63). */
+/* Display-only translations; source-review baseline OMP 19.0.0 (57771ae562b9345e0579bceb2d68d585e3e6927e). */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -317,8 +317,8 @@ export const slashCommandTranslations = [
   },
   {
     "name": "handoff",
-    "en": "Summarize the session into a handoff document and compact in place",
-    "zh": "将会话总结为交接文档，并压缩当前上下文"
+    "en": "Compact in the background with a handoff summary (alias for /compact handoff)",
+    "zh": "在后台以交接摘要压缩上下文（等同于 /compact handoff）"
   },
   {
     "name": "resume",

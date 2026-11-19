@@ -33,9 +33,10 @@
 | 18.20.2（历史候选） | 18.20.2 | 未发布，由18.20.3取代；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同、compiled smoke（测试专属opener）与Spotlight worker API对照通过；Tern未验证 |
 | 18.20.3（历史候选） | 18.20.3 | 未发布，由18.22.0取代；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同与compiled smoke（测试专属opener）通过；Tern未验证 |
 | 18.22.0（历史候选） | 18.22.0 | 未发布，由18.22.2取代；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同与compiled smoke（测试专属opener）通过；Tern未验证 |
-| 18.22.2（候选） | 18.22.2 | 未发布；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同与compiled smoke（测试专属opener）通过；Tern未验证 |
+| 18.22.2（历史候选） | 18.22.2 | 未发布，由19.0.0取代；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同与compiled smoke（测试专属opener）通过；Tern未验证 |
+| 19.0.0（候选） | 19.0.0 | 未发布；仍锁屏，默认opener、完整三面、冷摄取与冷安装未重验；源码合同与compiled smoke（测试专属opener）通过；Tern未验证 |
 
-同一主版本的后续 OMP 版本会执行结构预检，但在完成 CI 和真实 `/settings` 验证前不视为正式支持。OMP 19 及以上版本默认失败关闭。
+同一主版本的后续 OMP 版本会执行结构预检，但在完成 CI 和真实 `/settings` 验证前不视为正式支持。当前候选只接受 OMP 19.x；18.x 与 20 及以上版本默认失败关闭。
 
 ## Stats 本地服务边界
 
@@ -43,7 +44,7 @@
 官方 update 透传时仅调整该命令 PATH 的目录优先级，使更新落在已记录的真正官方二进制而非受管启动器；不替换官方下载/校验/更新逻辑，不改用户永久 PATH 的其它内容。
 安装阶段通过官方目录解析器恢复活动 Profile／XDG 下的稳定包链接，不绑定升级前缓存目录；只有与当前模块 realpath 一致的安装入口才接受。目录解析不读取凭据或配置值。
 
-Web 模式为 Stats 子进程创建私有预加载 CJS，通过合并 `BUN_OPTIONS` 在启动时包装 `Bun.serve`。原 handler 先执行；只对带官方 Stats 身份标记的成功 HTML 注入脚本，在同一监听器提供同源 JS，不增加代理或其它监听器。非 Stats 服务、原授权拒绝/错误、API/SSE、方法与 CORS 行为保持；`x-omp-stats-dashboard` 是身份标记，**不是权限验证**。18.15.0官方`/api/close`另要求`X-Omp-Stats-Action:1`，身份头不能替代该操作头；插件不读取、翻译或放宽关闭API。原静态资源允许的跨 Origin/Host 请求仍按官方规则处理，不宣称额外拦截已发生。
+Web 模式为 Stats 子进程创建私有预加载 CJS，通过合并 `BUN_OPTIONS` 在启动时包装 `Bun.serve`。原 handler 先执行；只对带官方 Stats 身份标记的成功 HTML 注入脚本，在同一监听器提供同源 JS，不增加代理或其它监听器。非 Stats 服务、原授权拒绝/错误、API/SSE、方法与 CORS 行为保持；`x-omp-stats-dashboard` 是身份标记，**不是权限验证**。18.15.0官方`/api/close`另要求`X-Omp-Stats-Action:1`，身份头不能替代该操作头；插件不读取、翻译或放宽关闭API。原静态资源允许的跨 Origin/Host 请求仍按官方规则处理，不宣称额外拦截已发生。19.0.0官方新增DNS重绑定防护：IP字面量、localhost、单标签名与私有后缀（`.local`、`.lan`、`.ts.net`等）之外的点分Host须为绑定名或列入`OMP_STATS_ALLOWED_HOSTS`，否则官方返回403纯文本；该拒绝来自官方handler，插件因非ok响应原样透传，不放宽、不扩展该规则。
 
 服务的默认回环地址和显式 `--host` 均原样保留，公开官方端口仍有隐私风险；本插件不提供外网保护层，不要把会话统计公开到互联网。Bun 的预加载参数不能可靠解析含空格路径，启动器为此使用安全字符的私有临时路径；已有 BUN_OPTIONS 不覆盖。Hook 不作用于已经运行的服务，OMP/Bun 升级必须实测。
 
@@ -53,7 +54,7 @@ Web 模式为 Stats 子进程创建私有预加载 CJS，通过合并 `BUN_OPTIO
 
 测试只认领有 run 清单、page/target ID 和精确 origin 证据的页面及自有服务。专属浏览器 Profile、opener 与 PATH 隔离仅限测试子进程，不改系统默认浏览器或产品逻辑；真实默认 opener 默认另验。仅18.12.1获维护者明确授权豁免该项实际打开/失败回收验收，Release必须标注未验证，不申请桌面控制；此例外不自动延续，其他门禁不变。先关自有页面，再停服务并确认端口关闭，最后删除私有临时目录；异常分支继续清理剩余资源并汇总失败，任何残留阻止发布。用户既有页面、服务、设置、会话与凭据不在清理或提交范围。
 
-18.20.0、18.20.2、18.20.3、18.22.0与18.22.2五轮均`screenLocked:true`，原生AX窗口不可用；不绕过锁屏建立默认浏览器控制，也不拿旧版通过代证。18.20.2起各轮仅以无头受管Chrome和测试专属opener运行compiled smoke，18.20.2另用只记录URL的测试opener（未开页）对照原版/包装Spotlight API；二者都不是默认opener证据。官方#17758为当前tag祖先、query修复源码保持，但当前制品的冷摄取实际Web行为仍待解锁后独立验收。新设置只修改显示元数据，不改变暂停提供商的授权、Bash允许规则/环境变量匹配、选择性提交、待办提醒、Mnemopi召回过滤/嵌入请求、反汇编器/Ghidra下载与安装、内嵌网页远程加载、免密钥第三方网页服务、实时语音端点URL校验与密钥发送或工作树强制移除逻辑；`live.apiKey`凭据标记保持，`bash.allowedEnvVars`的安全警示（PATH、LD_PRELOAD等可导致任意命令执行）、`tui.renderEmbeds`会加载远程地址、`providers.webKeyless`会使用无你凭据的第三方服务以及`worktree.onExit`强制移除会丢失未提交工作的提示均完整保留在译文中。18.22.2官方新增无凭据的`@openai/codex`最新版本查询（Codex客户端版本记录），由官方执行；compiled smoke将其在建连前拦截并单列计数，插件不发起该请求。
+18.20.0、18.20.2、18.20.3、18.22.0、18.22.2与19.0.0六轮均`screenLocked:true`，原生AX窗口不可用；不绕过锁屏建立默认浏览器控制，也不拿旧版通过代证。18.20.2起各轮仅以无头受管Chrome和测试专属opener运行compiled smoke，18.20.2另用只记录URL的测试opener（未开页）对照原版/包装Spotlight API；二者都不是默认opener证据。官方#17758为当前tag祖先、query修复源码保持，但当前制品的冷摄取实际Web行为仍待解锁后独立验收。新设置只修改显示元数据，不改变暂停提供商的授权、Bash允许规则/环境变量匹配、选择性提交、待办提醒、Mnemopi召回过滤/嵌入请求、反汇编器/Ghidra下载与安装、内嵌网页远程加载、免密钥第三方网页服务、实时语音端点URL校验与密钥发送、工作树强制移除、缓存保温/衔接压缩计费、跨实例Agent消息或MCP eval命名空间/内置转换逻辑；`live.apiKey`凭据标记保持，`bash.allowedEnvVars`的安全警示（PATH、LD_PRELOAD等可导致任意命令执行）、`tui.renderEmbeds`会加载远程地址、`providers.webKeyless`会使用无你凭据的第三方服务、`task.crossInstance`允许同文件夹其他omp实例读取Agent输出并唤醒Agent以及`worktree.onExit`强制移除会丢失未提交工作的提示均完整保留在译文中。18.22.2官方新增无凭据的`@openai/codex`最新版本查询（Codex客户端版本记录），由官方执行；compiled smoke将其在建连前拦截并单列计数，插件不发起该请求。
 
 18.12.3本轮首个Stats登录shell驱动未在path_helper之后断言opener，潜在调用系统`/usr/bin/open`。精确origin为`http://127.0.0.1:52700`，因锁屏无法核实潜在原生页的target、存在或关闭；该轮不计全局零残留，即使其已知自有资源已回收也禁止发布。后续启动必须在同一shell处理完登录配置后，先断言`command -v open`（Linux为xdg-open）解析到本轮自有opener，再执行Stats；不得借安全重跑抹除未知页。解锁后仍须凭原生页面身份与run证据定向核查，不能批量关闭同origin页面。
 

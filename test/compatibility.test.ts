@@ -7,14 +7,16 @@ describe("checkHostCompatibility", () => {
     expect(checkHostCompatibility(createFakeHost())).toEqual({ compatible: true });
   });
 
-  test("fails closed on an unsupported major version", () => {
-    const host = createFakeHost();
-    host.version = "19.0.0";
+  test("fails closed on the previous and next major versions", () => {
+    for (const version of ["18.22.2", "20.0.0"]) {
+      const host = createFakeHost();
+      host.version = version;
 
-    const result = checkHostCompatibility(host);
+      const result = checkHostCompatibility(host);
 
-    expect(result.compatible).toBeFalse();
-    if (!result.compatible) expect(result.reason).toContain("19.0.0");
+      expect(result.compatible).toBeFalse();
+      if (!result.compatible) expect(result.reason).toContain(version);
+    }
   });
 
   test("rejects malformed setting metadata", () => {

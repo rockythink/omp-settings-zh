@@ -18,14 +18,14 @@
 
 ## 当前版本
 
-- 当前候选：`18.22.2`，面向官方 OMP 18.22.2，**尚未发布**；上一正式 Release 为 [v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，18.20.0、18.20.2、18.20.3、18.22.0 候选均未发布并由本候选取代。main、源码编号和本机升级不等于 Release
-- 目标官方宿主：OMP18.22.2（官方`update.auto`装到原官方位置，受管启动器未变），SHA-256匹配官方darwin-arm64资产；compiled内嵌及最低外部Bun1.4.4。已有Agent/Stats进程不热加载新代码，须重启
-- Settings：471项UI；18.22.2新增`providers.webKeyless`（免密钥网页服务）、`live.endpoint`（实时语音端点）、`live.apiKey`（实时语音端点API密钥）三项译文，`live.voice`（可填自定义音色，Codex音色为建议项）、`task.structured`、`browser.relay`/`cmux`/`tern`按新原文改译；18.22.0曾新增`tui.renderEmbeds`、反汇编器与Ghidra六项并改为Phonon音色。其余463项不重译。功能默认值与执行逻辑由官方负责
+- 当前候选：`19.0.0`，面向官方 OMP 19.0.0（主版本），**尚未发布**；上一正式 Release 为 [v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，18.20.0、18.20.2、18.20.3、18.22.0、18.22.2 候选均未发布并由本候选取代。main、源码编号和本机升级不等于 Release
+- 目标官方宿主：OMP19.0.0（官方`update.auto`装到原官方位置，受管启动器未变），SHA-256匹配官方darwin-arm64资产；compiled内嵌及最低外部Bun1.4.4。兼容预检只接受主版本19：18.x宿主上本候选失败关闭，19.x宿主上旧插件同样失败关闭（官方英文保留），须升级插件并重启OMP
+- Settings：477项UI；19.0.0新增缓存保温策略与两项缓存衔接压缩阈值、`task.crossInstance`（跨实例 Agent 消息）、`mcp.evalNamespaces`、`mcp.builtinTransforms`六项译文，`providers.cacheWarming`、`tools.intentTracing`、`isolation.backend`、`ovnfs.path`、`task.enableLsp`按新原文改译；其余466项不重译。功能默认值与执行逻辑由官方负责
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写`config.yml`；选项显示副本与`/effort`参数原文隔离
-- Commands：89定义、98标识、9别名、27动态回调；18.22.2命令列表、静态原文、别名、动态说明与补全接口均不变。参数、第三方说明、模型/提供商ID和effort值不译
-- 验收范围：macOS/Linux普通终端＋系统浏览器。18.22.2完成源码合同与compiled smoke（无头受管浏览器＋测试专属opener）；本轮仍锁屏，真实Settings/Commands交互、Stats完整网页/默认opener与冷安装等门禁未重验，不能按三面通过发布。Tern路径未验证、不宣称支持；Windows不纳入
-- Stats：实际运行官方18.22.2编译CLI，不以固定npm包替代。18.22.2客户端仅Gain页变化（新增Snapcompact压缩来源与说明），同步改译说明/空态并为“来源”列两个固定标签加列限定映射；保留898键、151通用模板＋9属性模板、6个失败原因与2个Gain来源限定标签。未知文案、数值、请求/会话正文、错误原文及canvas文字保留；少量混合数据提示保留英文
-- 18.18.8启动器修复沿用；官方后台更新18.22.0→18.22.2装在原官方位置，`omp update`报告已最新
+- Commands：89定义、98标识、9别名、27动态回调；19.0.0仅`/handoff`说明改为后台交接压缩（等同`/compact handoff`），命令列表、别名、动态说明与补全接口不变。参数、第三方说明、模型/提供商ID和effort值不译
+- 验收范围：macOS/Linux普通终端＋系统浏览器。19.0.0完成源码合同与compiled smoke（无头受管浏览器＋测试专属opener）；本轮仍锁屏，真实Settings/Commands交互、Stats完整网页/默认opener与冷安装等门禁未重验，不能按三面通过发布。Tern路径未验证、不宣称支持；Windows不纳入
+- Stats：实际运行官方19.0.0编译CLI，不以固定npm包替代。19.0.0概览Token构成改为“按来源”（智能体类型＋语言模型旁路用途）并新增“决策模型”卡；插件补译卡片文案，仅对该行列表中的三个固定智能体标签翻译，旁路用途类别（来自存储的purpose）保持原文。官方新增DNS重绑定Host防护（非本机/私有名返回403），包装层先执行原handler并原样透传
+- 18.18.8启动器修复沿用；官方后台更新18.22.2→19.0.0装在原官方位置，`omp update`报告已最新
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -72,7 +72,8 @@
 | 18.20.2（历史未发布候选） | 18.20.2（源码合同、compiled smoke与Spotlight API对照；锁屏下完整交互/网页/默认opener门禁未重验） | >=18.20.2 <19 |
 | 18.20.3（历史未发布候选） | 18.20.3（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=18.20.3 <19 |
 | 18.22.0（历史未发布候选） | 18.22.0（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=18.22.0 <19 |
-| 18.22.2（未发布候选） | 18.22.2（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=18.22.2 <19 |
+| 18.22.2（历史未发布候选） | 18.22.2（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=18.22.2 <19 |
+| 19.0.0（未发布候选） | 19.0.0（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=19.0.0 <20 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 
@@ -84,7 +85,7 @@ Advisor、Prewalk、Mnemopi、Snapcompact、Archive、MCP、LSP、API、eval、�
 
 ## 安装
 
-当前候选要求官方OMP `>=18.22.2 <19`及外部Bun `>=1.4.4`。各版本实际验证基线见上表，正式Release仍为18.19.0；安装main可能取得未发布候选。发布主线仅macOS/Linux。Windows PR #1现场仍CLOSED、isDraft:true、mergedAt:null，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端仅维护main工作分支。通过官方插件管理器安装：
+当前候选要求官方OMP `>=19.0.0 <20`及外部Bun `>=1.4.4`。各版本实际验证基线见上表，正式Release仍为18.19.0；安装main可能取得未发布候选。发布主线仅macOS/Linux。Windows PR #1现场仍CLOSED、isDraft:true、mergedAt:null，草稿由非发布tag [`archive/windows-support-20261018`](https://github.com/rockythink/omp-settings-zh/tree/archive/windows-support-20261018)保留，不宣称正式支持；本地与远端仅维护main工作分支。通过官方插件管理器安装：
 
 ```sh
 omp plugin install github:rockythink/omp-settings-zh

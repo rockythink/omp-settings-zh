@@ -1,7 +1,7 @@
 /**
- * Display-only copy reviewed against @oh-my-pi/omp-stats 18.17.0 (119 Stats
- * source files, including 95 client files). Adds the official Spotlight page;
- * unchanged pages retain their existing copy and data boundaries.
+ * Display-only copy reviewed against @oh-my-pi/omp-stats 19.0.0 (Overview now
+ * splits tokens by source and adds a decision-model card). Unchanged pages
+ * retain their existing copy and data boundaries.
  * Apply only to known UI text/attributes, never journal payloads,
  * identifiers, or arbitrary data cells.
  * Protocol names, command names, currencies, and brands remain unchanged.
@@ -157,7 +157,6 @@ export const statsZh: Record<string, string> = {
 	"Top model": "费用最高的模型",
 	"By model": "按模型",
 	"By component": "按计费项",
-	"By agent": "按智能体",
 	"By source": "按来源",
 	"By tool": "按工具",
 	"By tool and model": "按工具与模型",
@@ -185,6 +184,8 @@ export const statsZh: Record<string, string> = {
 	"Token mix": "Token 构成",
 	"Where conversation tokens went": "对话 Token 的分布",
 	"Latest requests": "最新请求",
+	"Decision models": "决策模型",
+	"Where decision-model tokens went, by use case": "决策模型 Token 按用途的分布",
 	"Most recent model calls across every session": "所有会话中最近的模型调用",
 	"All requests": "全部请求",
 	"Daily estimate": "每日费用估算",

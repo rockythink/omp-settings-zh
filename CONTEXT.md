@@ -1,6 +1,26 @@
 # Project Context
 
-## 18.22.2 定向适配（2026-11-18，未发布）
+## 19.0.0 主版本适配（2026-11-19，未发布）
+
+起点本地main、origin/main均`b4315ab081a251f962e2be17875ae7eb2806e073`（18.22.2未发布候选，[CI 44332758590](https://github.com/rockythink/omp-settings-zh/actions/runs/44332758590) macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方当日发布主版本v19.0.0，coding-agent/utils/Stats/TUI最新稳定版均19.0.0，构成新适配并取代18.22.2候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。另有3个更早Orca任务的omp会话（PID 5474/48550/74300，启动于11-13及之前）仍在运行，非本轮资源、未操作。
+
+**宿主与来源**：开始时本机官方为18.22.2，用户`update.auto`的官方worker（PID 2733）正在打补丁；经受管启动器`omp update`先报告“Another omp update is already running”，worker随后“Updated to 19.0.0 at …/.local/bin/omp”，再次`omp update`报告Already up to date。SHA-256 `a5ee90b2ffcc0c1f031dbd4bedd4ff8e0c884ec8e69b700f4c5d76a1eae89daf`与官方darwin-arm64资产digest及SHA256SUMS相同，受管启动器仍为原shell脚本。官方tag commit `57771ae562b9345e0579bceb2d68d585e3e6927e`稀疏检出与npm源码逐字节比较：coding-agent 2046份一致（仅4个导出模板源按package.files排除）、utils133/Stats121/TUI473份全同。#17758合并提交`febb2679…`为v19.0.0祖先（ahead 4640、behind 0）。
+
+**主版本兼容判定**：19.0.0的破坏性变化集中在SDK（cacheWarming取"off"/"streaming"/"idle"、artifact://→local://N.log、`session.handoff`→`compact(focus,{mode:"handoff"})`、统一per-user daemon与`omp ps`输出、`deferHintCompression`改名）。插件依赖面逐项核对：`config/registry`/`all-settings`/`settings-ui`仅`mcp-schema.json`变化、设置结构合同不变；`builtin-registry.ts`逐字节不变；extensibility的`addAutocompleteProvider`与补全类型不变（types仅新增`onAbandon`、`CompactOptions.signal`及缓存保温类型）；`pi-tui/autocomplete.ts`仅注释；utils`getPluginsNodeModules`与`VERSION`不变（dirs仅daemon目录函数重组）；Stats CLI/openPath不变。判定可安全适配：兼容预检主版本18→19，peer`>=19.0.0 <20`。本机已装插件仍为18.22.2，在19.0.0宿主上按设计失败关闭（官方英文），属安装漂移，需插件升级后重启OMP。
+
+**Settings**：638定义/477UI/9动态getter。新增`providers.cacheWarmingStrategy`（缓存保温策略：自动/保持存活/压缩）、`providers.cacheWarmingCompactPercent`（缓存衔接压缩百分比40–80%）、`providers.cacheWarmingCompactTokens`（缓存衔接压缩 token 数50K–300K）、`task.crossInstance`（跨实例 Agent 消息）、`mcp.evalNamespaces`（MCP eval 命名空间）、`mcp.builtinTransforms`（MCP 内置转换）六项；`providers.cacheWarming`（Anthropic max_tokens 0预热/否则1 token重放）、`tools.intentTracing`（未设置时仅交互式TUI开启）、`isolation.backend`的auto选项与`ovnfs.path`（`/wt`也移入ovnfs检出）、`task.enableLsp`（子代理编辑的LSP检查，lsp工具始终可用）五项按新原文改译。其余466项原文哈希不变、不重译。compiled TUI中文搜索/原生编辑/en-zh与effort参数隔离未重验。
+
+**Commands**：89定义/98标识/9别名/27动态回调；commands:check首轮仅`handoff`原文漂移（新原文“Compact in the background with a handoff summary (alias for /compact handoff)”），改译后漂移0。命令目录仅`builtin-completions.ts`导入移动与`builtin-lifecycle.ts`（`/handoff`并入`/compact`后台压缩）变化；runner/types/interactive-mode/rpc/agent-session的diff无补全相关行。compiled顶层列表、别名、动态状态与Tab/Enter交互未重验。
+
+**Stats**：121源码，客户端仅OverviewRoute/view-models/colors/types变化：Token构成卡“By agent”→“By source”（智能体类型＋语言模型旁路用途类别），新增“Decision models”卡；行标签移入`.row > .truncate`。不改插件会使三个智能体标签回退英文（原规则只匹配`.row`直接文本）。新增`shareAgentLabel`仅对Token构成卡中原文为Main agent/Subagents/Advisor的`.truncate`翻译，旁路类别（服务端`side-channels.ts`由存储purpose派生并首字母大写）即使与词典同名（Judge/Thinking）也保持原文；“Decision models”卡的“N req”按既有模板翻译、类别不译；删除失效“By agent”键，字典898→899。服务端新增DNS重绑定Host防护（403纯文本，可经`OMP_STATS_ALLOWED_HOSTS`放行），preload对非ok响应原样透传，单元测试中的跨Host夹具仅代表包装层不额外拦截。当前制品冷摄取实际Web未重验。
+
+**回归**：`bun install`更新锁文件；冻结安装无变化，完整`bun run check`71pass/0fail、2731断言，Settings477/477、Schema0，Commands89/89、98标识、漂移0，2094显示变更/3次恢复/源码网络0。真实官方19.0.0绝对路径`scripts/smoke-cli.ts`（本地link，无头独占Chrome，测试专属opener转交URL）首轮通过：成功/人为断言失败预检、5页建/5关、两服务（54900/54908）各单监听器、compiled Bun1.4.4合并`--smol`与用户preload、doctor3/1/0、16目录GET/1 Codex版本GET/2身份GET/1无凭据HEAD在dispatch前拦截，推理0，cleanupErrors0；浏览器/服务PID均ESRCH、端口关闭、run树与私有preload目录删除、监听列表与开跑前基线一致。概览新DOM throwaway驱动（scratchpad，Bun临时同源服务＋独占headless Chrome临时Profile，按React方式拆分`{n} req`文本节点）：zh下智能体三标签中文、Thinking/Judge/Title/Find保持原文、卡片标题/说明/分区标签中文、“N 次请求”；English恢复；改写复用节点后重译；share-bar title保持原文。
+
+**环境未验与恢复条件**：起止ioreg均`CGSSessionScreenIsLocked:true`；前提未变，不重复完整最终矩阵（TUI三面交互、12页Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期、精确SHA冷GitHub安装）。不是插件回归或官方缺陷。解锁后固定19.0.0（或届时最新）宿主与最终SHA完整重验，通过全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+
+**本轮资源**：run `omp-maint-20261119-d919e99f`，基线（监听列表、omp/headless PID）与账本在会话scratchpad。smoke run树`omp-native-posix-LhcFb8`、树外账本`<TMPDIR>/omp-native-posix-LhcFb8.resources.json`：5页建/关、独占Chrome退出、2服务闭合。概览驱动4次运行（2次错误入口路径未启动任何资源；1次因夹具响应缺UTF-8 charset未挂载语言控件而超时、1次人为断言失败，均在finally关页/关浏览器/停服务/删Profile；末次正常通过），每次1页建/关、浏览器ESRCH、临时端口关闭、Profile删除。未操作用户真实浏览器页面、既有服务（含既有omp监听55690/63100）或其他会话。
+
+## 18.22.2 定向适配（2026-11-18，未发布，由19.0.0取代）
 
 起点本地main、origin/main均`0e2ed4246e4c4fd3dcae0082f6fa32f431f7ab5c`（18.22.0未发布候选）；其[CI 44111103565](https://github.com/rockythink/omp-settings-zh/actions/runs/44111103565) Linux成功、macOS cancelled（steps空、runner_name空，注释“not acquired by Runner … after multiple attempts”与macOS arm64容量提示），属CI环境未验，不是测试失败。最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方coding-agent/utils/Stats/TUI最新稳定版均18.22.2（中间18.22.1），构成新适配并取代18.22.0候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。
 
@@ -578,8 +598,8 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前Settings为462项UI元数据、622定义、9动态getter；18.20.2新增解除暂停的提供商、运行中待办提醒、选择性提交、Bash允许的环境变量四项，其余不重译。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
-- 当前Commands为90定义、99名称/别名的顶层说明、实时状态与技能数量；9别名、27动态回调保持。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
+- 当前Settings为477项UI元数据、638定义、9动态getter；新增项只译显示，其余不重译。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
+- 当前Commands为89定义、98名称/别名的顶层说明、实时状态与技能数量；9别名、27动态回调保持。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。
 - 设置语言只保留在当前进程，下次启动默认中文；设置汉化不写配置、不读当前设置值或凭据、不联网。

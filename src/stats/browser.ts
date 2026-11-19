@@ -62,6 +62,8 @@ import { invalidateExternalWrites } from "./mutations";
 	].join(",");
 	const dataStatLabels: Readonly<Record<string, true>> = { "Most used": true, "Top model": true, "Affected models": true };
 	const fixedChartCards: Readonly<Record<string, true>> = { Activity: true, "Token mix": true, "Savings over time": true, "Where it went": true };
+	// Overview's share rows name agent types (UI) beside side-channel categories (stored purposes, data).
+	const shareAgentLabels: Readonly<Record<string, true>> = { "Main agent": true, Subagents: true, Advisor: true };
 
 	function sourceText(element: Element | null): string {
 		if (!element) return "";
@@ -99,6 +101,13 @@ import { invalidateExternalWrites } from "./mutations";
 	function gainSourceLabel(text: Text): boolean {
 		const parent = text.parentElement;
 		return !!parent && parent.matches(".cell-primary") && parent.childNodes.length === 1 && columnHeader(parent) === "Source";
+	}
+
+	function shareAgentLabel(text: Text): boolean {
+		const parent = text.parentElement;
+		if (!parent || !parent.matches(".row > .truncate") || cardTitle(parent) !== "Token mix") return false;
+		const state = texts.get(text);
+		return Object.hasOwn(shareAgentLabels, (state && text.data === state.rendered ? state.original : text.data).trim());
 	}
 
 	function fixedChart(element: Element): boolean {
@@ -168,7 +177,8 @@ import { invalidateExternalWrites } from "./mutations";
 				["Peak burn hours", "Frustration by model version"].includes(title);
 		}
 		if (parent.matches(".costs-component-row > span:not(.num), .card-footer, .card-footer > span")) return true;
-		if (parent.matches(".row, .row > .num") && cardTitle(parent) === "Token mix") return true;
+		if (shareAgentLabel(text)) return true;
+		if (parent.matches(".row, .row > .num") && ["Token mix", "Decision models"].includes(cardTitle(parent))) return true;
 		if (parent.matches(".frustration-quote > .micro, .frustration-progress-head > .num, .frustration-progress-meta > span, .frustration-progress-meta > span > .num, .frustration-judge > p.muted, .frustration-judge > p.micro.dim, .modal-body > p.micro.dim")) return true;
 		if (parent.matches(".card-title > .badge")) return true;
 		if (parent.matches(".traces-row-meta > .tone-bad")) return true;

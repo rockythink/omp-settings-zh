@@ -2,7 +2,7 @@ import type { HostMetadata } from "../../src/compatibility";
 
 export function createFakeHost(): HostMetadata {
   return {
-    version: "18.4.6",
+    version: "19.0.0",
     platform: process.platform,
     schema: {
       autoResume: {

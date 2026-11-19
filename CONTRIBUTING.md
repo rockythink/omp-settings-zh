@@ -4,9 +4,9 @@
 
 ## 当前版本
 
-`18.22.2` 是面向官方OMP18.22.2的未发布候选，正式Release仍为18.19.0。471项设置新增`providers.webKeyless`、`live.endpoint`、`live.apiKey`三项译文，按新原文改译`live.voice`、`task.structured`、`browser.relay`/`cmux`/`tern`五项；其余463项不重译；共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
+`19.0.0` 是面向官方OMP19.0.0（主版本）的未发布候选，正式Release仍为18.19.0。477项设置新增缓存保温策略、两项缓存衔接压缩阈值、`task.crossInstance`、`mcp.evalNamespaces`、`mcp.builtinTransforms`六项译文，按新原文改译`providers.cacheWarming`、`tools.intentTracing`、`isolation.backend`、`ovnfs.path`、`task.enableLsp`五项；其余466项不重译；共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
 
-当前覆盖89个内置命令、98名称/别名、9别名和27动态回调，18.22.2命令列表、原文、别名、动态说明与补全接口相对18.22.0不变；模型/参数/文件/第三方说明不译。Stats 120份源码中仅Gain页变化，已同步译文并为来源列加限定映射；898键及160模板保持。本轮锁屏，完整三面compiled/Web验收未重验，不能发布。Tern可选未验证、Windows不纳入。
+当前覆盖89个内置命令、98名称/别名、9别名和27动态回调，19.0.0仅`/handoff`说明变化并改译，命令列表、别名、动态说明与补全接口不变；模型/参数/文件/第三方说明不译。Stats概览新增“按来源”与“决策模型”，补译卡片文案，仅三个固定智能体标签在该行列表中翻译、旁路用途类别保持原文；899键及160模板。本轮锁屏，完整三面compiled/Web验收未重验，不能发布。Tern可选未验证、Windows不纳入。
 
 - [产品需求](docs/PRD.md)
 - [技术设计](docs/TECHNICAL-DESIGN.md)
@@ -39,7 +39,7 @@
 
 - macOS 或 Linux；
 - Bun 1.4.4 或更新版本；外部启动器与官方compiled内嵌Bun须分别核对；
-- 官方 OMP18.22.2；候选仅完成源码合同与compiled smoke，历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
+- 官方 OMP19.0.0；候选仅完成源码合同与compiled smoke，历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
 - Git。
 
 项目保持以下脚本契约：
