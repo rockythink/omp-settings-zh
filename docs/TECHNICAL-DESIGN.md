@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：19.0.0，未发布；main与源码编号不是发布证据
-- 目标基线：官方OMP19.0.0、外部Bun最低1.4.4；Tern可选未验证
+- 实现候选：19.0.1，未发布；main与源码编号不是发布证据
+- 目标基线：官方OMP19.0.1、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -119,6 +119,8 @@
 
 19.0.0命令目录仅`builtin-completions.ts`（导入路径移动）与`builtin-lifecycle.ts`（`/handoff`改为`/compact handoff`后台压缩，`session.handoff`改由`compact(focus,{mode:"handoff"})`）变化；`/handoff`静态说明随之改译。`builtin-registry.ts`（27动态回调）逐字节不变，extensibility的runner/types、interactive-mode与`pi-tui/autocomplete.ts`的变化均不涉及补全provider接口（types仅新增表单`onAbandon`、`CompactOptions.signal`与缓存保温类型导出；autocomplete仅注释）。
 
+19.0.1命令目录仅`builtin-collaboration.ts`变化（`/copy local`先创建并复制会话`local://`目录，用法提示同步），属执行侧；`builtin-registry.ts`、`pi-tui/autocomplete.ts`不变，extensibility types仅plan review注释与模型`snapcompactShape`字段。
+
 ## Stats Web 显示适配
 
 - `src/index.ts` 异步 ExtensionFactory 默认等待 `installLauncher()`：官方 GitHub/npm 安装验证会 await factory，每次扩展加载也幂等维护。无 Stats 启用命令；本地 link 在首次扩展加载时自动接入。
@@ -163,6 +165,7 @@
 - 18.22.0：`@oh-my-pi/omp-stats`仅版本与依赖号变化，120源码逐字节不变；browser/mutations/preload不改。utils仅新增`getGhidraDir`与marked URL边界修复，`getPluginsNodeModules`不变。
 - 18.22.2：120源码，客户端仅`GainRoute.tsx`变化：`GainSource`新增`compaction`（服务端读`snapcompact_compactions`表，计算归官方），来源列`SOURCE_LABEL`改为“Snapcompact imaged tool results”/“Snapcompact compaction (context freed)”，页头说明与空态提示改写。插件替换范围模板与空态键，并在`browser.ts`新增`gainSourceLabel`：仅表头为“Source”的`.cell-primary`单文本节点经独立的`statsGainSources`映射（2个固定标签），其他列同文本仍为数据原文；mutations/preload不改。
 - 19.0.0：客户端仅OverviewRoute/view-models/colors/types变化：Token构成卡的“By agent”改为“By source”（智能体类型＋语言模型旁路用途类别），新增“Decision models”卡（决策模型按用途），标签改放在`.row > .truncate`。插件删除失效的“By agent”键，补“Decision models”及说明；`browser.ts`新增`shareAgentLabel`：仅Token构成卡中`.row > .truncate`且原文为三个固定智能体标签时翻译，旁路类别（服务端由存储purpose派生，含与词典同名的Judge/Thinking）保持原文；“N req”行在两卡均按既有模板翻译。服务端新增DNS重绑定Host防护（公开点分名需为绑定名或`OMP_STATS_ALLOWED_HOSTS`，否则403纯文本），preload先执行原handler、非ok响应原样返回。
+- 19.0.1：客户端仅Shell/TimeChart/range/types变化：`TIME_RANGES`在24h与7d之间新增2d/3d（按小时分桶），按钮提示`${windowLabel} (${i+1})`序号随之后移，侧栏快捷键提示改为`1–8`，跨日刻度按日显示。插件补“2d/3d”“the last 2 days/3 days”键，范围展开表按官方顺序扩为8项（含序号提示与各页范围说明模板）；browser/mutations/preload不改。测试从官方`TIME_RANGES`/`rangeMeta`推导，官方再增删范围时失败。
 
 ## 6. 检查与真实验证
 
@@ -188,7 +191,7 @@
 
 ## 7. 发布边界
 
-当前源码/开发依赖/目标宿主候选为19.0.0，范围`>=19.0.0 <20`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3、18.22.0、18.22.2候选未发布并由19.0.0取代。19.0.0本轮仍锁屏，仅通过源码合同、compiled smoke（无头受管Chrome＋测试专属opener）与概览新DOM的受管headless驱动；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
+当前源码/开发依赖/目标宿主候选为19.0.1，范围`>=19.0.0 <20`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0候选未发布并由19.0.1取代。19.0.1本轮仍锁屏，仅通过源码合同、compiled smoke（无头受管Chrome＋测试专属opener）与新时间范围的受管headless DOM驱动；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

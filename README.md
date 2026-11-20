@@ -18,14 +18,14 @@
 
 ## 当前版本
 
-- 当前候选：`19.0.0`，面向官方 OMP 19.0.0（主版本），**尚未发布**；上一正式 Release 为 [v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，18.20.0、18.20.2、18.20.3、18.22.0、18.22.2 候选均未发布并由本候选取代。main、源码编号和本机升级不等于 Release
-- 目标官方宿主：OMP19.0.0（官方`update.auto`装到原官方位置，受管启动器未变），SHA-256匹配官方darwin-arm64资产；compiled内嵌及最低外部Bun1.4.4。兼容预检只接受主版本19：18.x宿主上本候选失败关闭，19.x宿主上旧插件同样失败关闭（官方英文保留），须升级插件并重启OMP
-- Settings：477项UI；19.0.0新增缓存保温策略与两项缓存衔接压缩阈值、`task.crossInstance`（跨实例 Agent 消息）、`mcp.evalNamespaces`、`mcp.builtinTransforms`六项译文，`providers.cacheWarming`、`tools.intentTracing`、`isolation.backend`、`ovnfs.path`、`task.enableLsp`按新原文改译；其余466项不重译。功能默认值与执行逻辑由官方负责
+- 当前候选：`19.0.1`，面向官方 OMP 19.0.1，**尚未发布**；上一正式 Release 为 [v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0 候选均未发布并由本候选取代。main、源码编号和本机升级不等于 Release
+- 目标官方宿主：OMP19.0.1（官方`update.auto`装到原官方位置，受管启动器未变），SHA-256匹配官方darwin-arm64资产；compiled内嵌及最低外部Bun1.4.4。兼容预检只接受主版本19：18.x宿主上本候选失败关闭；19.0.0插件的预检同样接受19.0.1，升级插件后须重启OMP
+- Settings：477项UI；19.0.1无设置变化（原文哈希与Schema漂移0）。19.0.0新增缓存保温策略与两项缓存衔接压缩阈值、`task.crossInstance`（跨实例 Agent 消息）、`mcp.evalNamespaces`、`mcp.builtinTransforms`六项译文，`providers.cacheWarming`、`tools.intentTracing`、`isolation.backend`、`ovnfs.path`、`task.enableLsp`按新原文改译。功能默认值与执行逻辑由官方负责
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写`config.yml`；选项显示副本与`/effort`参数原文隔离
-- Commands：89定义、98标识、9别名、27动态回调；19.0.0仅`/handoff`说明改为后台交接压缩（等同`/compact handoff`），命令列表、别名、动态说明与补全接口不变。参数、第三方说明、模型/提供商ID和effort值不译
-- 验收范围：macOS/Linux普通终端＋系统浏览器。19.0.0完成源码合同与compiled smoke（无头受管浏览器＋测试专属opener）；本轮仍锁屏，真实Settings/Commands交互、Stats完整网页/默认opener与冷安装等门禁未重验，不能按三面通过发布。Tern路径未验证、不宣称支持；Windows不纳入
-- Stats：实际运行官方19.0.0编译CLI，不以固定npm包替代。19.0.0概览Token构成改为“按来源”（智能体类型＋语言模型旁路用途）并新增“决策模型”卡；插件补译卡片文案，仅对该行列表中的三个固定智能体标签翻译，旁路用途类别（来自存储的purpose）保持原文。官方新增DNS重绑定Host防护（非本机/私有名返回403），包装层先执行原handler并原样透传
-- 18.18.8启动器修复沿用；官方后台更新18.22.2→19.0.0装在原官方位置，`omp update`报告已最新
+- Commands：89定义、98标识、9别名、27动态回调；19.0.1仅执行侧`/copy local`（复制会话`local://`目录），补全说明、命令列表、别名、动态说明与补全接口不变。参数、第三方说明、模型/提供商ID和effort值不译
+- 验收范围：macOS/Linux普通终端＋系统浏览器。19.0.1完成源码合同与compiled smoke（无头受管浏览器＋测试专属opener）；本轮仍锁屏，真实Settings/Commands交互、Stats完整网页/默认opener与冷安装等门禁未重验，不能按三面通过发布。Tern路径未验证、不宣称支持；Windows不纳入
+- Stats：实际运行官方19.0.1编译CLI，不以固定npm包替代。19.0.1时间范围新增“2天”“3天”（位于24小时与7天之间，快捷键扩为1–8），插件补译标签、窗口说明及按序号的按钮提示。19.0.0概览Token构成“按来源”与“决策模型”卡的译文及旁路用途类别保持原文的边界不变；官方DNS重绑定Host防护由包装层原样透传
+- 18.18.8启动器修复沿用；官方后台更新19.0.0→19.0.1装在原官方位置，`omp update`报告已最新
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -73,7 +73,8 @@
 | 18.20.3（历史未发布候选） | 18.20.3（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=18.20.3 <19 |
 | 18.22.0（历史未发布候选） | 18.22.0（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=18.22.0 <19 |
 | 18.22.2（历史未发布候选） | 18.22.2（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=18.22.2 <19 |
-| 19.0.0（未发布候选） | 19.0.0（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=19.0.0 <20 |
+| 19.0.0（历史未发布候选） | 19.0.0（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=19.0.0 <20 |
+| 19.0.1（未发布候选） | 19.0.1（源码合同、compiled smoke与新时间范围DOM驱动；锁屏下完整交互/网页/默认opener门禁未重验） | >=19.0.0 <20 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 

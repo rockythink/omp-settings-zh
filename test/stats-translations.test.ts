@@ -1,5 +1,15 @@
 import { expect, test } from "bun:test";
-import { statsPatterns, statsSpotlightAttributes } from "../src/stats/translations";
+import { rangeMeta, TIME_RANGES } from "@oh-my-pi/omp-stats/client/data/range";
+import { statsPatterns, statsSpotlightAttributes, statsZh } from "../src/stats/translations";
+
+test("every official range selector label and numbered title has a translation", () => {
+	TIME_RANGES.forEach((range, index) => {
+		const { label, windowLabel } = rangeMeta(range);
+		expect(statsZh[label]).toBeDefined();
+		expect(statsZh[windowLabel]).toBeDefined();
+		expect(statsZh[`${windowLabel} (${index + 1})`]).toBe(`${statsZh[windowLabel]}（${index + 1}）`);
+	});
+});
 
 test("dynamic templates are anchored and do not absorb user or backend text", () => {
 	const patterns = statsPatterns.map(([source]) => new RegExp(source));

@@ -6,7 +6,7 @@
 
 ## 内置斜杠补全译文边界
 
-- 当前来源OMP19.0.0官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调。19.0.0仅`/handoff`说明变为“后台交接压缩（等同`/compact handoff`）”并改译，别名与动态回调源码不变（18.20.3曾删除`/seance`并同步移除译文）；`/commit`会生成提交提示词，验收只看补全说明、不执行。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持；源码行为通过不代证compiled TUI验收。
+- 当前来源OMP19.0.1官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调。19.0.1无补全说明变化（`/copy local`仅执行侧）；19.0.0仅`/handoff`说明变为“后台交接压缩（等同`/compact handoff`）”并改译，别名与动态回调源码不变（18.20.3曾删除`/seance`并同步移除译文）；`/commit`会生成提交提示词，验收只看补全说明、不执行。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持；源码行为通过不代证compiled TUI验收。
 - 只翻译顶层补全的说明与实时状态、`skill:` 数量；参数提示、命令名、别名、模型／提供商 ID、路径与目标正文保持原样。
 - `switch` / `loop` / `effort` 的动态快捷键按宿主实际显示捕获，中文保留原键位。除键位占位外必须匹配官方原文，第三方覆盖、技能说明和未知文案不改。
 - `/settings-language en` 恢复官方补全结果；中文与英文都须验证排序、Tab／Enter 插入和实际官方编译版，不能用静态表检查代替。
@@ -14,8 +14,9 @@
 
 ## Stats Web 译文边界
 
+- 19.0.1审阅：时间范围新增“2d”“3d”（译“2天”“3天”，窗口说明“最近2天”“最近3天”），按钮提示序号按官方8项顺序生成（“最近7天（5）”等），侧栏“1–8 时间范围”中键位保持原样。
 - 19.0.0审阅：概览“By source”行中Main agent/Subagents/Advisor为固定UI标签并翻译；旁路用途类别（Title、Judge、Thinking等，首字母大写的存储purpose）是数据，即使与词典键同名也保持原文；“Decision models”卡标题/说明翻译、类别保持原文；“By agent”键随官方移除删除。
-- 当前审阅基线为官方`@oh-my-pi/omp-stats@19.0.0`，客户端仅OverviewRoute/view-models/colors/types相对18.22.2变化（见上条）；字典899键（删“By agent”、增“Decision models”及说明）、151通用严格模板及9个Spotlight作用域属性模板。18.22.2曾改Gain页：来源列“Snapcompact imaged tool results”/“Snapcompact compaction (context freed)”只在该列`.cell-primary`单文本节点经`statsGainSources`译为“Snapcompact 图像化工具结果”/“Snapcompact 压缩（释放的上下文）”，项目范围版说明（含项目名）安全回退英文。18.20.2客户端Costs/Gain/Providers与range/series改按本地日历日分桶，3条“Per UTC day…”说明改为“Per day…”并同步更新为“按日汇总…”。失败原因列6个已知代码标签只作用于该列节点，HTTP状态码、未知代码、百分比与数据捕获值保持原文。日期刻度由浏览器Intl本地化，插件不改。mutations/preload不改；未知文案、混合数据提示与canvas安全回退英文。19.0.0真实网页因环境前提未完整重验，不能继承旧版通过记录。
+- 当前审阅基线为官方`@oh-my-pi/omp-stats@19.0.1`，客户端仅Shell/TimeChart/range/types相对19.0.0变化（见上条）；字典947键（含8个官方范围展开项）、155通用严格模板及9个Spotlight作用域属性模板。18.22.2曾改Gain页：来源列“Snapcompact imaged tool results”/“Snapcompact compaction (context freed)”只在该列`.cell-primary`单文本节点经`statsGainSources`译为“Snapcompact 图像化工具结果”/“Snapcompact 压缩（释放的上下文）”，项目范围版说明（含项目名）安全回退英文。18.20.2客户端Costs/Gain/Providers与range/series改按本地日历日分桶，3条“Per UTC day…”说明改为“Per day…”并同步更新为“按日汇总…”。失败原因列6个已知代码标签只作用于该列节点，HTTP状态码、未知代码、百分比与数据捕获值保持原文。日期刻度由浏览器Intl本地化，插件不改。mutations/preload不改；未知文案、混合数据提示与canvas安全回退英文。19.0.1真实网页因环境前提未完整重验，不能继承旧版通过记录。
 - `src/stats/translations.ts` 只包含原文键、中文值及严格锚定的动态模板；浏览器端必须先通过官方 UI 区域白名单，不能在整页全局替换英文。
 - 保留模型、提供商、工具、项目与账户名称、路径、请求与会话正文、错误原文、协议、数字和模板中的实际数据；未知文案与 canvas 内绘制内容保持官方原文。Window utilization 普通 tooltip series 标签是账户数据，即使为 Requests／Other (3) 也不译；仅官方带 tone-bad 的 Exhausted 注记与 total 固定标签属于 UI。
 - 切回 English 恢复原始文本与显示属性；验证 React 异步更新、路由复用与译文键同名的数据值，不只检查首页。外部写入即使与插件上次显示相同，也须失效旧来源；一批外部文本／属性写入全部失效后才渲染，不能误恢复真实数据。表头复用须重新判断整表单元格的 UI／数据身份。同 origin 的偏好跨刷新、路由与服务重启保留，首次默认中文；网页语言独立于 /settings-language。页面脚本在原 Stats 服务同端口加载，不增加代理。
@@ -188,7 +189,7 @@ Settings 选项显示副本与宿主共享原文源必须隔离；不能因设�
 
 活动翻译只以目标版本 OMP 官方设置注册表的英文显示元数据为语义来源：
 
-1. 从锁定的`@oh-my-pi/pi-coding-agent@19.0.0`完整注册图提取英文；477UI。19.0.0新增缓存保温策略、缓存衔接压缩百分比/token数、`task.crossInstance`、`mcp.evalNamespaces`、`mcp.builtinTransforms`六项独立翻译，`providers.cacheWarming`、`tools.intentTracing`、`isolation.backend`、`ovnfs.path`、`task.enableLsp`按新原文改译（Keep Alive译“保持存活”，bridge译“衔接”；max_tokens、node_repl、PAL、print/RPC/ACP/SDK保持原文）；18.22.2新增`providers.webKeyless`、`live.endpoint`、`live.apiKey`三项独立翻译，`live.voice`、`task.structured`、`browser.relay`/`cmux`/`tern`按新原文改译；18.22.0新增`tui.renderEmbeds`、`disassembler.backend`/`maxOpen`/`idleCloseSec`、`ghidra.installDir`/`python`六项并删除官方移除的三项`ida.*`，`tts.localVoice`/`localSpeed`、`speech.voice`/`speed`、`speechgen.enabled`按Phonon音色与0.8–1.3语速改译，`worktree.onExit`补译`force`；其余466项原文哈希不变、不重译。Phonon、Kokoro、Ghidra、PyGhidra、IDA Pro、idalib、JDK、dsm、exec、`<img>`/`<iframe>`、音色人名、Parallel/Exa/Firecrawl/Keenable/Perplexity/Jina/Startpage/DuckDuckGo/Ecosia/Google/Mojeek/Hacker News、OpenAI Realtime WebRTC、Codex、Bearer、!command、`app: "relay"`/`"tern"`、judge、input_type、query/passage、Qwen3-Embedding、E5、NVIDIA NIM、eval、prelude、/commit、bash.patterns、环境变量名、GEMINI_API_KEY、google-vertex与Issue编号保留原文。固定官方commit `57771ae562b9345e0579bceb2d68d585e3e6927e`的源码与npm全部2046份coding-agent源码逐字节一致，4个导出模板源按package.files排除；utils133/Stats121/TUI473份亦一致；
+1. 从锁定的`@oh-my-pi/pi-coding-agent@19.0.1`完整注册图提取英文；477UI，19.0.1相对19.0.0无设置变化。19.0.0新增缓存保温策略、缓存衔接压缩百分比/token数、`task.crossInstance`、`mcp.evalNamespaces`、`mcp.builtinTransforms`六项独立翻译，`providers.cacheWarming`、`tools.intentTracing`、`isolation.backend`、`ovnfs.path`、`task.enableLsp`按新原文改译（Keep Alive译“保持存活”，bridge译“衔接”；max_tokens、node_repl、PAL、print/RPC/ACP/SDK保持原文）；18.22.2新增`providers.webKeyless`、`live.endpoint`、`live.apiKey`三项独立翻译，`live.voice`、`task.structured`、`browser.relay`/`cmux`/`tern`按新原文改译；18.22.0新增`tui.renderEmbeds`、`disassembler.backend`/`maxOpen`/`idleCloseSec`、`ghidra.installDir`/`python`六项并删除官方移除的三项`ida.*`，`tts.localVoice`/`localSpeed`、`speech.voice`/`speed`、`speechgen.enabled`按Phonon音色与0.8–1.3语速改译，`worktree.onExit`补译`force`；其余466项原文哈希不变、不重译。Phonon、Kokoro、Ghidra、PyGhidra、IDA Pro、idalib、JDK、dsm、exec、`<img>`/`<iframe>`、音色人名、Parallel/Exa/Firecrawl/Keenable/Perplexity/Jina/Startpage/DuckDuckGo/Ecosia/Google/Mojeek/Hacker News、OpenAI Realtime WebRTC、Codex、Bearer、!command、`app: "relay"`/`"tern"`、judge、input_type、query/passage、Qwen3-Embedding、E5、NVIDIA NIM、eval、prelude、/commit、bash.patterns、环境变量名、GEMINI_API_KEY、google-vertex与Issue编号保留原文。固定官方commit `f40f335845f0b136453d12fec8d6057011082766`的源码与npm全部2047份coding-agent源码逐字节一致，4个导出模板源按package.files排除；utils133/Stats121/TUI473份亦一致；
 2. 使用本项目自己的 LLM 能力按本规范生成初稿，不输入或复用第三方中文译文；
 3. 按设置路径和选项 `value` 校验完整性；
 4. 用英文原文哈希标记待复核的上游语义变化；

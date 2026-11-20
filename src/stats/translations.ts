@@ -1,7 +1,7 @@
 /**
- * Display-only copy reviewed against @oh-my-pi/omp-stats 19.0.0 (Overview now
- * splits tokens by source and adds a decision-model card). Unchanged pages
- * retain their existing copy and data boundaries.
+ * Display-only copy reviewed against @oh-my-pi/omp-stats 19.0.1 (range selector
+ * now adds 2d and 3d between 24h and 7d). Unchanged pages retain their
+ * existing copy and data boundaries.
  * Apply only to known UI text/attributes, never journal payloads,
  * identifiers, or arbitrary data cells.
  * Protocol names, command names, currencies, and brands remain unchanged.
@@ -31,11 +31,15 @@ export const statsZh: Record<string, string> = {
 	All: "全部",
 	"1h": "1小时",
 	"24h": "24小时",
+	"2d": "2天",
+	"3d": "3天",
 	"7d": "7天",
 	"30d": "30天",
 	"90d": "90天",
 	"the last hour": "最近1小时",
 	"the last 24 hours": "最近24小时",
+	"the last 2 days": "最近2天",
+	"the last 3 days": "最近3天",
 	"the last 7 days": "最近7天",
 	"the last 30 days": "最近30天",
 	"the last 90 days": "最近90天",
@@ -828,11 +832,13 @@ for (const kind of ["turn", "model", "tool", "subagent", "background"] as const)
 	statsZh[`${kind} · error`] = `${statsZh[kind]} · 错误`;
 }
 
-// Expand only the six official ranges; translations never capture arbitrary
+// Expand only the eight official ranges; translations never capture arbitrary
 // suffixes which could be project names, model names, or request content.
 const ranges = [
 	["the last hour", "最近1小时"],
 	["the last 24 hours", "最近24小时"],
+	["the last 2 days", "最近2天"],
+	["the last 3 days", "最近3天"],
 	["the last 7 days", "最近7天"],
 	["the last 30 days", "最近30天"],
 	["the last 90 days", "最近90天"],

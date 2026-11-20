@@ -1,5 +1,23 @@
 # Project Context
 
+## 19.0.1 定向适配（2026-11-20，未发布）
+
+起点本地main、origin/main均`d2e2db9e66e264b53a0f8e53e71b353d75471be1`（19.0.0未发布候选，[CI 44554472261](https://github.com/rockythink/omp-settings-zh/actions/runs/44554472261) macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方v19.0.1于11-19 22:54发布，coding-agent/utils/Stats/TUI最新稳定版均19.0.1，构成新适配并取代19.0.0候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。更早Orca任务的omp会话（PID 2723/5474/44544/48550/67285/74300及其worker）仍在运行，非本轮资源、未操作。
+
+**宿主与来源**：用户`update.auto`已把官方19.0.0→19.0.1装到原官方位置`~/.local/bin/omp`（auto-update.log“Updated to 19.0.1 at …/.local/bin/omp”），受管启动器仍为原shell脚本；经启动器`omp update`报告Already up to date，前后均19.0.1，SHA-256 `2fe420bbd00f81899816e51cbeeb9593afa59d9368d62c9d3e78535d540e32f6`与官方darwin-arm64资产digest相同。官方tag commit `f40f335845f0b136453d12fec8d6057011082766`稀疏检出与npm源码比较：coding-agent 2047份一致（仅4个导出模板源按package.files排除）、utils133/Stats121/TUI473份全同。#17754 CLOSED，#17758 MERGED（`febb2679…`），v19.0.1在其后4774提交、behind_by0。本机插件起点`github:rockythink/omp-settings-zh`为19.0.0（19.x预检接受19.0.1），doctor 5/0/0，pi-xcode-mcp0.1.0不动。
+
+**Settings**：coding-agent的`config/`变化仅模型配置（`snapcompactShape`、代理发现）；coverage 477/477、Schema漂移0，不重译。compiled TUI中文搜索/原生编辑/en-zh与effort参数隔离未重验。
+
+**Commands**：89定义/98标识/9别名/27动态回调，commands:check漂移0。命令目录仅`builtin-collaboration.ts`新增执行侧`/copy local`与用法提示；`builtin-registry.ts`与`pi-tui/autocomplete.ts`不变，extensibility types仅plan review注释与`snapcompactShape`字段。compiled顶层列表、别名、动态状态与Tab/Enter交互未重验。
+
+**Stats**：客户端仅Shell/TimeChart/range/types变化（服务端aggregator同步TimeRange）：`TIME_RANGES`新增2d/3d（位于24h与7d之间），按钮提示`${windowLabel} (${i+1})`序号后移、侧栏“1–8 range”、跨日刻度按日。不改插件会使2d/3d标签及第3–8个按钮提示回退英文（旧展开表的序号对应旧顺序）。补2d/3d与两条窗口说明键，范围展开表按官方顺序扩为8项；字典899→947键（含展开项），通用模板151→155，属性模板9。新增测试从官方`TIME_RANGES`/`rangeMeta`推导全部标签与序号提示译文（对旧译文实测第3–8项失败）。
+
+**回归**：`bun install`更新锁文件；冻结安装无变化，完整`bun run check`（72测试/2755断言）通过，Settings477/477、Schema0，Commands89/89、98标识、漂移0，2094显示变更/3次恢复/源码网络0。真实官方19.0.1绝对路径`scripts/smoke-cli.ts`（本地link，无头独占Chrome，测试专属opener转交URL）首轮通过：成功/人为断言失败预检、5页建/5关、两服务（56567/56574）各单监听器、compiled Bun1.4.4合并`--smol`与用户preload、doctor3/1/0、16目录GET/1 Codex版本GET/2身份GET/1无凭据HEAD在dispatch前拦截，推理0，cleanupErrors0；浏览器/服务PID均ESRCH、端口关闭、run树与私有preload目录删除、监听列表与开跑前基线一致。范围throwaway驱动（scratchpad，Bun临时同源服务提供官方19.0.1 `dist/client`＋插件browser脚本，独占headless Chrome临时Profile）：8个按钮“1小时…全部”及提示“最近1小时（1）…全部时间（8）”、按`4`选中3天（hash`range=3d`）、English逐项恢复官方原文、中文恢复、侧栏“1–8 时间范围”。
+
+**环境未验与恢复条件**：起始ioreg`CGSSessionScreenIsLocked:true`；前提未变，不重复完整最终矩阵（TUI三面交互、12页Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期、精确SHA冷GitHub安装）。不是插件回归或官方缺陷。解锁后固定19.0.1（或届时最新）宿主与最终SHA完整重验，通过全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+
+**本轮资源**：run `omp-maint-20261120-4aecd2ca`，基线（监听列表、Chrome/omp PID）与账本在会话scratchpad。smoke run树`omp-native-posix-yDNEjE`、树外账本`<TMPDIR>/omp-native-posix-yDNEjE.resources.json`：5页建/关、独占Chrome退出、2服务闭合。范围驱动2次运行（人为断言失败1次、正常1次），各1页建/关、浏览器ESRCH、临时端口（56714/56758）关闭、Profile删除；Chrome进程集合与开跑前一致。未操作用户真实浏览器页面、既有服务或其他会话。
+
 ## 19.0.0 主版本适配（2026-11-19，未发布）
 
 起点本地main、origin/main均`b4315ab081a251f962e2be17875ae7eb2806e073`（18.22.2未发布候选，[CI 44332758590](https://github.com/rockythink/omp-settings-zh/actions/runs/44332758590) macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方当日发布主版本v19.0.0，coding-agent/utils/Stats/TUI最新稳定版均19.0.0，构成新适配并取代18.22.2候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。另有3个更早Orca任务的omp会话（PID 5474/48550/74300，启动于11-13及之前）仍在运行，非本轮资源、未操作。
