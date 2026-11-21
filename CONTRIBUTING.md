@@ -4,9 +4,9 @@
 
 ## 当前版本
 
-`19.0.1` 是面向官方OMP19.0.1的未发布候选，正式Release仍为18.19.0。477项设置在19.0.1无变化；19.0.0新增缓存保温策略、两项缓存衔接压缩阈值、`task.crossInstance`、`mcp.evalNamespaces`、`mcp.builtinTransforms`六项译文，按新原文改译`providers.cacheWarming`、`tools.intentTracing`、`isolation.backend`、`ovnfs.path`、`task.enableLsp`五项；共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
+`19.1.0` 是面向官方OMP19.1.0的未发布候选，正式Release仍为18.19.0。482项设置：19.1.0官方把`tools.xdev*`改为`tools.commands*`（工具以bash命令挂载），新增`pty.notify`、`edit.magic.model`、`binja.installDir`/`python`、`mcp.shared`、`mcp.idleStopMinutes`等10项译文，删除官方移除的5项，`disassembler.backend`补译`binja`选项并改译12项原文变化；共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
 
-当前覆盖89个内置命令、98名称/别名、9别名和27动态回调，19.0.1仅执行侧`/copy local`变化，命令说明、列表、别名、动态说明与补全接口不变；模型/参数/文件/第三方说明不译。Stats 19.0.1新增2天/3天时间范围（快捷键1–8），补译标签与按序号的按钮提示；概览“按来源”中仅三个固定智能体标签翻译、旁路用途类别保持原文；947键及164模板。本轮锁屏，完整三面compiled/Web验收未重验，不能发布。Tern可选未验证、Windows不纳入。
+当前覆盖89个内置命令、98名称/别名、9别名和27动态回调，19.1.0命令注册表与补全接口不变（`/tools`、`/jobs`、`/compact`与MCP辅助仅执行侧变化）；模型/参数/文件/第三方说明不译。Stats 19.1.0客户端不变，仅服务端变化，译文不改；19.0.1新增的2天/3天时间范围（快捷键1–8）与概览“按来源”边界保持；947键及164模板。本轮锁屏，完整三面compiled/Web验收未重验，不能发布。Tern可选未验证、Windows不纳入。
 
 - [产品需求](docs/PRD.md)
 - [技术设计](docs/TECHNICAL-DESIGN.md)
@@ -39,7 +39,7 @@
 
 - macOS 或 Linux；
 - Bun 1.4.4 或更新版本；外部启动器与官方compiled内嵌Bun须分别核对；
-- 官方 OMP19.0.1；候选仅完成源码合同、compiled smoke与新时间范围DOM驱动，历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
+- 官方 OMP19.1.0；候选仅完成源码合同与compiled smoke，历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
 - Git。
 
 项目保持以下脚本契约：

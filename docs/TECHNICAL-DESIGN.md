@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：19.0.1，未发布；main与源码编号不是发布证据
-- 目标基线：官方OMP19.0.1、外部Bun最低1.4.4；Tern可选未验证
+- 实现候选：19.1.0，未发布；main与源码编号不是发布证据
+- 目标基线：官方OMP19.1.0、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -84,6 +84,8 @@
 
 19.0.0为638定义/477UI，9个动态getter不变：新增`providers.cacheWarmingStrategy`（auto/keepalive/compact；刷新不再划算后用压缩衔接长工具调用或任其过期）、`providers.cacheWarmingCompactPercent`（40–80%）与`providers.cacheWarmingCompactTokens`（50K–300K，与百分比取较低者）、`task.crossInstance`（同文件夹其他omp实例读取Agent输出并发送可唤醒消息）、`mcp.evalNamespaces`（MCP服务器作为eval全局对象）、`mcp.builtinTransforms`（跳过被omp自带工具取代的MCP服务器，如Codex node_repl）；`providers.cacheWarming`（Anthropic max_tokens 0预热，其余1 token重放）、`tools.intentTracing`（未设置时仅交互式TUI开启）、`isolation.backend`的auto选项与`ovnfs.path`（`/wt`也用ovnfs检出）、`task.enableLsp`（只控制子代理编辑的LSP格式化/诊断，lsp工具始终可用）原文变化改译。其余466项原文哈希不变。兼容预检主版本由18改为19。
 
+19.1.0为643定义/482UI，9个动态getter不变：官方把`tools.xdev`/`xdevDocs`/`xdevInlineDevices`/`xdevNotices`（`xd://`设备，经read/write操作）改为`tools.commands`/`commandDocs`/`commandInline`/`commandNotices`（以bash命令挂载并提供schema生成的`--help`，无bash的会话保留顶层工具）；新增`pty.notify`（交互式控制台等待时通知）、`edit.magic.model`（magic编辑模式的写入模型，默认smol角色）、`binja.installDir`/`binja.python`（新Binary Ninja后端，TUI分组新增“Binary Ninja”保持英文）、`mcp.shared`（经守护进程共享MCP服务器进程与工具目录）、`mcp.idleStopMinutes`；删除`tui.completeScrollback`；`disassembler.backend`新增`binja`选项（自动模式从不选择）。12项原文变化改译，其中`retry.waitForUsageReset`为动态getter，`descriptionSource`换为新英文模板并保持`{escape}`捕获；其余460项原文哈希不变。registry/settings-ui逐字节不变，all-settings仅新增binja域。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -120,6 +122,8 @@
 19.0.0命令目录仅`builtin-completions.ts`（导入路径移动）与`builtin-lifecycle.ts`（`/handoff`改为`/compact handoff`后台压缩，`session.handoff`改由`compact(focus,{mode:"handoff"})`）变化；`/handoff`静态说明随之改译。`builtin-registry.ts`（27动态回调）逐字节不变，extensibility的runner/types、interactive-mode与`pi-tui/autocomplete.ts`的变化均不涉及补全provider接口（types仅新增表单`onAbandon`、`CompactOptions.signal`与缓存保温类型导出；autocomplete仅注释）。
 
 19.0.1命令目录仅`builtin-collaboration.ts`变化（`/copy local`先创建并复制会话`local://`目录，用法提示同步），属执行侧；`builtin-registry.ts`、`pi-tui/autocomplete.ts`不变，extensibility types仅plan review注释与模型`snapcompactShape`字段。
+
+19.1.0命令目录仅`builtin-lifecycle.ts`（压缩取消改用`isInterruptReason`）、`builtin-session.ts`（`/jobs`简要行用`jobDisplayLabel`、`/tools`列出工具命令名而非`xd://`）与`helpers/mcp.ts`（live连接、重新授权提示）变化，均属执行侧；`builtin-registry.ts`与`pi-tui/autocomplete.ts`逐字节不变。extensibility types新增`parentToolCallId`与provider接管字段，`pi-tui/components/editor.ts`新增`coveringRows()`渲染计数与Vim反向查找边界修复，不涉及`addAutocompleteProvider`或补全项结构。
 
 ## Stats Web 显示适配
 
@@ -166,6 +170,7 @@
 - 18.22.2：120源码，客户端仅`GainRoute.tsx`变化：`GainSource`新增`compaction`（服务端读`snapcompact_compactions`表，计算归官方），来源列`SOURCE_LABEL`改为“Snapcompact imaged tool results”/“Snapcompact compaction (context freed)”，页头说明与空态提示改写。插件替换范围模板与空态键，并在`browser.ts`新增`gainSourceLabel`：仅表头为“Source”的`.cell-primary`单文本节点经独立的`statsGainSources`映射（2个固定标签），其他列同文本仍为数据原文；mutations/preload不改。
 - 19.0.0：客户端仅OverviewRoute/view-models/colors/types变化：Token构成卡的“By agent”改为“By source”（智能体类型＋语言模型旁路用途类别），新增“Decision models”卡（决策模型按用途），标签改放在`.row > .truncate`。插件删除失效的“By agent”键，补“Decision models”及说明；`browser.ts`新增`shareAgentLabel`：仅Token构成卡中`.row > .truncate`且原文为三个固定智能体标签时翻译，旁路类别（服务端由存储purpose派生，含与词典同名的Judge/Thinking）保持原文；“N req”行在两卡均按既有模板翻译。服务端新增DNS重绑定Host防护（公开点分名需为绑定名或`OMP_STATS_ALLOWED_HOSTS`，否则403纯文本），preload先执行原handler、非ok响应原样返回。
 - 19.0.1：客户端仅Shell/TimeChart/range/types变化：`TIME_RANGES`在24h与7d之间新增2d/3d（按小时分桶），按钮提示`${windowLabel} (${i+1})`序号随之后移，侧栏快捷键提示改为`1–8`，跨日刻度按日显示。插件补“2d/3d”“the last 2 days/3 days”键，范围展开表按官方顺序扩为8项（含序号提示与各页范围说明模板）；browser/mutations/preload不改。测试从官方`TIME_RANGES`/`rangeMeta`推导，官方再增删范围时失败。
+- 19.1.0：121源码中仅服务端`db.ts`（已完成回填的库打开时不取写锁；新增只读连接的`readDailyActivity`供会话`/usage`使用）、`rollup.ts`（rollup版本不匹配时回退原始行聚合）与`spotlight-ingest.ts`（移除`write xd://ast_edit`的编辑归因）变化；95客户端、`stats-cli.ts`逐字节不变，`utils/open.ts`仅把日志中的URL脱敏、错误改记code，打开命令选择不变。947键/155通用模板＋9属性模板及browser/mutations/preload不改。
 
 ## 6. 检查与真实验证
 
@@ -187,11 +192,12 @@
 - `OMP_SMOKE_GITHUB_REF=<40位SHA>`切换到干净GitHub安装；未提供则仍走本地link。只有公开插件/依赖安装阶段允许其正常网络，之后真实compiled探针恢复无dispatch护栏；普通命令45秒、冷安装120秒截止均回收独占进程组，不复制驱动或放宽模型请求边界。
 - 18.16.0 smoke额外通过原样委托的Bun.spawn记录自动opener PID/parent/原URL，bridge在导航前接入账本，`.exited`与ESRCH共同证明短生命周期opener结束；sidecar置于树外。长browser tab.run临时驱动曾在页面会话关闭后漏等launcher，产生工具宿主尚未reap的自有僵尸子进程；native/端口/private关闭不等于所有PID关闭。失败保留，不杀工具父宿主或通过全局waitpid规避；新阶段的独立成功不抹去旧清理错误。
 - 18.19.0 smoke的独占Chrome额外设置`MAC_CHROMIUM_TMPDIR`：macOS版Chromium不读`TMPDIR`，否则会在用户临时目录留下`com.google.Chrome.*`（含singleton socket）；设置后这些目录落在运行树内，随运行树回收。用户临时目录中每分钟出现的`TemporaryDirectory.*`来自无关后台进程，不属于驱动资源。
+- 19.1.0 smoke首轮产品阶段全部通过，但成功阶段关闭时`process.kill(-guardPid, 0)`抛EPERM：guard（`/bin/sh`循环）被TERM后其`sleep 1`子进程成为孤儿并留在guard进程组，退出后等待launchd回收的短暂窗口里，Darwin对只剩僵尸成员的进程组返回EPERM而非ESRCH。驱动把非ESRCH一律当硬错误，首轮失败关闭（cleanupErrors1，运行树按设计保留）。修正后命令组与guard组探测把EPERM视为“尚未闭合”继续等待，只有ESRCH才记为闭合，超时仍失败；命令组的SIGKILL对EPERM不抛错，由后续探测判定。产品代码不变。
 
 
 ## 7. 发布边界
 
-当前源码/开发依赖/目标宿主候选为19.0.1，范围`>=19.0.0 <20`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0候选未发布并由19.0.1取代。19.0.1本轮仍锁屏，仅通过源码合同、compiled smoke（无头受管Chrome＋测试专属opener）与新时间范围的受管headless DOM驱动；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
+当前源码/开发依赖/目标宿主候选为19.1.0，范围`>=19.0.0 <20`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0、19.0.1候选未发布并由19.1.0取代。19.1.0本轮仍锁屏，仅通过源码合同与compiled smoke（无头受管Chrome＋测试专属opener）；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

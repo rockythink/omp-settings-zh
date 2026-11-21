@@ -120,9 +120,11 @@ async function command(binary: string, args: string[], ignoreInterrupt = false, 
   const child = Bun.spawn([binary, ...args], { cwd, env, detached: true, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
   const resource = { pid: child.pid, groupClosed: false };
   owned.commands.push(resource);
+  // Darwin reports EPERM for a group whose remaining members are unreaped
+  // zombies (an orphaned child awaiting launchd); the probe below decides closure.
   const signalGroup = (signal: NodeJS.Signals) => {
     try { process.kill(-child.pid, signal); }
-    catch (error) { if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error; }
+    catch (error) { const code = (error as NodeJS.ErrnoException).code; if (code !== "ESRCH" && code !== "EPERM") throw error; }
   };
   let escalation: NodeJS.Timeout | undefined;
   const deadline = setTimeout(() => {
@@ -144,9 +146,10 @@ async function command(binary: string, args: string[], ignoreInterrupt = false, 
     do {
       try { process.kill(-child.pid, 0); }
       catch (error) {
-        if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error;
-        resource.groupClosed = true;
-        break;
+        const code = (error as NodeJS.ErrnoException).code;
+        // EPERM: zombie-only group not yet reaped; keep waiting, never count it as closed.
+        if (code !== "ESRCH" && code !== "EPERM") throw error;
+        if (code === "ESRCH") { resource.groupClosed = true; break; }
       }
       await Bun.sleep(25);
     } while (Date.now() < end);
@@ -192,7 +195,12 @@ async function closeStage() {
       await until(async () => {
         if (!processGone(resource.pid) || !processGone(resource.nativePid!) || !processGone(resource.guardPid!)) return;
         try { process.kill(-resource.guardPid!, 0); }
-        catch (error) { if ((error as NodeJS.ErrnoException).code === "ESRCH") return true; throw error; }
+        catch (error) {
+          const code = (error as NodeJS.ErrnoException).code;
+          if (code === "ESRCH") return true;
+          // EPERM: the guard's orphaned `sleep` is a zombie awaiting launchd; retry until the deadline.
+          if (code !== "EPERM") throw error;
+        }
       }, "owned Stats processes and detached guard group exited", true);
       if (!resource.preload) throw new Error("Private preload ownership was not captured; preserve the run ledger");
       try { await stat(resource.preload); throw new Error("Owned private preload directory survived Stats exit"); }

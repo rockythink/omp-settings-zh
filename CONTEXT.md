@@ -1,5 +1,23 @@
 # Project Context
 
+## 19.1.0 适配（2026-11-21，未发布）
+
+起点本地main、origin/main均`7e1c5f6bf369fe7493133ec5bdf15cde14f53d09`（19.0.1未发布候选，[CI 44760339752](https://github.com/rockythink/omp-settings-zh/actions/runs/44760339752) macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方v19.1.0于11-21 14:32Z发布，coding-agent/utils/Stats/TUI最新稳定版均19.1.0，构成新适配并取代19.0.1候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。
+
+**宿主与来源**：本轮开始时用户`update.auto`的官方worker正把19.0.1→19.1.0（41.6MB补丁）装到原官方位置`~/.local/bin/omp`（auto-update.log“Updated to 19.1.0 at …/.local/bin/omp”；首个`omp --version`仍为19.0.1，随即为19.1.0）；经受管启动器`omp update`报告Already up to date，SHA-256 `dca5643669ed5e553f707bd065499babd0fe3030696bbb24c9da09c798af5abb`与官方darwin-arm64资产digest相同，受管启动器仍为原shell脚本。官方tag commit `a7135b8f31826c878734388b648f52bed8da436e`完整Git树（12070项、未截断）与npm源码按blob比较：coding-agent 2092/2093一致，唯一例外为发布时生成、不在树中的`tools/browser/relay/extension.generated.json`（Browser Relay扩展打包产物，与三面无关）；utils151/Stats121/TUI475全同。#17754 CLOSED，#17758 MERGED（`febb2679…`），v19.1.0在其后5269提交、behind_by0。本机插件起点`github:rockythink/omp-settings-zh`为19.0.1（19.x预检接受19.1.0，但新设置与改写原文回退英文），pi-xcode-mcp0.1.0不动。官方`update-cli`新增验证成功后经PATH启动器执行`browser-relay sync`，受管启动器对非Stats命令直接exec官方，不需适配。
+
+**Settings**：643定义/482UI/9动态getter。官方把`tools.xdev`/`xdevDocs`/`xdevInlineDevices`/`xdevNotices`改为`tools.commands`（工具命令）/`commandDocs`（工具命令提示词文档：所有命令/仅内置命令/仅目录）/`commandInline`/`commandNotices`；新增`pty.notify`（控制台通知）、`edit.magic.model`（Magic 编辑模型）、`binja.installDir`/`binja.python`（Binary Ninja）、`mcp.shared`（共享 MCP 服务器）、`mcp.idleStopMinutes`（MCP 空闲停止），共10项；删除`tui.completeScrollback`与4项`tools.xdev*`；`disassembler.backend`补译`binja`选项。12项原文变化改译：`model.toolCallLoopGuard.exemptTools`、`retry.maxDelayMs`、`retry.waitForUsageReset`（动态getter，新`descriptionSource`实测捕获`Esc`）、`edit.mode`（新magic模式）、`find.enabled`（首个可用judge为原生）、`generate_image.enabled`、`dev.autoqa`、`browser.relay`（原生主机/`PI_BROWSER_RELAY=only`）、`browser.relayUrl`、`disassembler.backend`、`disassembler.maxOpen`、`mcp.evalNamespaces`。其余460项原文哈希不变、不重译；TUI分组新增“Binary Ninja”保持英文。compiled TUI中文搜索/原生编辑/en-zh与effort参数隔离未重验。
+
+**Commands**：89定义/98标识/9别名/27动态回调，commands:check漂移0。`builtin-registry.ts`、`pi-tui/autocomplete.ts`逐字节不变；命令目录仅`builtin-lifecycle.ts`、`builtin-session.ts`（`/jobs`标签、`/tools`列出工具命令）与`helpers/mcp.ts`执行侧变化；extensibility types新增`parentToolCallId`与provider接管字段，editor新增`coveringRows()`，均不涉及补全provider。compiled顶层列表、别名、动态状态与Tab/Enter交互未重验。
+
+**Stats**：95客户端逐字节不变，仅服务端db/rollup/spotlight-ingest变化（只读`readDailyActivity`、rollup版本回退、移除`xd://ast_edit`归因）；`stats-cli`不变，`utils/open.ts`仅日志URL脱敏。947键/155+9模板及browser/mutations/preload不改。
+
+**回归**：`bun install`更新锁文件；冻结安装无变化，完整`bun run check`72测试/2755断言通过，Settings482/482、Schema0，Commands89/89、98标识、漂移0，2104显示变更/3次恢复/源码网络0。真实官方19.1.0绝对路径`scripts/smoke-cli.ts`（本地link，无头独占Chrome，测试专属opener转交URL）首轮`omp-native-posix-zFcajI`产品阶段全过（两服务单监听器、合并preload、中/英/刷新/API），但成功阶段关闭时guard组探测EPERM，cleanupErrors1、运行树保留：guard被TERM后孤儿`sleep 1`留在其进程组，Darwin对只剩僵尸成员的组返回EPERM。归类驱动竞态（非产品回归）；驱动改为EPERM继续等待、只有ESRCH算闭合。第二轮`omp-native-posix-Tvwf9u`通过：成功/人为断言失败预检、5页建/5关、两服务（62379/62387）各单监听器、compiled Bun1.4.4合并`--smol`与用户preload、doctor3/1/0、2个opener退出0、19命令组闭合、bridge关闭、16目录GET/1 Codex版本GET/2身份GET/1无凭据HEAD在dispatch前拦截，推理0，cleanupErrors0、rootRemoved。
+
+**环境未验与恢复条件**：起始ioreg`CGSSessionScreenIsLocked:true`；前提未变，不重复完整最终矩阵（TUI三面交互、12页Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期、精确SHA冷GitHub安装）。不是插件回归或官方缺陷。解锁后固定19.1.0（或届时最新）宿主与最终SHA完整重验，通过全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+
+**本轮资源**：run `omp-maint-20261121-b8adc4a8`，基线（监听列表、Chrome/omp PID）与账本在会话scratchpad。首轮smoke浏览器/服务/guard/opener PID核对均ESRCH、端口无监听后，由本轮删除其保留的运行树（树外账本`<TMPDIR>/omp-native-posix-zFcajI.resources.json`保留失败记录）；第二轮树外账本`<TMPDIR>/omp-native-posix-Tvwf9u.resources.json`，全部PID ESRCH、私有preload目录ENOENT、监听列表与开跑前一致。Chrome进程集合差异仅PID 5676（用户Chrome 15778的扩展渲染进程），非本轮资源、未操作；未操作用户真实浏览器页面、既有服务或其他会话。
+
 ## 19.0.1 定向适配（2026-11-20，未发布）
 
 起点本地main、origin/main均`d2e2db9e66e264b53a0f8e53e71b353d75471be1`（19.0.0未发布候选，[CI 44554472261](https://github.com/rockythink/omp-settings-zh/actions/runs/44554472261) macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方v19.0.1于11-19 22:54发布，coding-agent/utils/Stats/TUI最新稳定版均19.0.1，构成新适配并取代19.0.0候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。更早Orca任务的omp会话（PID 2723/5474/44544/48550/67285/74300及其worker）仍在运行，非本轮资源、未操作。

@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "19.0.0",
+  "sourceOmpVersion": "19.1.0",
   "settings": {
     "auth.unpausedProviders": {
       "sourceHash": "3e2a78bb276f04a95d8df8a221210a61e301310124dfc83955ebd06b5c437de8",
@@ -1059,10 +1059,10 @@ export const zhCN = {
         }
       }
     },
-    "tui.completeScrollback": {
-      "sourceHash": "4296d59fe8213d9cef796c7f8cbbd7b045697c0f4250b1b616375b2164c8f8bb",
-      "label": "完整回滚历史",
-      "description": "HUD 或对话框增高时，将挤出屏幕的对话记录行直接送入终端回滚历史；其缩小时，对话记录与输入框之间会留下空白行，直到新输出填满"
+    "pty.notify": {
+      "sourceHash": "0086d0b6eafd1a8758073b13632d633b5cc66f18bd0b3a856657f8fad70cb86a",
+      "label": "控制台通知",
+      "description": "交互式控制台（bash `pty`）等待你操作时发出通知"
     },
     "terminal.showProgress": {
       "sourceHash": "b4f580d92d54db9a568da23af4f079ace787311d87580e3770512fca60269074",
@@ -1259,9 +1259,9 @@ export const zhCN = {
       "description": "注入纠偏指引前所需的连续相同工具调用次数"
     },
     "model.toolCallLoopGuard.exemptTools": {
-      "sourceHash": "19590d4b45892e4faf1251d7fb956f714a5987edb7ed3421f80b15db304797c2",
+      "sourceHash": "247474ee040bf7c3b2e89e0f83642ff8353739ca3fce8735cf049088812c6071",
       "label": "工具调用循环豁免工具",
-      "description": "可连续重复而不触发跨轮次循环防护的工具名称，或 write 分发调用的 xd:// 设备名称（如 mcp__peers_wait）"
+      "description": "可连续重复而不触发跨轮次循环防护的工具名称，包括通过 bash 作为命令运行的工具（如 mcp__peers_wait）"
     },
     "inlineToolDescriptors": {
       "sourceHash": "87ae40514d48f7d5003ca8a5711e964cfbf2fc4e4e81f620a15a78dd9d4201b6",
@@ -1684,9 +1684,9 @@ export const zhCN = {
       }
     },
     "retry.maxDelayMs": {
-      "sourceHash": "2419687df9ba8e1133e7797d3b2cdaf73c5657bbe9b0b574c7f340329bcb71af",
+      "sourceHash": "83515ff59ecc1aa442c8684f00dab28757496b0395faee788c2a3cd62e997396",
       "label": "最大重试延迟",
-      "description": "两次重试之间的最长等待时间，单位为 ms。当提供商要求等待的时间超过此值，且凭据或模型回退均未成功时，请求会快速失败，而不是休眠等待（例如 Anthropic 长达 3 小时的速率限制窗口）。设为 0 可取消上限，让会话等待提供商声明的配额重置后自动恢复"
+      "description": "两次重试之间的最长等待时间，单位为 ms。当重试需要等待更久，且凭据或模型回退均未成功时，请求会快速失败，而不是休眠等待（例如 Anthropic 长达 3 小时的速率限制窗口）。设为 0 可取消上限"
     },
     "retry.modelFallback": {
       "sourceHash": "ee7e6e73c25e498f297b9fcd6da6310692057847f6cdb77b4a466904c1712be5",
@@ -2924,9 +2924,14 @@ export const zhCN = {
       "description": "要完全忽略的规则名称（适用于随附的默认规则和你自己的规则）"
     },
     "edit.mode": {
-      "sourceHash": "acef7da5b47435747c6584240f53b74b849b9a2d1e7ce8989d7a1a265510276b",
+      "sourceHash": "7866393741b2bdf8f8684d7b669e6f0092c3d21317286a8e15af2cbb26104579",
       "label": "编辑模式",
-      "description": "选择编辑工具变体（replace、patch、hashline 或 apply_patch）；none 移除编辑工具，但保持 bash 启用"
+      "description": "选择编辑工具变体（replace、patch、hashline 或 apply_patch）；magic 接收对修改的描述，再由快速模型写出实际改动；none 移除编辑工具，但保持 bash 启用"
+    },
+    "edit.magic.model": {
+      "sourceHash": "6de8b927a695bd640de4b78031e5c452f501ac923daba6b438c2b6e4e8a357be",
+      "label": "Magic 编辑模型",
+      "description": "应用 magic 模式修改所用模型的选择器或角色别名（@slow）；留空时使用 smol 角色"
     },
     "edit.fuzzyMatch": {
       "sourceHash": "0dee6242ca065b3e60e27f1bff9ccf59a4e8fdb61ea4b3f9f3394124d118bd1a",
@@ -3330,9 +3335,9 @@ export const zhCN = {
       "description": "启用 TTS 工具，以通过设备端的 Phonon 或 xAI Grok Voice 合成语音文件"
     },
     "generate_image.enabled": {
-      "sourceHash": "e444f73d66163d1246d092eca529d40bc88eefc2a58f1b112c5b895060bef994",
+      "sourceHash": "bca31aa6edc52b1dc0b38c45966254d059dca20a919a948d17adf0fabb43ef83",
       "label": "生成图像",
-      "description": "启用 generate_image 工具（文本生成图像和编辑）；tools.xdev 开启时，此工具会作为 xd:// 设备提供"
+      "description": "启用 generate_image 工具（文本生成图像和编辑）。tools.commands 开启时，此工具会作为工具命令挂载"
     },
     "computer.enabled": {
       "sourceHash": "1700affcd921c7cf3f0ebb93ec01369b1ecebc8a2932ac54d4db784ae5af025e",
@@ -3435,14 +3440,14 @@ export const zhCN = {
       "description": "默认的 HTTP CDP 发现端点（例如 http://127.0.0.1:9222），用于连接现有浏览器，而非启动浏览器。工具调用中显式指定的 `app` 优先"
     },
     "browser.relay": {
-      "sourceHash": "3cbfd3e0fb93b274a3d2b0f8d17c20ab36f14a15891c7ee25e649b62eb057e11",
+      "sourceHash": "84a32ee7a0ed35ce1438c5749dab73131d5d3367f6d56f8a5ab6eaa8f2422135",
       "label": "Browser Relay",
-      "description": "通过 omp Browser Relay 操作自己的 Chrome 页签。只需安装一次扩展（`omp browser-relay install`）；浏览器预置接口需要中继服务时会自动启动。优先于浏览器 CDP URL；设置 `PI_BROWSER_RELAY=0` 或 `PI_BROWSER_RELAY=1` 可覆盖此设置。子代理不使用此模式，除非某次打开传入 `app: \"relay\"`"
+      "description": "通过 omp Browser Relay 操作自己的 Chrome 页签。只需安装一次扩展（`omp browser-relay install`）；Chrome 运行期间由扩展的原生主机提供中继服务。优先于浏览器 CDP URL；设置 `PI_BROWSER_RELAY=0` 或 `PI_BROWSER_RELAY=1` 可覆盖此设置，设置 `PI_BROWSER_RELAY=only` 则使其成为唯一的浏览器（从扩展侧边栏启动的会话）。子代理不使用此模式，除非某次打开传入 `app: \"relay\"`，或 Relay 是唯一的浏览器"
     },
     "browser.relayUrl": {
-      "sourceHash": "6b961b3c49b9ab178a7ee5aa2b8811ea5ee3726af557a0eb72020d573f234c27",
+      "sourceHash": "ef05af4830e14e568bfb83ca329e1addac3ac9b0affa4aaca049290d0b7263e4",
       "label": "浏览器 Relay URL",
-      "description": "omp browser relay 端点（默认 http://127.0.0.1:9224）"
+      "description": "覆盖本地浏览器 Relay 的自动发现，例如连接从另一台机器转发过来的 Relay"
     },
     "browser.headless": {
       "sourceHash": "4b735e1d1b2c2368ece07015505bc3a2a11f1f6645e7e8fa6a3202bea64d5c7c",
@@ -3509,39 +3514,39 @@ export const zhCN = {
       "label": "实时任务组件",
       "description": "在等待卡片、任务状态胶囊和任务面板中，为每个运行中的后台任务绘制实时组件（根据输出生成图表、进度条和状态网格），并用一行文字说明较长的 Shell 命令的作用。由 `widget` 模型角色（默认使用 `smol`）为每个任务编写一份规格和至多一条命令说明，后续更新无需再次调用模型"
     },
-    "tools.xdev": {
-      "sourceHash": "aef279287594846271d548c41381f6c9a662df6427ebfe27ebde5790c1b921c7",
-      "label": "`xd://` 工具",
-      "description": "将很少使用、可通过发现机制查找的工具挂载到 `xd://` 设备 URL，通过 `read`/`write` 操作，而不是在每次请求中发送其 schema。若会话的显式工具列表授予 `read` 但不包含 `write`，则通过仅供设备使用的 `write` 通道挂载设备（设备之外仅 `local://` 临时文件可写）。关闭后，将所有已启用工具直接暴露在顶层"
+    "tools.commands": {
+      "sourceHash": "fe041d402980637917c86bc873f250b4fd9e0e122ff7cc3ce9cd1260436a51a0",
+      "label": "工具命令",
+      "description": "将很少使用（可通过发现机制查找）的工具挂载为 bash 命令，并提供由 schema 生成的 `--help`，而不是在每次请求中发送其 schema。需要 bash 工具：没有 bash 的会话会将所有已启用工具保留在顶层。关闭后，将所有已启用工具直接暴露在顶层"
     },
-    "tools.xdevDocs": {
-      "sourceHash": "fc6e5da19feb97bd9399025f7981b9f82f188ba78c7584ca7067dce60849414f",
-      "label": "xd:// 提示词文档",
-      "description": "选择要内联到系统提示词中的已挂载设备文档和 schema。“仅内置设备”会保持核心工具内联，而 MCP 和扩展工具则按需获取",
+    "tools.commandDocs": {
+      "sourceHash": "c7db06c870f8e3668ce5986a57330b7d95152d71cdd3d102e7c1273668951882",
+      "label": "工具命令提示词文档",
+      "description": "选择哪些已挂载命令的 `--help` 文本内联到系统提示词中。“仅内置命令”会保持核心工具内联，而 MCP 和扩展工具则按需获取",
       "options": {
         "inline": {
-          "label": "所有设备",
-          "description": "内联每个已挂载设备的文档和 schema"
+          "label": "所有命令",
+          "description": "内联每个已挂载命令的帮助"
         },
         "builtins": {
-          "label": "仅内置设备",
-          "description": "内联内置文档；按需获取 MCP 和扩展文档"
+          "label": "仅内置命令",
+          "description": "内联内置命令帮助；按需获取 MCP 和扩展帮助"
         },
         "catalog": {
           "label": "仅目录",
-          "description": "列出所有设备；按需获取全部文档"
+          "description": "列出所有命令；按需运行 `--help`"
         }
       }
     },
-    "tools.xdevInlineDevices": {
-      "sourceHash": "0279fc44afe81a76385f0de3555d15690d7477cf369022522bab6be5bd0cb847",
-      "label": "xd:// 内联设备",
-      "description": "当“xd:// 提示词文档”设为“仅内置设备”时，内联名称匹配这些 glob 模式的动态设备文档和 schema（例如 mcp__context_mode_*）。“仅目录”会忽略此设置"
+    "tools.commandInline": {
+      "sourceHash": "5b5d25a3d0b731510bed4f09acac9fe26f5036bd5a9f08b85dd610b9dac7154e",
+      "label": "工具命令内联帮助",
+      "description": "当“工具命令提示词文档”设为“仅内置命令”时，同时内联名称匹配这些 glob 模式的动态命令（例如 mcp__context_mode_*）。“仅目录”会忽略此设置"
     },
-    "tools.xdevNotices": {
-      "sourceHash": "98684129af4ba215a6bf4741b9a91c425c6898ed45029e90d823b15cb4e68974",
-      "label": "xd:// 挂载通知",
-      "description": "当 MCP 或扩展工具挂载或卸载时，显示 `xd://: mounted …` 通知。模型仍会在下一次提示词中获知该变化"
+    "tools.commandNotices": {
+      "sourceHash": "6ab0b50d7c9c8929a906f5620c3c809c19cc3b4e2aac3a9e2270a2b8fb2649c3",
+      "label": "工具命令挂载通知",
+      "description": "MCP 或扩展工具作为命令挂载或卸载时显示通知；模型仍会在下一次提示词中获知该变化"
     },
     "mcp.enableProjectConfig": {
       "sourceHash": "29afcf86b9eacf7a9970e2d5dffaa82de8e08bbf810fa65e3cf04db6e300acfe",
@@ -3564,14 +3569,24 @@ export const zhCN = {
       "description": "MCP 资源更新注入对话前的防抖窗口，单位为毫秒"
     },
     "mcp.evalNamespaces": {
-      "sourceHash": "0271fcabe6f499ff6679ce667ce05f90d26824449da5afdf39ed530fa58c4b82",
+      "sourceHash": "a84b4cceb4d4e01305d276cc5094ce75a509754d26904675daeca3e80578df17",
       "label": "MCP eval 命名空间",
-      "description": "将每个 MCP 服务器公开为 eval 全局对象（github.create_issue(...)），而不是顶层工具或 xd:// 工具"
+      "description": "将每个 MCP 服务器公开为 eval 全局对象（github.create_issue(...)），而不是顶层工具或工具命令"
     },
     "mcp.builtinTransforms": {
       "sourceHash": "48fff1e8d97416a6189b47a993b199986ca748248d56af8bdb3d6fb2e9231730",
       "label": "MCP 内置转换",
       "description": "跳过已被 omp 自带工具取代的已识别 MCP 服务器（eval 可运行 JavaScript 时的 Codex node_repl）"
+    },
+    "mcp.shared": {
+      "sourceHash": "3c4cddb18880b0b560e0447e12fc0fc0122a539434a297ec094d04035dff90e3",
+      "label": "共享 MCP 服务器",
+      "description": "通过守护进程运行 MCP 服务器，使所有 omp 实例对每个服务器共用一个进程和一份缓存的工具目录。持有会话状态的服务器仍按实例各保留一个进程（共享不可用时回退为私有服务器）"
+    },
+    "mcp.idleStopMinutes": {
+      "sourceHash": "8d684bee937dfbac23ee24c4c3f4827f4cf027870fcacc29952e8a8cde606a19",
+      "label": "MCP 空闲停止",
+      "description": "共享 MCP 服务器闲置超过此分钟数后停止；下次请求时会重新启动"
     },
     "plan.enabled": {
       "sourceHash": "3ccd9f953d421df50fea843172f59f3785b4371ea11cb93c757642da94df63cc",
@@ -4601,9 +4616,9 @@ export const zhCN = {
       "description": "允许扩展改变助手回复的绘制方式、原位重绘回复，并接收其自身链接上的点击；会话、导出和模型上下文仍保留原始回复"
     },
     "dev.autoqa": {
-      "sourceHash": "2e0cddc4aea537ccce57783673e733efb69a641d2202909d0286b5511c973616",
+      "sourceHash": "b7856e2838dce38ad71ac3d0fc65b20a31def0d6d17c7fd11fa3ec73dda5f639",
       "label": "自动 QA",
-      "description": "自动报告工具问题（xd://report_issue）。默认开启；首次报告时会征求同意，拒绝后将禁用报告，直至明确重新启用"
+      "description": "自动报告工具问题（`report_issue`）。默认开启；首次报告时会征求同意，拒绝后将禁用报告，直至明确重新启用"
     },
     "dev.autoqaPush.endpoint": {
       "sourceHash": "0052808da5e30bce03ee74bfce70aeb4d07528a7ad6c1d8e7cb30f0e1301d2c4",
@@ -4679,10 +4694,10 @@ export const zhCN = {
       "description": "在系统提示词中列出可用技能；关闭可节省上下文，并可通过 `/skillful` 在每个会话中切换"
     },
     "retry.waitForUsageReset": {
-      "sourceHash": "4376f324f6b9672db734407b622bd1b156069b03b2ff3957965e235000457c29",
+      "sourceHash": "0ac009212e8432db801b64f035b28c30a5ef82838cf3a3017d73398d786afe85",
       "label": "等待用量重置",
-      "description": "当提供商报告用量已耗尽并给出重置时间（任意提供商的 5 小时或每周配额窗口）时，等待至重置，而不是因超出 retry.maxDelayMs 立即失败。可按 {escape} 中止等待，但等待也会阻塞子 Agent，因此无人值守运行时请保持关闭",
-      "descriptionSource": "When a provider reports usage-limit exhaustion with a reset time (5-hour or weekly quota windows on any provider), sleep until the reset instead of failing fast past retry.maxDelayMs. Waits are abortable ({escape}) but also hold subagents, so leave off for unattended runs."
+      "description": "在 retry.maxDelayMs 以内的用量限额等待本来就允许。开启后，当提供商报告重置时间（例如 5 小时或每周配额窗口）时，也会超过该上限继续等待。可按 {escape} 中止等待，但等待也会阻塞子 Agent，因此无人值守运行时请保持关闭",
+      "descriptionSource": "Usage-limit waits within retry.maxDelayMs are already allowed. Enable this to also wait past that cap when the provider reports a reset time, such as a 5-hour or weekly quota window. Waits are abortable ({escape}) but also hold subagents, so leave off for unattended runs."
     },
     "advisor.maxNotesPerUpdate": {
       "sourceHash": "1acd05877cd50725142ce37bb4cb20d05aa80cc68608d884aabea28b254cea98",
@@ -4990,13 +5005,13 @@ export const zhCN = {
       "description": "将模型以纯文本输出的编辑内容转换为 `edit` 工具调用并执行"
     },
     "find.enabled": {
-      "sourceHash": "6fc3e245cd77c42237646dbb5321a24d90aa9bd9c4e3037f3ef9c50a29371f99",
+      "sourceHash": "5606348fb6573db75bbebdaf1a646af3287a1c9ce2bff65fcce25c76536bd950",
       "label": "find（语义 grep）",
-      "description": "启用 `find` 工具：使用自然语言搜索文件和行范围，由 `judge` 模型角色进行判定。自动模式仅当 `judge` 角色解析为原生 TypeSafe jev 模型时启用",
+      "description": "启用 `find` 工具：使用自然语言搜索文件和行范围，由 `judge` 模型角色进行判定。自动模式在首个可用的 `judge` 为原生模型时启用",
       "options": {
         "auto": {
           "label": "自动",
-          "description": "当 `judge` 角色解析为原生 TypeSafe jev 模型时启用"
+          "description": "首个可用的 `judge` 为原生模型时启用"
         },
         "on": {
           "label": "开启",
@@ -5197,13 +5212,13 @@ export const zhCN = {
       "description": "包含 `libidalib` 的目录，会导出为 `IDADIR`；留空时自动检测（`$IDADIR`、`ida-config.json`、标准安装路径）"
     },
     "disassembler.backend": {
-      "sourceHash": "0ec47bf44d307a1c73fd46fc472f291ee99d110ceb03b5b376f0dd4c0548eaa0",
+      "sourceHash": "bad044cd40c7f90ac2c2b6d54fc521ac01f139497a60ef099f3e2bcf1698effc",
       "label": "反汇编器",
-      "description": "`read` 的分析选择器与 `eval` 的 `dsm` 命名空间所用后端；直接读取可执行文件只显示元数据。自动模式在已安装 IDA Pro 时使用它，否则使用 Ghidra（首次分析时下载）",
+      "description": "`read` 的分析选择器与 `eval` 的 `dsm` 命名空间所用后端；直接读取可执行文件只显示元数据。自动模式在已安装 IDA Pro 时使用它，否则使用 Ghidra（首次分析时下载）；只有明确选择时才使用 Binary Ninja",
       "options": {
         "auto": {
           "label": "自动",
-          "description": "找到带 idalib 的 IDA Pro 安装时使用 IDA Pro，否则使用 Ghidra"
+          "description": "找到带 idalib 的 IDA Pro 安装时使用 IDA Pro，否则使用 Ghidra；从不使用 Binary Ninja"
         },
         "ghidra": {
           "label": "Ghidra",
@@ -5213,6 +5228,10 @@ export const zhCN = {
           "label": "IDA Pro",
           "description": "通过 idalib 使用 IDA Pro；未找到安装时禁用分析"
         },
+        "binja": {
+          "label": "Binary Ninja",
+          "description": "通过 Binary Ninja 的无头 Python API 使用（需要支持无头模式的许可证）；自动模式从不选择它；未找到安装时禁用分析"
+        },
         "none": {
           "label": "无",
           "description": "仅显示可执行文件元数据；禁用分析"
@@ -5220,9 +5239,9 @@ export const zhCN = {
       }
     },
     "disassembler.maxOpen": {
-      "sourceHash": "982d01717f01430af285dd2e8f1e6fe3061e4ed1de58363a315dbf6fd0b04326",
+      "sourceHash": "e629d10d5652855b014de756a5bc03e3630b674c701df09e4e26c7937205a052",
       "label": "最大打开数据库数",
-      "description": "每个项目同时打开的数据库数量上限（`omp ps` 中的 `omp.ida.*` / `omp.ghidra.*` 守护进程）；再打开一个时，会淘汰一个未被引用的空闲数据库。用完后请关闭保留的 `dsm` 句柄",
+      "description": "每个项目同时打开的数据库数量上限（每个数据库在 `omp ps` 中是一个 disasm 单元，标注其后端和二进制文件）；再打开一个时，会淘汰一个未被引用的空闲数据库。用完后请关闭保留的 `dsm` 句柄",
       "options": {
         "2": {
           "label": "2"
@@ -5269,6 +5288,16 @@ export const zhCN = {
       "sourceHash": "4d64b0f7a742459b7a9205594dffe21da49416041880ed34bd462234ee281652",
       "label": "Ghidra Python",
       "description": "能够导入 `pyghidra` 的 Python 解释器；留空时使用由安装包自带 wheel 构建的受管虚拟环境"
+    },
+    "binja.installDir": {
+      "sourceHash": "646ee851f668e308dfd2dbf1d9745b2888f06632266a536bf76f204476d47373",
+      "label": "Binary Ninja 安装目录",
+      "description": "包含 Binary Ninja 核心库的目录，或 macOS 上的 .app 包；留空时依次使用 $BN_INSTALL_DIR、Binary Ninja 用户文件夹中的 lastrun 文件，最后是默认安装位置"
+    },
+    "binja.python": {
+      "sourceHash": "72c0f8b7f583c0cde1d36e7226c77e1e19fa94eb49b276ec11b79da9db4f98b8",
+      "label": "Binary Ninja Python",
+      "description": "能够从安装目录的 python 子目录加载 Binary Ninja API 的 Python 3 解释器；留空时自动检测"
     },
     "mcp.startupTimeoutMs": {
       "sourceHash": "036eb918786f257149807dd371cd723429f05617777ea62ee84e5e863d5ca4de",

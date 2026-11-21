@@ -2,6 +2,16 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [19.1.0] - 2026-11-21（未发布候选）
+
+- 对齐官方OMP 19.1.0（coding-agent/utils/Stats/TUI最新稳定版均19.1.0），固定官方tag commit `a7135b8f31826c878734388b648f52bed8da436e`；按Git blob比较，npm的coding-agent 2092/2093份源码与官方树一致（唯一例外为发布时生成、不在Git树中的Browser Relay扩展包`extension.generated.json`），utils151、Stats121、TUI475份全同。官方`update.auto`把19.0.1→19.1.0装到原官方位置`~/.local/bin/omp`、受管启动器未变；`omp update`报告已最新，SHA-256 `dca56436…`匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。peer范围保持`>=19.0.0 <20`。
+- Settings：643定义/482UI，9动态getter不变。官方把`tools.xdev*`（`xd://`设备）改为`tools.commands`/`commandDocs`/`commandInline`/`commandNotices`（以bash命令挂载、按需`--help`），新增`pty.notify`、`edit.magic.model`、`binja.installDir`/`python`、`mcp.shared`、`mcp.idleStopMinutes`，共10项新译文；删除`tui.completeScrollback`与4项`tools.xdev*`旧译文；`disassembler.backend`补译`binja`选项；`model.toolCallLoopGuard.exemptTools`、`retry.maxDelayMs`、`retry.waitForUsageReset`（动态`{escape}`模板随新原文更新）、`edit.mode`、`find.enabled`、`generate_image.enabled`、`dev.autoqa`、`browser.relay`、`browser.relayUrl`、`disassembler.backend`、`disassembler.maxOpen`、`mcp.evalNamespaces`按新原文改译。其余460项不重译。
+- Commands无补全变化：89定义/98标识/9别名/27动态回调，漂移0。`builtin-registry.ts`与`pi-tui/autocomplete.ts`逐字节不变；`/tools`、`/jobs`、`/compact`与MCP辅助仅执行侧变化，extensibility与editor变化不涉及补全provider接口。
+- Stats无译文变化：95客户端逐字节不变，仅服务端db（已完成回填的库不取写锁、新增只读`readDailyActivity`）、rollup（版本不匹配时回退原始行）、spotlight-ingest（移除`xd://ast_edit`编辑归因）变化；`stats-cli`不变，`utils/open.ts`仅日志URL脱敏。
+- 驱动：`scripts/smoke-cli.ts`把Darwin对僵尸成员进程组返回的EPERM视为“尚未闭合”继续等待（只有ESRCH记为闭合，超时仍失败）。首轮smoke产品阶段通过，但guard的孤儿`sleep`在回收窗口触发EPERM而失败关闭；产品代码不变。
+- 冻结安装与完整check：72测试/2755断言，Settings482/482、Schema0，Commands89/89与98标识、漂移0，2104项显示变更/3次恢复/源码网络0。真实官方19.1.0 compiled smoke第二轮（无头受管Chrome、测试专属opener）：成功/人为失败预检、5页建/关、两服务单监听器、合并`--smol`与用户preload、doctor3/1/0、私有preload目录删除，cleanupErrors0；16目录GET/1 Codex版本GET/2身份GET/1无凭据HEAD在发出前拦截，推理0。
+- 仍锁屏：真实TUI三面交互、完整Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期与精确SHA冷GitHub安装未重验，不发布。Tern可选未验证，Windows不纳入。
+
 ## [19.0.1] - 2026-11-20（未发布候选）
 
 - 对齐官方OMP 19.0.1（coding-agent/utils/Stats/TUI最新稳定版均19.0.1），固定官方tag commit `f40f335845f0b136453d12fec8d6057011082766`；npm全部2047份coding-agent、133份utils、121份Stats、473份TUI源码与官方tag逐字节一致，4个导出模板源按package.files排除。官方`update.auto`把19.0.0→19.0.1装到原官方位置`~/.local/bin/omp`、受管启动器未变；`omp update`报告已最新，SHA-256 `2fe420bb…`匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。peer范围保持`>=19.0.0 <20`。
