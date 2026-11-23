@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：19.1.0，未发布；main与源码编号不是发布证据
-- 目标基线：官方OMP19.1.0、外部Bun最低1.4.4；Tern可选未验证
+- 实现候选：19.1.1，未发布；main与源码编号不是发布证据
+- 目标基线：官方OMP19.1.1、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -86,6 +86,8 @@
 
 19.1.0为643定义/482UI，9个动态getter不变：官方把`tools.xdev`/`xdevDocs`/`xdevInlineDevices`/`xdevNotices`（`xd://`设备，经read/write操作）改为`tools.commands`/`commandDocs`/`commandInline`/`commandNotices`（以bash命令挂载并提供schema生成的`--help`，无bash的会话保留顶层工具）；新增`pty.notify`（交互式控制台等待时通知）、`edit.magic.model`（magic编辑模式的写入模型，默认smol角色）、`binja.installDir`/`binja.python`（新Binary Ninja后端，TUI分组新增“Binary Ninja”保持英文）、`mcp.shared`（经守护进程共享MCP服务器进程与工具目录）、`mcp.idleStopMinutes`；删除`tui.completeScrollback`；`disassembler.backend`新增`binja`选项（自动模式从不选择）。12项原文变化改译，其中`retry.waitForUsageReset`为动态getter，`descriptionSource`换为新英文模板并保持`{escape}`捕获；其余460项原文哈希不变。registry/settings-ui逐字节不变，all-settings仅新增binja域。
 
+19.1.1为644定义/483UI，9个动态getter不变：新增`todo.backend`（`options: "runtime"`；可选后端由宿主`selector-controller`经新`runtimeOptions`注入设置面板，其中“Native / Keep the todo list in the session only”为宿主硬编码、扩展后端的标签说明来自扩展，均保持原文，插件只翻译注册表中的名称与说明）；官方把`computer.backgroundFallback`（takeover/refuse）改为`computer.takeover`（fallback/foreground/always/refuse，默认fallback），旧`refuse`值由官方`config/settings.ts`迁移，插件删除旧译文并按新原文独立翻译四个选项。其余481项原文哈希不变；registry/all-settings/settings-ui逐字节不变，pi-tui `settings-selector`仅新增`runtimeOptions`与显示净化，`settings-defs`不变。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -124,6 +126,8 @@
 19.0.1命令目录仅`builtin-collaboration.ts`变化（`/copy local`先创建并复制会话`local://`目录，用法提示同步），属执行侧；`builtin-registry.ts`、`pi-tui/autocomplete.ts`不变，extensibility types仅plan review注释与模型`snapcompactShape`字段。
 
 19.1.0命令目录仅`builtin-lifecycle.ts`（压缩取消改用`isInterruptReason`）、`builtin-session.ts`（`/jobs`简要行用`jobDisplayLabel`、`/tools`列出工具命令名而非`xd://`）与`helpers/mcp.ts`（live连接、重新授权提示）变化，均属执行侧；`builtin-registry.ts`与`pi-tui/autocomplete.ts`逐字节不变。extensibility types新增`parentToolCallId`与provider接管字段，`pi-tui/components/editor.ts`新增`coveringRows()`渲染计数与Vim反向查找边界修复，不涉及`addAutocompleteProvider`或补全项结构。
+
+19.1.1命令目录仅`builtin-lifecycle.ts`（`/wt`创建后执行工作树`post-checkout` Hook并输出警告）与`builtin-modes.ts`（`/computer`状态行字段改为`takeover=`）变化，均属执行侧；`builtin-registry.ts`、`pi-tui/autocomplete.ts`逐字节不变。extensibility types新增`registerTodoBackend`/`TodoBackendDefinition`，wrapper把仅含会话工具命令的bash行交回原生工具，startup-deferral缓存前缀v2→v3（扩展首次重新判定是否可延迟、选中的待办后端所属扩展保持eager）；插件不注册待办后端，补全provider接口与项结构不变。
 
 ## Stats Web 显示适配
 
@@ -171,6 +175,7 @@
 - 19.0.0：客户端仅OverviewRoute/view-models/colors/types变化：Token构成卡的“By agent”改为“By source”（智能体类型＋语言模型旁路用途类别），新增“Decision models”卡（决策模型按用途），标签改放在`.row > .truncate`。插件删除失效的“By agent”键，补“Decision models”及说明；`browser.ts`新增`shareAgentLabel`：仅Token构成卡中`.row > .truncate`且原文为三个固定智能体标签时翻译，旁路类别（服务端由存储purpose派生，含与词典同名的Judge/Thinking）保持原文；“N req”行在两卡均按既有模板翻译。服务端新增DNS重绑定Host防护（公开点分名需为绑定名或`OMP_STATS_ALLOWED_HOSTS`，否则403纯文本），preload先执行原handler、非ok响应原样返回。
 - 19.0.1：客户端仅Shell/TimeChart/range/types变化：`TIME_RANGES`在24h与7d之间新增2d/3d（按小时分桶），按钮提示`${windowLabel} (${i+1})`序号随之后移，侧栏快捷键提示改为`1–8`，跨日刻度按日显示。插件补“2d/3d”“the last 2 days/3 days”键，范围展开表按官方顺序扩为8项（含序号提示与各页范围说明模板）；browser/mutations/preload不改。测试从官方`TIME_RANGES`/`rangeMeta`推导，官方再增删范围时失败。
 - 19.1.0：121源码中仅服务端`db.ts`（已完成回填的库打开时不取写锁；新增只读连接的`readDailyActivity`供会话`/usage`使用）、`rollup.ts`（rollup版本不匹配时回退原始行聚合）与`spotlight-ingest.ts`（移除`write xd://ast_edit`的编辑归因）变化；95客户端、`stats-cli.ts`逐字节不变，`utils/open.ts`仅把日志中的URL脱敏、错误改记code，打开命令选择不变。947键/155通用模板＋9属性模板及browser/mutations/preload不改。
+- 19.1.1：121源码中客户端仅`spotlight/Hero.tsx`（“Fetched back beyond baseline”的title）、`Savings.tsx`（“Back anyway”的title与USD/Token两种页脚、按工具行的基线悬停行）、`Steps.tsx`（页脚保留比例公式）文案变化；服务端`db`/`shared-types`/`spotlight-aggregator`/`spotlight-measures`按“plain是否限制了该结果”分侧计算回取基线（`minHoldouts`=30，不足时整个工具用合并比率），计算归官方。插件替换3个静态键、2个既有模板，Token页脚因含`formatInteger(adjusted.minHoldouts)`由静态键改为严格模板：946键/156通用模板＋9属性模板。文本节点仍先查字典再查模板，`.spot-tool-net-row`多行title逐行匹配，元素白名单与browser/mutations/preload不改；`stats-cli`与`utils/open.ts`不变。
 
 ## 6. 检查与真实验证
 
@@ -197,7 +202,7 @@
 
 ## 7. 发布边界
 
-当前源码/开发依赖/目标宿主候选为19.1.0，范围`>=19.0.0 <20`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0、19.0.1候选未发布并由19.1.0取代。19.1.0本轮仍锁屏，仅通过源码合同与compiled smoke（无头受管Chrome＋测试专属opener）；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
+当前源码/开发依赖/目标宿主候选为19.1.1，范围`>=19.0.0 <20`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0、19.0.1、19.1.0候选未发布并由19.1.1取代。19.1.1本轮仍锁屏，仅通过源码合同与compiled smoke（无头受管Chrome＋测试专属opener）；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

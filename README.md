@@ -18,14 +18,14 @@
 
 ## 当前版本
 
-- 当前候选：`19.1.0`，面向官方 OMP 19.1.0，**尚未发布**；上一正式 Release 为 [v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0、19.0.1 候选均未发布并由本候选取代。main、源码编号和本机升级不等于 Release
-- 目标官方宿主：OMP19.1.0（官方`update.auto`装到原官方位置，受管启动器未变），SHA-256匹配官方darwin-arm64资产；compiled内嵌及最低外部Bun1.4.4。兼容预检只接受主版本19：18.x宿主上本候选失败关闭；19.0.x插件的预检同样接受19.1.0，但新设置与改写原文会回退英文，须升级插件后重启OMP
-- Settings：482项UI；19.1.0官方把`tools.xdev*`（`xd://`设备）改为`tools.commands*`（以bash命令挂载、提供`--help`），新增`pty.notify`、`edit.magic.model`、`binja.installDir`/`python`、`mcp.shared`、`mcp.idleStopMinutes`共10项译文，删除官方移除的`tui.completeScrollback`与4项`tools.xdev*`，`disassembler.backend`补译`binja`选项，12项原文变化按新原文改译。功能默认值与执行逻辑由官方负责
+- 当前候选：`19.1.1`，面向官方 OMP 19.1.1，**尚未发布**；上一正式 Release 为 [v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0、19.0.1、19.1.0 候选均未发布并由本候选取代。main、源码编号和本机升级不等于 Release
+- 目标官方宿主：OMP19.1.1（官方`update.auto`装到原官方位置，受管启动器未变），SHA-256匹配官方darwin-arm64资产；compiled内嵌及最低外部Bun1.4.4。兼容预检只接受主版本19：18.x宿主上本候选失败关闭；19.1.0插件的预检同样接受19.1.1，但新设置会回退英文，须升级插件后重启OMP
+- Settings：483项UI；19.1.1新增`todo.backend`（待办后端；运行时选项“Native”及其说明由宿主硬编码，保持官方英文），官方把`computer.backgroundFallback`改为`computer.takeover`（计算机接管：回退接管/前台窗口/始终接管/拒绝），删除旧译文；其余481项原文哈希不变。19.1.0曾把`tools.xdev*`改为`tools.commands*`并新增10项。功能默认值、旧设置迁移与执行逻辑由官方负责
 - 设置汉化：离线，无网络请求和遥测；不读取当前设置值或凭据，不写`config.yml`；选项显示副本与`/effort`参数原文隔离
-- Commands：89定义、98标识、9别名、27动态回调；19.1.0命令注册表与补全接口不变，`/tools`、`/jobs`、`/compact`与MCP辅助仅执行侧变化。参数、第三方说明、模型/提供商ID和effort值不译
-- 验收范围：macOS/Linux普通终端＋系统浏览器。19.1.0完成源码合同与compiled smoke（无头受管浏览器＋测试专属opener）；本轮仍锁屏，真实Settings/Commands交互、Stats完整网页/默认opener与冷安装等门禁未重验，不能按三面通过发布。Tern路径未验证、不宣称支持；Windows不纳入
-- Stats：实际运行官方19.1.0编译CLI，不以固定npm包替代。19.1.0的Stats客户端逐字节不变，仅服务端rollup/数据库只读打开/Spotlight编辑归因变化，译文与网页适配不变；19.0.1的“2天”“3天”时间范围与19.0.0概览“按来源”“决策模型”边界保持；官方DNS重绑定Host防护由包装层原样透传
-- 18.18.8启动器修复沿用；官方后台更新19.0.1→19.1.0装在原官方位置，`omp update`报告已最新
+- Commands：89定义、98标识、9别名、27动态回调；19.1.1命令注册表与补全接口不变，`/wt`工作树Hook警告与`/computer`状态行（`takeover=`）仅执行侧变化。参数、第三方说明、模型/提供商ID和effort值不译
+- 验收范围：macOS/Linux普通终端＋系统浏览器。19.1.1完成源码合同与compiled smoke（无头受管浏览器＋测试专属opener）；本轮仍锁屏，真实Settings/Commands交互、Stats完整网页/默认opener与冷安装等门禁未重验，不能按三面通过发布。Tern路径未验证、不宣称支持；Windows不纳入
+- Stats：实际运行官方19.1.1编译CLI，不以固定npm包替代。19.1.1客户端仅Spotlight的Hero/Savings/Steps说明文案变化（回取基线按“plain是否限制了该结果”分开计价、补充精简处理未删减结果的回取），同步替换6条译文（其中Token页脚含官方`minHoldouts`数值，由静态键改为严格模板）；19.0.1的“2天”“3天”时间范围与19.0.0概览“按来源”“决策模型”边界保持；官方DNS重绑定Host防护由包装层原样透传
+- 18.18.8启动器修复沿用；官方后台更新19.1.0→19.1.1装在原官方位置，`omp update`报告已最新
 - 18.6.5：Settings 选项与命令参数原文隔离，修复 `/effort` 参数说明泄漏；`omp update` 透传前恢复官方目录优先，避免上游更新覆盖 PATH 启动器。Stats 18.6.1 客户端与 18.6.0 无变化，既有译文和边界保持
 - 18.6.6：保留 `/effort` 的 `off` 等官方级别字面量；Errors 页错误特征筛选器的正文与 tooltip 均保持原始错误数据，不与 UI 词典混淆
 
@@ -75,7 +75,8 @@
 | 18.22.2（历史未发布候选） | 18.22.2（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=18.22.2 <19 |
 | 19.0.0（历史未发布候选） | 19.0.0（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=19.0.0 <20 |
 | 19.0.1（历史未发布候选） | 19.0.1（源码合同、compiled smoke与新时间范围DOM驱动；锁屏下完整交互/网页/默认opener门禁未重验） | >=19.0.0 <20 |
-| 19.1.0（未发布候选） | 19.1.0（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=19.0.0 <20 |
+| 19.1.0（历史未发布候选） | 19.1.0（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=19.0.0 <20 |
+| 19.1.1（未发布候选） | 19.1.1（源码合同与compiled smoke；锁屏下完整交互/网页/默认opener门禁未重验） | >=19.0.0 <20 |
 
 声明范围不等于所有版本都经过验证。内部模块或元数据结构不兼容时，插件报告兼容性错误，不冒险继续覆盖。
 

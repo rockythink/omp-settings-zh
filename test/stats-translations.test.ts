@@ -52,7 +52,15 @@ test("Spotlight templates retain formatter values and reject arbitrary suffixes"
 	expect(render("Fetched back after 12% of cuts (10%–15%)")).toBe("12% 的精简后发生回取 (10%–15%)");
 	expect(render(" · 2h 05m after the cut".trim())).toBe("· 精简后 2h 05m");
 	expect(render("Show 3 more tools")).toBe("显示另外 3 个工具");
-	for (const input of ["Saved private tokens ($0.10)", "Show Requests more tools", "12 calls later private", "Secret: 4 cuts"]) {
+	const footer = (holdouts: string) => `Recovered tokens are the full results of the recovery calls (estimated as chars ÷ 4 where no exact count exists). What comes back anyway is, per tool, the tokens a held-out result gets fetched back times the cuts, apart for results plain capped and shown whole, plus the recovered tokens of results shaping left whole; while a side with cuts has under ${holdouts} held-out results, all the tool's cuts take its pooled rate.`;
+	expect(render(footer("1,030"))).toContain("保留对照结果少于 1,030 条时");
+	expect(render("31 held-out results get 1.2K each fetched back anyway, pooled (cuts are priced apart by whether plain capped them once each side with cuts has enough held out)"))
+		.toBe("31 条保留对照结果每条本就会回取 1.2K（合并计算；有精简的每一侧保留对照足够后，精简按 plain 是否限制过分开计价）");
+	for (const input of [
+		"Saved private tokens ($0.10)", "Show Requests more tools", "12 calls later private", "Secret: 4 cuts",
+		footer("Requests"), `${footer("30")} private`,
+		"31 held-out results get 1.2K each fetched back anyway, pooled (Requests)",
+	]) {
 		expect(render(input)).toBe(input);
 	}
 });

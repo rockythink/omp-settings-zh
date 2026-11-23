@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "19.1.0",
+  "sourceOmpVersion": "19.1.1",
   "settings": {
     "auth.unpausedProviders": {
       "sourceHash": "3e2a78bb276f04a95d8df8a221210a61e301310124dfc83955ebd06b5c437de8",
@@ -3252,6 +3252,11 @@ export const zhCN = {
         }
       }
     },
+    "todo.backend": {
+      "sourceHash": "3d1ce355f70b764c4f408d73f8e65c9977e25c47b559724abe0ab2b8659ec5b4",
+      "label": "待办后端",
+      "description": "待办列表要镜像同步到的扩展；选择 Native 时仅保存在会话中"
+    },
     "glob.enabled": {
       "sourceHash": "b1f79976af435c4f475f215a9c8ff02fc092f6e6d823010d1e54ff311ff1ce34",
       "label": "Glob",
@@ -3359,18 +3364,26 @@ export const zhCN = {
       "label": "计算机截图高度",
       "description": "截图的最大高度（像素）"
     },
-    "computer.backgroundFallback": {
-      "sourceHash": "aeb2e32863bb5f8c4b5aa59722a7b9fca07368eea0b7ffaaea5bad30a5541c97",
-      "label": "计算机后台回退",
-      "description": "窗口输入无法走后台通道时，切至前台重试该次调用并将焦点还给你的应用（macOS；其他平台仅切至前台），或拒绝调用；拒绝还会阻止 Agent 自行抢占前台或打开 macOS 菜单",
+    "computer.takeover": {
+      "sourceHash": "ca70b0477fe22e6eaa201ca1df204f049d2596e7787b0364925e771c2f94731c",
+      "label": "计算机接管",
+      "description": "决定窗口输入何时改为接管（使用真实指针和键盘；你按 Escape 可停止），而不是在后台运行",
       "options": {
-        "takeover": {
-          "label": "前台接管",
-          "description": "仅为这一次调用短暂将目标切至前台，然后将焦点还给你的应用（macOS 下即使你一直在打字也会归还）"
+        "fallback": {
+          "label": "回退接管",
+          "description": "优先在后台运行；后台通道不可用的调用会短暂将目标切至前台，然后将焦点还给你的应用（macOS 下即使你一直在打字也会归还）。Agent 也可为某次调用请求接管"
+        },
+        "foreground": {
+          "label": "前台窗口",
+          "description": "由 omp 而非 Agent 决定：对已在你面前的窗口以及后台通道不可用的调用接管输入，其余情况保持后台运行"
+        },
+        "always": {
+          "label": "始终接管",
+          "description": "由 omp 而非 Agent 决定：每次窗口和元素输入调用都接管，为该次调用将目标切至前台，然后将焦点还给你的应用"
         },
         "refuse": {
           "label": "拒绝",
-          "description": "调用失败，不进行接管；Agent 自行发起的 takeover、raise、激活式打开、桌面输入和 macOS 菜单也会被拒绝（上下文菜单、弹出按钮和菜单按钮；菜单打开期间会占用你的键盘）"
+          "description": "从不接管：后台通道不可用的调用直接失败；Agent 自行发起的 takeover、raise、激活式打开、桌面输入和 macOS 菜单（上下文菜单、弹出按钮和菜单按钮；菜单打开期间会占用你的键盘）也会被拒绝"
         }
       }
     },

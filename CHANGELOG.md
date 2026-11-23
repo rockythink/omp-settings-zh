@@ -2,6 +2,15 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [19.1.1] - 2026-11-23（未发布候选）
+
+- 对齐官方OMP 19.1.1（coding-agent/utils/Stats/TUI最新稳定版均19.1.1），固定官方tag commit `31ffee513f27a01bba7d4dfbe12bae239cdc646a`（完整树12090项未截断）；按Git blob比较，npm的coding-agent 2096/2097份源码与官方树一致（唯一例外仍为发布时生成的Browser Relay扩展包`extension.generated.json`），utils151、Stats121、TUI475份全同。官方`update.auto`把19.1.0→19.1.1装到原官方位置`~/.local/bin/omp`，经受管启动器`omp update`报告已最新，SHA-256 `d5a3324acd98375a01698a1b0c018be48caed2956c8aa9044ad137fe43bc0400`与官方darwin-arm64资产相同，受管启动器逐字节不变。#17758为v19.1.1祖先（ahead 5844、behind 0）。
+- Settings：644定义/483UI，9动态getter不变。新增`todo.backend`（待办后端；可选项由宿主`runtimeOptions`注入，“Native”及其说明为宿主硬编码，保持英文）；官方把`computer.backgroundFallback`（takeover/refuse）改为`computer.takeover`（fallback/foreground/always/refuse，旧`refuse`值由官方迁移），插件删除旧译文并按新原文翻译“计算机接管”及“回退接管/前台窗口/始终接管/拒绝”四个选项。其余481项原文哈希不变。
+- Commands无补全变化：89定义/98标识/9别名/27动态回调，漂移0。`builtin-registry.ts`与`pi-tui/autocomplete.ts`逐字节不变；`/wt`工作树Hook警告与`/computer`状态行仅执行侧变化；extensibility新增`registerTodoBackend`、startup-deferral缓存v2→v3，均不涉及补全provider接口。
+- Stats：客户端仅Spotlight Hero/Savings/Steps说明文案变化（回取基线按“plain是否限制了该结果”分侧计价，并计入精简处理未删减结果的回取）。替换3个静态键与2个既有模板；Savings的Token页脚新含官方`minHoldouts`数值，由静态键改为严格模板，旧键删除（946键、156通用模板＋9属性模板）。测试补充新模板保留数值、拒绝数据后缀的用例。
+- 冻结安装与完整check：72测试/2760断言，Settings483/483、Schema0，Commands89/89与98标识、漂移0，2110项显示变更/3次恢复/源码网络0。真实官方19.1.1 compiled smoke首轮通过（无头受管Chrome、测试专属opener）：成功/人为失败预检、5页建/关、两服务单监听器、合并`--smol`与用户preload、doctor3/1/0、私有preload目录删除，cleanupErrors0。
+- 仍锁屏：真实TUI三面交互、完整Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期与精确SHA冷GitHub安装未重验，不发布。Tern可选未验证，Windows不纳入。
+
 ## [19.1.0] - 2026-11-21（未发布候选）
 
 - 对齐官方OMP 19.1.0（coding-agent/utils/Stats/TUI最新稳定版均19.1.0），固定官方tag commit `a7135b8f31826c878734388b648f52bed8da436e`；按Git blob比较，npm的coding-agent 2092/2093份源码与官方树一致（唯一例外为发布时生成、不在Git树中的Browser Relay扩展包`extension.generated.json`），utils151、Stats121、TUI475份全同。官方`update.auto`把19.0.1→19.1.0装到原官方位置`~/.local/bin/omp`、受管启动器未变；`omp update`报告已最新，SHA-256 `dca56436…`匹配darwin-arm64资产，内嵌及最低外部Bun1.4.4。peer范围保持`>=19.0.0 <20`。

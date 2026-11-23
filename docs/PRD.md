@@ -1,8 +1,8 @@
 # omp-settings-zh 产品需求文档
 
-- 状态：19.1.0未发布候选；完整验收未完成，Tern可选未验证
-- 基线版本：官方OMP19.1.0（兼容预检只接受19.x）；外部Bun最低1.4.4
-- 文档日期：2026-11-21
+- 状态：19.1.1未发布候选；完整验收未完成，Tern可选未验证
+- 基线版本：官方OMP19.1.1（兼容预检只接受19.x）；外部Bun最低1.4.4
+- 文档日期：2026-11-23
 
 相对18.19.0：Settings456→471UI，18.20.0新增`encourageEdits`、`find.verifyModel`，18.20.2新增`auth.unpausedProviders`、`todo.midRunNudges`、`commit.enabled`、`bash.allowedEnvVars`，18.20.3新增`mnemopi.recallRelevance`、`mnemopi.embeddingQueryPrefix`、`mnemopi.embeddingInputType`，18.22.0新增`tui.renderEmbeds`、`disassembler.backend`/`maxOpen`/`idleCloseSec`、`ghidra.installDir`/`python`并随官方删除`ida.enabled`/`maxOpen`/`idleCloseSec`，TTS/语音五项改为Phonon音色与0.8–1.3语速、`worktree.onExit`新增`force`，18.22.2新增`providers.webKeyless`、`live.endpoint`、`live.apiKey`并改译`live.voice`、`task.structured`、`browser.relay`/`cmux`/`tern`，其余不重译。Commands89定义/98标识：18.20.2新增`/commit`说明译文，18.20.3官方删除`/seance`并移除译文，18.22.0与18.22.2不变；动态回调不变。Stats客户端Costs/Gain改按本地日历日，3条“Per UTC day”说明随之更新；Spotlight构建改由官方worker执行；18.22.2 Gain页新增Snapcompact压缩来源，说明/空态改译并为来源列两个固定标签加列限定映射。18.20.0、18.20.2、18.20.3、18.22.0候选未发布；本轮仍锁屏，仅源码合同与compiled smoke，不把历史完整验收继承为18.22.2通过。
 
@@ -11,6 +11,8 @@
 19.0.1：Settings与Commands补全无变化（477UI、89定义/98标识，漂移0；`/copy local`仅执行侧）；Stats时间范围新增2天/3天（快捷键1–8），补译标签、窗口说明及按序号的按钮提示。19.0.0候选未发布并由19.0.1取代。
 
 19.1.0：Settings477→482UI，官方把`tools.xdev`/`xdevDocs`/`xdevInlineDevices`/`xdevNotices`（`xd://`设备）改为`tools.commands`/`commandDocs`/`commandInline`/`commandNotices`（以bash命令挂载并提供`--help`），新增`pty.notify`、`edit.magic.model`、`binja.installDir`/`python`、`mcp.shared`、`mcp.idleStopMinutes`，删除`tui.completeScrollback`，`disassembler.backend`新增`binja`选项，12项原文变化改译；Commands注册表与补全接口不变；Stats客户端不变（仅服务端）。19.0.1候选未发布并由19.1.0取代。
+
+19.1.1：Settings482→483UI，新增`todo.backend`（待办后端；运行时选项由宿主/扩展提供，保持原文），官方把`computer.backgroundFallback`改为`computer.takeover`（回退接管/前台窗口/始终接管/拒绝）并迁移旧值，插件删除旧译文；Commands注册表与补全接口不变（`/wt`、`/computer`仅执行侧）；Stats客户端仅Spotlight三处说明文案变化，替换6条译文。19.1.0候选未发布并由19.1.1取代。
 
 本轮资源门禁：任何可能自动开页的命令之前登记独立 run、页面身份基线、专属浏览器与服务/临时路径；正常与断言失败回收先实测。逐阶段先关闭确有归属的页面，再停止服务并确认端口关闭，最后回收临时目录；身份不明或任何残留均阻止发布。
 

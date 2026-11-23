@@ -1,5 +1,23 @@
 # Project Context
 
+## 19.1.1 适配（2026-11-23，未发布）
+
+起点本地main、origin/main均`2da99c5a0b9d4a16a8204f13e32534683e981b5b`（19.1.0未发布候选，[CI 44918088927](https://github.com/rockythink/omp-settings-zh/actions/runs/44918088927) macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方v19.1.1于11-23 05:37Z发布，coding-agent/utils/Stats/TUI最新稳定版均19.1.1，构成新适配并取代19.1.0候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项未跟踪（41个`.bun-build`与本地`AGENTS.md`）不动、不提交。更早Orca任务的omp会话（如PID 5474）仍在运行，非本轮资源、未操作。
+
+**宿主与来源**：用户`update.auto`已把官方19.1.0→19.1.1装到原官方位置`~/.local/bin/omp`（auto-update.log“Updated to 19.1.1 at …/.local/bin/omp”）；经受管启动器`omp update`报告Already up to date，前后均19.1.1，SHA-256 `d5a3324acd98375a01698a1b0c018be48caed2956c8aa9044ad137fe43bc0400`与官方darwin-arm64资产digest相同，受管启动器仍为原shell脚本且逐字节不变。官方tag commit `31ffee513f27a01bba7d4dfbe12bae239cdc646a`完整Git树（12090项、未截断）与npm源码按blob比较：coding-agent 2096/2097一致（唯一例外仍为生成的`tools/browser/relay/extension.generated.json`），utils151/Stats121/TUI475全同。#17754 CLOSED，#17758 MERGED（`febb2679…`），v19.1.1在其后5844提交、behind_by0。本机插件起点`github:rockythink/omp-settings-zh`为19.1.0（19.x预检接受19.1.1，但新设置回退英文），doctor 5/0/0，pi-xcode-mcp0.1.0不动。
+
+**Settings**：644定义/483UI/9动态getter。新增`todo.backend`（待办后端；`options:"runtime"`，可选项由宿主`selector-controller`经pi-tui新增的`runtimeOptions`注入，“Native / Keep the todo list in the session only”为宿主硬编码，扩展后端标签来自扩展，均保持原文）；官方把`computer.backgroundFallback`（takeover/refuse）改为`computer.takeover`（fallback/foreground/always/refuse，默认fallback；旧`refuse`由官方`config/settings.ts`迁移），删除旧译文并按新原文独立翻译。coverage首轮报2未翻译/1 stale，补译后483/483、Schema0；其余481项不重译。registry/all-settings/settings-ui逐字节不变。compiled TUI中文搜索/原生编辑/en-zh与effort参数隔离未重验。
+
+**Commands**：89定义/98标识/9别名/27动态回调，commands:check漂移0。`builtin-registry.ts`、`pi-tui/autocomplete.ts`逐字节不变；命令目录仅`builtin-lifecycle.ts`（`/wt`工作树Hook警告）与`builtin-modes.ts`（`/computer`状态行`takeover=`）执行侧变化；extensibility新增`registerTodoBackend`、wrapper把会话工具命令bash行交回原生工具、startup-deferral缓存v2→v3，均不涉及补全provider。compiled顶层列表、别名、动态状态与Tab/Enter交互未重验。
+
+**Stats**：客户端仅`spotlight/Hero.tsx`、`Savings.tsx`、`Steps.tsx`说明文案变化；服务端db/shared-types/spotlight-aggregator/spotlight-measures按“plain是否限制了该结果”分侧计算回取基线（`MIN_HOLDOUTS`=30）。替换Hero title、“Back anyway” title、USD页脚3个静态键与Steps页脚、按工具行基线悬停2个模板；Token页脚新含`formatInteger(adjusted.minHoldouts)`，由静态键改为严格模板；旧键删除。946键/156通用模板＋9属性模板；browser白名单/mutations/preload不改（文本节点先字典后模板，`.spot-tool-net-row`多行title逐行匹配）。`stats-cli`、`utils/open.ts`不变。真实Spotlight网页未重验。
+
+**回归**：`bun install`更新锁文件；冻结安装无变化，完整`bun run check`72测试/2760断言通过，Settings483/483、Schema0，Commands89/89、98标识、漂移0，2110显示变更/3次恢复/源码网络0。真实官方19.1.1绝对路径`scripts/smoke-cli.ts`（本地link，无头独占Chrome，测试专属opener转交URL）首轮`omp-native-posix-KXzNOC`通过：成功/人为断言失败预检、5页建/5关、两服务（54359/54368）各单监听器、compiled Bun1.4.4合并`--smol`与用户preload、doctor3/1/0、16目录GET/1 Codex版本GET/2身份GET/1无凭据HEAD在dispatch前拦截，推理0，cleanupErrors0、rootRemoved。
+
+**环境未验与恢复条件**：起始ioreg`CGSSessionScreenIsLocked:true`；前提未变，不重复完整最终矩阵（TUI三面交互、12页Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期、精确SHA冷GitHub安装）。不是插件回归或官方缺陷。解锁后固定19.1.1（或届时最新）宿主与最终SHA完整重验，通过全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+
+**本轮资源**：run `omp-maint-20261123-03db7434`，基线（监听列表、Chrome/omp PID）与账本在会话scratchpad。smoke树外账本`<TMPDIR>/omp-native-posix-KXzNOC.resources.json`：账本29个PID全部ESRCH，端口54352/54359/54368关闭，两个私有preload目录与run树ENOENT，监听列表与开跑前一致。Chrome进程集合差异仅PID 24985（用户Chrome 15778的渲染进程，新增）与20689（用户进程，消失），非本轮资源、未操作；未操作用户真实浏览器页面、既有服务或其他会话。上游比较用的npm包与官方树清单位于会话scratchpad，不在仓库。
+
 ## 19.1.0 适配（2026-11-21，未发布）
 
 起点本地main、origin/main均`7e1c5f6bf369fe7493133ec5bdf15cde14f53d09`（19.0.1未发布候选，[CI 44760339752](https://github.com/rockythink/omp-settings-zh/actions/runs/44760339752) macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方v19.1.0于11-21 14:32Z发布，coding-agent/utils/Stats/TUI最新稳定版均19.1.0，构成新适配并取代19.0.1候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪`.bun-build`与本地`AGENTS.md`不动、不提交。
