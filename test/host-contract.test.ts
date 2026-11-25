@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 import { createSettingsHost } from "@oh-my-pi/pi-coding-agent/config/settings-ui";
-import { getAllSettingDefs, type SettingDef } from "@oh-my-pi/pi-tui/overlays/settings-defs";
+import { getAllSettingDefs, type SettingDef } from "@oh-my-pi/pi-coding-agent/config/settings-defs";
 import { buildEffortArgumentCompletions } from "@oh-my-pi/pi-coding-agent/slash-commands/builtin-completions";
 import type { TuiSlashCommandRuntime } from "@oh-my-pi/pi-coding-agent/slash-commands/types";
 import { applyTranslations } from "../src/apply-translations";

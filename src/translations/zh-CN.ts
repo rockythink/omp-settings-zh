@@ -2,7 +2,7 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "19.1.1",
+  "sourceOmpVersion": "19.2.0",
   "settings": {
     "auth.unpausedProviders": {
       "sourceHash": "3e2a78bb276f04a95d8df8a221210a61e301310124dfc83955ebd06b5c437de8",
@@ -291,9 +291,9 @@ export const zhCN = {
       "description": "先使用当前模型启动，然后在规划提示的待办列表生成后，于首次编辑/写入时切换到快速/低成本模型（默认为“smol”角色）——由高能力模型制定计划、确认待办事项并开始实现，然后再交接。每个会话可通过 --prewalk / --no-prewalk 覆盖此设置"
     },
     "prewalk.from": {
-      "sourceHash": "beaf35c75534ffa16235467bfb447cbef3619536ed4455ff4b08b9dd33cbeaff",
+      "sourceHash": "eaa3985c32e8f294b169a1fa1974e350801a118f09ee3bc77bee7319deff61c5",
       "label": "Prewalk 规划模型",
-      "description": "/prewalk restart 返回进行规划时使用的模型或角色（默认为 @default）"
+      "description": "用于规划的模型或角色（默认为 @default）：/prewalk restart 会返回到它；自动 Prewalk 的“升级”模式会在规划前把前期集中推理的任务移到该模型"
     },
     "prewalk.into": {
       "sourceHash": "ab46613debe8ee020ce16154b27faae4af5680624f3e0afe8bb5eb91b5dc5faf",
@@ -301,7 +301,7 @@ export const zhCN = {
       "description": "Prewalk 在首次编辑/写入时交接到的模型或角色（默认为 @smol）：适用于 /prewalk、/prewalk restart、“启用 Prewalk”和 --prewalk。自动 Prewalk 使用其独立目标"
     },
     "prewalk.auto": {
-      "sourceHash": "54269b1af40b805a6183d75f94c36b39d92ec6a3a5bda5e05c648e4a988a0d5a",
+      "sourceHash": "e4f8c28e10835ac6e2d8b68c7309d7f24be680fd091eff36adc2da1701f9a9ca",
       "label": "自动 Prewalk",
       "description": "通过 judge 角色解析到的原生 judge，判断每个新的顶层用户任务是否将高难度推理集中在前期。需要原生 judge；没有时不进行分类。独立于“启用 Prewalk”",
       "options": {
@@ -311,18 +311,22 @@ export const zhCN = {
         },
         "suggest": {
           "label": "建议",
-          "description": "对每个任务进行分类并报告判断结果，但不启用 Prewalk 交接"
+          "description": "对每个任务进行分类并报告判断结果，以及“升级”模式是否会在另一个模型上规划，但不启用 Prewalk 交接"
         },
         "on": {
           "label": "开启",
           "description": "对明确将推理集中在前期的任务，启用从当前模型到自动目标的交接；下一个任务重新从规划模型开始"
+        },
+        "escalate": {
+          "label": "升级",
+          "description": "与“开启”相同，但先在 Prewalk 规划模型（prewalk.from）上规划：明确将推理集中在前期的任务会在准备阶段之前移到该模型，并从该模型交接；下一个任务回到本任务开始时的模型。若规划模型已是当前模型，则等同于“开启”，只是此时 '@initial' 没有可交还的目标"
         }
       }
     },
     "prewalk.autoTarget": {
-      "sourceHash": "76e910dce826950b9375a9ff4f803788a80d0a905098688946f216aae17f7218",
+      "sourceHash": "ca3a2964b1c39fde36c38223f5c8dcbd8b0759bcc0608d25b8f0dcc3653a9c47",
       "label": "自动 Prewalk 目标",
-      "description": "自动 Prewalk 在首次编辑/写入时交接到的模型或角色（默认为 @smol）"
+      "description": "自动 Prewalk 在首次编辑/写入时交接到的模型或角色（默认为 @smol）。'@initial'（仅限“升级”模式）会交还到任务开始时的模型和思考级别"
     },
     "advisor.continueSeverity": {
       "sourceHash": "415c9cbc35cf87fd211146ff4450189001028336b3403a2b31fc430289c58032",
@@ -1080,7 +1084,7 @@ export const zhCN = {
       "description": "将 Mermaid 围栏代码块渲染为 ASCII 图表"
     },
     "tui.codexResetFireworks": {
-      "sourceHash": "8329b2a0b8bd13f3f8b251d6c684678454d3a55100fa632c786bc85a44ac108d",
+      "sourceHash": "c022dc6ba59bc228dc8ebd4e2f74cfba9c30c473809f2cf97a3c667cfbb45038",
       "label": "Codex 重置烟花",
       "description": "当 Codex 每周用量发生非计划重置，或新存入已保存的重置机会时，在顶部三分之一区域显示烟花覆盖层庆祝，直至按下 {escape}",
       "descriptionSource": "Celebrate unscheduled Codex weekly usage resets and newly banked saved resets with a top-third fireworks overlay that remains until {escape}"
@@ -1096,9 +1100,9 @@ export const zhCN = {
       "description": "使用 OSC 8 超链接包装路径和 URL，以便通过终端原生方式点击打开（auto：检测支持情况；off：从不启用；always：无条件启用）"
     },
     "tui.tight": {
-      "sourceHash": "babebba5a60583ce069f2446fa1db9b4ae0d360bbdba1fa24939eede65c85e94",
+      "sourceHash": "5c5a4984976ee744eae97b071753add48cd81bf676047c46ead410d1740e7dde",
       "label": "紧凑布局",
-      "description": "移除终端输出左右两侧各 1 个字符的水平内边距"
+      "description": "移除终端输出标准的单格水平缩进；消息气泡和工具框保留各自的内边距"
     },
     "display.shimmer": {
       "sourceHash": "afa8a45e78e5d1ec3f9ef7a37ed03b6fe029df9d9eddd4eb14726754a8381b13",
@@ -1828,7 +1832,7 @@ export const zhCN = {
       }
     },
     "doubleEscapeAction": {
-      "sourceHash": "bf62ae1d989377d39cf71589da7bb5cd11cc8d111f63ca83064bc4f6121e5042",
+      "sourceHash": "1dfb7b57c226783b67ed1c9cb85daf3d99fd78e5a2f0429dbcbff012dfe9aaf8",
       "label": "连按两次 Esc 操作",
       "description": "编辑器为空时按两次 {escape} 执行的操作：打开会话记录回退选择器、打开会话树，或不执行任何操作",
       "descriptionSource": "What pressing {escape} twice with an empty editor does: open the transcript rewind selector, open the session tree, or nothing"
@@ -1869,7 +1873,7 @@ export const zhCN = {
       "description": "使用当前启用的 macOS 词典标记提示词中拼写错误的单词"
     },
     "spelling.autocomplete": {
-      "sourceHash": "92ab6f253a374842dd155f6f479483e660deb62d7d650589d67e72db674e7561",
+      "sourceHash": "84732f50f1fcce2fbe868ba67f4337af5a6c3e9fce21e6fedbab64767283e70b",
       "label": "单词自动补全",
       "description": "以内联提示显示预测的单词补全：按 {accept} 接受并附加空格，按 {right} 接受但不附加空格",
       "options": {
@@ -1893,7 +1897,7 @@ export const zhCN = {
       "descriptionSource": "Show predicted word completions as inline hints: {accept} accepts with a space, {right} without",
       "byPlatform": {
         "darwin": {
-          "sourceHash": "cd82abb4ef038e97570a35036c16cdfa38c8b57605b684134715edfecd74f127",
+          "sourceHash": "18f382d8d1190cae65a291916e2f3bdc7c95784f9a583ffc13ebc198b49b7e4f",
           "label": "单词自动补全",
           "description": "以内联提示显示预测的单词补全：按 {accept} 接受并附加空格，按 {right} 接受但不附加空格",
           "options": {
@@ -1923,13 +1927,13 @@ export const zhCN = {
       }
     },
     "composer.predictions": {
-      "sourceHash": "8689fd38c712097bdb7b4c4bbed0e9d9365f2473204f973eb12ca4a6a65c3854",
+      "sourceHash": "4ffbf337022af48a99c32ccf9e79118817263d0d976ffc29a1ce62eef69a01bf",
       "label": "输入框消息预测",
       "description": "每轮对话完成后，请当前模型预测你的下一条消息，并在空输入框中以虚影文字显示；按 {tab} 或 {right} 可插入，但不会发送。额外用量：每轮对话完成后，都会基于完整对话再发送一次计费请求（计入 /stats）",
       "descriptionSource": "After a completed turn, ask the active model to predict your next message and show it as ghost text in the empty composer; {tab} or {right} inserts it without sending. Extra usage: every completed turn sends one more billed request over the whole conversation (counted in /stats)"
     },
     "composer.predictionAlternatives": {
-      "sourceHash": "e4010f63ef563dcd89c9595238285e85c5a98d19c05767c8995038e79d75b917",
+      "sourceHash": "aa2c3f1104c98088abeb4613aece64a993cfddd59e73a5f28b733432f9a0561b",
       "label": "多个预测候选",
       "description": "最多请求四个不同的预测候选，而非一个，按可能性从高到低排列。虚影文字显示首个与你的草稿匹配的候选；插入一个后，再按 {tab} 可选择另一个。同一次请求会多返回一些输出 token",
       "descriptionSource": "Ask for up to four distinct predictions instead of one, most likely first. The ghost text shows the first one your draft matches; after inserting one, press {tab} again to pick another. The same single request returns a few more output tokens"
@@ -1945,9 +1949,9 @@ export const zhCN = {
       "description": "根据 `:name:` 短代码建议 emoji，并展开 `:D` 或 `:-)` 等文本表情"
     },
     "paste.largeMenuThreshold": {
-      "sourceHash": "08d124bd27fcbcb5b77beb1481e16912a04e4ace4696e88d1b7b4e0f4ac9f51c",
+      "sourceHash": "e6f1bda82ade6a4cfd4a90d211ca79d319841dc3a26160c6dd0f709fdcf49563",
       "label": "大段粘贴菜单",
-      "description": "当粘贴内容达到此行数时，提供菜单，可将其放入代码块、XML 标签或保存到文件。设为 0 会禁用此菜单（大段粘贴仍会折叠为 [Paste] 标记）",
+      "description": "当粘贴内容达到此行数时，提供菜单，可将其放入代码块、XML 标签或保存到文件。设为 0 会禁用此菜单（大段粘贴仍会折叠为粘贴标签）",
       "options": {
         "0": {
           "label": "关闭"
@@ -4672,7 +4676,7 @@ export const zhCN = {
       }
     },
     "tui.mouse": {
-      "sourceHash": "11b76da0b77e9f76042964ffb583b7b9159c00fdc27e31472ebd02193711d48f",
+      "sourceHash": "f3c8ed1665ef359e15d1c0fd06e48243ce52cd647c5aa8e5b88bf0f94e6e8ea9",
       "label": "鼠标点击聚焦",
       "description": "在主会话中捕获鼠标点击，使实时子 Agent 卡片和 HUD 行可通过点击聚焦，并在悬停时高亮目标；扩展所属链接上的点击会传给对应扩展（也可用链接提示键而不使用鼠标来选择链接）。开启后，原生文本选择改为 {shift}+拖动；鼠标捕获会让滚轮无法滚动（终端改为把滚轮事件上报给 omp），请改用终端的键盘回滚按键，或关闭此项",
       "descriptionSource": "Capture mouse clicks in the main session so live subagent cards and HUD rows focus on click, with a hover highlight on the target, and clicks on extension-owned links reach their extension (the link-hint key picks them without the mouse). Native text selection becomes {shift}+drag while on, and mouse capture stops wheel scrolling — the terminal reports wheel ticks to omp instead — so scroll with the terminal's keyboard scrollback keys, or turn this off"
@@ -4707,7 +4711,7 @@ export const zhCN = {
       "description": "在系统提示词中列出可用技能；关闭可节省上下文，并可通过 `/skillful` 在每个会话中切换"
     },
     "retry.waitForUsageReset": {
-      "sourceHash": "0ac009212e8432db801b64f035b28c30a5ef82838cf3a3017d73398d786afe85",
+      "sourceHash": "c6bf4010201b9d9c307f3cee044359d6f3749d4d3f3ac29e2aa2db4f3f7547e6",
       "label": "等待用量重置",
       "description": "在 retry.maxDelayMs 以内的用量限额等待本来就允许。开启后，当提供商报告重置时间（例如 5 小时或每周配额窗口）时，也会超过该上限继续等待。可按 {escape} 中止等待，但等待也会阻塞子 Agent，因此无人值守运行时请保持关闭",
       "descriptionSource": "Usage-limit waits within retry.maxDelayMs are already allowed. Enable this to also wait past that cap when the provider reports a reset time, such as a 5-hour or weekly quota window. Waits are abortable ({escape}) but also hold subagents, so leave off for unattended runs."
@@ -4741,13 +4745,13 @@ export const zhCN = {
       "description": "向 /btw 请求引导提示词时，它会在 <inject> 标签中起草，并在回答中高亮显示；按 Alt+I（app.btw.inject）可将其发送到主会话"
     },
     "tui.vimMode": {
-      "sourceHash": "413d6571d0bb45b34f715368db19f20e9c37d865aa005652a91ab63ab6158508",
+      "sourceHash": "2755d9814c578d024ad2d3ed24c7a0ad3038244ad831da526edee30e2b433b95",
       "label": "Vim 编辑模式",
       "description": "以模式切换方式编辑提示词。{escape} 退出插入模式；普通模式支持 hjkl、0、$、^、w、b、e、gg、G、计数、x/D/C、dd/yy、p 和 u；操作符可配合移动或文本对象（diw、ca(、dap）；v/V 开始可视选择，y 复制，d 删除",
       "descriptionSource": "Modal prompt editing. {escape} leaves Insert mode; Normal mode has hjkl, 0, $, ^, w, b, e, gg, G, counts, x/D/C, dd/yy, p and u; operators take motions or text objects (diw, ca(, dap); v/V start a Visual selection that y copies and d deletes"
     },
     "tui.vimModeDisplay": {
-      "sourceHash": "51448aa4314628b0c112961938de31a8854d1285c63d3ed26488d70a17a5ebca",
+      "sourceHash": "dccc950d2bb997cb02277d145feeec8c3766aa64d593a500658b1efd92026b76",
       "label": "Vim 模式指示器",
       "description": "当前 Vim 模式在状态栏中的显示方式",
       "options": {
@@ -4761,7 +4765,32 @@ export const zhCN = {
         },
         "none": {
           "label": "隐藏",
-          "description": "不在状态栏中显示模式"
+          "description": "不显示模式；正在输入的命令仍会通过“Vim 显示命令”显示"
+        }
+      }
+    },
+    "tui.vimShowCommand": {
+      "sourceHash": "98bcf6cdae3975a7115f2ebb6ee42ed0e0a83697020b2b86ea863f324bb58708",
+      "label": "Vim 显示命令",
+      "description": "像 Vim 的 showcmd 一样，在状态栏中显示正在输入的命令：在输入最后一个 d 之前显示 15d。即使模式指示器已隐藏也会显示"
+    },
+    "tui.vimYankToClipboard": {
+      "sourceHash": "2159824e0056b56d0cd13d5294a0905a5882143d1022666a1c96d887f40312af",
+      "label": "Vim 复制同步到剪贴板",
+      "description": "每次 Vim 复制（yank）也会复制到系统剪贴板，与 Vim 设置 clipboard=unnamed 时相同。关闭时：只有 \"+y 和 \"*y 会复制到剪贴板"
+    },
+    "tui.vimStartMode": {
+      "sourceHash": "08588f66f8da70cab6274c8eba4518acabfe4da1064fd380b1e00aa08c17c7e0",
+      "label": "Vim 起始模式",
+      "description": "每条新提示词开始时所处的模式：启动时、每次发送消息后，以及对话框文本框中",
+      "options": {
+        "insert": {
+          "label": "插入",
+          "description": "可直接输入；按 Escape 进入普通模式"
+        },
+        "normal": {
+          "label": "普通",
+          "description": "从 Vim 命令开始；按 i、a、o 等键开始输入"
         }
       }
     },
@@ -4785,10 +4814,18 @@ export const zhCN = {
       }
     },
     "composer.recallClearedDrafts": {
-      "sourceHash": "d54a0ff8733b42c4f6431da178b244d9fd182fa2871c172ff4fa7e6b12f81024",
+      "sourceHash": "b97ce4e8be047d3067299a8f5bec2502020cd78e1c9314dd19814876c2ba4676",
       "label": "找回已清空草稿",
       "description": "将用 {clear} 清除的草稿保留在本地 {history} 历史中，直至退出；关闭后仅影响后续清除的草稿",
-      "descriptionSource": "Keep drafts cleared with {clear} in local {history} history until exit; disabling affects future clears"
+      "descriptionSource": "Keep drafts cleared with {clear} in local {history} history until exit; disabling affects future clears",
+      "byPlatform": {
+        "darwin": {
+          "sourceHash": "6a46e7a2402b8d14feb3fea3f825e5ebce6c6634448f0a0c320817cdcd393f68",
+          "label": "找回已清空草稿",
+          "description": "将用 {clear} 清除的草稿保留在本地 {history} 历史中，直至退出；关闭后仅影响后续清除的草稿",
+          "descriptionSource": "Keep drafts cleared with {clear} in local {history} history until exit; disabling affects future clears"
+        }
+      }
     },
     "input.bareExitOnEmptySession": {
       "sourceHash": "5143902fd8155a85a4ed148162454b47424ba5dea9c1dc56c962e5e1e245d60f",

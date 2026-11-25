@@ -4,9 +4,9 @@
 
 ## 当前版本
 
-`19.1.1` 是面向官方OMP19.1.1的未发布候选，正式Release仍为18.19.0。483项设置：19.1.1新增`todo.backend`（待办后端，运行时选项由宿主提供并保持英文），官方把`computer.backgroundFallback`改为`computer.takeover`（四个选项），删除旧译文；19.1.0曾把`tools.xdev*`改为`tools.commands*`并新增10项。共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
+`19.2.0` 是面向官方OMP19.2.0（官方TUI重写版）的未发布候选，正式Release仍为18.19.0。486项设置：19.2.0新增三项Vim设置与`prewalk.auto`的“升级”选项，6项原文变化改译，9项仅因键位符号渲染更新哈希；19.1.1曾新增`todo.backend`并把`computer.backgroundFallback`改为`computer.takeover`。共享选项显示副本、原生保存和主关闭终态保持。开始贡献前请阅读：
 
-当前覆盖89个内置命令、98名称/别名、9别名和27动态回调，19.1.1命令注册表与补全接口不变（`/wt`工作树Hook警告与`/computer`状态行仅执行侧变化）；模型/参数/文件/第三方说明不译。Stats 19.1.1客户端仅Spotlight Hero/Savings/Steps说明文案变化，同步替换6条译文；19.0.1新增的2天/3天时间范围（快捷键1–8）与概览“按来源”边界保持；946键及165模板。本轮锁屏，完整三面compiled/Web验收未重验，不能发布。Tern可选未验证、Windows不纳入。
+当前覆盖89个内置命令、98名称/别名、9别名和27动态回调；19.2.0仅`/branch`说明变化，补全provider迁入coding-agent而接口不变，静态门禁固定ASCII符号预设比对。模型/参数/文件/第三方说明不译。Stats 19.2.0客户端不变；19.1.1的Spotlight译文、19.0.1新增的2天/3天时间范围（快捷键1–8）与概览“按来源”边界保持；946键及165模板。本机宿主未能升级且仍锁屏，compiled与完整三面/Web验收未运行，不能发布。Tern可选未验证、Windows不纳入。
 
 - [产品需求](docs/PRD.md)
 - [技术设计](docs/TECHNICAL-DESIGN.md)
@@ -39,7 +39,7 @@
 
 - macOS 或 Linux；
 - Bun 1.4.4 或更新版本；外部启动器与官方compiled内嵌Bun须分别核对；
-- 官方 OMP19.1.1；候选仅完成源码合同与compiled smoke，历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
+- 官方 OMP19.2.0；候选仅完成源码合同（compiled smoke待本机升级后补跑），历史已验证版本见README兼容表，不把旧证据当作新宿主验收；
 - Git。
 
 项目保持以下脚本契约：

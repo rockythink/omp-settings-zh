@@ -2,7 +2,7 @@ import { expect, test } from "bun:test";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { CombinedAutocompleteProvider, type AutocompleteProvider } from "@oh-my-pi/pi-tui";
+import { CombinedAutocompleteProvider, type AutocompleteProvider } from "@oh-my-pi/pi-coding-agent/autocomplete/autocomplete";
 import { buildModel } from "@oh-my-pi/pi-catalog/build";
 import { BUILTIN_SLASH_COMMAND_DEFS, buildTuiBuiltinSlashCommands } from "@oh-my-pi/pi-coding-agent/slash-commands/builtin-registry";
 import type { TuiSlashCommandRuntime } from "@oh-my-pi/pi-coding-agent/slash-commands/types";
@@ -15,10 +15,9 @@ import { cfgExtendedContext } from "@oh-my-pi/pi-coding-agent/session/context-se
 import { cfgComputerEnabled } from "@oh-my-pi/pi-coding-agent/tools/settings";
 import { cfgBrowserEnabled, cfgBrowserHeadless } from "@oh-my-pi/pi-coding-agent/tools/browser/settings";
 import { cfgCycleOrder, cfgModelPresets, cfgModelRoles } from "@oh-my-pi/pi-coding-agent/config/model-settings";
-import { formatKeyHint } from "@oh-my-pi/pi-tui/app-keybindings";
-import { setActiveSymbolTheme } from "@oh-my-pi/pi-tui/theme/active-symbols";
+import { formatKeyHint } from "@oh-my-pi/pi-coding-agent/ui/keys/hints";
 import { loadThemeSync } from "@oh-my-pi/pi-tui/theme/loader";
-import { theme } from "@oh-my-pi/pi-tui/theme/theme";
+import { currentTheme, setCurrentTheme } from "@oh-my-pi/pi-tui/theme/runtime";
 import { localizeSlashAutocomplete } from "../src/slash-autocomplete";
 import { slashCommandTranslations } from "../src/translations/slash-commands";
 
@@ -665,11 +664,11 @@ test("known shortcuts may vary but changed surrounding prose and third-party des
 });
 
 test("official key getters follow actual symbol presets for switch, loop and effort in both completion paths", async () => {
-  const previousTheme = theme;
+  const previousTheme = currentTheme();
   const observed = new Set<string>();
   try {
     for (const preset of ["ascii", "unicode", "nerd"] as const) {
-      setActiveSymbolTheme(loadThemeSync("dark", { symbolPresetOverride: preset }));
+      setCurrentTheme(loadThemeSync("dark", { symbolPreset: preset }));
       const keys = { switch: formatKeyHint("alt+p"), loop: formatKeyHint("escape"), effort: formatKeyHint("shift+tab") };
       observed.add(keys.effort);
       const commands = buildTuiBuiltinSlashCommands({} as TuiSlashCommandRuntime)
@@ -695,7 +694,7 @@ test("official key getters follow actual symbol presets for switch, loop and eff
     }
     expect(observed.size).toBe(3);
   } finally {
-    setActiveSymbolTheme(previousTheme);
+    setCurrentTheme(previousTheme);
   }
 });
 

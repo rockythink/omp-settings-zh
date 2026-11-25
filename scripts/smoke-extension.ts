@@ -15,7 +15,7 @@ try {
     import("../src/host-adapter"),
     import("../src/translations/zh-CN"),
     import("@oh-my-pi/pi-coding-agent/config/settings-ui"),
-    import("@oh-my-pi/pi-tui/overlays/settings-defs"),
+    import("@oh-my-pi/pi-coding-agent/config/settings-defs"),
   ]);
   const host = await getHostMetadata();
   const originalUi = structuredClone(Object.fromEntries(Object.entries(host.schema).map(([path, def]) => [path, def?.ui])));

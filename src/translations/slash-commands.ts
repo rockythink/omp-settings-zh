@@ -1,4 +1,4 @@
-/* Display-only translations; source-review baseline OMP 19.0.0 (57771ae562b9345e0579bceb2d68d585e3e6927e). */
+/* Display-only translations; source-review baseline OMP 19.2.0 (5c5ecb16fa4903c09a57a84983e482d9c9c2232e). */
 export const slashCommandTranslations = [
   {
     "name": "security",
@@ -247,8 +247,8 @@ export const slashCommandTranslations = [
     "aliases": [
       "rewind"
     ],
-    "en": "Rewind to a previous message, keeping the old path as a branch",
-    "zh": "回退到先前的消息，将原路径保留为分支"
+    "en": "Rewind to a previous message in a new session, keeping this one unchanged",
+    "zh": "在新会话中回退到先前的消息，当前会话保持不变"
   },
   {
     "name": "fork",

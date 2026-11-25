@@ -1,5 +1,25 @@
 # Project Context
 
+## 19.2.0 适配（2026-11-25，未发布）
+
+起点本地main、origin/main均`8f078470252a03c7d3cc63e154158a7fd89a439c`（19.1.1未发布候选，CI macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方v19.2.0于11-25 08:32Z发布（tag commit `5c5ecb16fa4903c09a57a84983e482d9c9c2232e`），coding-agent/utils/Stats/TUI最新稳定版均19.2.0，构成新适配并取代19.1.1候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪（41个`.bun-build`与本地`AGENTS.md`）不动、不提交。
+
+**宿主与来源**：本机官方仍为19.1.1（SHA-256 `d5a3324acd98375a01698a1b0c018be48caed2956c8aa9044ad137fe43bc0400`）。经受管启动器`omp update`共7次（继承代理4次、不继承代理3次）都报告发现19.2.0后，从官方构建服务（`build.stencil.so`）下载223.6MB二进制中途ECONNRESET（每次约3–11分钟）；auto-update.log同为ECONNRESET。同网络下GitHub资产直连约7MB/s，Bun直连fetch 20秒166MB，构建服务首页15秒仅150KB：属外部服务/网络环境未验，不是插件回归。经询问选择不改安装方式（不运行`omp.sh/install --binary`），留待`update.auto`或后续`omp update`。官方完整Git树12831项（未截断）与npm按blob比较：coding-agent 2787/2788一致（唯一例外仍为生成的`extension.generated.json`），utils151/Stats121/TUI162全同。#17754 CLOSED，#17758 MERGED（`febb2679…`），v19.2.0在其后6370提交、behind_by0。
+
+**主要上游变化**：官方重写TUI，pi-tui由475份精简为162份；设置面板（`ui/overlays/settings/settings.tsx`全屏窗口）、补全provider（`autocomplete/autocomplete.ts`）、键位（`config/keybindings`、`ui/keys`）迁入coding-agent。插件产品源码对19.2.0类型检查直接通过；`orderedSettings()`共享`ui`引用、`createSettingsHost()`每次打开重建entries、`addAutocompleteProvider`按注册顺序包装（`interactive-mode.ts`）、`AutocompleteProvider`/`AutocompleteItem`字段均不变。仅测试与`scripts/smoke-extension.ts`需改导入：`CombinedAutocompleteProvider`→`pi-coding-agent/autocomplete/autocomplete`，`settings-defs`→`pi-coding-agent/config/settings-defs`，`formatKeyHint`→`pi-coding-agent/ui/keys/hints`，主题切换改用`pi-tui/theme/runtime`的`currentTheme`/`setCurrentTheme`与`loadThemeSync(…,{symbolPreset})`。
+
+**Settings**：647定义/486UI/9动态getter。新增`tui.vimShowCommand`、`tui.vimYankToClipboard`、`tui.vimStartMode`；`prewalk.auto`新增`escalate`（升级）；`prewalk.from`/`autoTarget`、`prewalk.auto`的suggest、`tui.tight`、`tui.vimModeDisplay`的none、`paste.largeMenuThreshold`共6项按新原文改译。9项getter说明（codexResetFireworks、mouse、vimMode、recallClearedDrafts、doubleEscapeAction、spelling.autocomplete、predictions、predictionAlternatives、retry.waitForUsageReset）只因官方`formatKeyHint`改按主题符号渲染（默认unicode：⎋/⇥/→/⇧/↑↓）而哈希变化，仅更新哈希；Ctrl在macOS为`⌃C`、Linux为`Ctrl+C`（`setKeyHintPlatform`实测），`composer.recallClearedDrafts`新增`byPlatform.darwin`，`spelling.autocomplete`的linux基础哈希按无apple选项重算。coverage首轮3未译/15部分，修正后486/486、Schema0。新面板页签与页首说明（`pages.ts`）为硬编码，保持英文。
+
+**Commands**：89定义/98标识/9别名/27动态回调；commands:check首轮报`branch`（原文改为“…in a new session, keeping this one unchanged”）与`effort`。`effort`的getter源码未变，是默认主题把`Shift+Tab`渲染为`⇧⇥`；ASCII预设下macOS逐字复现`Esc`/`Option+P`/`Shift+Tab`（Linux switch为`Alt+P`），故`scripts/check-slash-commands.ts`先`setCurrentTheme(loadThemeSync("dark",{symbolPreset:"ascii"}))`再比对，`effort`仍要求逐字一致，未放宽键位例外。改译`branch`后漂移0。动态说明生成逻辑除导入迁移外不变；折叠`skill:`行仍“N skill(s)”。compiled顶层列表、别名、动态状态与Tab/Enter交互未验证。
+
+**Stats**：omp-stats仅`parser.ts`一处注释与版本变化，客户端逐字节不变；`stats-cli.ts`只迁移导入，`utils/open.ts`、`getPluginsNodeModules`不变。译文/browser/mutations/preload不改。真实网页未验证。
+
+**回归**：`bun install`更新锁文件；完整`bun run check`72测试/2760断言通过，Settings486/486、Schema0，Commands89/89、98标识、漂移0，2123显示变更/3次恢复/源码网络0。宿主未升级，`scripts/smoke-cli.ts`（需19.2.0官方绝对路径）未运行。本轮有两处一行文本替换误用`sed`（测试导入路径、`sourceOmpVersion`），结果已由diff/grep核对。
+
+**环境未验与恢复条件**：`computer.capabilities()`为screenLocked:true、displayCount0、secureInputApp loginwindow；宿主升级被构建服务下载阻塞。恢复条件：本机官方成功升级到19.2.0（或届时最新）并解锁后，先跑19.2.0 compiled smoke，再固定最终SHA完整重验全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+
+**本轮资源**：run `omp-maint-20261125-c3d45e0a`，基线（监听列表30行、Chrome 41个PID、omp PID）在会话scratchpad。本轮未开浏览器页、未启动Stats/服务、未分配端口；仅`omp update`子进程（均已退出）、npm包解包与旧版对照依赖安装位于scratchpad。PID 53392为承载本任务的Orca omp会话，非本轮资源、未操作。
+
 ## 19.1.1 适配（2026-11-23，未发布）
 
 起点本地main、origin/main均`2da99c5a0b9d4a16a8204f13e32534683e981b5b`（19.1.0未发布候选，[CI 44918088927](https://github.com/rockythink/omp-settings-zh/actions/runs/44918088927) macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方v19.1.1于11-23 05:37Z发布，coding-agent/utils/Stats/TUI最新稳定版均19.1.1，构成新适配并取代19.1.0候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；42项未跟踪（41个`.bun-build`与本地`AGENTS.md`）不动、不提交。更早Orca任务的omp会话（如PID 5474）仍在运行，非本轮资源、未操作。
@@ -652,7 +672,7 @@ Stats真实11个可见路由中英各验，32请求/双项目4会话的原/包�
 ## 已确认的产品边界
 
 - 使用官方二进制与原生 `/settings`，不复制设置面板。
-- 当前Settings为477项UI元数据、638定义、9动态getter；新增项只译显示，其余不重译。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
+- 当前Settings为486项UI元数据、647定义、9动态getter；新增项只译显示，其余不重译。保留设置路径、类型、默认值、选项value、group、凭据、getter、保存与恢复。
 - 当前Commands为89定义、98名称/别名的顶层说明、实时状态与技能数量；9别名、27动态回调保持。显示层保持viewSession、有效服务层级及descriptionMatch，不改命令、参数、排序、插入、执行；第三方/未知/路径/模型ID保留原文。
 - 页签、分组标题与硬编码操作提示保留官方原文。这是本轮适配明确确认的范围，不宣称完整 TUI 汉化。
 - `/settings-language` 提供语言选择器；`zh` 挂载中文，`en` 恢复原文，无需重启，只需重新打开设置面板或命令补全列表。

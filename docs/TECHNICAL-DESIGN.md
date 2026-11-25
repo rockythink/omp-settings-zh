@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：19.1.1，未发布；main与源码编号不是发布证据
-- 目标基线：官方OMP19.1.1、外部Bun最低1.4.4；Tern可选未验证
+- 实现候选：19.2.0，未发布；main与源码编号不是发布证据
+- 目标基线：官方OMP19.2.0、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -88,6 +88,8 @@
 
 19.1.1为644定义/483UI，9个动态getter不变：新增`todo.backend`（`options: "runtime"`；可选后端由宿主`selector-controller`经新`runtimeOptions`注入设置面板，其中“Native / Keep the todo list in the session only”为宿主硬编码、扩展后端的标签说明来自扩展，均保持原文，插件只翻译注册表中的名称与说明）；官方把`computer.backgroundFallback`（takeover/refuse）改为`computer.takeover`（fallback/foreground/always/refuse，默认fallback），旧`refuse`值由官方`config/settings.ts`迁移，插件删除旧译文并按新原文独立翻译四个选项。其余481项原文哈希不变；registry/all-settings/settings-ui逐字节不变，pi-tui `settings-selector`仅新增`runtimeOptions`与显示净化，`settings-defs`不变。
 
+19.2.0官方重写TUI（pi-tui由475份源码精简为162份，设置面板、补全与键位迁入coding-agent的`ui/`、`autocomplete/`、`config/keybindings`），为647定义/486UI，9个动态getter不变。插件依赖面逐项核对：`orderedSettings()`的`setting.ui`仍为宿主共享引用；新全屏`SettingsWindow`每次打开经`createSettingsHost()`从注册表重建`entries`，`getSettingsForTab`/`getAllSettingDefs`改由`config/settings-defs.ts`提供（原`pi-tui/overlays/settings-defs`），读取的仍是被插件替换的label/description/options，因此不需改写应用逻辑；页签标签与新页首说明（`ui/overlays/settings/pages.ts`，如“Appearance / Theme, composer…”）属硬编码面板文案，保持官方英文。新增`tui.vimShowCommand`、`tui.vimYankToClipboard`、`tui.vimStartMode`，`prewalk.auto`新增`escalate`，6项原文变化改译。官方键位改由`ui/keys/hints.formatKeyHint`按当前主题符号预设渲染（默认unicode：Esc→⎋、Tab→⇥、Shift→⇧），9项getter说明哈希随之变化，既有`descriptionSource`占位模板不变；Ctrl在macOS渲染为`⌃C`、其他平台为`Ctrl+C`，`composer.recallClearedDrafts`用`byPlatform`分别绑定哈希。其余468项原文哈希不变。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -128,6 +130,8 @@
 19.1.0命令目录仅`builtin-lifecycle.ts`（压缩取消改用`isInterruptReason`）、`builtin-session.ts`（`/jobs`简要行用`jobDisplayLabel`、`/tools`列出工具命令名而非`xd://`）与`helpers/mcp.ts`（live连接、重新授权提示）变化，均属执行侧；`builtin-registry.ts`与`pi-tui/autocomplete.ts`逐字节不变。extensibility types新增`parentToolCallId`与provider接管字段，`pi-tui/components/editor.ts`新增`coveringRows()`渲染计数与Vim反向查找边界修复，不涉及`addAutocompleteProvider`或补全项结构。
 
 19.1.1命令目录仅`builtin-lifecycle.ts`（`/wt`创建后执行工作树`post-checkout` Hook并输出警告）与`builtin-modes.ts`（`/computer`状态行字段改为`takeover=`）变化，均属执行侧；`builtin-registry.ts`、`pi-tui/autocomplete.ts`逐字节不变。extensibility types新增`registerTodoBackend`/`TodoBackendDefinition`，wrapper把仅含会话工具命令的bash行交回原生工具，startup-deferral缓存前缀v2→v3（扩展首次重新判定是否可延迟、选中的待办后端所属扩展保持eager）；插件不注册待办后端，补全provider接口与项结构不变。
+
+19.2.0命令目录中只有`builtin-session.ts`的`/branch`说明（“…in a new session, keeping this one unchanged”）属补全原文变化，已改译；其余为导入路径迁移（`AutocompleteItem`、`jobDisplayLabel`、`SlashCommandIconName`等由pi-tui迁入coding-agent）与`/collab`浏览器链接等执行侧变化。`builtin-registry.ts`只改导入与`runtime.ctx.composer`。补全provider与项结构迁到coding-agent`autocomplete/autocomplete.ts`，`AutocompleteProvider`的`getSuggestions(signal,onPartial)`、`applyCompletion`、`trySyncSlashCompletion`等可选能力及`AutocompleteItem`字段不变；`addAutocompleteProvider(factory)`仍由`interactive-mode`按注册顺序包装，新composer（`ui/composer/autocomplete.ts`）通过同名方法消费，同步结果亦可直接返回。折叠`skill:`行仍为“N skill(s)”。`effort`/`switch`/`loop`的键位getter源码不变，但默认主题由ASCII拼写改为符号（`⇧⇥`/`⌥P`/`⎋`）；显示层`staticText`按键位占位捕获，静态门禁固定ASCII预设后`effort`逐字匹配。
 
 ## Stats Web 显示适配
 
@@ -176,6 +180,7 @@
 - 19.0.1：客户端仅Shell/TimeChart/range/types变化：`TIME_RANGES`在24h与7d之间新增2d/3d（按小时分桶），按钮提示`${windowLabel} (${i+1})`序号随之后移，侧栏快捷键提示改为`1–8`，跨日刻度按日显示。插件补“2d/3d”“the last 2 days/3 days”键，范围展开表按官方顺序扩为8项（含序号提示与各页范围说明模板）；browser/mutations/preload不改。测试从官方`TIME_RANGES`/`rangeMeta`推导，官方再增删范围时失败。
 - 19.1.0：121源码中仅服务端`db.ts`（已完成回填的库打开时不取写锁；新增只读连接的`readDailyActivity`供会话`/usage`使用）、`rollup.ts`（rollup版本不匹配时回退原始行聚合）与`spotlight-ingest.ts`（移除`write xd://ast_edit`的编辑归因）变化；95客户端、`stats-cli.ts`逐字节不变，`utils/open.ts`仅把日志中的URL脱敏、错误改记code，打开命令选择不变。947键/155通用模板＋9属性模板及browser/mutations/preload不改。
 - 19.1.1：121源码中客户端仅`spotlight/Hero.tsx`（“Fetched back beyond baseline”的title）、`Savings.tsx`（“Back anyway”的title与USD/Token两种页脚、按工具行的基线悬停行）、`Steps.tsx`（页脚保留比例公式）文案变化；服务端`db`/`shared-types`/`spotlight-aggregator`/`spotlight-measures`按“plain是否限制了该结果”分侧计算回取基线（`minHoldouts`=30，不足时整个工具用合并比率），计算归官方。插件替换3个静态键、2个既有模板，Token页脚因含`formatInteger(adjusted.minHoldouts)`由静态键改为严格模板：946键/156通用模板＋9属性模板。文本节点仍先查字典再查模板，`.spot-tool-net-row`多行title逐行匹配，元素白名单与browser/mutations/preload不改；`stats-cli`与`utils/open.ts`不变。
+- 19.2.0：121源码中只有服务端`parser.ts`一处注释变化（pi-tui→coding agent），客户端逐字节不变；`stats-cli.ts`仅把`formatKeyHint`/`truncateToWidth`/`initTheme`导入迁到coding-agent，启动、端口与开页流程不变，`utils/open.ts`不变，`getPluginsNodeModules`不变。946键/156通用模板＋9属性模板及browser/mutations/preload不改。
 
 ## 6. 检查与真实验证
 
@@ -202,7 +207,7 @@
 
 ## 7. 发布边界
 
-当前源码/开发依赖/目标宿主候选为19.1.1，范围`>=19.0.0 <20`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0、19.0.1、19.1.0候选未发布并由19.1.1取代。19.1.1本轮仍锁屏，仅通过源码合同与compiled smoke（无头受管Chrome＋测试专属opener）；真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
+当前源码/开发依赖/目标宿主候选为19.2.0，范围`>=19.0.0 <20`，外部Bun最低1.4.4。18.19.0的完整验收为历史证据；18.20.0、18.20.2、18.20.3、18.22.0、18.22.2、19.0.0、19.0.1、19.1.0、19.1.1候选未发布并由19.2.0取代。19.2.0只通过源码合同：本机官方`omp update`从构建服务下载时反复ECONNRESET，宿主仍为19.1.1，compiled smoke未运行；屏幕仍锁定，真实三面交互、默认opener、冷摄取、完整Web/API/SSE、Profile/生命周期及最终冷安装未重验，不发布。Tern可选未验证，Windows不纳入；历史unknown独立保留。
 
 18.14.0历史轮的具名成功开页后tab.run解析失败但未留target ID，close仅release；后续共享CDP空列表不能补造独立销毁闭环，故与该轮9个已知target建/关分列。18.15.0新轮不能认领或抹除这项历史未知；本轮所有新页先登记实际target及独占Profile，按实际销毁/进程退出证据清理。已验项不能抵消未验项，也不把实现SHA的CI或冷安装代替最终证据文档SHA验收。
 

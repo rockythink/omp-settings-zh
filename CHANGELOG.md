@@ -2,6 +2,16 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [19.2.0] - 2026-11-25（未发布候选）
+
+- 对齐官方OMP 19.2.0（coding-agent/utils/Stats/TUI最新稳定版均19.2.0；官方TUI重写，pi-tui源码475→162份，设置面板/补全/键位迁入coding-agent），固定官方tag commit `5c5ecb16fa4903c09a57a84983e482d9c9c2232e`（完整树12831项未截断）；按Git blob比较，npm的coding-agent 2787/2788份源码与官方树一致（唯一例外仍为发布时生成的Browser Relay扩展包`extension.generated.json`），utils151、Stats121、TUI162份全同。#17758为v19.2.0祖先（ahead 6370、behind 0）。
+- 宿主未升级：本机官方仍为19.1.1（SHA-256 `d5a3324a…`）。经受管启动器`omp update`共7次（继承代理4次、不继承代理3次）均在从官方构建服务下载223.6MB二进制时ECONNRESET，`update.auto`同样失败；同网络下GitHub Release资产直连约7MB/s。未改用其他安装方式，19.2.0 compiled smoke未运行。
+- Settings：647定义/486UI，9动态getter不变。新增`tui.vimShowCommand`（Vim 显示命令）、`tui.vimYankToClipboard`（Vim 复制同步到剪贴板）、`tui.vimStartMode`（Vim 起始模式：插入/普通）；`prewalk.auto`新增`escalate`（升级），`prewalk.from`、`prewalk.autoTarget`、`prewalk.auto`的suggest、`tui.tight`、`tui.vimModeDisplay`的none、`paste.largeMenuThreshold`按新原文改译。另9项getter说明只因官方键位改按主题符号渲染（Esc→⎋、Tab→⇥、Shift→⇧）而哈希变化，`descriptionSource`占位不变、不重译；`composer.recallClearedDrafts`的Ctrl在macOS为`⌃C`、Linux为`Ctrl+C`，以`byPlatform`分别绑定哈希。其余468项不重译。新全屏设置窗口每次打开仍从注册表读取元数据；页签与页首说明为硬编码英文。
+- Commands：89定义/98标识/9别名/27动态回调；仅`/branch`（别名`/rewind`）说明变化并改译。补全provider与`AutocompleteItem`迁入coding-agent`autocomplete/autocomplete.ts`，接口与可选能力不变，`addAutocompleteProvider`仍按注册顺序包装。`effort`/`switch`/`loop`键位getter源码不变但默认主题渲染为`⇧⇥`/`⌥P`/`⎋`；`commands:check`先固定官方ASCII符号预设，使`effort`继续逐字比对，不放宽为键位占位。
+- Stats：客户端逐字节不变，仅服务端`parser.ts`一处注释；`stats-cli`只迁移导入，`utils/open.ts`与`getPluginsNodeModules`不变；译文与browser/mutations/preload不改。
+- 测试与冒烟脚本随官方模块迁移改导入（`CombinedAutocompleteProvider`、`settings-defs`、键位与主题运行时），切换主题改用`setCurrentTheme`。冻结安装与完整check：72测试/2760断言，Settings486/486、Schema0，Commands89/89与98标识、漂移0，2123项显示变更/3次恢复/源码网络0。
+- 仍锁屏且宿主未升级：19.2.0 compiled smoke、真实TUI三面交互、完整Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期与精确SHA冷GitHub安装均未运行，不发布。Tern可选未验证，Windows不纳入。
+
 ## [19.1.1] - 2026-11-23（未发布候选）
 
 - 对齐官方OMP 19.1.1（coding-agent/utils/Stats/TUI最新稳定版均19.1.1），固定官方tag commit `31ffee513f27a01bba7d4dfbe12bae239cdc646a`（完整树12090项未截断）；按Git blob比较，npm的coding-agent 2096/2097份源码与官方树一致（唯一例外仍为发布时生成的Browser Relay扩展包`extension.generated.json`），utils151、Stats121、TUI475份全同。官方`update.auto`把19.1.0→19.1.1装到原官方位置`~/.local/bin/omp`，经受管启动器`omp update`报告已最新，SHA-256 `d5a3324acd98375a01698a1b0c018be48caed2956c8aa9044ad137fe43bc0400`与官方darwin-arm64资产相同，受管启动器逐字节不变。#17758为v19.1.1祖先（ahead 5844、behind 0）。
