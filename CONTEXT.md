@@ -14,11 +14,11 @@
 
 **Stats**：omp-stats仅`parser.ts`一处注释与版本变化，客户端逐字节不变；`stats-cli.ts`只迁移导入，`utils/open.ts`、`getPluginsNodeModules`不变。译文/browser/mutations/preload不改。真实网页未验证。
 
-**回归**：`bun install`更新锁文件；完整`bun run check`72测试/2760断言通过，Settings486/486、Schema0，Commands89/89、98标识、漂移0，2123显示变更/3次恢复/源码网络0。宿主未升级，`scripts/smoke-cli.ts`（需19.2.0官方绝对路径）未运行。本轮有两处一行文本替换误用`sed`（测试导入路径、`sourceOmpVersion`），结果已由diff/grep核对。
+**回归**：`bun install`更新锁文件；冻结安装无变化，完整`bun run check`72测试/2760断言通过，Settings486/486、Schema0，Commands89/89、98标识、漂移0，2123显示变更/3次恢复/源码网络0。经询问不替换本机安装；compiled smoke按CI方式把官方GitHub资产下载到会话scratchpad（SHA-256 `56cf390e…`与SHA256SUMS/Release digest一致，19.2.0，内嵌Bun1.4.5）。首轮`omp-native-posix-A02yus`在RPC探针失败关闭：官方19.2.0的`--no-tools`会关闭扩展发现并拒绝与`-e`同用（3页建/关、cleanupErrors0、run树删除）；提交`4a1fdf5`的[CI 45651102247](https://github.com/rockythink/omp-settings-zh/actions/runs/45651102247)两平台`bun run check`通过、编译版步骤同因失败。归类驱动与新官方参数冲突，探针改`--tools read`。第二轮`omp-native-posix-lHD3xa`通过：成功/人为失败预检、5页建/5关、两服务（57618/57627）各单监听器、合并`--smol`与用户preload、compiled共享设置“自动恢复”/“文本”、doctor3/1/0、16目录GET/0 Codex版本GET/2身份GET/1无凭据HEAD在dispatch前拦截，推理0，cleanupErrors0、rootRemoved。本轮有两处一行文本替换误用`sed`（测试导入路径、`sourceOmpVersion`），结果已由diff/grep核对。
 
-**环境未验与恢复条件**：`computer.capabilities()`为screenLocked:true、displayCount0、secureInputApp loginwindow；宿主升级被构建服务下载阻塞。恢复条件：本机官方成功升级到19.2.0（或届时最新）并解锁后，先跑19.2.0 compiled smoke，再固定最终SHA完整重验全部门禁才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
+**环境未验与恢复条件**：`computer.capabilities()`为screenLocked:true、displayCount0、secureInputApp loginwindow；本机安装升级被构建服务下载阻塞。恢复条件：本机官方经受支持方式升级到19.2.0（或届时最新）并解锁后，固定最终SHA完整重验全部门禁（TUI三面交互、12页Web/冷摄取/API/SSE/权限/费用边界、默认opener、Profile/生命周期、精确SHA冷GitHub安装）才tag/Release。Tern可选未验证，Windows排除，历史unknown独立审计。
 
-**本轮资源**：run `omp-maint-20261125-c3d45e0a`，基线（监听列表30行、Chrome 41个PID、omp PID）在会话scratchpad。本轮未开浏览器页、未启动Stats/服务、未分配端口；仅`omp update`子进程（均已退出）、npm包解包与旧版对照依赖安装位于scratchpad。PID 53392为承载本任务的Orca omp会话，非本轮资源、未操作。
+**本轮资源**：run `omp-maint-20261125-c3d45e0a`，基线（监听列表30行、Chrome 41个PID、omp PID）与smoke前后监听/Chrome快照在会话scratchpad。唯一开页/服务阶段为两轮smoke，树外账本`<TMPDIR>/omp-native-posix-{A02yus,lHD3xa}.resources.json`：第二轮账本24个PID全部退出、端口57611/57618/57627关闭、两个run树ENOENT，监听列表与Chrome进程集合与smoke前一致。`omp update`子进程均已退出；官方资产临时副本、npm包与旧版对照依赖位于scratchpad。PID 53392为承载本任务的Orca omp会话，非本轮资源、未操作。
 
 ## 19.1.1 适配（2026-11-23，未发布）
 

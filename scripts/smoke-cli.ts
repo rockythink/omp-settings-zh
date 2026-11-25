@@ -360,7 +360,8 @@ require('node:module').syncBuiltinESMExports?.();
   const probe = join(root, "probe.ts");
   await writeFile(probe, `import {orderedSettings} from '@oh-my-pi/pi-coding-agent/config/all-settings';import {VERSION,getPluginsNodeModules} from '@oh-my-pi/pi-utils';export default function(pi){pi.on('session_start',(_event,context)=>{setTimeout(async()=>{const s=orderedSettings();const label=s.find(x=>x.id==='autoResume').definition.ui.label;const option=s.find(x=>x.id==='tui.vimModeDisplay').definition.ui.options.find(x=>x.value==='text');await Bun.write(${JSON.stringify(marker)},JSON.stringify({version:VERSION,label,option,model:{provider:context.model?.provider,id:context.model?.id},plugins:getPluginsNodeModules()}));process.exit(label==='自动恢复'&&option.description==='完整模式名称：NORMAL、INSERT、VISUAL、V-LINE、REPLACE'?0:1);},0);});}`);
   env.ANTHROPIC_API_KEY = "omp-native-smoke-not-a-credential";
-  await command(official, ["--mode", "rpc", "--provider", "anthropic", "--model", "claude-opus-5-5", "--no-ui", "--no-tools", "--no-skills", "--no-rules", "--no-session", "--no-title", "-e", probe]);
+  // OMP 19.2 rejects --no-tools with -e (a --no-tools session loads no extensions); keep one read-only tool.
+  await command(official, ["--mode", "rpc", "--provider", "anthropic", "--model", "claude-opus-5-5", "--no-ui", "--tools", "read", "--no-skills", "--no-rules", "--no-session", "--no-title", "-e", probe]);
   delete env.ANTHROPIC_API_KEY;
   installed = await Bun.file(wrapper).exists();
   if (!installed) throw new Error("Default extension load did not install launcher");
