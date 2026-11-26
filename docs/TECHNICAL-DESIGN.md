@@ -1,7 +1,7 @@
 # omp-settings-zh 技术设计
 
-- 实现候选：19.2.0，未发布；main与源码编号不是发布证据
-- 目标基线：官方OMP19.2.0、外部Bun最低1.4.4；Tern可选未验证
+- 实现候选：19.2.1，未发布；main与源码编号不是发布证据
+- 目标基线：官方OMP19.2.1、外部Bun最低1.4.4；Tern可选未验证
 - 核心约束：不分叉、不重写设置面板、不修改设置语义
 
 ## 1. 运行边界
@@ -90,6 +90,8 @@
 
 19.2.0官方重写TUI（pi-tui由475份源码精简为162份，设置面板、补全与键位迁入coding-agent的`ui/`、`autocomplete/`、`config/keybindings`），为647定义/486UI，9个动态getter不变。插件依赖面逐项核对：`orderedSettings()`的`setting.ui`仍为宿主共享引用；新全屏`SettingsWindow`每次打开经`createSettingsHost()`从注册表重建`entries`，`getSettingsForTab`/`getAllSettingDefs`改由`config/settings-defs.ts`提供（原`pi-tui/overlays/settings-defs`），读取的仍是被插件替换的label/description/options，因此不需改写应用逻辑；页签标签与新页首说明（`ui/overlays/settings/pages.ts`，如“Appearance / Theme, composer…”）属硬编码面板文案，保持官方英文。新增`tui.vimShowCommand`、`tui.vimYankToClipboard`、`tui.vimStartMode`，`prewalk.auto`新增`escalate`，6项原文变化改译。官方键位改由`ui/keys/hints.formatKeyHint`按当前主题符号预设渲染（默认unicode：Esc→⎋、Tab→⇥、Shift→⇧），9项getter说明哈希随之变化，既有`descriptionSource`占位模板不变；Ctrl在macOS渲染为`⌃C`、其他平台为`Ctrl+C`，`composer.recallClearedDrafts`用`byPlatform`分别绑定哈希。其余468项原文哈希不变。
 
+19.2.1为648定义/487UI，9个动态getter不变：新增 `bash.reapBackground`（boolean、默认true，RPC模式由官方强制关闭），仅补名称与说明，不复制进程追踪或回收实现。其余486项原文不变。设置窗口新增 `omp.prefs.search` 输入子节点及原生edit事件处理；注册表、settings-ui、settings-defs与选项隔离合同不变，硬编码 `Search settings` 保留英文。
+
 ## 5. Extension 生命周期与语言命令
 
 `src/index.ts` 在 `session_start` 的主会话中默认应用中文。宿主模块加载错误在动态调用边界内捕获，转换成兼容性提示，不让入口导入错误阻止会话启动。
@@ -132,6 +134,8 @@
 19.1.1命令目录仅`builtin-lifecycle.ts`（`/wt`创建后执行工作树`post-checkout` Hook并输出警告）与`builtin-modes.ts`（`/computer`状态行字段改为`takeover=`）变化，均属执行侧；`builtin-registry.ts`、`pi-tui/autocomplete.ts`逐字节不变。extensibility types新增`registerTodoBackend`/`TodoBackendDefinition`，wrapper把仅含会话工具命令的bash行交回原生工具，startup-deferral缓存前缀v2→v3（扩展首次重新判定是否可延迟、选中的待办后端所属扩展保持eager）；插件不注册待办后端，补全provider接口与项结构不变。
 
 19.2.0命令目录中只有`builtin-session.ts`的`/branch`说明（“…in a new session, keeping this one unchanged”）属补全原文变化，已改译；其余为导入路径迁移（`AutocompleteItem`、`jobDisplayLabel`、`SlashCommandIconName`等由pi-tui迁入coding-agent）与`/collab`浏览器链接等执行侧变化。`builtin-registry.ts`只改导入与`runtime.ctx.composer`。补全provider与项结构迁到coding-agent`autocomplete/autocomplete.ts`，`AutocompleteProvider`的`getSuggestions(signal,onPartial)`、`applyCompletion`、`trySyncSlashCompletion`等可选能力及`AutocompleteItem`字段不变；`addAutocompleteProvider(factory)`仍由`interactive-mode`按注册顺序包装，新composer（`ui/composer/autocomplete.ts`）通过同名方法消费，同步结果亦可直接返回。折叠`skill:`行仍为“N skill(s)”。`effort`/`switch`/`loop`的键位getter源码不变，但默认主题由ASCII拼写改为符号（`⇧⇥`/`⌥P`/`⎋`）；显示层`staticText`按键位占位捕获，静态门禁固定ASCII预设后`effort`逐字匹配。
+
+19.2.1的注册表、动态回调、`builtin-completions.ts`、`autocomplete/autocomplete.ts`及扩展provider接口逐字节不变；命令侧主要把 `errorMessage` 移至pi-utils，`/wt`创建时新增session归属，均不涉及补全说明或原生插入。interactive-mode的显示设置同步与图像能力变化不改变 `addAutocompleteProvider` 包装链。有效服务层级仍由官方 `effectiveServiceTier(model)` 读取。
 
 ## Stats Web 显示适配
 
@@ -181,6 +185,7 @@
 - 19.1.0：121源码中仅服务端`db.ts`（已完成回填的库打开时不取写锁；新增只读连接的`readDailyActivity`供会话`/usage`使用）、`rollup.ts`（rollup版本不匹配时回退原始行聚合）与`spotlight-ingest.ts`（移除`write xd://ast_edit`的编辑归因）变化；95客户端、`stats-cli.ts`逐字节不变，`utils/open.ts`仅把日志中的URL脱敏、错误改记code，打开命令选择不变。947键/155通用模板＋9属性模板及browser/mutations/preload不改。
 - 19.1.1：121源码中客户端仅`spotlight/Hero.tsx`（“Fetched back beyond baseline”的title）、`Savings.tsx`（“Back anyway”的title与USD/Token两种页脚、按工具行的基线悬停行）、`Steps.tsx`（页脚保留比例公式）文案变化；服务端`db`/`shared-types`/`spotlight-aggregator`/`spotlight-measures`按“plain是否限制了该结果”分侧计算回取基线（`minHoldouts`=30，不足时整个工具用合并比率），计算归官方。插件替换3个静态键、2个既有模板，Token页脚因含`formatInteger(adjusted.minHoldouts)`由静态键改为严格模板：946键/156通用模板＋9属性模板。文本节点仍先查字典再查模板，`.spot-tool-net-row`多行title逐行匹配，元素白名单与browser/mutations/preload不改；`stats-cli`与`utils/open.ts`不变。
 - 19.2.0：121源码中只有服务端`parser.ts`一处注释变化（pi-tui→coding agent），客户端逐字节不变；`stats-cli.ts`仅把`formatKeyHint`/`truncateToWidth`/`initTheme`导入迁到coding-agent，启动、端口与开页流程不变，`utils/open.ts`不变，`getPluginsNodeModules`不变。946键/156通用模板＋9属性模板及browser/mutations/preload不改。
+- 19.2.1：121源码中仅 `client/routes/FrustrationRoute.tsx` 与 `frustration.ts` 共用pi-utils的 `errorMessage`，实现仍为Error.message或String(value)，输出行为不变。文案、DOM、query/query-store/live、stats-cli与openPath不变；946键/156通用模板＋9属性模板及browser/mutations/preload不改。utils新增词法路径包含辅助函数并修复 `..name` 子目录判断，`getPluginsNodeModules`稳定包路径不变。
 
 ## 6. 检查与真实验证
 

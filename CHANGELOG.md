@@ -2,6 +2,15 @@
 
 从 18.4.6 起，宿主适配以目标 OMP 稳定版编号为基线；独立插件增量使用新的补丁号并注明实际宿主，不复用已发布编号，不修改历史标签。
 
+## [19.2.1] - 2026-11-26（未发布候选）
+
+- 对齐官方OMP/coding-agent/utils/Stats/TUI19.2.1，固定tag commit `b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac`。本机官方二进制SHA-256 `43943119837612b2da72250ab7efe22ff8ca239eabebd4f702f34e3a144fdd3d`匹配官方darwin-arm64 Release digest；经受管启动器 `omp update` 确认Already up to date，未改变安装来源。
+- Settings648定义/487UI：新增 `bash.reapBackground`（回收后台进程），准确保留停止时提醒、会话结束终止未登记服务的 `&` 进程及RPC关闭条件；其余486项/9动态getter不重译。官方窗口新增原生搜索输入子节点，注册表/设置host/defs不变，硬编码提示保持英文。
+- Commands89定义/98标识/9别名/27动态回调：注册表、动态说明、补全provider及可选能力不变；命令侧主要把errorMessage移至pi-utils，`/wt`创建增加session归属，均属执行侧。
+- Stats121源码仅Frustration客户端/服务端共用errorMessage，文案、DOM、query修复及开页流程不变；946键/156通用模板＋9属性模板和browser/mutations/preload不改。npm与固定官方Git树比较除已知生成的Browser Relay包外一致，不以npm包替代实际官方运行时。
+- 定向回归通过：冻结安装无变化，`bun run check` 72测试/2760断言；Settings487/487、Schema0，Commands89/89、98标识、漂移0。真实官方19.2.1 compiled smoke通过共享设置、中英切换/刷新/API、单监听器及flags/用户preload合并；正常/人为失败回收、5页创建/5页关闭、cleanupErrors0，全部账本PID退出与端口关闭。测试专属opener不代证默认系统opener。
+- 桌面仍锁定，完整三面交互、当前制品冷摄取、默认opener与精确SHA冷安装最终门禁未完成，保持未发布；19.2.0候选由本候选取代。Tern可选未验证，Windows不纳入。
+
 ## [19.2.0] - 2026-11-25（未发布候选）
 
 - 对齐官方OMP 19.2.0（coding-agent/utils/Stats/TUI最新稳定版均19.2.0；官方TUI重写，pi-tui源码475→162份，设置面板/补全/键位迁入coding-agent），固定官方tag commit `5c5ecb16fa4903c09a57a84983e482d9c9c2232e`（完整树12831项未截断）；按Git blob比较，npm的coding-agent 2787/2788份源码与官方树一致（唯一例外仍为发布时生成的Browser Relay扩展包`extension.generated.json`），utils151、Stats121、TUI162份全同。#17758为v19.2.0祖先（ahead 6370、behind 0）。

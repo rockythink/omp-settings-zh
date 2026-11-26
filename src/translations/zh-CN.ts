@@ -2,8 +2,13 @@ import type { LocalePack } from "./types";
 
 export const zhCN = {
   "locale": "zh-CN",
-  "sourceOmpVersion": "19.2.0",
+  "sourceOmpVersion": "19.2.1",
   "settings": {
+    "bash.reapBackground": {
+      "sourceHash": "fd7fabf054053d01b46bfe145db96634ad87093ab9b1ce2ae1265ba60345abea",
+      "label": "回收后台进程",
+      "description": "Agent 停止时，提醒其 bash 调用留下的运行中进程（`cmd &`、`nohup`）；会话结束时终止未登记为服务的 `&` 后台进程；RPC 模式下关闭"
+    },
     "auth.unpausedProviders": {
       "sourceHash": "3e2a78bb276f04a95d8df8a221210a61e301310124dfc83955ebd06b5c437de8",
       "label": "解除暂停的提供商",

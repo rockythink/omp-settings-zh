@@ -1,5 +1,21 @@
 # Project Context
 
+## 19.2.1 定向维护（2026-11-26，未发布）
+
+起点本地main、远端main均 `4e784b53d0cab4b457474af46a0ab03bd8b28583`；[CI 45652431568](https://github.com/rockythink/omp-settings-zh/actions/runs/45652431568) macOS/Linux成功。最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，存在待发布候选。Windows PR #1现场CLOSED、isDraft:true、mergedAt:null；41个 `.bun-build` 与本地 `AGENTS.md` 未跟踪，不动、不提交。
+
+本机官方已为19.2.1，SHA-256 `43943119837612b2da72250ab7efe22ff8ca239eabebd4f702f34e3a144fdd3d`匹配官方darwin-arm64 Release digest；受管启动器仍为shell脚本。初始HTTP代理TLS失败、直连超时；只为本任务在临时目录建立HTTP CONNECT→现有SOCKS出口桥，不改全局网络或安装方式，随后经受管启动器 `omp update` 报Already up to date，前后19.2.1。插件起点为 `github:rockythink/omp-settings-zh`、19.2.0，doctor5/0/0；pi-xcode-mcp0.1.0不动。
+
+官方coding-agent/utils/Stats/TUI最新稳定版均19.2.1；tag commit `b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac`完整树13006项未截断。npm源码Git blob：coding-agent2794/2795一致（唯一例外为生成的Browser Relay扩展包），utils152/Stats121/TUI163全同。#17754 CLOSED/COMPLETED，#17758 MERGED（`febb26794905ce8990e5cba714f4392695b7172d`），为tag祖先（ahead6487、behind0）。query修复源码未变；当前制品冷摄取仍待真实Web独立验收。
+
+Settings：648定义/487UI/9动态getter。新增 `bash.reapBackground`，独立译为“回收后台进程”；其余486项原文不变。官方设置窗口新增原生搜索输入子节点及edit处理，注册表/设置host/defs合同不变，硬编码搜索提示保持英文。Commands：89定义/98标识/9别名/27动态回调，注册表、动态说明、builtin-completions、provider与可选能力逐字节不变；命令侧主要共用errorMessage，`/wt`新增session归属，仅执行侧。Stats：121源码仅Frustration客户端/服务端共用errorMessage；文案、DOM、stats-cli/openPath、query/query-store/live不变，946键/156通用模板＋9属性模板与browser/mutations/preload不改。
+
+定向回归：冻结安装无变化；完整 `bun run check` 72pass/0fail、2760断言，Settings487/487、Schema0，Commands89/89、98标识、漂移0，2125显示变更/3次恢复/源码网络0。真实本机官方绝对路径 `scripts/smoke-cli.ts` 通过：compiled共享设置中文、内嵌Bun1.4.5合并 `--smol` 与用户preload、原URL默认中文/English/刷新/同源API、dry-run与卸载；16目录GET/0 Codex版本GET/2身份GET/1无凭据HEAD在dispatch前拦截，推理0。该驱动是隔离本地link和测试opener转交，不等于完整三面、真实默认opener或精确SHA冷安装通过。
+
+smoke run `omp-native-posix-rxElOv` 的树外账本记录正常/人为失败预检、页面5建/5关、cleanupErrors0、rootRemoved，两个服务各单监听器；独立核对全部账本PID均ESRCH，端口57046/57095及opener bridge56990关闭，run树不存在。专属浏览器/Profile已回收、用户页面未操作；历史unknown不据此销账。
+
+本轮run `omp-maint-20261126-dsq2Jf`先登记进程/监听基线及资源账本，用户浏览器未操作。起始 `computer.capabilities()` 为screenLocked:true、displayCount0、secureInputApp loginwindow；前提未解除，仅做必要适配和定向回归，不重复最终矩阵。恢复条件：解锁后固定最终宿主/SHA，完整重验真实Settings/Commands、Stats全页/冷摄取/API/SSE/权限/费用边界、默认opener、命名Profile/生命周期与精确SHA冷GitHub安装，全部通过后才tag/Release。Tern可选未验证，Windows排除，历史unknown独立保留。
+
 ## 19.2.0 适配（2026-11-25，未发布）
 
 起点本地main、origin/main均`8f078470252a03c7d3cc63e154158a7fd89a439c`（19.1.1未发布候选，CI macOS/Linux成功）；最后正式Release仍[v18.19.0](https://github.com/rockythink/omp-settings-zh/releases/tag/v18.19.0)，相对该tag已有待发布候选。官方v19.2.0于11-25 08:32Z发布（tag commit `5c5ecb16fa4903c09a57a84983e482d9c9c2232e`），coding-agent/utils/Stats/TUI最新稳定版均19.2.0，构成新适配并取代19.1.1候选。Windows PR #1现场CLOSED、isDraft:true；42项未跟踪（41个`.bun-build`与本地`AGENTS.md`）不动、不提交。

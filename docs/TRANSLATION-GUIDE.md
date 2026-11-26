@@ -4,6 +4,8 @@
 
 当前范围为设置项名称、说明、警告和静态选项。页签、分组与硬编码操作提示保持官方原文，不计入翻译覆盖率。
 
+19.2.1当前复核：648定义/487UI，新增 `bash.reapBackground` 独立译为“回收后台进程”；说明区分Agent停止时的提醒与会话结束时终止 `&` 后台进程，保留未登记服务与RPC关闭条件，`nohup`保留原标识。其余486项/9动态getter不重译。Commands89定义/98标识/9别名/27动态回调与19.2.0相同；Stats只共用错误格式化函数，界面文案和DOM无变化，沿用946键/156通用模板＋9属性模板，错误数据仍不译。固定来源 `b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac`；下列19.2.0变更记录保留作来源审计。
+
 ## 内置斜杠补全译文边界
 
 - 当前来源OMP19.2.0官方BUILTIN_SLASH_COMMAND_DEFS；89条说明、98名称/别名、9别名及27动态回调。19.2.0仅`/branch`（别名`/rewind`）说明变为“在新会话中回退到先前的消息，当前会话保持不变”并改译；官方TUI重写后`effort`/`switch`/`loop`的键位按当前主题符号预设渲染（默认unicode为`⇧⇥`/`⌥P`/`⎋`，ASCII预设仍为`Shift+Tab`/`Option+P`/`Esc`），getter源码不变。补全provider与项结构从`pi-tui/autocomplete.ts`迁入coding-agent`autocomplete/autocomplete.ts`，接口不变。19.1.1、19.1.0与19.0.1无补全说明变化（19.1.1仅`/wt`工作树Hook警告与`/computer`状态行`takeover=`字段，19.1.0为`/tools`列出工具命令、`/jobs`标签、`/compact`中断判定与MCP辅助，均属执行侧）；19.0.0仅`/handoff`说明变为“后台交接压缩（等同`/compact handoff`）”并改译，别名与动态回调源码不变（18.20.3曾删除`/seance`并同步移除译文）；`/commit`会生成提交提示词，验收只看补全说明、不执行。viewSession、switch有效层级、真实键位、descriptionMatch与原生Enter保护保持；源码行为通过不代证compiled TUI验收。
